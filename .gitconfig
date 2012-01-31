@@ -1,0 +1,17 @@
+[user]
+	name = Neville Li
+	email = neville@spotify.com
+[color]
+	ui = auto
+[core]
+	autocrlf = input
+	safecrlf = true
+	excludesfile = ~/.dotfiles/git/gitignore
+[branch]
+	autosetuprebase = always
+[url "neville@git.spotify.net"]
+	insteadof = git@git.spotify.net
+[init]
+	templatedir = ~/.dotfiles/git
+[push]
+	default = tracking

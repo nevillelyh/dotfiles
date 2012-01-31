@@ -1,0 +1,13 @@
+# Python
+if [ -d /usr/local/share/python ]; then
+    local PATH=$(echo ${PATH} | sed -e 's/\/usr\/local\/bin://')
+    export PATH="/usr/local/bin:/usr/local/share/python:${PATH}"
+fi
+
+# MacVim
+if [ -f /usr/local/bin/mvim ]; then
+    alias vi='mvim -v'
+    alias vim='mvim -v'
+fi
+
+# vim: ft=zsh:

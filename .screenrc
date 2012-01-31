@@ -1,0 +1,4 @@
+setenv SSH_AUTH_SOCK "/tmp/ssh-agent-screen-$USER"
+escape ``
+hardstatus alwayslastline
+hardstatus string '%{= Wk}%-w%{= Yk}%50>%n %t%{= Wk}%+w%<'

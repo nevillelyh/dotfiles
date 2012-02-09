@@ -12,6 +12,14 @@ set smarttab
 set tabstop=8
 syntax on
 
+" Highlight column 80+
+if exists('+colorcolumn')
+    highlight ColorColumn ctermbg=cyan
+    set colorcolumn=80
+else
+    au BufWinEnter * let w:m2=matchadd('WarningMsg', '\%>80v.\+', -1)
+endif
+
 " Pathogen
 call pathogen#infect()
 

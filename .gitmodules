@@ -34,3 +34,6 @@
 [submodule ".dotfiles/zsh/omz"]
 	path = .dotfiles/zsh/omz
 	url = https://github.com/robbyrussell/oh-my-zsh.git
+[submodule ".vim/bundle/vim-bad-whitespace"]
+	path = .vim/bundle/vim-bad-whitespace
+	url = https://github.com/bitc/vim-bad-whitespace.git

@@ -42,8 +42,11 @@ toRemoveKeys XConfig{modMask = modm} =
     [ (modm,               xK_n)
     , (modm,               xK_p)
     , (modm .|. shiftMask, xK_p)
+    , (modm .|. shiftMask, xK_Return)
     ]
 
+lockCmd = "gnome-screensaver-command -l"
+termCmd = "lxterminal"
 toAddKeys XConfig{modMask = modm} =
     [ ((modm,               xK_p),        spawn "gmrun")
     , ((modm,               xK_a),        sendMessage MirrorExpand)
@@ -52,6 +55,7 @@ toAddKeys XConfig{modMask = modm} =
     , ((modm,               xK_Left),     prevWS)
     , ((modm .|. shiftMask, xK_Right),    shiftToNext)
     , ((modm .|. shiftMask, xK_Left),     shiftToPrev)
-    , ((modm .|. shiftMask, xK_l),        spawn "gnome-screensaver-command -l")
+    , ((modm .|. shiftMask, xK_l),        spawn lockCmd)
+    , ((modm .|. shiftMask, xK_Return),   spawn termCmd)
     , ((modm,               xK_KP_Enter), windows W.swapMaster)
     ]

@@ -15,9 +15,10 @@ syntax on
 " Highlight column 80+
 if exists('+colorcolumn')
     highlight ColorColumn ctermbg=cyan
-    set colorcolumn=80
+    set colorcolumn=80,100
 else
     au BufWinEnter * let w:m2=matchadd('WarningMsg', '\%>80v.\+', -1)
+    au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>100v.\+', -1)
 endif
 
 " Pathogen

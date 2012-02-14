@@ -11,6 +11,7 @@ Movies
 Music
 Pictures
 Public
+PycharmProjects
 Sites
 VirtualBox\ VMs
 .VirtualBox
@@ -18,14 +19,17 @@ VirtualBox\ VMs
 # Unix
 *.swp
 .*history
+.adobe
 .bash_logout
 .bash_profile
 .bashrc
+.csshrc
 .cups
 .dbshell
 .dvdcss
 .ipython
 .irssi
+.java
 .lesshst
 .oh-my-zsh
 .profile
@@ -40,10 +44,12 @@ VirtualBox\ VMs
 .ssh/private
 .ssh/spotify
 .subversion
+.subversion_IDEA
 .vim/.netrwhist
 .viminfo
 .zcompdump
 .zsh-update
+.PyCharm20
 
 # Ubuntu/Debian
 .ICEauthority
@@ -76,9 +82,11 @@ VirtualBox\ VMs
 .pulse-cookie
 .recently-used.xbel
 .sudo_as_admin_successful
+.sunpinyin
 .thumbnails
 .vboxclient-*.pid
 .xchat2
+.xinput.d
 .xmonad/xmonad.errors
 .xmonad/xmonad.hi
 .xmonad/xmonad.o

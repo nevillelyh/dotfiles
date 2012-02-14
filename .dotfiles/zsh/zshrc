@@ -8,6 +8,8 @@ fi
 # homebrew
 [[ -f /usr/local/bin/brew ]] && . ~/.dotfiles/zsh/homebrew
 
+[[ -d ${HOME}/.dotfiles/scripts ]] && export PATH="${HOME}/.dotfiles/scripts:${PATH}"
+
 # environment variables
 export EDITOR=vim
 

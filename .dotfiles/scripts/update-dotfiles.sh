@@ -21,6 +21,4 @@ gitcmd "git pull"
 gitcmd "git submodule update --init"
 gitcmd "git stash pop"
 
-#git stash save || die "git command failed: git stash save"
-#git pull || die "git command failed: git pull"
-#git stash pop || die "git command failed: git stash pop"
+cd ${cwd}

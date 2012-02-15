@@ -37,3 +37,6 @@
 [submodule ".vim/bundle/vim-bad-whitespace"]
 	path = .vim/bundle/vim-bad-whitespace
 	url = https://github.com/bitc/vim-bad-whitespace.git
+[submodule ".vim/bundle/google.vim"]
+	path = .vim/bundle/google.vim
+	url = https://github.com/vim-scripts/google.vim.git

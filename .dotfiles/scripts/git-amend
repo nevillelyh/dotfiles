@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# amend staged changes to the last commit
+# reuse the last commit message
+git commit --amend -C HEAD

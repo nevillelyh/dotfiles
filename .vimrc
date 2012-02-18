@@ -12,14 +12,23 @@ set smarttab
 set tabstop=8
 syntax on
 
-" Highlight column 80+
-if exists('+colorcolumn')
-    highlight ColorColumn ctermbg=cyan
-    set colorcolumn=80,100
-else
-    au BufWinEnter * let w:m2=matchadd('WarningMsg', '\%>80v.\+', -1)
-    au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>100v.\+', -1)
-endif
+" Highlight column 80 and 100
+function! ColWidth()
+    if exists('+colorcolumn')
+        " Vim 7.3+
+        highlight ColorColumn ctermbg=cyan
+        set colorcolumn=80,100
+    else
+        " Vim 7.2
+        autocmd BufWinEnter * let w:m2=matchadd('WarningMsg', '\%>80v.\+', -1)
+        autocmd BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>100v.\+', -1)
+    endif
+endfunction
+
+autocmd FileType c :call ColWidth()
+autocmd FileType cpp :call ColWidth()
+autocmd FileType python :call ColWidth()
+autocmd FileType javascript :call ColWidth()
 
 " Pathogen
 call pathogen#infect()

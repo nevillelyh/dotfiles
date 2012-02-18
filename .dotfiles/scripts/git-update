@@ -1,0 +1,7 @@
+#!/bin/bash
+
+git stash save > /dev/null
+git pull
+if [ "$(git stash list)" ]; then
+    git stash pop
+fi

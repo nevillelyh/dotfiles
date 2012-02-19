@@ -49,3 +49,6 @@
 [submodule ".vim/bundle/git-indent-guides"]
 	path = .vim/bundle/git-indent-guides
 	url = https://github.com/nathanaelkane/vim-indent-guides.git
+[submodule ".vim/bundle/vim-powerline"]
+	path = .vim/bundle/vim-powerline
+	url = https://github.com/Lokaltog/vim-powerline

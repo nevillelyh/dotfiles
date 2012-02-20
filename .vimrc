@@ -48,9 +48,12 @@ function! ColumnsGuidesOff()
     endif
 endfunction
 
-" coding style guides
-function! StyleGuides()
-    " highlight columns for specific file types only
+" code folding
+set foldmethod=syntax
+nnoremap <space> za
+
+function! OnBufEnter()
+    " specific file types only
     let l:filetypes = [
                 \ 'c', 'cpp', 'java', 'scala',
                 \ 'html', 'css', 'javascript',
@@ -60,18 +63,17 @@ function! StyleGuides()
                 \ ]
     if index(l:filetypes, &filetype) >= 0
         call ColumnsGuidesOn()
+        call indent_guides#enable()
+
+        " open all folds
+        :execute "normal zR"
     else
         call ColumnsGuidesOff()
-    endif
-    " show indent guides only when file tyle is detected
-    if &filetype != ""
-        call indent_guides#enable()
-    else
         call indent_guides#disable()
     endif
 endfunction
 
-autocmd BufEnter * :call StyleGuides()
+autocmd BufEnter * :call OnBufEnter()
 
 " Solarized color scheme
 let g:solarized_termcolors=256

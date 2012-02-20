@@ -1,3 +1,4 @@
+" basic settings
 set nocompatible
 source $VIMRUNTIME/vimrc_example.vim
 behave xterm
@@ -11,37 +12,66 @@ set smarttab
 set tabstop=8
 syntax on
 
-" Window navigation
+" visible tabs and returns
+set listchars=tab:»·,eol:↵
+set list
+
+" window navigation
 map <C-H> <C-W>h
-map <C-J> <C-W>j<C-W>_
-map <C-K> <C-W>k<C-W>_
+map <C-J> <C-W>j
+map <C-K> <C-W>k
 map <C-L> <C-W>l
 
-" Tab navigation
+" tab navigation
 map <C-N> gt
 map <C-P> gT
 
-" Highlight column 80 and 100
-function! ColWidth()
+" Pathogen
+call pathogen#infect()
+
+" column guides
+function! ColumnsGuidesOn()
     if exists('+colorcolumn')
-        " Vim 7.3+
         highlight ColorColumn ctermbg=cyan
         set colorcolumn=80,100
     else
-        " Vim 7.2
-        autocmd BufWinEnter * let w:m2=matchadd('WarningMsg', '\%>80v.\+', -1)
-        autocmd BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>100v.\+', -1)
+        let w:m2=matchadd('WarningMsg', '\%>80v.\+', -1)
+        let w:m2=matchadd('ErrorMsg', '\%>100v.\+', -1)
     endif
 endfunction
 
-" Highlight columns for these file types
-autocmd FileType c :call ColWidth()
-autocmd FileType cpp :call ColWidth()
-autocmd FileType python :call ColWidth()
-autocmd FileType javascript :call ColWidth()
+function! ColumnsGuidesOff()
+    if exists('+colorcolumn')
+        set colorcolumn=""
+    else
+        let w:m2=clearmatches()
+    endif
+endfunction
 
-" Pathogen
-call pathogen#infect()
+" coding style guides
+function! StyleGuides()
+    " highlight columns for specific file types only
+    let l:filetypes = [
+                \ 'c', 'cpp', 'java', 'scala',
+                \ 'html', 'css', 'javascript',
+                \ 'perl', 'php', 'python', 'ruby',
+                \ 'vim', 'sh', 'zsh',
+                \ 'proto',
+                \ ]
+    if index(l:filetypes, &filetype) >= 0
+        call ColumnsGuidesOn()
+    else
+        call ColumnsGuidesOff()
+    endif
+    " show indent guides only when file tyle is detected
+    if &filetype != ""
+        call indent_guides#enable()
+    else
+        call indent_guides#disable()
+    endif
+endfunction
+
+autocmd BufEnter * :call StyleGuides()
 
 " Solarized color scheme
 let g:solarized_termcolors=256
@@ -59,7 +89,6 @@ autocmd BufReadPost * :DetectIndent
 " Ident guides
 let g:indent_guides_guide_size = 1
 let g:indent_guides_start_level = 1
-let g:indent_guides_enable_on_vim_startup = 1
 
 " OmniCompletion
 set omnifunc=syntaxcomplete#Complete
@@ -87,7 +116,7 @@ command Vshell :ConqueTermVSplit zsh --login
 if !has("gui_running")
     " turn off mouse
     set mouse-=a
-    " Really dark grey non-intrusive colors
+    " really dark grey non-intrusive colors
     let g:indent_guides_auto_colors = 0
     autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=234
     autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=236

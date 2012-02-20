@@ -12,6 +12,16 @@ set smarttab
 set tabstop=8
 syntax on
 
+" Window navigation
+map <C-H> <C-W>h
+map <C-J> <C-W>j<C-W>_
+map <C-K> <C-W>k<C-W>_
+map <C-L> <C-W>l
+
+" Tab navigation
+map <C-N> gt
+map <C-P> gT
+
 " Highlight column 80 and 100
 function! ColWidth()
     if exists('+colorcolumn')

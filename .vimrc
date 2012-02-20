@@ -49,6 +49,9 @@ let g:solarized_termcolors=256
 let g:solarized_termtrans=1
 colorscheme solarized
 
+" Powerline
+set laststatus=2
+
 " DetectIndent
 let g:detectindent_preferred_expandtab = 1
 let g:detectindent_preferred_indent = 4
@@ -64,9 +67,6 @@ endif
 let g:indent_guides_guide_size = 1
 let g:indent_guides_start_level = 1
 let g:indent_guides_enable_on_vim_startup = 1
-
-" Powerline
-set laststatus=2
 
 " OmniCompletion
 set omnifunc=syntaxcomplete#Complete

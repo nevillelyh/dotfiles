@@ -58,3 +58,6 @@
 [submodule ".vim/bundle/detectindent"]
 	path = .vim/bundle/detectindent
 	url = https://github.com/ciaranm/detectindent.git
+[submodule ".vim/bundle/vim-protobuf"]
+	path = .vim/bundle/vim-protobuf
+	url = https://github.com/jboyens/vim-protobuf.git

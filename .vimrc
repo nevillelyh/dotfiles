@@ -39,6 +39,11 @@ let g:solarized_termcolors=256
 let g:solarized_termtrans=1
 colorscheme solarized
 
+" DetectIndent
+let g:detectindent_preferred_expandtab = 1
+let g:detectindent_preferred_indent = 4
+autocmd BufReadPost * :DetectIndent
+
 " Ident guides
 if !has("gui_running")
     " Really dark grey non-intrusive colors

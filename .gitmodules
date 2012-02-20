@@ -55,3 +55,6 @@
 [submodule ".vim/bundle/vim-colors-solarized"]
 	path = .vim/bundle/vim-colors-solarized
 	url = https://github.com/altercation/vim-colors-solarized.git
+[submodule ".vim/bundle/detectindent"]
+	path = .vim/bundle/detectindent
+	url = https://github.com/ciaranm/detectindent.git

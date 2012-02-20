@@ -3,7 +3,6 @@ source $VIMRUNTIME/vimrc_example.vim
 behave xterm
 
 set background=dark
-set mouse-=a
 set nobackup
 
 set expandtab
@@ -58,12 +57,6 @@ let g:detectindent_preferred_indent = 4
 autocmd BufReadPost * :DetectIndent
 
 " Ident guides
-if !has("gui_running")
-    " Really dark grey non-intrusive colors
-    let g:indent_guides_auto_colors = 0
-    autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=234
-    autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=236
-endif
 let g:indent_guides_guide_size = 1
 let g:indent_guides_start_level = 1
 let g:indent_guides_enable_on_vim_startup = 1
@@ -89,3 +82,13 @@ let g:ConqueTerm_CloseOnEnd = 1
 command Shell :ConqueTerm zsh --login
 command Hshell :ConqueTermSplit zsh --login
 command Vshell :ConqueTermVSplit zsh --login
+
+" terminal only settings
+if !has("gui_running")
+    " turn off mouse
+    set mouse-=a
+    " Really dark grey non-intrusive colors
+    let g:indent_guides_auto_colors = 0
+    autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=234
+    autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=236
+endif

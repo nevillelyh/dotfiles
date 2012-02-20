@@ -32,7 +32,7 @@ call pathogen#infect()
 " column guides
 function! ColumnsGuidesOn()
     if exists('+colorcolumn')
-        highlight ColorColumn ctermbg=cyan
+        highlight ColorColumn ctermbg=17
         set colorcolumn=80,100
     else
         let w:m2=matchadd('WarningMsg', '\%>80v.\+', -1)

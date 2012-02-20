@@ -97,6 +97,9 @@ let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
 " Close pop up window after leaving insert mode
 autocmd InsertLeave * if pumvisible() == 0 | pclose | endif
 
+" Syntastic
+let g:syntastic_check_on_open=1
+
 " NERDTree
 map <F5> :NERDTreeToggle<CR>
 

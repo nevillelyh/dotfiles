@@ -97,6 +97,7 @@ colorscheme solarized
 
 " Powerline
 set laststatus=2
+let g:Powerline_symbols='fancy'
 
 " DetectIndent
 let g:detectindent_preferred_expandtab = 1

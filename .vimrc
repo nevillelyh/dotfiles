@@ -11,28 +11,37 @@ set shiftwidth=4
 set smarttab
 set tabstop=8
 syntax on
+set foldmethod=syntax
 
 " visible tabs and returns
 set listchars=tab:»·,eol:↵
 set list
 
+""""""""""""""""""""
+" key mappings
+""""""""""""""""""""
+
+" left-hand pane
+map <ESC>1 :NERDTreeToggle<CR>
+map <ESC>2 :TagbarToggle<CR>
 " window navigation
 map <C-H> <C-W>h
 map <C-J> <C-W>j
 map <C-K> <C-W>k
 map <C-L> <C-W>l
-
 " tab navigation
 map <C-N> gt
 map <C-P> gT
-
 " goto file in new tab
 map gf <C-W>gf
+" toggle folding
+nmap <space> za
 
-" Pathogen
-call pathogen#infect()
 
+""""""""""""""""""""
 " column guides
+""""""""""""""""""""
+
 function! ColumnsGuidesOn()
     if exists('+colorcolumn')
         highlight ColorColumn ctermbg=17
@@ -51,9 +60,12 @@ function! ColumnsGuidesOff()
     endif
 endfunction
 
-" code folding
-set foldmethod=syntax
-nnoremap <space> za
+""""""""""""""""""""
+" plug-ins
+""""""""""""""""""""
+
+" Pathogen
+call pathogen#infect()
 
 function! OnBufOpen()
     " specific file types only
@@ -105,11 +117,7 @@ autocmd InsertLeave * if pumvisible() == 0 | pclose | endif
 " Syntastic
 let g:syntastic_check_on_open=1
 
-" NERDTree
-map <F5> :NERDTreeToggle<CR>
-
 " Tagbar
-map <F6> :TagbarToggle<CR>
 let g:tagbar_left = 1
 
 " Conque shell
@@ -120,7 +128,10 @@ command Shell :ConqueTerm zsh --login
 command Hshell :ConqueTermSplit zsh --login
 command Vshell :ConqueTermVSplit zsh --login
 
-" terminal only settings
+""""""""""""""""""""
+" non-GUI settings
+""""""""""""""""""""
+
 if !has("gui_running")
     " turn off mouse
     set mouse-=a

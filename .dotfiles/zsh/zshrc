@@ -8,6 +8,7 @@ fi
 # homebrew
 [[ -f /usr/local/bin/brew ]] && . ~/.dotfiles/zsh/homebrew
 
+# some useful scripts
 [[ -d ${HOME}/.dotfiles/scripts ]] && export PATH="${HOME}/.dotfiles/scripts:${PATH}"
 
 # set up terminal colors properly
@@ -15,6 +16,9 @@ fi
 
 # environment variables
 export EDITOR=vim
+
+# open in tabs by default
+alias vi='vim -p'
 
 # add SSH keys
 find ${HOME}/.ssh -name id_dsa -or -name id_rsa | xargs ssh-add > /dev/null 2>&1
@@ -29,8 +33,5 @@ unset AGENT
 __git_files () {
     _wanted files expl "local files" _files
 }
-
-# open in tabs by default
-alias vi='vim -p'
 
 # vim: ft=zsh:

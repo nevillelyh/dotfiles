@@ -26,6 +26,9 @@ map <C-L> <C-W>l
 map <C-N> gt
 map <C-P> gT
 
+" goto file in new tab
+map gf <C-W>gf
+
 " Pathogen
 call pathogen#infect()
 

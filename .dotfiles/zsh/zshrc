@@ -27,4 +27,7 @@ __git_files () {
     _wanted files expl "local files" _files
 }
 
+# open in tabs by default
+alias vi='vim -p'
+
 # vim: ft=zsh:

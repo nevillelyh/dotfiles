@@ -55,7 +55,7 @@ endfunction
 set foldmethod=syntax
 nnoremap <space> za
 
-function! OnBufEnter()
+function! OnBufOpen()
     " specific file types only
     let l:filetypes = [
                 \ 'c', 'cpp', 'java', 'scala',
@@ -76,7 +76,7 @@ function! OnBufEnter()
     endif
 endfunction
 
-autocmd BufEnter * :call OnBufEnter()
+autocmd BufRead,BufNewFile * :call OnBufOpen()
 
 " Solarized color scheme
 let g:solarized_termcolors=256

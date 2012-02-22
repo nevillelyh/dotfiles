@@ -44,6 +44,7 @@ Bundle 'nathanaelkane/vim-indent-guides'
 " navigation
 Bundle 'scrooloose/nerdtree'
 Bundle 'majutsushi/tagbar'
+Bundle 'milkypostman/vim-togglelist'
 
 " shortcuts
 Bundle 'Raimondi/delimitMate'
@@ -68,9 +69,12 @@ filetype plugin indent on
 " key mappings
 """"""""""""""""""""
 
-" left-hand pane
+" utility panes
 map <ESC>1 :NERDTreeToggle<CR>
 map <ESC>2 :TagbarToggle<CR>
+" toggle quick fix and location list
+map <ESC>3 <leader>q
+map <ESC>4 <leader>l
 " window navigation
 map <C-H> <C-W>h
 map <C-J> <C-W>j
@@ -83,7 +87,6 @@ map <C-P> gT
 map gf <C-W>gf
 " toggle folding
 nmap <space> za
-
 
 """"""""""""""""""""
 " column guides
@@ -152,6 +155,9 @@ autocmd BufReadPost * :DetectIndent
 let g:indent_guides_guide_size = 1
 let g:indent_guides_start_level = 1
 
+" Tagbar
+let g:tagbar_left = 1
+
 " OmniCompletion
 set omnifunc=syntaxcomplete#Complete
 " OmniCompletion with SuperTab
@@ -161,9 +167,6 @@ autocmd InsertLeave * if pumvisible() == 0 | pclose | endif
 
 " Syntastic
 let g:syntastic_check_on_open=1
-
-" Tagbar
-let g:tagbar_left = 1
 
 """"""""""""""""""""
 " non-GUI settings

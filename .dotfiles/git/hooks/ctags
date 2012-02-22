@@ -1,3 +1,4 @@
 #!/bin/sh
+[[ "$(git rev-parse --show-toplevel)" == "${HOME}" ]] && exit 0
 rm -f .git/tags
 ctags --tag-relative -Rf.git/tags --exclude=.git

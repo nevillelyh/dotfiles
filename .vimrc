@@ -111,7 +111,7 @@ let g:indent_guides_start_level = 1
 " OmniCompletion
 set omnifunc=syntaxcomplete#Complete
 " OmniCompletion with SuperTab
-let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
+let g:SuperTabDefaultCompletionType = '<C-X><C-O>'
 " Close pop up window after leaving insert mode
 autocmd InsertLeave * if pumvisible() == 0 | pclose | endif
 
@@ -133,7 +133,7 @@ command Vshell :ConqueTermVSplit zsh --login
 " non-GUI settings
 """"""""""""""""""""
 
-if !has("gui_running")
+if !has('gui_running')
     " turn off mouse
     set mouse-=a
     " really dark grey non-intrusive colors

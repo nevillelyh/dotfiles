@@ -18,7 +18,16 @@ fi
 export EDITOR=vim
 
 # open in tabs by default
-alias vi='vim -p'
+if [ -f /usr/local/bin/mvim ]; then
+    # MacVim
+    alias vi='mvim -v -p'
+    alias vim='mvim -v -p'
+    alias gvim='mvim -p'
+else
+    alias vi='vim -p'
+    alias vim='vim -p'
+    [[ -e /usr/bin/gvim ]] && alias gvim='gvim -p'
+fi
 
 # add SSH keys
 find ${HOME}/.ssh -name id_dsa -or -name id_rsa | xargs ssh-add > /dev/null 2>&1

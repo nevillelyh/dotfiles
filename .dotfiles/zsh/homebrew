@@ -4,10 +4,4 @@ if [ -d /usr/local/share/python ]; then
     export PATH="/usr/local/bin:/usr/local/share/python:${PATH}"
 fi
 
-# MacVim
-if [ -f /usr/local/bin/mvim ]; then
-    alias vi='mvim -v'
-    alias vim='mvim -v'
-fi
-
 # vim: ft=zsh:

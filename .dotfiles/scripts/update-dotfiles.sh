@@ -18,7 +18,7 @@ gitcmd () {
 
 gitcmd "git stash save"
 gitcmd "git pull"
-gitcmd "git submodule update --init"
+gitcmd "git submodule update --init --recursive"
 gitcmd "git stash pop"
 
 cd ${cwd}

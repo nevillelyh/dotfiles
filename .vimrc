@@ -18,6 +18,54 @@ set listchars=tab:»·,eol:↵
 set list
 
 """"""""""""""""""""
+" Vundle
+""""""""""""""""""""
+
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+Bundle 'gmarik/vundle'
+
+" look and feel
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'Lokaltog/vim-powerline'
+
+" Git
+Bundle 'tpope/vim-git'
+Bundle 'tpope/vim-fugitive'
+Bundle 'gregsexton/gitv'
+
+" code style
+Bundle 'ciaranm/detectindent'
+Bundle 'bitc/vim-bad-whitespace'
+Bundle 'nathanaelkane/vim-indent-guides'
+
+" navigation
+Bundle 'scrooloose/nerdtree'
+Bundle 'majutsushi/tagbar'
+
+" shortcuts
+Bundle 'Raimondi/delimitMate'
+Bundle 'nevillelyh/snipmate.vim'
+Bundle 'tpope/vim-commentary'
+Bundle 'ervandew/supertab'
+
+" syntax check
+Bundle 'scrooloose/syntastic'
+Bundle 'nvie/vim-flake8'
+Bundle 'tmhedberg/SimpylFold'
+
+" syntax support
+Bundle 'vim-scripts/google.vim'
+Bundle 'derekwyatt/vim-scala'
+Bundle 'jboyens/vim-protobuf'
+Bundle 'jnwhiteh/vim-golang'
+Bundle 'pangloss/vim-javascript'
+
+filetype plugin indent on
+
+""""""""""""""""""""
 " key mappings
 """"""""""""""""""""
 
@@ -61,11 +109,8 @@ function! ColumnsGuidesOff()
 endfunction
 
 """"""""""""""""""""
-" plug-ins
+" bundles
 """"""""""""""""""""
-
-" Pathogen
-call pathogen#infect()
 
 function! OnBufOpen()
     " specific file types only

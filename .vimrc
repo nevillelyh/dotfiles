@@ -53,7 +53,6 @@ Bundle 'ervandew/supertab'
 
 " syntax check
 Bundle 'scrooloose/syntastic'
-Bundle 'nvie/vim-flake8'
 Bundle 'tmhedberg/SimpylFold'
 
 " syntax support
@@ -165,14 +164,6 @@ let g:syntastic_check_on_open=1
 
 " Tagbar
 let g:tagbar_left = 1
-
-" Conque shell
-let g:ConqueTerm_CWInsert = 1
-let g:ConqueTerm_InsertOnEnter = 1
-let g:ConqueTerm_CloseOnEnd = 1
-command Shell :ConqueTerm zsh --login
-command Hshell :ConqueTermSplit zsh --login
-command Vshell :ConqueTermVSplit zsh --login
 
 """"""""""""""""""""
 " non-GUI settings

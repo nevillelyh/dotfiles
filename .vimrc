@@ -155,8 +155,13 @@ autocmd BufReadPost * :DetectIndent
 let g:indent_guides_guide_size = 1
 let g:indent_guides_start_level = 1
 
+" NERDTree
+let g:NERDTreeQuitOnOpen = 1
+
 " Tagbar
 let g:tagbar_left = 1
+let g:tagbar_width = 30
+let g:tagbar_autoclose = 1
 
 " OmniCompletion
 set omnifunc=syntaxcomplete#Complete

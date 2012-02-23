@@ -11,7 +11,6 @@ set shiftwidth=4
 set smarttab
 set tabstop=8
 syntax on
-set foldmethod=syntax
 
 " visible tabs and returns
 set listchars=tab:»·,eol:↵
@@ -115,6 +114,11 @@ endfunction
 """"""""""""""""""""
 
 function! OnBufOpen()
+    " fallback fold method
+    if &foldmethod == 'manual'
+        set foldmethod=indent
+    endif
+
     " specific file types only
     let l:filetypes = [
                 \ 'c', 'cpp', 'java', 'scala',

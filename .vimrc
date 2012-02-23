@@ -186,6 +186,6 @@ if !has('gui_running')
     set mouse-=a
     " really dark grey non-intrusive colors
     let g:indent_guides_auto_colors = 0
-    autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=234
-    autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=236
+    autocmd VimEnter,Colorscheme * :highlight IndentGuidesOdd  ctermbg=234
+    autocmd VimEnter,Colorscheme * :highlight IndentGuidesEven ctermbg=236
 endif

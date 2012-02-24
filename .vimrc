@@ -69,21 +69,21 @@ filetype plugin indent on
 """"""""""""""""""""
 
 " utility panes
-map <ESC>1 :NERDTreeToggle<CR>
-map <ESC>2 :TagbarToggle<CR>
+nmap <ESC>1 :NERDTreeToggle<CR>
+nmap <ESC>2 :TagbarToggle<CR>
 " toggle quick fix and location list
-map <ESC>3 <leader>q
-map <ESC>4 <leader>l
+nmap <ESC>3 <leader>q
+nmap <ESC>4 <leader>l
 " window navigation
-map <C-H> <C-W>h
-map <C-J> <C-W>j
-map <C-K> <C-W>k
-map <C-L> <C-W>l
+nmap <C-H> <C-W>h
+nmap <C-J> <C-W>j
+nmap <C-K> <C-W>k
+nmap <C-L> <C-W>l
 " tab navigation
-map <C-N> gt
-map <C-P> gT
+nmap <C-N> gt
+nmap <C-P> gT
 " goto file in new tab
-map gf <C-W>gf
+nmap gf <C-W>gf
 " toggle folding
 nmap <space> za
 

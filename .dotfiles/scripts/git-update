@@ -1,7 +1,6 @@
 #!/bin/bash
 
-git stash save > /dev/null
+status=$(git status --porcelain)
+[ -z "${status}" ] || git stash save "tmp-git-update"
 git pull
-if [ "$(git stash list)" ]; then
-    git stash pop
-fi
+[ -z "${status}" ] || git stash pop

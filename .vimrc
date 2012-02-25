@@ -72,7 +72,7 @@ filetype plugin indent on
 " utility panes
 nmap <ESC>1 :NERDTreeToggle<CR>
 nmap <ESC>2 :TagbarToggle<CR>
-" toggle quick fix and location list
+" toggle quickfix and location list
 nmap <ESC>3 <leader>q
 nmap <ESC>4 <leader>l
 " Command-T

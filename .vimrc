@@ -143,13 +143,13 @@ endfunction
 autocmd BufEnter * :call Guides()
 
 " Solarized color scheme
-let g:solarized_termcolors=256
-let g:solarized_termtrans=1
+let g:solarized_termcolors = 256
+let g:solarized_termtrans = 1
 colorscheme solarized
 
 " Powerline
 set laststatus=2
-let g:Powerline_symbols='fancy'
+let g:Powerline_symbols = 'fancy'
 
 " DetectIndent
 let g:detectindent_preferred_expandtab = 1
@@ -180,7 +180,7 @@ let g:SuperTabDefaultCompletionType = '<C-X><C-O>'
 autocmd InsertLeave * if pumvisible() == 0 | pclose | endif
 
 " Syntastic
-let g:syntastic_check_on_open=1
+let g:syntastic_check_on_open = 1
 
 """"""""""""""""""""
 " non-GUI settings

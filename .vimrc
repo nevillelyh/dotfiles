@@ -110,11 +110,7 @@ function! ColumnsGuidesOff()
     endif
 endfunction
 
-""""""""""""""""""""
-" bundles
-""""""""""""""""""""
-
-function! OnBufOpen()
+function! Guides()
     " fallback fold method
     if &foldmethod == 'manual'
         set foldmethod=indent
@@ -140,7 +136,11 @@ function! OnBufOpen()
     endif
 endfunction
 
-autocmd BufRead,BufNewFile * :call OnBufOpen()
+""""""""""""""""""""
+" bundles
+""""""""""""""""""""
+
+autocmd BufEnter * :call Guides()
 
 " Solarized color scheme
 let g:solarized_termcolors=256

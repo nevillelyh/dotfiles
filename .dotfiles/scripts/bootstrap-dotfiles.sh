@@ -32,9 +32,6 @@ git branch --set-upstream master origin/master
 git checkout
 git submodule update --init --recursive
 
-# patch vim
-sudo patch -p1 $(dpkg-query -L vim-runtime|grep filetype.vim) < .dotfiles/vim/patches/filetype-augroup.patch
-
 # Vundle
 git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 vim +BundleInstall +qall

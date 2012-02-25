@@ -92,7 +92,7 @@ nmap gf <C-W>gf
 nmap <space> za
 
 """"""""""""""""""""
-" column guides
+" autocmd
 """"""""""""""""""""
 
 function! ColumnsGuidesOn()
@@ -113,7 +113,10 @@ function! ColumnsGuidesOff()
     endif
 endfunction
 
-function! Guides()
+function! BufferEnter()
+    " workaround for broken filetype detection
+    :doautoall filetypedetect BufRead
+
     " fallback fold method
     if &foldmethod == 'manual'
         set foldmethod=indent
@@ -139,11 +142,11 @@ function! Guides()
     endif
 endfunction
 
+autocmd BufEnter * :call BufferEnter()
+
 """"""""""""""""""""
 " bundles
 """"""""""""""""""""
-
-autocmd BufEnter * :call Guides()
 
 " Solarized color scheme
 let g:solarized_termcolors = 256

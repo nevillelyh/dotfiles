@@ -44,6 +44,7 @@ Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'scrooloose/nerdtree'
 Bundle 'majutsushi/tagbar'
 Bundle 'milkypostman/vim-togglelist'
+Bundle 'git://git.wincent.com/command-t.git'
 
 " shortcuts
 Bundle 'Raimondi/delimitMate'

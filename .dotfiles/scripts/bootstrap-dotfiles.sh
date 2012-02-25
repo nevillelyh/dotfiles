@@ -39,6 +39,12 @@ sudo patch -p1 $(dpkg-query -L vim-runtime|grep filetype.vim) < .dotfiles/vim/pa
 git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 vim +BundleInstall +qall
 
+# Command-T
+cd ${HOME}/.vim/bundle/command-t/ruby/command-t
+ruby extconf.rb
+make
+cd ${HOME}
+
 # change default shell
 chsh -s /bin/zsh
 

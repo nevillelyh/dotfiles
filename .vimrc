@@ -1,32 +1,75 @@
-" basic settings
-set nocompatible
-source $VIMRUNTIME/vimrc_example.vim
+""""""""""""""""""""
+" Basics
+""""""""""""""""""""
+
+" Look and feel
 behave xterm
-
 set background=dark
+set nocompatible
+set backspace=indent,eol,start
 set nobackup
+set history=50
+set ruler
+set showcmd
 
-set expandtab
+" Tab behavior
 set shiftwidth=4
-set smarttab
 set tabstop=8
-syntax on
+set expandtab
+set smarttab
 
-" visible tabs and returns
+" Indentation
+set autoindent
+set smartindent
+
+" Search
+set incsearch
+set hlsearch
+set ignorecase
+set smartcase
+
+" Visible tabs and EOLs
 set listchars=tab:»·,eol:↵
 set list
+
+" Window navigation
+nmap <C-H> <C-W>h
+nmap <C-J> <C-W>j
+nmap <C-K> <C-W>k
+nmap <C-L> <C-W>l
+
+" Tab navigation
+nmap <C-N> gt
+nmap <C-P> gT
+
+" Goto file in new tab
+nmap gf <C-W>gf
+" Toggle folding
+nmap <space> za
+
+" For all text files set 'textwidth' to 78 characters.
+autocmd FileType text setlocal textwidth=78
+
+" When editing a file, always jump to the last known cursor position.
+" Don't do it when the position is invalid or when inside an event handler
+" (happens when dropping a file on gvim).
+" Also don't do it when the mark is in the first line, that is the default
+" position when opening a file.
+autocmd BufReadPost *
+\ if line("'\"") > 1 && line("'\"") <= line("$") |
+\   exe "normal! g`\"" |
+\ endif
 
 """"""""""""""""""""
 " Vundle
 """"""""""""""""""""
 
-set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 Bundle 'gmarik/vundle'
 
-" look and feel
+" Look and feel
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'Lokaltog/vim-powerline'
 
@@ -35,28 +78,28 @@ Bundle 'tpope/vim-git'
 Bundle 'tpope/vim-fugitive'
 Bundle 'gregsexton/gitv'
 
-" code style
+" Code style
 Bundle 'ciaranm/detectindent'
 Bundle 'bitc/vim-bad-whitespace'
 Bundle 'nathanaelkane/vim-indent-guides'
 
-" navigation
+" Navigation
 Bundle 'scrooloose/nerdtree'
 Bundle 'majutsushi/tagbar'
 Bundle 'milkypostman/vim-togglelist'
 Bundle 'git://git.wincent.com/command-t.git'
 
-" shortcuts
+" Shortcuts
 Bundle 'Raimondi/delimitMate'
 Bundle 'nevillelyh/snipmate.vim'
 Bundle 'tpope/vim-commentary'
 Bundle 'ervandew/supertab'
 
-" syntax check
+" Syntax check
 Bundle 'scrooloose/syntastic'
 Bundle 'tmhedberg/SimpylFold'
 
-" syntax support
+" Syntax support
 Bundle 'vim-scripts/google.vim'
 Bundle 'derekwyatt/vim-scala'
 Bundle 'jboyens/vim-protobuf'
@@ -64,41 +107,32 @@ Bundle 'jnwhiteh/vim-golang'
 Bundle 'pangloss/vim-javascript'
 
 filetype plugin indent on
+syntax on
 
 """"""""""""""""""""
-" key mappings
+" Bundle shortcuts
 """"""""""""""""""""
 
-" utility panes
+" Utility panes
 nmap <ESC>1 :NERDTreeToggle<CR>
 nmap <ESC>2 :TagbarToggle<CR>
-" toggle quickfix and location list
+
+" Toggle quickfix and location list
 nmap <ESC>3 <leader>q
 nmap <ESC>4 <leader>l
+
 " Command-T
 nmap <ESC>o :CommandT<CR>
 nmap <ESC>O :CommandTBuffer<CR>
-" window navigation
-nmap <C-H> <C-W>h
-nmap <C-J> <C-W>j
-nmap <C-K> <C-W>k
-nmap <C-L> <C-W>l
-" tab navigation
-nmap <C-N> gt
-nmap <C-P> gT
-" goto file in new tab
-nmap gf <C-W>gf
-" toggle folding
-nmap <space> za
 
 """"""""""""""""""""
-" autocmd
+" Auto Commands
 """"""""""""""""""""
 
 function! ColumnsGuidesOn()
     if exists('+colorcolumn')
         highlight ColorColumn ctermbg=17
-        set colorcolumn=80,100
+        setlocal colorcolumn=80,100
     else
         let w:m2=matchadd('WarningMsg', '\%>80v.\+', -1)
         let w:m2=matchadd('ErrorMsg', '\%>100v.\+', -1)
@@ -107,18 +141,15 @@ endfunction
 
 function! ColumnsGuidesOff()
     if exists('+colorcolumn')
-        set colorcolumn=""
+        setlocal colorcolumn=""
     else
         let w:m2=clearmatches()
     endif
 endfunction
 
-function! BufferEnter()
-    " workaround for broken filetype detection
-    :doautoall filetypedetect BufRead
-
+function! AutoCommand()
     " fallback fold method
-    if &foldmethod == 'manual'
+    if &foldmethod == 'manual' && &filetype != ''
         set foldmethod=indent
     endif
 
@@ -135,14 +166,14 @@ function! BufferEnter()
         call indent_guides#enable()
 
         " open all folds
-        :execute "normal zR"
+        :execute 'normal zR'
     else
         call ColumnsGuidesOff()
         call indent_guides#disable()
     endif
 endfunction
 
-autocmd BufEnter * :call BufferEnter()
+autocmd BufRead,BufNewFile * :call AutoCommand()
 
 """"""""""""""""""""
 " bundles

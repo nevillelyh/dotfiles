@@ -75,6 +75,9 @@ nmap <ESC>2 :TagbarToggle<CR>
 " toggle quick fix and location list
 nmap <ESC>3 <leader>q
 nmap <ESC>4 <leader>l
+" Command-T
+nmap <ESC>o :CommandT<CR>
+nmap <ESC>O :CommandTBuffer<CR>
 " window navigation
 nmap <C-H> <C-W>h
 nmap <C-J> <C-W>j

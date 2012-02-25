@@ -2,11 +2,18 @@
 
 # bash -c "$(curl -fsSL https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/scripts/bootstrap-dotfiles.sh)")
 
-# dependencies:
+# Debian package dependencies:
 # git - obviously
-# vim-nox - vim with python and ruby support
-# ctags - for vim Tagbar
+# vim-nox - Vim with python and ruby support
+# ctags - for Vim Tagbar
+# build-essential - for GCC, GNU Make, etc.
+# python-pip - for flake8
+# ruby-dev - for Vim Command-T
+
+# PIP dependencies:
 # flake8 - for vim-flake8
+
+PKGS="git vim-nox ctags build-essential python-pip ruby-dev"
 
 [[ -f /usr/bin/lsb_release ]] && DISTRO=$(lsb_release --codename --short)
 
@@ -19,7 +26,7 @@ else
     exit 1
 fi
 
-sudo ${APTITUDE} install git vim-nox ctags python-pip
+sudo ${APTITUDE} install ${PKGS}
 sudo pip install flake8
 
 # set up git repository

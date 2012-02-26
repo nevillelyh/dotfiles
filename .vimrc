@@ -92,7 +92,7 @@ Bundle 'git://git.wincent.com/command-t.git'
 " Shortcuts
 Bundle 'Raimondi/delimitMate'
 Bundle 'nevillelyh/snipmate.vim'
-Bundle 'tpope/vim-commentary'
+Bundle 'scrooloose/nerdcommenter'
 Bundle 'ervandew/supertab'
 
 " Syntax check
@@ -207,6 +207,9 @@ let g:tagbar_sort = 0
 
 " Command-T
 let g:CommandTMatchWindowAtTop = 1
+
+" NERDCommenter
+let g:NERDSpaceDelims = 1
 
 " OmniCompletion
 set omnifunc=syntaxcomplete#Complete

@@ -28,8 +28,8 @@ set hlsearch
 set ignorecase
 set smartcase
 
-" Visible tabs and EOLs
-set listchars=tab:»·,eol:↵
+" Visible characters
+set listchars=tab:»·,eol:↵,trail:⋅,extends:❯,precedes:❮
 set list
 
 " Window navigation

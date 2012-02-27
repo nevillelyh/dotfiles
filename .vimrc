@@ -122,8 +122,8 @@ nmap <ESC>3 <leader>q
 nmap <ESC>4 <leader>l
 
 " Command-T
-nmap <ESC>o :CommandT<CR>
-nmap <ESC>O :CommandTBuffer<CR>
+nmap <ESC>t :CommandT<CR>
+nmap <ESC>T :CommandTBuffer<CR>
 
 """"""""""""""""""""
 " Auto Commands

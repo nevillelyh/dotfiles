@@ -44,8 +44,11 @@ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 vim +BundleInstall +qall
 
 # Command-T
+for cmd in ruby ruby1.8; do
+    command -v ${cmd} > /dev/null && RUBY=${cmd} && break
+done
 cd ${HOME}/.vim/bundle/command-t/ruby/command-t
-ruby extconf.rb
+${RUBY} extconf.rb
 make
 cd ${HOME}
 

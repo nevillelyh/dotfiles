@@ -113,9 +113,27 @@ syntax on
 " Bundle shortcuts
 """"""""""""""""""""
 
+let g:side_bar_open = ''
+function! SideBar(side_bar)
+    if g:side_bar_open == a:side_bar
+        :NERDTreeClose
+        :TagbarClose
+        let g:side_bar_open = ''
+        return
+    endif
+    if a:side_bar == 'NERDTree'
+        :TagbarClose
+        :NERDTree
+    elseif a:side_bar == 'Tagbar'
+        :NERDTreeClose
+        :TagbarOpen
+    endif
+    let g:side_bar_open = a:side_bar
+endfunction
+
 " Utility panes
-nmap <ESC>1 :NERDTreeToggle<CR>
-nmap <ESC>2 :TagbarToggle<CR>
+nmap <silent> <ESC>1 :call SideBar('NERDTree')<CR>
+nmap <silent> <ESC>2 :call SideBar('Tagbar')<CR>
 
 " Toggle quickfix and location list
 nmap <ESC>3 <leader>q
@@ -199,8 +217,10 @@ let g:indent_guides_start_level = 1
 
 " NERDTree
 let g:NERDTreeQuitOnOpen = 1
+let g:NERDTreeWinSize = 30
 
 " Tagbar
+let g:tagbar_left = 1
 let g:tagbar_width = 30
 let g:tagbar_autoclose = 1
 let g:tagbar_sort = 0

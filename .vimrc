@@ -176,6 +176,7 @@ function! AutoCommand()
                 \ 'c', 'cpp', 'java', 'scala',
                 \ 'html', 'css', 'javascript',
                 \ 'perl', 'php', 'python', 'ruby',
+                \ 'haskell',
                 \ 'vim', 'sh', 'zsh',
                 \ 'proto',
                 \ ]

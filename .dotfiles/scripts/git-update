@@ -1,6 +1,6 @@
 #!/bin/bash
 
-status=$(git status --porcelain)
+status=$(git status --porcelain --untracked-files=no)
 [ -z "${status}" ] || git stash save "tmp-git-update"
 git pull
 [ -z "${status}" ] || git stash pop

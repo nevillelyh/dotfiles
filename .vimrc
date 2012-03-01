@@ -88,6 +88,7 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'majutsushi/tagbar'
 Bundle 'milkypostman/vim-togglelist'
 Bundle 'git://git.wincent.com/command-t.git'
+Bundle 'ZoomWin'
 
 " Shortcuts
 Bundle 'Raimondi/delimitMate'
@@ -142,6 +143,9 @@ nmap <ESC>4 <leader>l
 " Command-T
 nmap <ESC>t :CommandT<CR>
 nmap <ESC>T :CommandTBuffer<CR>
+
+" ZoomWin
+nmap <C-Z> :ZoomWin<CR>
 
 """"""""""""""""""""
 " Auto Commands

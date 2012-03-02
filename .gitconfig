@@ -15,3 +15,5 @@
 	templatedir = ~/.dotfiles/git
 [push]
 	default = tracking
+[merge]
+	tool = vimdiff

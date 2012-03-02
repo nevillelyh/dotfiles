@@ -3,6 +3,7 @@ dev
 src
 
 # Common
+Applications
 Desktop
 Documents
 Downloads
@@ -28,12 +29,15 @@ VirtualBox\ VMs
 .dbshell
 .dvdcss
 .fonts
+.ghc
 .ipython
 .irssi
 .java
 .lesshst
 .oh-my-zsh
+.pip
 .profile
+.sbt
 .ssh/authorized_keys
 .ssh/id_dsa
 .ssh/id_dsa.pub

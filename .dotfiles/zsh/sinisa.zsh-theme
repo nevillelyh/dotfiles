@@ -1,8 +1,8 @@
 autoload -U colors && colors
 autoload -Uz vcs_info
 
-zstyle ':vcs_info:*' stagedstr "%{$fg_bold[green]%}●"
-zstyle ':vcs_info:*' unstagedstr "%{$fg_bold[yellow]%}●"
+zstyle ':vcs_info:*' stagedstr "%{$fg_bold[green]%}⚫"
+zstyle ':vcs_info:*' unstagedstr "%{$fg_bold[yellow]%}⚫"
 zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat "%b%{$fg_bold[1]%}:%{$fg_bold[11]%}%r"
 zstyle ':vcs_info:*' enable git svn
@@ -18,7 +18,7 @@ rprompt_vcs() {
     if [[ -z $(git ls-files --other --exclude-standard 2> /dev/null) ]] {
         local branch="%b%c%u"
     } else {
-        local branch="%b%c%u%{$fg_bold[red]%}●"
+        local branch="%b%c%u%{$fg_bold[red]%}⚫"
     }
     zstyle ':vcs_info:*' formats "${prefix}${branch}${postfix}"
     zstyle ':vcs_info:*' actionformats "${prefix}${branch} ${action}${postfix}"

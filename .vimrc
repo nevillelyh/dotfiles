@@ -106,6 +106,7 @@ Bundle 'derekwyatt/vim-scala'
 Bundle 'jboyens/vim-protobuf'
 Bundle 'jnwhiteh/vim-golang'
 Bundle 'pangloss/vim-javascript'
+Bundle 'framallo/asciidoc.vim'
 
 filetype plugin indent on
 syntax on
@@ -196,6 +197,7 @@ function! AutoCommand()
     endif
 endfunction
 
+autocmd BufRead,BufNewFile *.asciidoc setfiletype asciidoc
 autocmd BufRead,BufNewFile * :call AutoCommand()
 
 """"""""""""""""""""

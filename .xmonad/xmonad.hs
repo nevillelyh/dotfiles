@@ -21,10 +21,9 @@ main = xmonad $ gnomeConfig
     }
 
 newLayout = smartBorders ( avoidStruts (
-    (   ResizableTall 1 (3/100) (1/2) []
-    ||| ThreeCol 1 (3/100) (1/3)
+    (   ResizableTall 1 (2/100) (1/2) []
+    ||| ThreeCol 1 (2/100) (1/3)
     ||| Grid
-    ||| Full
     )))
 
 newManageHook = composeAll

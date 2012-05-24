@@ -24,6 +24,10 @@ case "$current" in
         ;;
 esac
 
+read -n 1 -s -p "Stablize branch [${current}] to [${target}] now (y/n)?"
+echo
+[ ${REPLY} != "y" ] && die "die"
+
 git pull
 git checkout ${target}
 git pull

@@ -4,6 +4,7 @@ die () {
     echo $1
     exit 1
 }
+
 status=$(git status --porcelain --untracked-files=no)
 [ -z "${status}" ] || die "You have unstaged changes."
 
@@ -28,3 +29,4 @@ git checkout ${target}
 git pull
 git merge ${current}
 git push
+git checkout ${current}

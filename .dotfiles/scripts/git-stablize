@@ -29,6 +29,7 @@ echo
 [ ${REPLY} != "y" ] && die "die"
 
 git pull
+git push
 git checkout ${target}
 git pull
 git merge ${current}

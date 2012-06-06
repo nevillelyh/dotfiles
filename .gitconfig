@@ -17,3 +17,5 @@
 	default = tracking
 [merge]
 	tool = vimdiff
+[alias]
+	graph = log --graph --all --oneline

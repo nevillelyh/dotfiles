@@ -12,6 +12,7 @@
 
 # PIP dependencies:
 # flake8 - for vim-flake8
+# virtualenv
 
 PKGS="git vim-nox ctags build-essential python-pip ruby-dev tmux"
 
@@ -28,6 +29,7 @@ fi
 
 sudo ${APTITUDE} install ${PKGS}
 sudo pip install flake8
+sudo pip install virtualenv
 
 # set up git repository
 cwd=$(pwd)

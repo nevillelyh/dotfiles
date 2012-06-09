@@ -14,7 +14,7 @@
 # flake8 - for vim-flake8
 # virtualenv
 
-PKGS="git vim-nox ctags build-essential python-pip ruby-dev tmux"
+PKGS="git vim-nox ctags build-essential ipython python-pip ruby-dev tmux"
 
 [[ -f /usr/bin/lsb_release ]] && DISTRO=$(lsb_release --codename --short)
 

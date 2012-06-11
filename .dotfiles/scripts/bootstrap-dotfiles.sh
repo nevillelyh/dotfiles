@@ -7,14 +7,14 @@
 # vim-nox - Vim with python and ruby support
 # ctags - for Vim Tagbar
 # build-essential - for GCC, GNU Make, etc.
-# python-pip - for flake8
 # ruby-dev - for Vim Command-T
 
 # PIP dependencies:
+# distribute, pip
+# ipython, virtualenv
 # flake8 - for vim-flake8
-# virtualenv
 
-PKGS="git vim-nox ctags build-essential ipython python-pip ruby-dev tmux"
+PKGS="git vim-nox ctags build-essential ruby-dev tmux"
 
 [[ -f /usr/bin/lsb_release ]] && DISTRO=$(lsb_release --codename --short)
 
@@ -28,8 +28,12 @@ else
 fi
 
 sudo ${APTITUDE} install ${PKGS}
-sudo pip install flake8
+
+curl http://python-distribute.org/distribute_setup.py | sudo python
+curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | sudo python
+sudo pip install ipython
 sudo pip install virtualenv
+sudo pip install flake8
 
 # set up git repository
 cwd=$(pwd)

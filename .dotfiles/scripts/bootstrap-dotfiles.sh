@@ -3,37 +3,57 @@
 # bash -c "$(curl -fsSL https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/scripts/bootstrap-dotfiles.sh)"
 
 # Debian package dependencies:
-# git - obviously
-# vim-nox - Vim with python and ruby support
-# ctags - for Vim Tagbar
 # build-essential - for GCC, GNU Make, etc.
+# curl - obviously
+# exuberant-ctags - for Vim Tagbar
+# git - obviously
 # ruby-dev - for Vim Command-T
+# tmux - obviously
+# vim-nox - Vim with python and ruby support
+# zsh - obviously
 
 # PIP dependencies:
 # distribute, pip
 # ipython, virtualenv
 # flake8 - for vim-flake8
 
-PKGS="git vim-nox ctags build-essential ruby-dev tmux"
-
-[[ -f /usr/bin/lsb_release ]] && DISTRO=$(lsb_release --codename --short)
-
-if [[ "${DISTRO}" == "squeeze" ]]; then
-    APTITUDE="aptitude -t squeeze-backports"
-elif [[ "${DISTRO}" == "oneiric" ]]; then
-    APTITUDE="aptitude"
-else
-    echo "Unsupported distribution: ${DISTRO}"
+die () {
+    echo "Error: $1"
     exit 1
-fi
+}
 
-sudo ${APTITUDE} install ${PKGS}
+DEB_PKGS="build-essential curl exuberant-ctags git ruby-dev tmux vim-nox zsh"
+PIP_PKGS="ipython virtualenv flake8"
 
-curl http://python-distribute.org/distribute_setup.py | sudo python
-curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | sudo python
-sudo pip install ipython
-sudo pip install virtualenv
-sudo pip install flake8
+# detect distribution
+[[ -f /usr/bin/lsb_release ]] || die "not a LSB system"
+DISTRO=$(lsb_release --codename --short)
+case ${DISTRO} in
+    squeeze)
+        APTITUDE="aptitude -t squeeze-backports"
+        SUDO="sudo"
+        ;;
+    precise)
+        APTITUDE="aptitude"
+
+        # personal system, make /usr/local personal and bypass sudo
+        SUDO=""
+        sudo mv /usr/local /usr/local.orig
+        sudo mkdir /usr/local
+        sudo chown $(whoami):$(groups | awk '{print $1}') /usr/local
+        ;;
+    *)
+        die "unsupported distribution: ${DISTRO}"
+        ;;
+esac
+
+# basic packages
+sudo ${APTITUDE} install ${DEB_PKGS}
+
+# PIP packages
+curl http://python-distribute.org/distribute_setup.py | ${SUDO} python
+curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | ${SUDO} python
+${SUDO} pip install ${PIP_PKGS}
 
 # set up git repository
 cwd=$(pwd)
@@ -62,7 +82,7 @@ cd ${HOME}
 chsh -s /bin/zsh
 
 # custom fonts for vim-powerline
-if [[ "${DISTRO}" == "oneiric" ]]; then
+if [[ "${DISTRO}" == "precise" ]]; then
     mkdir -p .fonts
     cd .fonts
     git clone https://github.com/scotu/ubuntu-mono-powerline.git

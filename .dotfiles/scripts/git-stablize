@@ -26,7 +26,7 @@ esac
 
 read -n 1 -s -p "Stablize branch [${current}] to [${target}] now (y/n)?"
 echo
-[ ${REPLY} != "y" ] && die "die"
+[ ${REPLY} != "y" ] && die "Aborted"
 
 git pull
 git push

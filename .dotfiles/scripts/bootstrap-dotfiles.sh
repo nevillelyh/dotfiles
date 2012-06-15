@@ -61,8 +61,8 @@ cd ${HOME}
 git init
 git remote add origin git@github.com:nevillelyh/dotfiles.git
 git fetch
+git reset --hard origin/master
 git branch --set-upstream master origin/master
-git checkout
 git submodule update --init --recursive
 
 # Vundle

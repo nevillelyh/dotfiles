@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+
+import pip
+import subprocess
+import xmlrpclib
+
+
+def main():
+    UPGRADE_CMD = 'pip install --upgrade %s'
+    pypi = xmlrpclib.ServerProxy('http://pypi.python.org/pypi')
+    installed = pip.get_installed_distributions()
+    first = True
+    for dist in installed:
+        available = pypi.package_releases(dist.project_name)
+        if not available:
+            continue
+        latest = sorted(available, reverse=True)[0]
+        if dist.version == latest:
+            print '%s==%s is up-to-date' % (dist.project_name, dist.version)
+        else:
+            if first:
+                first = False
+            else:
+                print
+            print '%s==%s ==> %s' % (dist.project_name, dist.version, latest)
+            subprocess.call(UPGRADE_CMD % dist.project_name, shell=True)
+
+if __name__ == '__main__':
+    main()

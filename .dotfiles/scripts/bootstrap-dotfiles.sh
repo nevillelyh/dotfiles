@@ -59,6 +59,7 @@ ${SUDO} pip install ${PIP_PKGS}
 cwd=$(pwd)
 cd ${HOME}
 git init
+git config branch.master.rebase true
 git remote add origin git@github.com:nevillelyh/dotfiles.git
 git fetch
 git reset --hard origin/master

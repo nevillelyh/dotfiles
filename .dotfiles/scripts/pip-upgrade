@@ -11,6 +11,8 @@ def main():
     installed = pip.get_installed_distributions()
     first = True
     for dist in installed:
+        if not dist.location.startswith('/usr/local'):
+            continue
         available = pypi.package_releases(dist.project_name)
         if not available:
             continue

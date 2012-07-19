@@ -89,6 +89,7 @@ Bundle 'majutsushi/tagbar'
 Bundle 'milkypostman/vim-togglelist'
 Bundle 'git://git.wincent.com/command-t.git'
 Bundle 'ZoomWin'
+Bundle 'derekwyatt/vim-fswitch'
 
 " Shortcuts
 Bundle 'Raimondi/delimitMate'
@@ -133,7 +134,7 @@ function! SideBar(side_bar)
     let g:side_bar_open = a:side_bar
 endfunction
 
-" Utility panes
+" Plugin shortcuts
 nmap <silent> <ESC>1 :call SideBar('NERDTree')<CR>
 nmap <silent> <ESC>2 :call SideBar('Tagbar')<CR>
 
@@ -147,6 +148,9 @@ nmap <ESC>T :CommandTBuffer<CR>
 
 " ZoomWin
 nmap <C-Z> :ZoomWin<CR>
+
+" FSwitch
+nmap <ESC>h :FSHere<CR>
 
 """"""""""""""""""""
 " Auto Commands

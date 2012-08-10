@@ -46,6 +46,9 @@ toRemoveKeys XConfig{modMask = modm} =
 
 lockCmd = "gnome-screensaver-command -l"
 termCmd = "lxterminal"
+spPrevCmd = "${HOME}/.dotfiles/scripts/spotify.sh previous"
+spPlayCmd = "${HOME}/.dotfiles/scripts/spotify.sh playpause"
+spNextCmd = "${HOME}/.dotfiles/scripts/spotify.sh next"
 toAddKeys XConfig{modMask = modm} =
     [ ((modm,               xK_p),        spawn "gmrun")
     , ((modm,               xK_a),        sendMessage MirrorExpand)
@@ -57,4 +60,7 @@ toAddKeys XConfig{modMask = modm} =
     , ((modm .|. shiftMask, xK_l),        spawn lockCmd)
     , ((modm .|. shiftMask, xK_Return),   spawn termCmd)
     , ((modm,               xK_KP_Enter), windows W.swapMaster)
+    , ((modm,               xK_F10),      spawn spPrevCmd)
+    , ((modm,               xK_F11),      spawn spPlayCmd)
+    , ((modm,               xK_F12),      spawn spNextCmd)
     ]

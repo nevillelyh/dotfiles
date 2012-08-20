@@ -15,19 +15,23 @@ def main(argv):
     parser = argparse.ArgumentParser(
         description='Send a git commit for review in Gerrit.',
         prog='git review',
-        epilog=('NOTE: the commit you want reviewed should be the HEAD of the '
-                'current branch'))
+        epilog=('NOTE: commit(s) between your local object (default: HEAD of '
+                'local branch) and HEAD of the remote branch will be pushed '
+                'for review.'))
     parser.add_argument('-r', '--reviewers', nargs='+',
-        metavar='email', type=str, default=[],
+        metavar='reviewer', type=str, default=[],
         help=('one or more usernames or group names to review this commit, '
               'must be valid Gerrit users or groups; comma- or '
               'space-separated.'))
     parser.add_argument('-c', '--cc', nargs='+',
-        metavar='email', type=str, default=[],
+        metavar='ccEmail', type=str, default=[],
         help=('usernames or group names to CC on the review email, '
               'must be valid Gerrit users or groups; comma- or '
               'space-separated. Default: none'))
-    parser.add_argument('-b', '--branch', metavar='branch', type=str,
+    parser.add_argument('-l', '--local', type=str, dest='local',
+        default='HEAD',
+        help=('local object to push for review. Default: HEAD'))
+    parser.add_argument('-b', '--branch', type=str, dest='branch',
         help='remote branch to push to for review. Default: current branch')
 
     # make sure git command exists
@@ -64,7 +68,7 @@ def main(argv):
         receive_pack = 'git receive-pack %s %s' % (reviewer_flags, cc_flags)
         git_push = ['git', 'push', 'origin',
                     '--receive-pack=%s' % receive_pack,
-                    'HEAD:refs/for/%s' % args.branch]
+                    '%s:refs/for/%s' % (args.local, args.branch)]
         print ' '.join(git_push)
         subprocess.check_call(git_push)
     except subprocess.CalledProcessError as e:

@@ -220,7 +220,13 @@ let g:Powerline_symbols = 'fancy'
 " DetectIndent
 let g:detectindent_preferred_expandtab = 1
 let g:detectindent_preferred_indent = 4
-autocmd BufReadPost * :DetectIndent
+function! DetectIndentOverride()
+    :DetectIndent
+    if &shiftwidth < 2
+        set shiftwidth=2
+    endif
+endfunction
+autocmd BufReadPost * :call DetectIndentOverride()
 
 " Ident guides
 let g:indent_guides_guide_size = 1

@@ -1,37 +1,57 @@
 #!/bin/bash
 
 die () {
-    echo $1
+    echo "Error: $1"
     exit 1
 }
 
-status=$(git status --porcelain --untracked-files=no)
-[ -z "${status}" ] || die "You have unstaged changes."
+git_or_die() {
+    git $* || die "failed to invoke command: git $*"
+}
 
-current=$(git symbolic-ref HEAD | sed -e 's/^refs\/heads\///')
-case "$current" in
-    master)
-        target="testing"
-        ;;
-    testing)
-        target="stable"
-        ;;
-    stable)
-        die "You are already on stable branch."
-        ;;
-    *)
-        die "Unrecognized branch ${current}."
-        ;;
-esac
+stablize() {
+    status=$(git status --porcelain --untracked-files=no)
+    [ -z "${status}" ] || die "You have unstaged changes."
 
-read -n 1 -s -p "Stablize branch [${current}] to [${target}] now (y/n)?"
-echo
-[ ${REPLY} != "y" ] && die "Aborted"
+    src=$(git symbolic-ref HEAD | sed -e 's/^refs\/heads\///')
+    case "$src" in
+        master)
+            dst="testing"
+            ;;
+        testing)
+            dst="stable"
+            ;;
+        stable)
+            die "You are already on stable branch."
+            ;;
+        *)
+            die "Unrecognized branch ${src}."
+            ;;
+    esac
 
-git pull
-git push
-git checkout ${target}
-git pull
-git merge ${current}
-git push
-git checkout ${current}
+    read -n 1 -s -p "Stablize branch [${src}] to [${dst}] now (y/n)?"
+    echo
+    [ ${REPLY} != "y" ] && die "Aborted"
+
+    git_or_die pull
+    git_or_die push
+    git_or_die checkout ${dst}
+    git_or_die pull
+    git_or_die merge ${src}
+    git_or_die push
+    git_or_die checkout ${src}
+}
+
+if [ $# -eq 0 ]; then
+    stablize
+elif [ $# -eq 1 ]; then
+    src=$1
+    if [ ${src} != "master" ] && [ ${src} != "testing" ]; then
+        die "stablizing unsupported branch ${src}"
+    fi
+
+    current=$(git symbolic-ref HEAD | sed -e 's/^refs\/heads\///')
+    git_or_die checkout ${src}
+    stablize
+    git_or_die checkout ${current}
+fi

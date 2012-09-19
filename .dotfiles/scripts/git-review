@@ -7,6 +7,7 @@
 
 import argparse
 import itertools
+import os
 import subprocess
 import sys
 
@@ -56,6 +57,12 @@ def main(argv):
     if not args.branch:
         current = _get_current_branch()
         args.branch = current if current else 'master'
+
+    if args.branch.startswith(os.getlogin() + '/'):
+        ans = raw_input(
+            'Review for personal branch %s, are you sure?\n' % args.branch)
+        if ans.lower() not in ['y', 'yes']:
+            sys.exit(1)
 
     reviewers = _get_names(args.reviewers)
     reviewer_emails = [u + '@spotify.com' for u in reviewers]

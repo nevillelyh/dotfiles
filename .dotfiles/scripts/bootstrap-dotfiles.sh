@@ -26,7 +26,7 @@ die() {
     exit 1
 }
 
-aptitude() {
+_aptitude() {
     DISTRO=$(lsb_release --codename --short)
     case ${DISTRO} in
         squeeze)
@@ -57,20 +57,20 @@ aptitude() {
     fi
 }
 
-homebrew() {
+_homebrew() {
     # homebrew packages
     ruby <(curl -fsSkL raw.github.com/mxcl/homebrew/go)
     brew install ${BREWS}
 }
 
-pip() {
+_pip() {
     # PIP packages
     curl http://python-distribute.org/distribute_setup.py | ${SUDO} python
     curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | ${SUDO} python
     ${SUDO} pip install ${PIP_PKGS}
 }
 
-git() {
+_git() {
     # set up git repository
     cwd=$(pwd)
     cd ${HOME}
@@ -83,18 +83,18 @@ git() {
     git submodule update --init --recursive
 }
 
-zsh() {
+_zsh() {
     # change default shell
     chsh -s /bin/zsh
 }
 
-vundle() {
+_vundle() {
     # Vundle
     git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
     vim +BundleInstall +qall
 }
 
-commandt() {
+_commandt() {
     for cmd in ruby ruby1.8; do
         command -v ${cmd} > /dev/null && RUBY=${cmd} && break
     done
@@ -104,12 +104,12 @@ commandt() {
     cd ${HOME}
 }
 
-[[ -f /usr/bin/lsb_release ]] && aptitude
-[[ "$(uname -s)" == "Darwin" ]] && brew
-pip
-git
-zsh
-vundle
-commandt
+[[ -f /usr/bin/lsb_release ]] && _aptitude
+[[ "$(uname -s)" == "Darwin" ]] && _homebrew
+_pip
+_git
+_zsh
+_vundle
+_commandt
 
 cd ${cwd}

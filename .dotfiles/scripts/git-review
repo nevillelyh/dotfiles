@@ -8,6 +8,7 @@
 import argparse
 import itertools
 import os
+import pwd
 import subprocess
 import sys
 
@@ -58,7 +59,7 @@ def main(argv):
         current = _get_current_branch()
         args.branch = current if current else 'master'
 
-    if args.branch.startswith(os.getlogin() + '/'):
+    if args.branch.startswith(pwd.getpwuid(os.getuid()).pw_name + '/'):
         ans = raw_input(
             'Review for personal branch %s, are you sure?\n' % args.branch)
         if ans.lower() not in ['y', 'yes']:

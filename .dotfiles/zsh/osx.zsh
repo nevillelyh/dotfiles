@@ -4,4 +4,8 @@ if [ -d /usr/local/share/python ]; then
     export PATH="/usr/local/bin:/usr/local/share/python:${PATH}"
 fi
 
+pidof() {
+    ps axc 2>/dev/null | awk "{if (\$5==\"$1\") print \$1}"
+}
+
 # vim: ft=zsh:

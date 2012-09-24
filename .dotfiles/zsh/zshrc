@@ -1,12 +1,13 @@
 # /usr/local
+
+# Mac OSX
+[[ "$(uname -s)" == "Darwin" ]] && . ~/.dotfiles/zsh/osx.zsh
+
 if [ -d /usr/local/bin ]; then
     local PATH=$(echo ${PATH} | sed -e 's/\/usr\/local\/bin://')
     export PATH="/usr/local/bin:${PATH}"
 fi
 [[ -d /usr/local/lib ]] && export LD_LIBRARY_PATH="/usr/local/lib"
-
-# homebrew
-[[ -f /usr/local/bin/brew ]] && . ~/.dotfiles/zsh/homebrew
 
 # some useful scripts
 [[ -d ${HOME}/.dotfiles/scripts ]] && export PATH="${HOME}/.dotfiles/scripts:${PATH}"
@@ -33,7 +34,8 @@ else
 fi
 
 # add SSH keys
-find ${HOME}/.ssh -name id_dsa -or -name id_rsa | xargs ssh-add > /dev/null 2>&1
+KEYS=$(find ${HOME}/.ssh -name id_dsa -or -name id_rsa)
+[[ -z $(pidof ssh-agent) ]] && echo ${KEYS} | xargs ssh-add > /dev/null 2>&1
 
 # make SSH key forwarding work in screen and tmux
 AGENT=/tmp/ssh-agent-screen-${USER}

@@ -18,7 +18,7 @@
 # flake8 - for vim-flake8
 
 BREWS="autojump ctags git macvim python tmux"
-DEB_PKGS="autojump build-essential curl exuberant-ctags git ruby-dev tmux vim-nox zsh"
+DEB_PKGS="build-essential curl exuberant-ctags git ruby-dev tmux vim-nox zsh"
 PIP_PKGS="ipython virtualenv flake8"
 
 die() {
@@ -35,6 +35,7 @@ _aptitude() {
             ;;
         precise)
             APTITUDE="aptitude"
+            DEB_PKGS="autojump ${DEB_PKGS}"
 
             # personal system, make /usr/local personal and bypass sudo
             SUDO=""

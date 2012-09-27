@@ -73,7 +73,6 @@ _pip() {
 
 _git() {
     # set up git repository
-    cwd=$(pwd)
     cd ${HOME}
     git init
     git config branch.master.rebase true
@@ -104,6 +103,8 @@ _commandt() {
     make
     cd ${HOME}
 }
+
+cwd=$(pwd)
 
 [[ -f /usr/bin/lsb_release ]] && _aptitude
 [[ "$(uname -s)" == "Darwin" ]] && _homebrew

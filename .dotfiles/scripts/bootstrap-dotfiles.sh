@@ -18,7 +18,7 @@
 # flake8 - for vim-flake8
 
 BREWS="autojump ctags git macvim python tmux"
-DEB_PKGS="build-essential curl exuberant-ctags git ruby-dev tmux vim-nox zsh"
+DEB_PKGS="build-essential curl exuberant-ctags git ruby-dev tmux tree vim-nox zsh"
 PIP_PKGS="ipython virtualenv flake8"
 
 die() {

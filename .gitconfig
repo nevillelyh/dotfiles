@@ -29,5 +29,6 @@
 	lm = log --format='%C(yellow)%h%C(reset) -%C(red bold)%d%C(reset) %s %C(green)(%cr)%C(reset)' --author=neville
 	rb = rebase
 	ri = rebase -i
+	rw = rewind
 	sh = show HEAD
 	st = status

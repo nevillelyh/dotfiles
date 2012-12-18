@@ -44,7 +44,7 @@ toRemoveKeys XConfig{modMask = modm} =
     , (modm .|. shiftMask, xK_Return)
     ]
 
-lockCmd = "gnome-screensaver-command -l"
+lockCmd = "gnome-screensaver-command --lock"
 termCmd = "lxterminal"
 spPrevCmd = "${HOME}/.dotfiles/scripts/spotify.sh previous"
 spPlayCmd = "${HOME}/.dotfiles/scripts/spotify.sh playpause"

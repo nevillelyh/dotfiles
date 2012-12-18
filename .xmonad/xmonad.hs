@@ -45,6 +45,7 @@ toRemoveKeys XConfig{modMask = modm} =
     ]
 
 lockCmd = "gnome-screensaver-command --lock"
+screenCmd = "gnome-screenshot --interactive"
 termCmd = "lxterminal"
 spPrevCmd = "${HOME}/.dotfiles/scripts/spotify.sh previous"
 spPlayCmd = "${HOME}/.dotfiles/scripts/spotify.sh playpause"
@@ -58,6 +59,7 @@ toAddKeys XConfig{modMask = modm} =
     , ((modm .|. shiftMask, xK_Right),    shiftToNext)
     , ((modm .|. shiftMask, xK_Left),     shiftToPrev)
     , ((modm .|. shiftMask, xK_l),        spawn lockCmd)
+    , ((modm .|. shiftMask, xK_s),        spawn screenCmd)
     , ((modm .|. shiftMask, xK_Return),   spawn termCmd)
     , ((modm,               xK_KP_Enter), windows W.swapMaster)
     , ((modm,               xK_F10),      spawn spPrevCmd)

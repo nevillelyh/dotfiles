@@ -2,23 +2,28 @@
 
 # bash -c "$(curl -fsSL https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/scripts/bootstrap-dotfiles.sh)"
 
-# Debian package dependencies:
-# build-essential - for GCC, GNU Make, etc.
-# curl - obviously
-# exuberant-ctags - for Vim Tagbar
-# git - obviously
-# ruby-dev - for Vim Command-T
-# tmux - obviously
-# vim-nox - Vim with python and ruby support
-# zsh - obviously
+# Packages:
+# command line tools: autojump tmux tree wget zsh
+# developer tools: ctags git macvim/vim-nox
 
-# PIP dependencies:
+# Mac:
+# python - do not mess with OS X bundled python
+
+# also zsh (with --disable-etcdir)
+BREWS="autojump ctags git macvim python tmux tree wget"
+
+# Debian/Ubuntu:
+# build-essential - for GCC, GNU Make, etc.
+# ruby-dev - for Vim Command-T
+
+# also autojump (Ubuntu only)
+DEB_PKGS="build-essential curl exuberant-ctags git ruby-dev tmux tree vim-nox zsh"
+
+# PIP:
 # distribute, pip
 # ipython, virtualenv
 # flake8 - for vim-flake8
 
-BREWS="autojump ctags git macvim python tmux"
-DEB_PKGS="build-essential curl exuberant-ctags git ruby-dev tmux tree vim-nox zsh"
 PIP_PKGS="ipython virtualenv flake8"
 
 die() {

@@ -62,6 +62,9 @@ _homebrew() {
     # homebrew packages
     ruby <(curl -fsSkL raw.github.com/mxcl/homebrew/go)
     brew install ${BREWS}
+
+    # work around for OS X mis-configuration
+    brew install --disable-etcdir zsh
 }
 
 _pip() {
@@ -85,7 +88,11 @@ _git() {
 
 _zsh() {
     # change default shell
-    chsh -s /bin/zsh
+    if [[ "$(uname -s)" == "Darwin" ]]; then
+        chsh -s /usr/local/bin/zsh
+    else
+        chsh -s /bin/zsh
+    fi
 }
 
 _vundle() {

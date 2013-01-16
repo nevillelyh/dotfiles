@@ -7,6 +7,8 @@ Applications
 Desktop
 Documents
 Downloads
+Dropbox
+IdeaProjects
 Library
 Movies
 Music
@@ -14,6 +16,7 @@ Pictures
 Public
 PycharmProjects
 Sites
+Spotify
 Videos
 VirtualBox\ VMs
 .VirtualBox
@@ -28,13 +31,16 @@ VirtualBox\ VMs
 .csshrc
 .cups
 .dbshell
+.dropbox
 .dvdcss
 .fonts
+.gem
 .ghc
 .ipython
 .irssi
 .java
 .lesshst
+.m2
 .oh-my-zsh
 .pip
 .profile

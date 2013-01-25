@@ -103,7 +103,7 @@ _zsh() {
 _vundle() {
     # Vundle
     git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
-    vim -u ${HOME}/.vim/modules/vundle.vim +BundleInstall +qall
+    vim -u ${HOME}/.vim/vimrc.d/vundle.vim +BundleInstall +qall
 }
 
 _commandt() {

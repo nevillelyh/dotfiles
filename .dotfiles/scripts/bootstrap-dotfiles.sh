@@ -24,7 +24,7 @@ DEB_PKGS="build-essential curl exuberant-ctags git ruby-dev tmux tree vim-nox zs
 # ipython, virtualenv
 # flake8 - for vim-flake8
 
-PIP_PKGS="ipython virtualenv flake8"
+PIP_PKGS="ipython virtualenv virtualenvwrapper flake8"
 
 die() {
     echo "Error: $1"

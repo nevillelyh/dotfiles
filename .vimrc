@@ -65,7 +65,14 @@ if !has('gui_running')
     set mouse-=a
 endif
 
-source ${HOME}/.vim/vimrc.d/vundle.vim
-source ${HOME}/.vim/vimrc.d/bundle_maps.vim
-source ${HOME}/.vim/vimrc.d/bundle_settings.vim
-source ${HOME}/.vim/vimrc.d/autocommands.vim
+function LoadFile(name)
+  let l:path = $HOME."/.vim/vimrc.d/" . a:name . ".vim"
+  if filereadable(l:path)
+    :exec ":source " . l:path
+  endif
+endfunction
+
+:call LoadFile("vundle")
+:call LoadFile("bundle_maps")
+:call LoadFile("bundle_settings")
+:call LoadFile("autocommands")

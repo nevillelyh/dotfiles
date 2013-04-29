@@ -33,7 +33,11 @@ Bundle 'derekwyatt/vim-fswitch'
 Bundle 'Raimondi/delimitMate'
 Bundle 'nevillelyh/snipmate.vim'
 Bundle 'scrooloose/nerdcommenter'
-Bundle 'ervandew/supertab'
+if v:version < 703 || !has( 'patch584' )
+    Bundle 'ervandew/supertab'
+else
+    Bundle 'Valloric/YouCompleteMe'
+endif
 
 " Syntax check
 Bundle 'scrooloose/syntastic'

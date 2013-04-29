@@ -18,6 +18,9 @@ fi
 # open file from X terminal
 [[ -f /usr/bin/xdg-open ]] && alias open='xdg-open'
 
+# ack on Ubuntu/Debian
+[[ -f /usr/bin/ack-grep ]] && alias ack='ack-grep'
+
 # environment variables
 export EDITOR=vim
 

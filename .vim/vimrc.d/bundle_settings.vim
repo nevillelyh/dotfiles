@@ -46,14 +46,16 @@ let g:CommandTMatchWindowAtTop = 1
 " NERDCommenter
 let g:NERDSpaceDelims = 1
 
+" Auto Complete
+" Prefer YouCompleteMe if available
 if v:version < 703 || !has( 'patch584' )
     " OmniCompletion
     set omnifunc=syntaxcomplete#Complete
     " OmniCompletion with SuperTab
     let g:SuperTabDefaultCompletionType = '<C-X><C-O>'
-    " Close pop up window after leaving insert mode
-    autocmd InsertLeave * if pumvisible() == 0 | pclose | endif
 endif
+" Close pop up window after leaving insert mode
+autocmd InsertLeave * if pumvisible() == 0 | pclose | endif
 
 " Syntastic
 let g:syntastic_check_on_open = 1

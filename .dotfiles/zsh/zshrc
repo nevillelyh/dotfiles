@@ -36,6 +36,9 @@ else
     [[ -e /usr/bin/gvim ]] && alias gvim='gvim -p'
 fi
 
+# Maven
+alias mvn='mvn-color'
+
 # add SSH keys
 KEYS=$(find ${HOME}/.ssh -name id_dsa -or -name id_rsa)
 [[ -z $(pidof ssh-agent) ]] && echo ${KEYS} | xargs ssh-add > /dev/null 2>&1

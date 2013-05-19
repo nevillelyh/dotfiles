@@ -35,7 +35,7 @@ ZSH_THEME=""
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # plugins=(git)
-plugins=(autojump git pip)
+plugins=(autojump colored-man git mvn pip sbt scala vagrant vundle zsh-syntax-highlighting)
 [[ "$(uname -s)" == "Darwin" ]] && plugins=(brew osx ${plugins})
 
 source $ZSH/oh-my-zsh.sh

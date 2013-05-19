@@ -98,6 +98,11 @@ _zsh() {
     else
         chsh -s /bin/zsh
     fi
+
+    # Cannot add submodule within oh-my-zsh submodule
+    mkdir -p ${HOME}/.dotfiles/zsh/omz/custom/plugins
+    cd ${HOME}/.dotfiles/zsh/omz/custom/plugins
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
 }
 
 _vundle() {

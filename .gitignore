@@ -25,6 +25,7 @@ VirtualBox\ VMs
 *.swp
 .*history
 .adobe
+.android
 .bash_logout
 .bash_profile
 .bashrc
@@ -36,14 +37,17 @@ VirtualBox\ VMs
 .fonts
 .gem
 .ghc
+.hgignore_global
 .ipython
 .irssi
+.ivy2
 .java
 .lesshst
 .m2
 .oh-my-zsh
 .pip
 .profile
+.rstudio-desktop
 .sbt
 .ssh/authorized_keys
 .ssh/id_dsa
@@ -57,9 +61,11 @@ VirtualBox\ VMs
 .ssh/spotify
 .subversion
 .subversion_IDEA
+.vagrant.d
 .vim/.netrwhist
 .vim/bundle
 .viminfo
+.virtualenvs
 .weechat
 .zcompdump
 .zsh-update

@@ -24,10 +24,17 @@ fi
 # environment variables
 export EDITOR=vim
 
-# Vim tabs by default
-alias vi='vim -p'
-alias vim='vim -p'
-[[ -e /usr/bin/gvim ]] && alias gvim='gvim -p'
+# open in tabs by default
+if [ -f /usr/local/bin/mvim ]; then
+    # MacVim
+    alias vi='mvim -v -p'
+    alias vim='mvim -v -p'
+    alias gvim='mvim -p'
+else
+    alias vi='vim -p'
+    alias vim='vim -p'
+    [[ -e /usr/bin/gvim ]] && alias gvim='gvim -p'
+fi
 
 # Maven
 alias mvn='mvn-color'

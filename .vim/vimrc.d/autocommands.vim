@@ -33,7 +33,7 @@ function! AutoCommand()
                 \ 'perl', 'php', 'python', 'ruby',
                 \ 'haskell',
                 \ 'vim', 'sh', 'zsh',
-                \ 'proto',
+                \ 'proto', 'xml',
                 \ ]
     if index(l:filetypes, &filetype) >= 0
         call ColumnsGuidesOn()

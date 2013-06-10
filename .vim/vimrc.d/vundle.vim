@@ -8,26 +8,26 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " Look and feel
-Bundle 'altercation/vim-colors-solarized'
 Bundle 'Lokaltog/vim-powerline'
+Bundle 'altercation/vim-colors-solarized'
 
 " Git
-Bundle 'tpope/vim-git'
-Bundle 'tpope/vim-fugitive'
 Bundle 'gregsexton/gitv'
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-git'
 
 " Code style
-Bundle 'ciaranm/detectindent'
 Bundle 'bitc/vim-bad-whitespace'
+Bundle 'ciaranm/detectindent'
 Bundle 'nathanaelkane/vim-indent-guides'
 
 " Navigation
-Bundle 'scrooloose/nerdtree'
-Bundle 'majutsushi/tagbar'
-Bundle 'milkypostman/vim-togglelist'
-Bundle 'git://git.wincent.com/command-t.git'
 Bundle 'ZoomWin'
 Bundle 'derekwyatt/vim-fswitch'
+Bundle 'git://git.wincent.com/command-t.git'
+Bundle 'majutsushi/tagbar'
+Bundle 'milkypostman/vim-togglelist'
+Bundle 'scrooloose/nerdtree'
 
 " Shortcuts
 Bundle 'Raimondi/delimitMate'
@@ -44,13 +44,13 @@ Bundle 'scrooloose/syntastic'
 Bundle 'tmhedberg/SimpylFold'
 
 " Syntax support
-Bundle 'vim-scripts/google.vim'
 Bundle 'derekwyatt/vim-scala'
+Bundle 'framallo/asciidoc.vim'
 Bundle 'jboyens/vim-protobuf'
 Bundle 'jnwhiteh/vim-golang'
 Bundle 'pangloss/vim-javascript'
-Bundle 'framallo/asciidoc.vim'
 Bundle 'vim-scripts/VimClojure'
+Bundle 'vim-scripts/google.vim'
 
 filetype plugin indent on
 syntax on

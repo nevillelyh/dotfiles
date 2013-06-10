@@ -50,6 +50,7 @@ Bundle 'jboyens/vim-protobuf'
 Bundle 'jnwhiteh/vim-golang'
 Bundle 'pangloss/vim-javascript'
 Bundle 'framallo/asciidoc.vim'
+Bundle 'vim-scripts/VimClojure'
 
 filetype plugin indent on
 syntax on

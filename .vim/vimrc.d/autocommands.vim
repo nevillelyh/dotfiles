@@ -28,7 +28,7 @@ function! AutoCommand()
 
     " specific file types only
     let l:filetypes = [
-                \ 'c', 'cpp', 'java', 'scala',
+                \ 'c', 'cpp', 'java', 'scala', 'clojure',
                 \ 'html', 'css', 'javascript',
                 \ 'perl', 'php', 'python', 'ruby',
                 \ 'haskell',

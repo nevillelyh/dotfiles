@@ -54,7 +54,9 @@ __git_files () {
     _wanted files expl "local files" _files
 }
 
-source /usr/local/bin/virtualenvwrapper.sh
-WORKON_HOME=${HOME}/dev/virtualenv
+if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
+    source /usr/local/bin/virtualenvwrapper.sh
+    WORKON_HOME=${HOME}/dev/virtualenv
+fi
 
 # vim: ft=zsh:

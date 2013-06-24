@@ -1,6 +1,7 @@
 import XMonad
 import XMonad.Actions.CycleWS
 import XMonad.Config.Gnome
+import XMonad.Hooks.ICCCMFocus
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.SetWMName
 import XMonad.Layout.Grid
@@ -19,7 +20,7 @@ main = xmonad $ gnomeConfig
                 <+> newManageHook
                 <+> manageHook defaultConfig
     , modMask    = mod4Mask
-    , startupHook = setWMName "LG3D"
+    , startupHook = takeTopFocus >> setWMName "LG3D"
     }
 
 newLayout = smartBorders ( avoidStruts (

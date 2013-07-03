@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+git remote -v | grep "\<git.spotify.net:" || exit 0
+
 CHANGE_ID_AFTER="Bug|Issue"
 MSG="$1"
 

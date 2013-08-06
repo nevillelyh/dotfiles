@@ -36,7 +36,7 @@ ZSH_THEME=""
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # plugins=(git)
 plugins=(autojump colored-man git mvn pip sbt scala vagrant vundle zsh-syntax-highlighting)
-[[ "$(uname -s)" == "Darwin" ]] && plugins=(brew osx ${plugins})
+[[ "$(uname)" == "Darwin" ]] && plugins=(brew osx ${plugins})
 
 source $ZSH/oh-my-zsh.sh
 

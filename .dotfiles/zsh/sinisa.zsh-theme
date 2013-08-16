@@ -21,8 +21,14 @@ rprompt_vcs() {
     } else {
         local branch="%b%c%u%{$fg_bold[red]%}${dot}"
     }
-    zstyle ':vcs_info:*' formats "${prefix}${branch}${postfix}"
-    zstyle ':vcs_info:*' actionformats "${prefix}${branch} ${action}${postfix}"
+    numstash=$(git stash list | wc -l | tr -d ' ')
+    if [[ ${numstash} -gt 0 ]] {
+        local stash="%{$fg_bold[blue]%}@{${numstash}}"
+    } else {
+        local stash=""
+    }
+    zstyle ':vcs_info:*' formats "${prefix}${branch}${stash}${postfix}"
+    zstyle ':vcs_info:*' actionformats "${prefix}${branch} ${action}${stash}${postfix}"
     vcs_info
 
     RPROMPT="${vcs_info_msg_0_}"

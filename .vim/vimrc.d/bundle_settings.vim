@@ -61,3 +61,5 @@ autocmd InsertLeave * if pumvisible() == 0 | pclose | endif
 let g:syntastic_check_on_open = 1
 let g:syntastic_mode_map = { 'mode': 'active',
                            \ 'passive_filetypes': ['java', 'scala'] }
+
+autocmd VimEnter *.clj RainbowParenthesesToggle

@@ -46,10 +46,11 @@ Bundle 'tmhedberg/SimpylFold'
 " Syntax support
 Bundle 'derekwyatt/vim-scala'
 Bundle 'framallo/asciidoc.vim'
+Bundle 'guns/vim-clojure-static'
 Bundle 'jboyens/vim-protobuf'
 Bundle 'jnwhiteh/vim-golang'
+Bundle 'kien/rainbow_parentheses.vim'
 Bundle 'pangloss/vim-javascript'
-Bundle 'vim-scripts/VimClojure'
 Bundle 'vim-scripts/google.vim'
 
 filetype plugin indent on

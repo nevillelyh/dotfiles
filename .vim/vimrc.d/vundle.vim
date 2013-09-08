@@ -33,7 +33,7 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'Raimondi/delimitMate'
 Bundle 'nevillelyh/snipmate.vim'
 Bundle 'scrooloose/nerdcommenter'
-if v:version < 703 || !has( 'patch584' )
+if v:version < 703
     Bundle 'ervandew/supertab'
 else
     Bundle 'Valloric/YouCompleteMe'

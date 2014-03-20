@@ -2,6 +2,9 @@
 
 # bash -c "$(curl -fsSL https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/scripts/bootstrap-dotfiles.sh)"
 
+# fail early
+set -e
+
 # Packages:
 # command line tools: autojump tmux tree wget zsh
 # developer tools: ctags git macvim/vim-nox

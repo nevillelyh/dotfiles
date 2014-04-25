@@ -41,7 +41,7 @@ _aptitude() {
             APTITUDE="aptitude -t squeeze-backports"
             SUDO="sudo"
             ;;
-        precise)
+        precise|trusty)
             APTITUDE="aptitude"
             DEB_PKGS="autojump ${DEB_PKGS}"
 

@@ -118,7 +118,7 @@ _commandt() {
     for cmd in ruby ruby1.8; do
         command -v ${cmd} > /dev/null && RUBY=${cmd} && break
     done
-    cd ${HOME}/.vim/bundle/command-t/ruby/command-t
+    cd ${HOME}/.vim/bundle/Command-T/ruby/command-t
     ${RUBY} extconf.rb
     make
     cd ${HOME}

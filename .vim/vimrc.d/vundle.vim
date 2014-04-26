@@ -24,7 +24,7 @@ Bundle 'nathanaelkane/vim-indent-guides'
 " Navigation
 Bundle 'ZoomWin'
 Bundle 'derekwyatt/vim-fswitch'
-Bundle 'git://git.wincent.com/command-t.git'
+Bundle 'wincent/Command-T'
 Bundle 'majutsushi/tagbar'
 Bundle 'milkypostman/vim-togglelist'
 Bundle 'scrooloose/nerdtree'

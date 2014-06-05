@@ -13,7 +13,7 @@ set -e
 # python - do not mess with OS X bundled python
 
 # also zsh (with --disable-etcdir)
-BREWS="ack autojump ctags git macvim python tmux tree wget"
+BREWS="ack autojump ctags git hub macvim python tmux tree wget"
 
 # Debian/Ubuntu:
 # build-essential - for GCC, GNU Make, etc.

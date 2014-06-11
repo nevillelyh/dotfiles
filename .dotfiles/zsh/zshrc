@@ -36,6 +36,11 @@ else
     [[ -e /usr/bin/gvim ]] && alias gvim='gvim -p'
 fi
 
+# hub
+if [ -f /usr/local/bin/hub ]; then
+    alias g=hub
+fi
+
 # Maven
 alias mvn='mvn-color'
 

@@ -27,8 +27,11 @@
 	l3 = log --format='%C(yellow)commit %H%C(reset)%C(red bold)%d%C(reset)%nAuthor: %C(cyan)%an <%ae>%C(reset)%nDate:   %C(green)%cd%C(reset)%n%n%w(,4,4)%B' --date=local
 	lg = log --format='%C(yellow)%h%C(reset) -%C(red bold)%d%C(reset) %s %C(green)(%cr) %C(cyan)<%an>%C(reset)' --graph
 	lm = log --format='%C(yellow)%h%C(reset) -%C(red bold)%d%C(reset) %s %C(green)(%cr)%C(reset)' --author=neville
+	pr = pull-request
 	rb = rebase
 	ri = rebase -i
 	rw = rewind
 	sh = show HEAD
 	st = status
+[hub]
+	host = ghe.spotify.net

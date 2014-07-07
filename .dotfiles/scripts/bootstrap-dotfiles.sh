@@ -13,14 +13,14 @@ set -e
 # python - do not mess with OS X bundled python
 
 # also zsh (with --disable-etcdir)
-BREWS="ack autojump ctags git hub macvim python tmux tree wget"
+BREWS="ack autojump ctags git htop hub macvim python tmux tree wget"
 
 # Debian/Ubuntu:
 # build-essential - for GCC, GNU Make, etc.
 # ruby-dev - for Vim Command-T
 
 # also autojump (Ubuntu only)
-DEB_PKGS="ack-grep build-essential curl exuberant-ctags git ruby-dev tmux tree vim-nox zsh"
+DEB_PKGS="ack-grep build-essential curl exuberant-ctags git htop ruby-dev tmux tree vim-nox zsh"
 
 # PIP:
 # distribute, pip

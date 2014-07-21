@@ -97,6 +97,9 @@ _git() {
 _zsh() {
     # change default shell
     if [[ "$(uname -s)" == "Darwin" ]]; then
+        cat << EOF | sudo tee -a /etc/shells
+/usr/local/bin/zsh
+EOF
         chsh -s /usr/local/bin/zsh
     else
         chsh -s /bin/zsh

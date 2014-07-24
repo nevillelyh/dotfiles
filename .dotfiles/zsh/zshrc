@@ -9,6 +9,10 @@ if [ -d /usr/local/bin ]; then
 fi
 [[ -d /usr/local/lib ]] && export LD_LIBRARY_PATH="/usr/local/lib"
 
+if [ -d ${HOME}/bin ]; then
+    export PATH="${HOME}/bin:${PATH}"
+fi
+
 # some useful scripts
 [[ -d ${HOME}/.dotfiles/scripts ]] && export PATH="${HOME}/.dotfiles/scripts:${PATH}"
 

@@ -32,8 +32,9 @@ nmap <ESC>4 <leader>l
 nmap <ESC>t :CommandT<CR>
 nmap <ESC>T :CommandTBuffer<CR>
 
-" ZoomWin
-nmap <C-Z> :ZoomWin<CR>
-
 " FSwitch
 nmap <ESC>h :FSHere<CR>
+
+" NERDCommenter
+nmap <ESC>/ <leader>ci<Down>
+vmap <ESC>/ <leader>ci

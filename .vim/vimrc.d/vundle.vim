@@ -22,7 +22,6 @@ Bundle 'ciaranm/detectindent'
 Bundle 'nathanaelkane/vim-indent-guides'
 
 " Navigation
-Bundle 'ZoomWin'
 Bundle 'derekwyatt/vim-fswitch'
 Bundle 'wincent/Command-T'
 Bundle 'majutsushi/tagbar'
@@ -45,7 +44,6 @@ Bundle 'tmhedberg/SimpylFold'
 
 " Syntax support
 Bundle 'derekwyatt/vim-scala'
-Bundle 'framallo/asciidoc.vim'
 Bundle 'guns/vim-clojure-static'
 Bundle 'jboyens/vim-protobuf'
 Bundle 'jnwhiteh/vim-golang'

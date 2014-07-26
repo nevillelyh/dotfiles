@@ -9,8 +9,9 @@ set -e
 
 # Mac:
 # python - do not mess with OS X bundled python
+# zinc - incremental compiler
 # also zsh (with --disable-etcdir)
-BREWS="ack autojump ctags git htop hub macvim python tmux tree wget"
+BREWS="ack autojump ctags git htop hub macvim python tmux tree wget zinc"
 
 # Debian/Ubuntu:
 # build-essential - for GCC, GNU Make, etc.

@@ -1,4 +1,5 @@
 # Coding
+bin
 dev
 src
 
@@ -26,9 +27,12 @@ VirtualBox\ VMs
 .*history
 .adobe
 .android
+.autoenv_authorized*
 .bash_logout
 .bash_profile
 .bashrc
+.cabal
+.conscript
 .csshrc
 .cups
 .dbshell
@@ -38,6 +42,7 @@ VirtualBox\ VMs
 .gem
 .ghc
 .hgignore_global
+.htoprc
 .ipython
 .irssi
 .ivy2
@@ -68,6 +73,7 @@ VirtualBox\ VMs
 .virtualenvs
 .weechat
 .zcompdump
+.zinc
 .zsh-update
 .PyCharm20
 

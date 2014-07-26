@@ -6,28 +6,20 @@
 set -e
 
 # Packages:
-# command line tools: autojump tmux tree wget zsh
-# developer tools: ctags git macvim/vim-nox
 
 # Mac:
 # python - do not mess with OS X bundled python
-
 # also zsh (with --disable-etcdir)
 BREWS="ack autojump ctags git htop hub macvim python tmux tree wget"
 
 # Debian/Ubuntu:
 # build-essential - for GCC, GNU Make, etc.
 # ruby-dev - for Vim Command-T
-
 # also autojump (Ubuntu only)
 DEB_PKGS="ack-grep build-essential curl exuberant-ctags git htop ruby-dev tmux tree vim-nox zsh"
 
 # PIP:
-# distribute, pip
-# ipython, virtualenv
-# flake8 - for vim-flake8
-
-PIP_PKGS="ipython virtualenv virtualenvwrapper flake8"
+PIP_PKGS="autoenv ipython virtualenv virtualenvwrapper flake8"
 
 die() {
     echo "Error: $1"

@@ -67,5 +67,6 @@ if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
     source /usr/local/bin/virtualenvwrapper.sh
     WORKON_HOME=${HOME}/dev/virtualenv
 fi
+[[ -f /usr/local/bin/activate.sh ]] && source /usr/local/bin/activate.sh
 
 # vim: ft=zsh:

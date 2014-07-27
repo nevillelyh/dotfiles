@@ -28,12 +28,13 @@ function! AutoCommand()
 
     " specific file types only
     let l:filetypes = [
-                \ 'c', 'cpp', 'java', 'scala', 'clojure',
-                \ 'html', 'css', 'javascript',
-                \ 'perl', 'php', 'python', 'ruby',
+                \ 'c', 'cpp',
+                \ 'groovy', 'java', 'scala', 'clojure',
+                \ 'html', 'css', 'javascript', 'mkd',
+                \ 'eruby', 'perl', 'php', 'python', 'ruby',
                 \ 'haskell',
                 \ 'vim', 'sh', 'zsh',
-                \ 'proto', 'xml',
+                \ 'proto', 'xml', 'yaml'
                 \ ]
     if index(l:filetypes, &filetype) >= 0
         call ColumnsGuidesOn()

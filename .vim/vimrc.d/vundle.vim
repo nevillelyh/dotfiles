@@ -49,6 +49,7 @@ Bundle 'jboyens/vim-protobuf'
 Bundle 'jnwhiteh/vim-golang'
 Bundle 'kien/rainbow_parentheses.vim'
 Bundle 'pangloss/vim-javascript'
+Bundle 'plasticboy/vim-markdown'
 Bundle 'vim-scripts/google.vim'
 
 filetype plugin indent on

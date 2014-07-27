@@ -30,7 +30,7 @@ function! AutoCommand()
     let l:filetypes = [
                 \ 'c', 'cpp',
                 \ 'groovy', 'java', 'scala', 'clojure',
-                \ 'html', 'css', 'javascript', 'mkd',
+                \ 'html', 'css', 'javascript', 'mkd', 'rst',
                 \ 'eruby', 'perl', 'php', 'python', 'ruby',
                 \ 'haskell',
                 \ 'vim', 'sh', 'zsh',

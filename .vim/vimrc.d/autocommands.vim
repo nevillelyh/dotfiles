@@ -48,7 +48,7 @@ function! AutoCommand()
     endif
 
     let l:texttypes = ['html', 'mkd', 'rst', 'text']
-    if index(l:filetypes, &filetype) >= 0
+    if index(l:texttypes, &filetype) >= 0
         setlocal spell
         highlight SpellBad ctermbg=52
     endif

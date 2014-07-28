@@ -30,7 +30,7 @@ function! AutoCommand()
     let l:filetypes = [
                 \ 'c', 'cpp',
                 \ 'groovy', 'java', 'scala', 'clojure',
-                \ 'html', 'css', 'javascript', 'mkd', 'rst',
+                \ 'html', 'css', 'javascript', 'mkd', 'rst', 'text',
                 \ 'eruby', 'perl', 'php', 'python', 'ruby',
                 \ 'haskell',
                 \ 'vim', 'sh', 'zsh',
@@ -46,7 +46,12 @@ function! AutoCommand()
         call ColumnsGuidesOff()
         call indent_guides#disable()
     endif
+
+    let l:texttypes = ['html', 'mkd', 'rst', 'text']
+    if index(l:filetypes, &filetype) >= 0
+        setlocal spell
+        highlight SpellBad ctermbg=52
+    endif
 endfunction
 
-autocmd BufRead,BufNewFile *.asciidoc setfiletype asciidoc
 autocmd BufRead,BufNewFile * :call AutoCommand()

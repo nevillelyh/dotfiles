@@ -66,6 +66,10 @@ _homebrew() {
 
     # work around for OS X mis-configuration
     brew install --disable-etcdir zsh
+
+    # htop requires root privileges
+    sudo chown root:wheel /usr/local/Cellar/htop-osx/*/bin/htop
+    sudo chmod u+s /usr/local/Cellar/htop-osx/*/bin/htop
 }
 
 _pip() {

@@ -9,7 +9,7 @@ Bundle 'gmarik/vundle'
 
 " Look and feel
 Bundle 'Lokaltog/vim-powerline'
-Bundle 'altercation/vim-colors-solarized'
+Bundle 'tomasr/molokai'
 
 " Git
 Bundle 'gregsexton/gitv'

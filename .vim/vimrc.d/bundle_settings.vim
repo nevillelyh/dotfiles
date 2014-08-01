@@ -2,10 +2,10 @@
 " Bundles settings
 """"""""""""""""""""
 
-" Solarized color scheme
-let g:solarized_termcolors = 256
-let g:solarized_termtrans = 1
-colorscheme solarized
+" Color scheme
+let g:molokai_original = 1
+let g:rehash256 = 1
+colorscheme molokai
 
 " Powerline
 set laststatus=2

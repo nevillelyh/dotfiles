@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# stablize master -> testing -> stable
+
 die () {
     echo "Error: $1"
     exit 1

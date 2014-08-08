@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# nuke a branch
+
 if [ $# -lt 1 ]; then
     echo "Usage: $(basename $0) branch [remote]"
     exit 1

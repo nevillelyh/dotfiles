@@ -1,3 +1,4 @@
 #!/bin/bash
 
+# rewind to a previous commit
 [ $# -eq 1 ] && git reset --hard HEAD~$1 || echo "Usage: git rewind N"

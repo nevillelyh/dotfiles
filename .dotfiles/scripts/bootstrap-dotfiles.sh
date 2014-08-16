@@ -10,8 +10,9 @@ set -e
 # Mac:
 # python - do not mess with OS X bundled python
 # zinc - incremental compiler
-# also zsh (with --disable-etcdir)
-BREWS="ack autojump ctags git htop hub macvim python tmux tree wget zinc"
+# zsh (with --disable-etcdir)
+# macvim (with --override-system-vim)
+BREWS="ack autojump ctags git htop hub python tmux tree wget zinc"
 
 # Debian/Ubuntu:
 # build-essential - for GCC, GNU Make, etc.
@@ -66,6 +67,8 @@ _homebrew() {
 
     # work around for OS X mis-configuration
     brew install --disable-etcdir zsh
+
+    brew install macvim --override-system-vim
 
     # htop requires root privileges
     sudo chown root:wheel /usr/local/Cellar/htop-osx/*/bin/htop

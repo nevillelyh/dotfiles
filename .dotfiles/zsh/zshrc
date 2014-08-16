@@ -18,17 +18,13 @@
 # environment variables
 export EDITOR=vim
 
+# tmux-powerline
+export POWERLINE_CONFIG_COMMAND=${HOME}/.vim/bundle/powerline/scripts/powerline-config
+
 # open in tabs by default
-if [ -f /usr/local/bin/mvim ]; then
-    # MacVim
-    alias vi='mvim -v -p'
-    alias vim='mvim -v -p'
-    alias gvim='mvim -p'
-else
-    alias vi='vim -p'
-    alias vim='vim -p'
-    [[ -e /usr/bin/gvim ]] && alias gvim='gvim -p'
-fi
+alias vi='vim -p'
+alias vim='vim -p'
+[[ -e /usr/bin/gvim ]] && alias gvim='gvim -p'
 
 # hub
 [[ -f /usr/local/bin/hub ]] && alias g=hub

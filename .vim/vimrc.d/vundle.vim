@@ -17,7 +17,7 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-git'
 
 " Code style
-Bundle 'bitc/vim-bad-whitespace'
+Bundle 'ntpeters/vim-better-whitespace'
 Bundle 'ciaranm/detectindent'
 Bundle 'nathanaelkane/vim-indent-guides'
 
@@ -30,7 +30,8 @@ Bundle 'scrooloose/nerdtree'
 
 " Shortcuts
 Bundle 'Raimondi/delimitMate'
-Bundle 'nevillelyh/snipmate.vim'
+Bundle 'SirVer/ultisnips'
+Bundle 'honza/vim-snippets'
 Bundle 'scrooloose/nerdcommenter'
 "if v:version < 703
 "    Bundle 'ervandew/supertab'

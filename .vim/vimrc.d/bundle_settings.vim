@@ -6,6 +6,7 @@
 let g:molokai_original = 1
 let g:rehash256 = 1
 colorscheme molokai
+hi Normal ctermbg=none
 
 " Powerline
 set laststatus=2

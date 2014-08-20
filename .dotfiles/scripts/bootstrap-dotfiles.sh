@@ -50,14 +50,6 @@ _aptitude() {
             ;;
     esac
     sudo ${APTITUDE} install ${DEB_PKGS}
-
-    # custom fonts for powerline/airline/tmuxline
-    if [[ "${DISTRO}" == "trusty" ]]; then
-        mkdir -p .fonts
-        cd .fonts
-        git clone https://github.com/scotu/ubuntu-mono-powerline.git
-        cd ..
-    fi
 }
 
 _homebrew() {

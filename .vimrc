@@ -42,6 +42,10 @@ nmap <C-L> <C-W>l
 nmap <C-N> gt
 nmap <C-P> gT
 
+" Buffer navigation
+nmap <ESC>p :bprev<CR>
+nmap <ESC>n :bnext<CR>
+
 " Goto file in new tab
 nmap gf <C-W>gf
 " Toggle folding

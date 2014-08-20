@@ -2,38 +2,39 @@
 " Vundle
 """"""""""""""""""""
 set nocompatible
-"filetype off
+filetype off
 set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-Bundle 'gmarik/vundle'
+call vundle#begin()
+Plugin 'gmarik/vundle'
 
 " Look and feel
-Bundle 'edkolev/tmuxline.vim'
 Plugin 'bling/vim-airline'
-Bundle 'tomasr/molokai'
+Plugin 'edkolev/tmuxline.vim'
+Plugin 'tomasr/molokai'
 
 " Git
-Bundle 'gregsexton/gitv'
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-git'
+Plugin 'gregsexton/gitv'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-git'
+Plugin 'airblade/vim-gitgutter'
 
 " Code style
-Bundle 'ntpeters/vim-better-whitespace'
-Bundle 'ciaranm/detectindent'
-Bundle 'nathanaelkane/vim-indent-guides'
+Plugin 'ntpeters/vim-better-whitespace'
+Plugin 'ciaranm/detectindent'
+Plugin 'nathanaelkane/vim-indent-guides'
 
 " Navigation
-Bundle 'derekwyatt/vim-fswitch'
-Bundle 'wincent/Command-T'
-Bundle 'majutsushi/tagbar'
-Bundle 'milkypostman/vim-togglelist'
-Bundle 'scrooloose/nerdtree'
+Plugin 'derekwyatt/vim-fswitch'
+Plugin 'wincent/Command-T'
+Plugin 'majutsushi/tagbar'
+Plugin 'milkypostman/vim-togglelist'
+Plugin 'scrooloose/nerdtree'
 
 " Shortcuts
-Bundle 'Raimondi/delimitMate'
-Bundle 'SirVer/ultisnips'
-Bundle 'honza/vim-snippets'
-Bundle 'scrooloose/nerdcommenter'
+Plugin 'Raimondi/delimitMate'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+Plugin 'scrooloose/nerdcommenter'
 "if v:version < 703
 "    Bundle 'ervandew/supertab'
 "else
@@ -41,18 +42,19 @@ Bundle 'scrooloose/nerdcommenter'
 "endif
 
 " Syntax check
-Bundle 'scrooloose/syntastic'
-Bundle 'tmhedberg/SimpylFold'
+Plugin 'scrooloose/syntastic'
+Plugin 'tmhedberg/SimpylFold'
 
 " Syntax support
-Bundle 'derekwyatt/vim-scala'
-Bundle 'guns/vim-clojure-static'
-Bundle 'jboyens/vim-protobuf'
-Bundle 'jnwhiteh/vim-golang'
-Bundle 'kien/rainbow_parentheses.vim'
-Bundle 'pangloss/vim-javascript'
-Bundle 'plasticboy/vim-markdown'
-Bundle 'vim-scripts/google.vim'
+Plugin 'derekwyatt/vim-scala'
+Plugin 'guns/vim-clojure-static'
+Plugin 'jboyens/vim-protobuf'
+Plugin 'jnwhiteh/vim-golang'
+Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'pangloss/vim-javascript'
+Plugin 'plasticboy/vim-markdown'
+Plugin 'vim-scripts/google.vim'
 
+call vundle#end()
 filetype plugin indent on
 syntax on

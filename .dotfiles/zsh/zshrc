@@ -18,9 +18,6 @@
 # environment variables
 export EDITOR=vim
 
-# tmux-powerline
-export POWERLINE_CONFIG_COMMAND=${HOME}/.vim/bundle/powerline/scripts/powerline-config
-
 # open in tabs by default
 alias vi='vim -p'
 alias vim='vim -p'

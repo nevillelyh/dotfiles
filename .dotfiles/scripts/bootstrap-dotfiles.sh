@@ -35,7 +35,7 @@ _aptitude() {
             APTITUDE="aptitude -t squeeze-backports"
             SUDO="sudo"
             ;;
-        precise|trusty)
+        trusty)
             APTITUDE="aptitude"
             DEB_PKGS="autojump ${DEB_PKGS}"
 
@@ -51,8 +51,8 @@ _aptitude() {
     esac
     sudo ${APTITUDE} install ${DEB_PKGS}
 
-    # custom fonts for vim-powerline
-    if [[ "${DISTRO}" == "precise" ]]; then
+    # custom fonts for powerline/airline/tmuxline
+    if [[ "${DISTRO}" == "trusty" ]]; then
         mkdir -p .fonts
         cd .fonts
         git clone https://github.com/scotu/ubuntu-mono-powerline.git

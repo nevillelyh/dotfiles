@@ -8,9 +8,10 @@ let g:rehash256 = 1
 colorscheme molokai
 hi Normal ctermbg=none
 
-" Powerline
+" vim-airline
 set laststatus=2
-let g:Powerline_symbols = 'fancy'
+let g:airline_powerline_fonts=1
+let g:airline#extensions#tabline#enabled=1
 
 " DetectIndent
 let g:detectindent_preferred_expandtab = 1

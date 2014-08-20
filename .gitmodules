@@ -1,6 +1,3 @@
 [submodule ".dotfiles/zsh/omz"]
 	path = .dotfiles/zsh/omz
 	url = https://github.com/robbyrussell/oh-my-zsh.git
-[submodule ".dotfiles/tmux-powerline"]
-	path = .dotfiles/tmux-powerline
-	url = https://github.com/erikw/tmux-powerline.git

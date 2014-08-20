@@ -8,7 +8,8 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " Look and feel
-Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+Bundle 'edkolev/tmuxline.vim'
+Plugin 'bling/vim-airline'
 Bundle 'tomasr/molokai'
 
 " Git

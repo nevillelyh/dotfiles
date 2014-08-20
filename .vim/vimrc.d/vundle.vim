@@ -29,6 +29,7 @@ Plugin 'wincent/Command-T'
 Plugin 'majutsushi/tagbar'
 Plugin 'milkypostman/vim-togglelist'
 Plugin 'scrooloose/nerdtree'
+Plugin 'Lokaltog/vim-easymotion'
 
 " Shortcuts
 Plugin 'Raimondi/delimitMate'

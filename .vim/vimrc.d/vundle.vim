@@ -33,8 +33,10 @@ Plugin 'Lokaltog/vim-easymotion'
 
 " Shortcuts
 Plugin 'Raimondi/delimitMate'
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
+if v:version > 703
+    Plugin 'SirVer/ultisnips'
+    Plugin 'honza/vim-snippets'
+endif
 Plugin 'scrooloose/nerdcommenter'
 "if v:version < 703
 "    Bundle 'ervandew/supertab'

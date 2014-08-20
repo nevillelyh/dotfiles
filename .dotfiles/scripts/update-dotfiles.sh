@@ -21,4 +21,8 @@ gitcmd "git pull"
 gitcmd "git submodule update --init --recursive"
 gitcmd "git stash pop"
 
+vim -u ${HOME}/.vim/vimrc.d/vundle.vim +BundleInstall +qall
+vim -u ${HOME}/.vim/vimrc.d/vundle.vim +BundleUpdate +qall
+vim -u ${HOME}/.vim/vimrc.d/vundle.vim +BundleClean +qall
+
 cd ${cwd}

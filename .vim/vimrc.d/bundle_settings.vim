@@ -45,6 +45,9 @@ let g:tagbar_sort = 0
 " Command-T
 let g:CommandTMatchWindowAtTop = 1
 
+" easy-motion
+let g:EasyMotion_smartcase = 1
+
 " NERDCommenter
 let g:NERDSpaceDelims = 1
 

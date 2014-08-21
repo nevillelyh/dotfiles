@@ -38,3 +38,7 @@ nmap <ESC>h :FSHere<CR>
 " NERDCommenter
 nmap <ESC>/ <leader>ci<Down>
 vmap <ESC>/ <leader>ci
+
+" easy-motion
+nmap <ESC>s <leader><leader>s
+nmap <ESC>w <leader><leader>w

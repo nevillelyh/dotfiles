@@ -1,3 +1,5 @@
+# vim: ft=zsh:
+
 autoload -U colors && colors
 autoload -Uz vcs_info
 
@@ -50,5 +52,3 @@ local mcolor="%{$fg_bold[cyan]%}"
 
 setopt prompt_subst
 PROMPT="%{$fg_bold[green]%}%n${mcolor}@%m %{$fg_bold[blue]%}%. $%{$reset_color%} "
-
-# vim: ft=zsh:

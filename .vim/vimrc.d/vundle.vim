@@ -61,3 +61,4 @@ Plugin 'vim-scripts/google.vim'
 call vundle#end()
 filetype plugin indent on
 syntax on
+set modelines=100

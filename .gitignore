@@ -64,6 +64,7 @@ VirtualBox\ VMs
 .ssh/known_hosts
 .ssh/private
 .ssh/spotify
+.storm
 .subversion
 .subversion_IDEA
 .vagrant.d

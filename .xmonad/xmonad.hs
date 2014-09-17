@@ -24,7 +24,7 @@ main = xmonad $ gnomeConfig
     }
 
 newLayout = smartBorders ( avoidStruts (
-    (   ResizableTall 1 (2/100) (3/5) []
+    (   ResizableTall 1 (2/100) (79/250) []
     ||| ResizableTall 1 (2/100) (1/2) []
     ||| Grid
     )))

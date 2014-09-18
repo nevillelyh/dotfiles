@@ -6,6 +6,7 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.SetWMName
 import XMonad.Layout.Grid
 import XMonad.Layout.NoBorders
+import XMonad.Layout.Reflect
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.Tabbed
 import XMonad.Layout.ThreeColumns
@@ -24,7 +25,7 @@ main = xmonad $ gnomeConfig
     }
 
 newLayout = smartBorders ( avoidStruts (
-    (   ResizableTall 1 (2/100) (79/250) []
+    (   reflectHoriz $ ResizableTall 1 (2/100) (17/25) []
     ||| ResizableTall 1 (2/100) (1/2) []
     ||| Grid
     )))

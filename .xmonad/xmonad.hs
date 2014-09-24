@@ -1,5 +1,6 @@
 import XMonad
 import XMonad.Actions.CycleWS
+import XMonad.Actions.PhysicalScreens
 import XMonad.Config.Gnome
 import XMonad.Hooks.ICCCMFocus
 import XMonad.Hooks.ManageDocks
@@ -15,38 +16,32 @@ import qualified Data.Map as M
 import qualified XMonad.StackSet as W
 
 main = xmonad $ gnomeConfig
-    { keys       = newKeys
-    , layoutHook = newLayout
-    , manageHook = manageDocks
-                <+> newManageHook
-                <+> manageHook defaultConfig
-    , modMask    = mod4Mask
+    { keys        = newKeys
+    , layoutHook  = newLayout
+    , manageHook  = manageDocks
+                 <+> newManageHook
+                 <+> manageHook defaultConfig
+    , modMask     = mod4Mask
     , startupHook = takeTopFocus >> setWMName "LG3D"
     }
 
 newLayout = smartBorders ( avoidStruts (
-    (   reflectHoriz $ ResizableTall 1 (2/100) (17/25) []
-    ||| ResizableTall 1 (2/100) (1/2) []
+    -- 2 columns, main on the right
+    (   (reflectHoriz $ ResizableTall 1 (2/100) (17/25) [])  -- wide main
+    ||| (reflectHoriz $ ResizableTall 1 (2/100) (1/2) [])    -- equal width
     ||| Grid
     )))
 
 newManageHook = composeAll
-    [ className =? "Cssh"       --> doFloat
-    , className =? "Spotify"    --> doFloat
-    , className =? "Vlc"        --> doFloat
-    , className =? "VirtualBox" --> doFloat
+    $ map (\n -> className =? n --> doFloat)
+    [ "Cssh"
+    , "Spotify"
+    , "Vlc"
+    , "VirtualBox"
     ]
 
-defKeys   = keys defaultConfig
-delKeys x = foldr M.delete           (defKeys x) (toRemoveKeys x)
-newKeys x = foldr (uncurry M.insert) (delKeys x) (toAddKeys    x)
-
-toRemoveKeys XConfig{modMask = modm} =
-    [ (modm,               xK_n)
-    , (modm,               xK_p)
-    , (modm .|. shiftMask, xK_p)
-    , (modm .|. shiftMask, xK_Return)
-    ]
+defaultKeys = keys defaultConfig
+newKeys x = foldr (uncurry M.insert) (defaultKeys x) (toAddKeys    x)
 
 lockCmd = "gnome-screensaver-command --lock"
 screenCmd = "gnome-screenshot --interactive"
@@ -69,4 +64,12 @@ toAddKeys XConfig{modMask = modm} =
     , ((modm,               xK_F10),      spawn spPrevCmd)
     , ((modm,               xK_F11),      spawn spPlayCmd)
     , ((modm,               xK_F12),      spawn spNextCmd)
+    -- , ((modm .|. shiftMask, xK_d),        spawn "setxkbmap -layout dvorak")
+    -- , ((modm .|. shiftMask, xK_q),        spawn "setxkbmap -layout us")
+    ]
+    ++
+    -- flip screen #1 and #2
+    [ ((modm .|. mask, key), screenWorkspace sc >>= flip whenJust (windows . f))
+    | (key, sc) <- zip [xK_w, xK_e, xK_r] [1,0,2]
+    , (f, mask) <- [(W.view, 0), (W.shift, shiftMask)]
     ]

@@ -6,6 +6,9 @@
 # some useful scripts
 [[ -d ${HOME}/.dotfiles/scripts ]] && export PATH="${HOME}/.dotfiles/scripts:${PATH}"
 
+# Google Cloud SDK
+[[ -d /usr/local/google-cloud-sdk ]] && source '/usr/local/google-cloud-sdk/path.zsh.inc'
+
 # set up terminal colors properly
 [[ "${TERM}" == "xterm" ]] && export TERM=xterm-256color
 

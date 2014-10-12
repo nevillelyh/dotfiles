@@ -28,22 +28,36 @@ die() {
     exit 1
 }
 
+ask() {
+    while true; do
+        read -p "$1 (y/n) " yn
+        case $yn in
+            y|Y|yes|YES) return 0;;
+            n|N|no|NO)   return 1;;
+            *)           echo "Please answer yes or no.";;
+        esac
+    done
+}
+
+_usr_local() {
+    # homebrew works without owning /usr/local
+    if [[ "$(uname -a)" != "Darwin" ]] || ask "Take over /usr/local?"; then
+        # personal system, make /usr/local personal and bypass sudo
+        sudo mv /usr/local /usr/local.orig
+        sudo mkdir /usr/local
+        sudo chown $(whoami):$(groups | awk '{print $1}') /usr/local
+    fi
+}
+
 _aptitude() {
     DISTRO=$(lsb_release --codename --short)
     case ${DISTRO} in
-        squeeze)
+        squeeze|wheezy)
             APTITUDE="aptitude -t squeeze-backports"
-            SUDO="sudo"
             ;;
-        trusty)
+        precise|trusty)
             APTITUDE="aptitude"
             DEB_PKGS="autojump ${DEB_PKGS}"
-
-            # personal system, make /usr/local personal and bypass sudo
-            SUDO=""
-            sudo mv /usr/local /usr/local.orig
-            sudo mkdir /usr/local
-            sudo chown $(whoami):$(groups | awk '{print $1}') /usr/local
             ;;
         *)
             die "unsupported distribution: ${DISTRO}"
@@ -121,6 +135,7 @@ _commandt() {
 
 cwd=$(pwd)
 
+_usr_local
 [[ -f /usr/bin/lsb_release ]] && _aptitude
 [[ "$(uname -s)" == "Darwin" ]] && _homebrew
 _pip

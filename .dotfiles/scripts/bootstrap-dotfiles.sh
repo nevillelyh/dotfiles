@@ -60,7 +60,7 @@ _aptitude() {
             DEB_PKGS="autojump ${DEB_PKGS}"
             ;;
         *)
-            die "unsupported distribution: ${DISTRO}"
+            die "Unsupported distribution: ${DISTRO}"
             ;;
     esac
     sudo ${APTITUDE} install ${DEB_PKGS}
@@ -95,7 +95,6 @@ _pip() {
 }
 
 _git() {
-    # set up git repository
     cd ${HOME}
     git init
     git config branch.master.rebase true
@@ -124,7 +123,6 @@ EOF
 }
 
 _vundle() {
-    # Vundle
     git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
     vim -u ${HOME}/.vim/vimrc.d/vundle.vim +BundleInstall +qall
 }

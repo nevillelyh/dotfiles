@@ -82,10 +82,16 @@ _homebrew() {
 }
 
 _pip() {
-    # PIP packages
-    curl http://python-distribute.org/distribute_setup.py | ${SUDO} python
-    curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | ${SUDO} python
-    ${SUDO} pip install ${PIP_PKGS}
+    if ask "Install Python packages with pip?"; then
+        owner=$(\ls -l /usr | grep -v '^l' | grep 'local$' | awk '{print $3}')
+        if [[ "$(uname -s)" == "Darwin" ]] || [[ "${owner}" == "$(whoami)" ]]; then
+            SUDO=""
+        else
+            SUDO="sudo"
+        fi
+        curl https://bootstrap.pypa.io/get-pip.py | ${SUDO} python
+        ${SUDO} pip install ${PIP_PKGS}
+    fi
 }
 
 _git() {

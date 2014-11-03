@@ -10,17 +10,20 @@ Documents
 Downloads
 Dropbox
 IdeaProjects
+.IntelliJIdea13
 Library
 Movies
 Music
+nltk_data
 Pictures
 Public
 PycharmProjects
 Sites
 Spotify
 Videos
-VirtualBox\ VMs
 .VirtualBox
+VirtualBox\ VMs
+workspace
 
 # Unix
 *.swp
@@ -32,26 +35,32 @@ VirtualBox\ VMs
 .bash_profile
 .bashrc
 .cabal
+.clusterssh
 .conscript
 .csshrc
 .cups
 .dbshell
 .dropbox
+.dropbox-dist
 .dvdcss
+.eclipse
 .fonts
 .gem
 .ghc
+.gsutil
 .hgignore_global
 .htoprc
 .ipython
 .irssi
 .ivy2
 .java
+.lein
 .lesshst
 .m2
 .oh-my-zsh
 .pip
 .profile
+.RData
 .rstudio-desktop
 .sbt
 .ssh/authorized_keys
@@ -64,14 +73,19 @@ VirtualBox\ VMs
 .ssh/known_hosts
 .ssh/private
 .ssh/spotify
+.ssh/google_compute_engine
+.ssh/google_compute_engine.pub
 .storm
 .subversion
 .subversion_IDEA
+.swt
 .vagrant.d
 .vim/.netrwhist
 .vim/bundle
 .viminfo
 .virtualenvs
+.visualvm
+.vulcan
 .weechat
 .zcompdump
 .zinc
@@ -84,6 +98,7 @@ VirtualBox\ VMs
 .Xauthority
 .aptitude
 .cache
+.compiz
 .compiz-1
 .config
 .dbus
@@ -95,6 +110,7 @@ VirtualBox\ VMs
 .gconf
 .gconfd
 .gksu.lock
+.gnome
 .gnome2
 .gnupg
 .gtk-bookmarks

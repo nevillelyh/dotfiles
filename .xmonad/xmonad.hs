@@ -35,7 +35,7 @@ newLayout = smartBorders ( avoidStruts (
 newManageHook = composeAll
     $ map (\n -> className =? n --> doFloat)
     [ "Cssh"
-    , "Spotify"
+    -- , "Spotify"
     , "Vlc"
     , "VirtualBox"
     ]

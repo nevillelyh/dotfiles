@@ -1,5 +1,10 @@
 #!/bin/bash
 
 # push branch
+dest=origin
+if [ $# -eq 1 ]; then
+    dest=$1
+fi
+
 src=$(git symbolic-ref HEAD | sed -e 's/^refs\/heads\///')
-git push -u origin ${src} $*
+git push -u ${dest} ${src}

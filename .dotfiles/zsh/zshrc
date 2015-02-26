@@ -7,13 +7,23 @@
 [[ -d ${HOME}/.dotfiles/scripts ]] && export PATH="${HOME}/.dotfiles/scripts:${PATH}"
 
 # Google Cloud SDK
+gsutil_aliases() {
+    alias gcat='gsutil cat'
+    alias gcp='gsutil cp'
+    alias gdu='gsutil du'
+    alias gls='gsutil ls'
+    alias gmv='gsutil mv'
+    alias grm='gsutil rm'
+}
 if [[ -d /usr/local/google-cloud-sdk ]]; then
     source '/usr/local/google-cloud-sdk/path.zsh.inc'
     source '/usr/local/google-cloud-sdk/completion.zsh.inc'
+    gsutil_aliases
 fi
 if [[ -d ${HOME}/google-cloud-sdk ]]; then
     source "${HOME}/google-cloud-sdk/path.zsh.inc"
     source "${HOME}/google-cloud-sdk/completion.zsh.inc"
+    gsutil_aliases
 fi
 
 # set up terminal colors properly
@@ -41,6 +51,7 @@ alias mvn='mvn-color'
 
 # Snakebite
 if [ -f /usr/bin/snakebite ]; then
+    alias scat='snakebite cat'
     alias sdu='snakebite du'
     alias sls='snakebite ls'
     alias smv='snakebite mv'

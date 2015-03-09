@@ -9,11 +9,11 @@
 # Google Cloud SDK
 gsutil_aliases() {
     alias gcat='gsutil cat'
-    alias gcp='gsutil cp'
+    alias gcp='gsutil -m cp'
     alias gdu='gsutil du'
     alias gls='gsutil ls'
-    alias gmv='gsutil mv'
-    alias grm='gsutil rm'
+    alias gmv='gsutil -m mv'
+    alias grm='gsutil -m rm'
 }
 if [[ -d /usr/local/google-cloud-sdk ]]; then
     source '/usr/local/google-cloud-sdk/path.zsh.inc'

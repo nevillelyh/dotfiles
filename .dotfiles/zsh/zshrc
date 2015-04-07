@@ -47,7 +47,10 @@ alias vim='vim -p'
 [[ -e /usr/bin/gvim ]] && alias gvim='gvim -p'
 
 # hub
-[[ -f /usr/local/bin/hub ]] && alias g=hub
+if [[ -f /usr/local/bin/hub ]]; then
+    alias g='hub'
+    compdef hub=git
+fi
 
 # Maven
 alias mvn='mvn-color'

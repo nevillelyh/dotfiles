@@ -22,7 +22,7 @@ main = xmonad $ gnomeConfig
                  <+> newManageHook
                  <+> manageHook defaultConfig
     , modMask     = mod4Mask
-    , startupHook = takeTopFocus >> setWMName "LG3D"
+    , startupHook = startupHook gnomeConfig >> takeTopFocus >> setWMName "LG3D"
     }
 
 newLayout = smartBorders ( avoidStruts (
@@ -60,9 +60,9 @@ toAddKeys XConfig{modMask = modm} =
     , ((modm .|. shiftMask, xK_s),        spawn screenCmd)
     , ((modm .|. shiftMask, xK_Return),   spawn termCmd)
     , ((modm,               xK_KP_Enter), windows W.swapMaster)
-    -- , ((modm,               xK_F10),      spawn spPrevCmd)
-    -- , ((modm,               xK_F11),      spawn spPlayCmd)
-    -- , ((modm,               xK_F12),      spawn spNextCmd)
+    , ((modm,               xK_F10),      spawn spPrevCmd)
+    , ((modm,               xK_F11),      spawn spPlayCmd)
+    , ((modm,               xK_F12),      spawn spNextCmd)
     -- , ((modm .|. shiftMask, xK_d),        spawn "setxkbmap -layout dvorak")
     -- , ((modm .|. shiftMask, xK_q),        spawn "setxkbmap -layout us")
     ]

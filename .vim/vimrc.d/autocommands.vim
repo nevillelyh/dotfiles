@@ -47,6 +47,11 @@ function! AutoCommand()
         call indent_guides#disable()
     endif
 
+    let l:wide_filetypes = ['java', 'scala']
+    if index(l:wide_filetypes, &filetype) >= 0
+        set textwidth=98
+    endif
+
     let l:texttypes = ['html', 'mkd', 'rst', 'text']
     if index(l:texttypes, &filetype) >= 0
         setlocal spell

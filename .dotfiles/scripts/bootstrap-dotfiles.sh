@@ -68,7 +68,7 @@ _aptitude() {
 
 _homebrew() {
     # homebrew packages
-    ruby <(curl -fsSkL raw.github.com/mxcl/homebrew/go)
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     brew install ${BREWS}
 
     # work around for OS X mis-configuration

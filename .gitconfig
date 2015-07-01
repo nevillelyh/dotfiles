@@ -11,8 +11,6 @@
 	autosetuprebase = always
 [url "neville@git.spotify.net"]
 	insteadof = git@git.spotify.net
-[init]
-	templatedir = ~/.dotfiles/git
 [push]
 	default = tracking
 [merge]

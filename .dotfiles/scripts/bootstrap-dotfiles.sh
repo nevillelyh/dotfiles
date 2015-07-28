@@ -95,10 +95,16 @@ _pip() {
 }
 
 _git() {
+    if [[ -z ${http_proxy} ]]; then
+        GIT_URL="git@github.com:nevillelyh/dotfiles.git"
+    else
+        GIT_URL="https://github.com/nevillelyh/dotfiles.git"
+    fi
+
     cd ${HOME}
     git init
     git config branch.master.rebase true
-    git remote add origin git@github.com:nevillelyh/dotfiles.git
+    git remote add origin ${GIT_URL}
     git fetch
     git reset --hard origin/master
     git branch --set-upstream master origin/master

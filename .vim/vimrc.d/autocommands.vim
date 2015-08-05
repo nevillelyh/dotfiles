@@ -34,7 +34,7 @@ function! AutoCommand()
                 \ 'eruby', 'perl', 'php', 'python', 'ruby',
                 \ 'haskell',
                 \ 'vim', 'sh', 'zsh',
-                \ 'proto', 'xml', 'yaml'
+                \ 'proto', 'xml', 'yaml', 'sbt.scala'
                 \ ]
     if index(l:filetypes, &filetype) >= 0
         call ColumnsGuidesOn()

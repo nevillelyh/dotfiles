@@ -12,7 +12,7 @@ set -e
 # zinc - incremental compiler
 # zsh (with --disable-etcdir)
 # macvim (with --override-system-vim)
-BREWS="ack autojump ctags git htop hub python tmux tree wget zinc"
+BREWS="ack autojump ctags git htop httpie hub python tmux tree wget zinc"
 
 # Debian/Ubuntu:
 # build-essential - for GCC, GNU Make, etc.

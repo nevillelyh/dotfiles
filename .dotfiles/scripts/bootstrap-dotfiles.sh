@@ -18,7 +18,7 @@ BREWS="ack autojump ctags git htop httpie hub python tmux tree wget zinc"
 # build-essential - for GCC, GNU Make, etc.
 # ruby-dev - for Vim Command-T
 # also autojump (Ubuntu only)
-DEB_PKGS="ack-grep build-essential curl exuberant-ctags git htop httpie ruby-dev tmux tree vim-nox zsh"
+DEB_PKGS="ack-grep build-essential curl exuberant-ctags git htop ruby-dev tmux tree vim-nox zsh"
 
 # PIP:
 PIP_PKGS="autoenv ipython virtualenv virtualenvwrapper flake8"
@@ -91,6 +91,9 @@ _pip() {
         fi
         curl https://bootstrap.pypa.io/get-pip.py | ${SUDO} python
         ${SUDO} pip install ${PIP_PKGS}
+        if [[ "$(uname -s)" != "Darwin" ]]; then
+            ${SUDO} pip install httpie
+        fi
     fi
 }
 

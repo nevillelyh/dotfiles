@@ -52,6 +52,8 @@ toAddKeys XConfig{modMask = modm} =
     [ ((modm,               xK_p),        spawn "gmrun")
     , ((modm,               xK_a),        sendMessage MirrorExpand)
     , ((modm,               xK_z),        sendMessage MirrorShrink)
+    , ((modm,               xK_h),        sendMessage Expand)
+    , ((modm,               xK_l),        sendMessage Shrink)
     , ((modm,               xK_Right),    nextWS)
     , ((modm,               xK_Left),     prevWS)
     , ((modm .|. shiftMask, xK_Right),    shiftToNext)

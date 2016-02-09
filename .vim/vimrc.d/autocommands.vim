@@ -47,6 +47,11 @@ function! AutoCommand()
         call indent_guides#disable()
     endif
 
+    if &filetype == 'git'
+        " open all folds
+        :execute 'normal zR'
+    endif
+
     let l:wide_filetypes = ['java', 'scala']
     if index(l:wide_filetypes, &filetype) >= 0
         set textwidth=98

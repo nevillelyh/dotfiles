@@ -89,3 +89,6 @@ source $ZSH/oh-my-zsh.sh
 # My theme and settings
 source $HOME/.dotfiles/zsh/sinisa.zsh-theme
 source $HOME/.dotfiles/zsh/zshrc
+
+# added by travis gem
+[ -f /home/neville/.travis/travis.sh ] && source /home/neville/.travis/travis.sh

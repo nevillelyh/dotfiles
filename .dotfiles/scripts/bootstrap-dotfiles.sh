@@ -50,20 +50,7 @@ _usr_local() {
 }
 
 _aptitude() {
-    DISTRO=$(lsb_release --codename --short)
-    case ${DISTRO} in
-        squeeze|wheezy)
-            APTITUDE="aptitude -t squeeze-backports"
-            ;;
-        precise|trusty)
-            APTITUDE="aptitude"
-            DEB_PKGS="autojump ${DEB_PKGS}"
-            ;;
-        *)
-            die "Unsupported distribution: ${DISTRO}"
-            ;;
-    esac
-    sudo ${APTITUDE} install ${DEB_PKGS}
+    sudo aptitude install ${DEB_PKGS}
 }
 
 _homebrew() {

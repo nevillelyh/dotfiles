@@ -47,11 +47,9 @@ ZSH_THEME=""
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(autojump colored-man git lein mvn pep8 pip sbt scala vundle zsh-syntax-highlighting)
+plugins=(colored-man git lein mvn pep8 pip sbt scala vundle zsh-syntax-highlighting z)
 [[ "$(uname)" == "Darwin" ]] && plugins=(brew osx ${plugins})
 
-# /usr/local/bin must be in $PATH for autojump plugin to work
-[[ -d /usr/local/bin ]] && export PATH=/usr/local/bin:${PATH}
 [[ -d ${HOME}/bin ]] && export PATH=${HOME}/bin:${PATH}
 
 source $ZSH/oh-my-zsh.sh

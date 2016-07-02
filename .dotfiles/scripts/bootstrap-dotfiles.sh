@@ -12,12 +12,12 @@ set -e
 # zinc - incremental compiler
 # zsh (with --disable-etcdir)
 # macvim (with --override-system-vim)
-BREWS="ack ctags git htop httpie hub python tmux tree wget zinc z"
+BREWS="ack colordiff ctags git htop httpie hub python tmux tree wget zinc z"
 
 # Debian/Ubuntu:
 # build-essential - for GCC, GNU Make, etc.
 # ruby-dev - for Vim Command-T
-DEB_PKGS="ack-grep build-essential curl exuberant-ctags git htop ruby-dev tmux tree vim-nox zsh"
+DEB_PKGS="ack-grep build-essential colordiff curl exuberant-ctags git htop ruby-dev tmux tree vim-nox zsh"
 
 # PIP:
 PIP_PKGS="autoenv ipython virtualenv virtualenvwrapper flake8"

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+remote="upstream"
+if [ $# -eq 2 ]; then
+    remote=$2
+fi
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+git fetch $remote
+git rebase $remote/$branch
+git push

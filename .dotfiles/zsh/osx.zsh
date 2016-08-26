@@ -1,8 +1,4 @@
-# Python
-if [ -d /usr/local/share/python ]; then
-    local PATH=$(echo ${PATH} | sed -e 's/\/usr\/local\/bin://')
-    export PATH="/usr/local/bin:/usr/local/share/python:${PATH}"
-fi
+export PATH="/usr/local/bin:${PATH}"
 
 pidof() {
     ps axc 2>/dev/null | awk "{if (\$5==\"$1\") print \$1}"

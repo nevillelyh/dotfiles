@@ -90,3 +90,7 @@ source $HOME/.dotfiles/zsh/zshrc
 
 # added by travis gem
 [ -f /home/neville/.travis/travis.sh ] && source /home/neville/.travis/travis.sh
+
+# zsh-syntax-highlighting
+ZSH_HIGHLIGHT_STYLES[globbing]='fg=yellow'
+ZSH_HIGHLIGHT_STYLES[path]='bold'

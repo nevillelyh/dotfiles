@@ -40,7 +40,7 @@ ask() {
 
 _usr_local() {
     # homebrew works without owning /usr/local
-    if [[ "$(uname -a)" != "Darwin" ]] || ask "Take over /usr/local?"; then
+    if [[ "$(uname)" != "Darwin" ]]; then
         # personal system, make /usr/local personal and bypass sudo
         sudo mv /usr/local /usr/local.orig
         sudo mkdir /usr/local
@@ -60,11 +60,11 @@ _homebrew() {
     # work around for OS X mis-configuration
     brew install --disable-etcdir zsh
 
-    brew install macvim --override-system-vim
+    brew install macvim --with-override-system-vim
 
     # htop requires root privileges
-    sudo chown root:wheel /usr/local/Cellar/htop-osx/*/bin/htop
-    sudo chmod u+s /usr/local/Cellar/htop-osx/*/bin/htop
+    sudo chown root:wheel /usr/local/Cellar/htop/*/bin/htop
+    sudo chmod u+s /usr/local/Cellar/htop/*/bin/htop
 }
 
 _pip() {

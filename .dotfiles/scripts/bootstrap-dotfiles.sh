@@ -61,6 +61,7 @@ _homebrew() {
     brew install --disable-etcdir zsh
 
     brew install macvim --with-override-system-vim
+    brew linkapps macvim
 
     # htop requires root privileges
     sudo chown root:wheel /usr/local/Cellar/htop/*/bin/htop

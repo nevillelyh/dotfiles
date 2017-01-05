@@ -1,6 +1,8 @@
 # Mac OSX
 [[ "$(uname -s)" == "Darwin" ]] && . ~/.dotfiles/zsh/osx.zsh
 
+[[ -d /usr/lib/jvm/java-8-oracle ]] && export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+
 [[ -d /usr/local/lib ]] && export LD_LIBRARY_PATH="/usr/local/lib"
 
 # Go

@@ -27,7 +27,8 @@ main = xmonad $ gnomeConfig
 
 newLayout = smartBorders ( avoidStruts (
     -- 2 columns, main on the right
-    (   (reflectHoriz $ ResizableTall 1 (2/100) (3/4) [])  -- wide main
+    (   (ResizableTall 1 (2/100) (3/4) [])  -- wide main
+    -- (   (reflectHoriz $ ResizableTall 1 (2/100) (3/4) [])  -- wide main
     ||| (reflectHoriz $ ResizableTall 1 (2/100) (1/2) [])    -- equal width
     ||| Grid
     )))
@@ -52,8 +53,8 @@ toAddKeys XConfig{modMask = modm} =
     [ ((modm,               xK_p),        spawn "gmrun")
     , ((modm,               xK_a),        sendMessage MirrorExpand)
     , ((modm,               xK_z),        sendMessage MirrorShrink)
-    , ((modm,               xK_h),        sendMessage Expand)
-    , ((modm,               xK_l),        sendMessage Shrink)
+    -- , ((modm,               xK_h),        sendMessage Expand)
+    -- , ((modm,               xK_l),        sendMessage Shrink)
     , ((modm,               xK_Right),    nextWS)
     , ((modm,               xK_Left),     prevWS)
     , ((modm .|. shiftMask, xK_Right),    shiftToNext)
@@ -68,9 +69,9 @@ toAddKeys XConfig{modMask = modm} =
     -- , ((modm .|. shiftMask, xK_d),        spawn "setxkbmap -layout dvorak")
     -- , ((modm .|. shiftMask, xK_q),        spawn "setxkbmap -layout us")
     ]
-    ++
+    -- ++
     -- flip screen #1 and #2
-    [ ((modm .|. mask, key), screenWorkspace sc >>= flip whenJust (windows . f))
-    | (key, sc) <- zip [xK_w, xK_e, xK_r] [1,0,2]
-    , (f, mask) <- [(W.view, 0), (W.shift, shiftMask)]
-    ]
+    -- [ ((modm .|. mask, key), screenWorkspace sc >>= flip whenJust (windows . f))
+    -- | (key, sc) <- zip [xK_w, xK_e, xK_r] [1,0,2]
+    -- , (f, mask) <- [(W.view, 0), (W.shift, shiftMask)]
+    -- ]

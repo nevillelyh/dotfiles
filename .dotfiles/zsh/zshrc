@@ -41,6 +41,7 @@ fi
 [[ -f /usr/bin/ack-grep ]] && alias ack='ack-grep'
 
 # environment variables
+export ACK_PAGER=less
 export EDITOR=vim
 
 # open in tabs by default

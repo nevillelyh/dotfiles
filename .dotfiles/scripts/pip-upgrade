@@ -7,7 +7,7 @@ import xmlrpclib
 
 def main():
     UPGRADE_CMD = 'pip install --upgrade %s'
-    pypi = xmlrpclib.ServerProxy('http://pypi.python.org/pypi')
+    pypi = xmlrpclib.ServerProxy('https://pypi.python.org/pypi')
     installed = pip.get_installed_distributions()
     first = True
     for dist in installed:

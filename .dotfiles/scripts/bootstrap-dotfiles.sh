@@ -97,8 +97,8 @@ _git() {
     git remote add origin ${GIT_URL}
     git fetch
     git reset --hard origin/master
-    git branch --set-upstream master origin/master
     git submodule update --init --recursive
+    git branch --set-upstream-to=origin/master
 }
 
 _zsh() {

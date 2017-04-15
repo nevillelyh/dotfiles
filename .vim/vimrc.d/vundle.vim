@@ -50,11 +50,11 @@ Plugin 'tmhedberg/SimpylFold'
 
 " Syntax support
 Plugin 'derekwyatt/vim-scala'
-Plugin 'guns/vim-clojure-static'
+"Plugin 'guns/vim-clojure-static'
 Plugin 'jboyens/vim-protobuf'
-Plugin 'jnwhiteh/vim-golang'
+"Plugin 'jnwhiteh/vim-golang'
 Plugin 'kien/rainbow_parentheses.vim'
-Plugin 'pangloss/vim-javascript'
+"Plugin 'pangloss/vim-javascript'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'vim-scripts/google.vim'
 

@@ -33,16 +33,11 @@ Plugin 'Lokaltog/vim-easymotion'
 
 " Shortcuts
 Plugin 'Raimondi/delimitMate'
-if v:version > 703
-    Plugin 'SirVer/ultisnips'
-    Plugin 'honza/vim-snippets'
-endif
-Plugin 'scrooloose/nerdcommenter'
-"if v:version < 703
-"    Bundle 'ervandew/supertab'
-"else
-"    Bundle 'Valloric/YouCompleteMe'
+"if v:version > 703
+"    Plugin 'SirVer/ultisnips'
+"    Plugin 'honza/vim-snippets'
 "endif
+Plugin 'scrooloose/nerdcommenter'
 
 " Syntax check
 Plugin 'scrooloose/syntastic'

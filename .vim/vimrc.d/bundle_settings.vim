@@ -45,6 +45,7 @@ let g:tagbar_sort = 0
 
 " Command-T
 let g:CommandTMatchWindowAtTop = 1
+set wildignore+=*.cache,*.class,*.xml
 
 " easy-motion
 let g:EasyMotion_smartcase = 1

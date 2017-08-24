@@ -30,7 +30,7 @@ newLayout = smartBorders ( avoidStruts (
     -- (   (ResizableTall 1 (2/100) (2/3) [])  -- wide main
     -- ||| (ResizableTall 1 (2/100) (1/2) [])    -- equal width
     -- 2 columns, main on the left
-    (   (reflectHoriz $ ResizableTall 1 (2/100) (2/3) [])  -- wide main
+    (   (reflectHoriz $ ResizableTall 1 (2/100) (3/4) [])  -- wide main
     ||| (reflectHoriz $ ResizableTall 1 (2/100) (1/2) [])    -- equal width
     ||| Grid
     )))

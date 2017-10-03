@@ -1,13 +1,9 @@
-publishTo <<= (organization, name, isSnapshot, publishTo) { (org: String, name: String, snap: Boolean, default: Option[Resolver]) =>
-  def isPublic(name: String): Boolean = Seq("featran", "ratatool", "scio", "spark-bigquery").exists(name.startsWith(_))
-
-  if (org.startsWith("com.spotify") && !isPublic(name)) {
-    val prefix = "https://artifactory.spotify.net/artifactory/"
-    if (snap)
-      Some("snapshots" at prefix + "libs-snapshot-local;build.timestamp=" + new java.util.Date().getTime)
-    else
-      Some("releases"  at prefix + "libs-release-local")
-  } else {
-    default
-  }
+val destination = Def.setting {
+  val prefix = "https://artifactory.spotify.net/artifactory/"
+  val artifactory = if (isSnapshot.value)
+    Some("snapshots" at prefix + "libs-snapshot-local;build.timestamp=" + new java.util.Date().getTime)
+  else
+    Some("releases"  at prefix + "libs-release-local")
+  publishTo.value.orElse(artifactory)
 }
+publishTo := destination.value

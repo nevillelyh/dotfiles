@@ -74,6 +74,7 @@ __git_files () {
 }
 
 if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
+    [[ "$(uname -s)" == "Darwin" ]] && export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
     source /usr/local/bin/virtualenvwrapper.sh
     WORKON_HOME=${HOME}/dev/virtualenv
 fi

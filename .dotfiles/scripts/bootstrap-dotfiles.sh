@@ -76,10 +76,10 @@ _pip() {
         else
             SUDO="sudo"
         fi
-        curl https://bootstrap.pypa.io/get-pip.py | ${SUDO} python
-        ${SUDO} pip install ${PIP_PKGS}
+        curl https://bootstrap.pypa.io/get-pip.py | ${SUDO} python3
+        ${SUDO} pip3 install ${PIP_PKGS}
         if [[ "$(uname -s)" != "Darwin" ]]; then
-            ${SUDO} pip install httpie
+            ${SUDO} pip3 install httpie
         fi
     fi
 }
@@ -127,7 +127,7 @@ _commandt() {
     for cmd in ruby ruby1.8; do
         command -v ${cmd} > /dev/null && RUBY=${cmd} && break
     done
-    cd ${HOME}/.vim/bundle/Command-T/ruby/command-t
+    cd ${HOME}/.vim/bundle/Command-T/ruby/command-t/ext/command-t
     ${RUBY} extconf.rb
     make
     cd ${HOME}

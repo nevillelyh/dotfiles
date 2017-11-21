@@ -20,9 +20,9 @@ gsutil_aliases() {
     alias gsmv='gsutil -m mv'
     alias gsrm='gsutil -m rm'
 }
-if [[ -d /usr/local/google-cloud-sdk ]]; then
-    source '/usr/local/google-cloud-sdk/path.zsh.inc'
-    source '/usr/local/google-cloud-sdk/completion.zsh.inc'
+if [[ -d /usr/local/gcloud/google-cloud-sdk ]]; then
+    source '/usr/local/gcloud/google-cloud-sdk/path.zsh.inc'
+    source '/usr/local/gcloud/google-cloud-sdk/completion.zsh.inc'
     gsutil_aliases
 fi
 if [[ -d ${HOME}/google-cloud-sdk ]]; then

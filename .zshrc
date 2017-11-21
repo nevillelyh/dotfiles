@@ -89,7 +89,7 @@ source $HOME/.dotfiles/zsh/sinisa.zsh-theme
 source $HOME/.dotfiles/zsh/zshrc
 
 # added by travis gem
-[ -f /home/neville/.travis/travis.sh ] && source /home/neville/.travis/travis.sh
+[ -f $HOME/.travis/travis.sh ] && source $HOME/.travis/travis.sh
 
 # zsh-syntax-highlighting
 ZSH_HIGHLIGHT_STYLES[globbing]='fg=yellow'

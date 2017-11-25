@@ -11,8 +11,8 @@ set -e
 # python - do not mess with OS X bundled python
 # zinc - incremental compiler
 # zsh (with --disable-etcdir)
-# macvim (with --override-system-vim)
 BREWS="ack colordiff ctags git htop httpie hub python python3 tmux tree wget zinc z"
+CASKS="alfred dropbox gitter macdive macvim scroll-reverser slack vlc"
 
 # Debian/Ubuntu:
 # build-essential - for GCC, GNU Make, etc.
@@ -60,7 +60,7 @@ _homebrew() {
     # work around for OS X mis-configuration
     brew install --without-etcdir zsh
 
-    brew cask install macvim
+    brew cask install ${CASKS}
 
     # htop requires root privileges
     sudo chown root:wheel /usr/local/Cellar/htop/*/bin/htop

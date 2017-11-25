@@ -58,7 +58,7 @@ _homebrew() {
     brew install ${BREWS}
 
     # work around for OS X mis-configuration
-    brew install --disable-etcdir zsh
+    brew install --without-etcdir zsh
 
     brew install macvim --with-override-system-vim
     brew linkapps macvim

@@ -60,8 +60,7 @@ _homebrew() {
     # work around for OS X mis-configuration
     brew install --without-etcdir zsh
 
-    brew install macvim --with-override-system-vim
-    brew linkapps macvim
+    brew cask install macvim
 
     # htop requires root privileges
     sudo chown root:wheel /usr/local/Cellar/htop/*/bin/htop

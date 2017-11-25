@@ -12,7 +12,7 @@ set -e
 # zinc - incremental compiler
 # zsh (with --disable-etcdir)
 # macvim (with --override-system-vim)
-BREWS="ack colordiff ctags git htop httpie hub python tmux tree wget zinc z"
+BREWS="ack colordiff ctags git htop httpie hub python python3 tmux tree wget zinc z"
 
 # Debian/Ubuntu:
 # build-essential - for GCC, GNU Make, etc.

@@ -46,7 +46,12 @@ let g:tagbar_sort = 0
 
 " Command-T
 let g:CommandTMatchWindowAtTop = 1
-set wildignore+=*.cache,*.class,*.xml
+set wildignore+=*.cache,*.class,*/target/*
+set wildignore+=bazel-bazel
+set wildignore+=bazel-bin
+set wildignore+=bazel-genfiles
+set wildignore+=bazel-out
+set wildignore+=bazel-testlogs
 
 " easy-motion
 let g:EasyMotion_smartcase = 1

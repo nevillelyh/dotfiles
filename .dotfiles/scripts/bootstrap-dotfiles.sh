@@ -12,7 +12,7 @@ set -e
 # zinc - incremental compiler
 # zsh (with --disable-etcdir)
 BREWS="ack colordiff ctags git htop httpie hub python python3 tmux tree wget zinc z"
-CASKS="alfred dropbox gitter macdive macvim scroll-reverser slack vlc"
+CASKS="alfred dropbox gitter macdive macvim slack vlc"
 
 # Debian/Ubuntu:
 # build-essential - for GCC, GNU Make, etc.

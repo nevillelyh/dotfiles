@@ -38,16 +38,16 @@ newLayout = smartBorders ( avoidStruts (
 newManageHook = composeAll
     $ map (\n -> className =? n --> doFloat)
     [ "Cssh"
-    -- , "Spotify"
+    , "Spotify"
     , "Vlc"
     ]
 
 defaultKeys = keys defaultConfig
-newKeys x = foldr (uncurry M.insert) (defaultKeys x) (toAddKeys    x)
+newKeys x = foldr (uncurry M.insert) (defaultKeys x) (toAddKeys x)
 
 lockCmd = "gnome-screensaver-command --lock"
 screenCmd = "gnome-screenshot --interactive"
-termCmd = "lxterminal"
+-- termCmd = "gnome-terminal"
 spPrevCmd = "${HOME}/.dotfiles/scripts/spotify.sh previous"
 spPlayCmd = "${HOME}/.dotfiles/scripts/spotify.sh playpause"
 spNextCmd = "${HOME}/.dotfiles/scripts/spotify.sh next"
@@ -63,7 +63,7 @@ toAddKeys XConfig{modMask = modm} =
     , ((modm .|. shiftMask, xK_Left),     shiftToPrev)
     , ((modm .|. shiftMask, xK_l),        spawn lockCmd)
     , ((modm .|. shiftMask, xK_s),        spawn screenCmd)
-    , ((modm .|. shiftMask, xK_Return),   spawn termCmd)
+    -- , ((modm .|. shiftMask, xK_Return),   spawn termCmd)
     , ((modm,               xK_KP_Enter), windows W.swapMaster)
     , ((modm,               xK_F10),      spawn spPrevCmd)
     , ((modm,               xK_F11),      spawn spPlayCmd)

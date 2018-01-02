@@ -25,11 +25,6 @@ if [[ -d /usr/local/gcloud/google-cloud-sdk ]]; then
     source '/usr/local/gcloud/google-cloud-sdk/completion.zsh.inc'
     gsutil_aliases
 fi
-if [[ -d ${HOME}/google-cloud-sdk ]]; then
-    source "${HOME}/google-cloud-sdk/path.zsh.inc"
-    source "${HOME}/google-cloud-sdk/completion.zsh.inc"
-    gsutil_aliases
-fi
 
 # set up terminal colors properly
 [[ "${TERM}" == "xterm" ]] && export TERM=xterm-256color

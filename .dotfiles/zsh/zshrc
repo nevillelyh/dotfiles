@@ -45,7 +45,7 @@ alias vim='vim -p'
 [[ -e /usr/bin/gvim ]] && alias gvim='gvim -p'
 
 # hub
-if [[ -f /usr/local/bin/hub ]]; then
+if type hub > /dev/null; then
     alias g='hub'
     compdef hub=git
 fi

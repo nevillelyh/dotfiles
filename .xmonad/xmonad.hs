@@ -2,7 +2,6 @@ import XMonad
 import XMonad.Actions.CycleWS
 import XMonad.Actions.PhysicalScreens
 import XMonad.Config.Gnome
-import XMonad.Hooks.ICCCMFocus
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.SetWMName
 import XMonad.Layout.Grid
@@ -20,9 +19,9 @@ main = xmonad $ gnomeConfig
     , layoutHook  = newLayout
     , manageHook  = manageDocks
                  <+> newManageHook
-                 <+> manageHook defaultConfig
+                 <+> manageHook def
     , modMask     = mod4Mask
-    , startupHook = startupHook gnomeConfig >> takeTopFocus >> setWMName "LG3D"
+    , startupHook = startupHook gnomeConfig >> setWMName "LG3D"
     }
 
 newLayout = smartBorders ( avoidStruts (
@@ -42,7 +41,7 @@ newManageHook = composeAll
     , "Vlc"
     ]
 
-defaultKeys = keys defaultConfig
+defaultKeys = keys def
 newKeys x = foldr (uncurry M.insert) (defaultKeys x) (toAddKeys x)
 
 lockCmd = "gnome-screensaver-command --lock"

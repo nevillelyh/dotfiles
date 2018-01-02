@@ -1,5 +1,5 @@
-# Mac OSX
 [[ "$(uname -s)" == "Darwin" ]] && . ~/.dotfiles/zsh/osx.zsh
+[[ "$(uname -s)" == "Linux" ]] && . ~/.dotfiles/zsh/linux.zsh
 
 [[ -d /usr/lib/jvm/java-8-oracle ]] && export JAVA_HOME=/usr/lib/jvm/java-8-oracle
 

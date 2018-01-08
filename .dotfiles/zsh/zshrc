@@ -76,4 +76,9 @@ fi
 # autoenv
 [[ -f /usr/local/bin/activate.sh ]] && source /usr/local/bin/activate.sh
 
+if [ -d $HOME/.rbenv/bin ]; then
+    export PATH=$HOME/.rbenv/bin:$PATH
+    eval "$(rbenv init -)"
+fi
+
 # vim: ft=zsh:

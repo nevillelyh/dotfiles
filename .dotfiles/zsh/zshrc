@@ -1,57 +1,8 @@
 [[ "$(uname -s)" == "Darwin" ]] && . ~/.dotfiles/zsh/osx.zsh
 [[ "$(uname -s)" == "Linux" ]] && . ~/.dotfiles/zsh/linux.zsh
 
-[[ -d /usr/lib/jvm/java-8-oracle ]] && export JAVA_HOME=/usr/lib/jvm/java-8-oracle
-
 [[ -d /usr/local/lib ]] && export LD_LIBRARY_PATH="/usr/local/lib"
-
-# Go
-[[ -d /usr/local/go/bin ]] && export PATH="/usr/local/go/bin:${PATH}"
-
-# some useful scripts
 [[ -d ${HOME}/.dotfiles/scripts ]] && export PATH="${HOME}/.dotfiles/scripts:${PATH}"
-
-# Google Cloud SDK
-gsutil_aliases() {
-    alias gscat='gsutil cat'
-    alias gscp='gsutil -m cp'
-    alias gsdu='gsutil du'
-    alias gsls='gsutil ls'
-    alias gsmv='gsutil -m mv'
-    alias gsrm='gsutil -m rm'
-}
-if [[ -d /usr/local/gcloud/google-cloud-sdk ]]; then
-    source '/usr/local/gcloud/google-cloud-sdk/path.zsh.inc'
-    source '/usr/local/gcloud/google-cloud-sdk/completion.zsh.inc'
-    gsutil_aliases
-fi
-
-# set up terminal colors properly
-[[ "${TERM}" == "xterm" ]] && export TERM=xterm-256color
-
-# open file from X terminal
-[[ -f /usr/bin/xdg-open ]] && alias open='xdg-open'
-
-# ack on Ubuntu/Debian
-[[ -f /usr/bin/ack-grep ]] && alias ack='ack-grep'
-
-# environment variables
-export ACK_PAGER=less
-export EDITOR=vim
-
-# open in tabs by default
-alias vi='vim -p'
-alias vim='vim -p'
-[[ -e /usr/bin/gvim ]] && alias gvim='gvim -p'
-
-# hub
-if type hub > /dev/null; then
-    alias g='hub'
-    compdef hub=git
-fi
-
-alias diff='colordiff'
-alias mvn='mvn-color'
 
 # add SSH keys
 KEYS=$(find ${HOME}/.ssh -name id_dsa -or -name id_rsa)
@@ -63,10 +14,33 @@ test "${SSH_AUTH_SOCK}" && [[ "${SSH_AUTH_SOCK}" != "${AGENT}" ]] && ln -sf "${S
 test "$TMUX" && export SSH_AUTH_SOCK="${AGENT}"
 unset AGENT
 
-# fix Git completion
-__git_files () {
-    _wanted files expl "local files" _files
-}
+# set up terminal colors properly
+[[ "${TERM}" == "xterm" ]] && export TERM=xterm-256color
+
+export ACK_PAGER=less
+export EDITOR=vim
+
+alias diff='colordiff'
+alias vi='vim -p'
+alias vim='vim -p'
+alias gvim='gvim -p'
+alias mvn='mvn-color'
+
+# Google Cloud SDK
+if [[ -d /usr/local/gcloud/google-cloud-sdk ]]; then
+    source '/usr/local/gcloud/google-cloud-sdk/path.zsh.inc'
+    source '/usr/local/gcloud/google-cloud-sdk/completion.zsh.inc'
+    alias gscat='gsutil cat'
+    alias gscp='gsutil -m cp'
+    alias gsdu='gsutil du'
+    alias gsls='gsutil ls'
+    alias gsmv='gsutil -m mv'
+    alias gsrm='gsutil -m rm'
+fi
+if type hub > /dev/null; then
+    alias g='hub'
+    compdef hub=git
+fi
 
 if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
     [[ "$(uname -s)" == "Darwin" ]] && export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
@@ -80,5 +54,8 @@ if [ -d $HOME/.rbenv/bin ]; then
     export PATH=$HOME/.rbenv/bin:$PATH
     eval "$(rbenv init -)"
 fi
+
+# added by travis gem
+[ -f $HOME/.travis/travis.sh ] && source $HOME/.travis/travis.sh
 
 # vim: ft=zsh:

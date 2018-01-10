@@ -37,10 +37,17 @@ if [[ -d /usr/local/gcloud/google-cloud-sdk ]]; then
     alias gsmv='gsutil -m mv'
     alias gsrm='gsutil -m rm'
 fi
+
 if type hub > /dev/null; then
     alias g='hub'
     compdef hub=git
 fi
+
+# Restrict git completion to local files
+__git_files () {
+    _wanted files expl "local files" _files
+}
+
 
 if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
     [[ "$(uname -s)" == "Darwin" ]] && export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3

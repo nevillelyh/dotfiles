@@ -9,15 +9,14 @@ set -e
 
 # Mac:
 # python - do not mess with OS X bundled python
-# zinc - incremental compiler
 # zsh (with --disable-etcdir)
-BREWS="ack colordiff ctags git htop httpie hub python python3 tmux tree wget zinc z"
+BREWS="ack colordiff git htop hub python python3 tmux tree wget z"
 CASKS="alfred dropbox gitter macdive macvim slack vlc"
 
 # Debian/Ubuntu:
 # build-essential - for GCC, GNU Make, etc.
 # ruby-dev - for Vim Command-T
-DEB_PKGS="ack-grep build-essential colordiff curl exuberant-ctags git htop ruby-dev tmux tree vim-nox zsh"
+DEB_PKGS="ack-grep build-essential colordiff curl git htop ruby-dev tmux tree vim-nox zsh"
 
 # PIP:
 PIP_PKGS="autoenv ipython virtualenv virtualenvwrapper flake8"
@@ -77,9 +76,6 @@ _pip() {
         fi
         curl https://bootstrap.pypa.io/get-pip.py | ${SUDO} python3
         ${SUDO} pip3 install ${PIP_PKGS}
-        if [[ "$(uname -s)" != "Darwin" ]]; then
-            ${SUDO} pip3 install httpie
-        fi
     fi
 }
 

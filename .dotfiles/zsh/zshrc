@@ -50,8 +50,13 @@ __git_files () {
 
 
 if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
-    [[ "$(uname -s)" == "Darwin" ]] && export VIRTUALENV_PYTHON=/usr/local/bin/python3
-    [[ "$(uname -s)" == "Linux" ]] && export VIRTUALENV_PYTHON=/usr/bin/python3
+    if [[ "$(uname -s)" == "Darwin" ]]; then
+        export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
+        export VIRTUALENV_PYTHON=/usr/local/bin/python3
+    elif [[ "$(uname -s)" == "Linux" ]]; then
+        export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+        export VIRTUALENV_PYTHON=/usr/bin/python3
+    fi
     source /usr/local/bin/virtualenvwrapper.sh
     WORKON_HOME=${HOME}/src/virtualenv
 fi

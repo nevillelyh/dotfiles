@@ -10,7 +10,7 @@ set -e
 # Mac:
 # python - do not mess with OS X bundled python
 # zsh (with --disable-etcdir)
-BREWS="ack colordiff git htop hub python python3 tmux tree wget z"
+BREWS="ack colordiff git htop hub python tmux tree wget z"
 CASKS="alfred dropbox gitter macdive macvim slack vlc"
 
 # Debian/Ubuntu:
@@ -60,10 +60,6 @@ _homebrew() {
     brew install --without-etcdir zsh
 
     brew cask install ${CASKS}
-
-    # htop requires root privileges
-    sudo chown root:wheel /usr/local/Cellar/htop/*/bin/htop
-    sudo chmod u+s /usr/local/Cellar/htop/*/bin/htop
 }
 
 _pip() {

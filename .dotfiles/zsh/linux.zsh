@@ -1,6 +1,6 @@
 [[ -d /usr/lib/jvm/java-8-oracle ]] && export JAVA_HOME=/usr/lib/jvm/java-8-oracle
 
-for pkg in $(find /opt -maxdepth 2 -name latest -type l); do
+for pkg in $(find /opt -maxdepth 2 -name latest -type l | grep -v '/opt/idea/latest'); do
     [[ -d "${pkg}/bin" ]] && export PATH="${pkg}/bin:$PATH"
 done
 

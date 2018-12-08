@@ -11,7 +11,7 @@ set -e
 # python - do not mess with OS X bundled python
 # zsh (with --disable-etcdir)
 BREWS="ack colordiff git htop hub python tmux tree wget z"
-CASKS="alfred dropbox gitter macdive macvim slack vlc"
+CASKS="alfred dropbox gitter macvim slack vlc"
 
 # Debian/Ubuntu:
 # build-essential - for GCC, GNU Make, etc.

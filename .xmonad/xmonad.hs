@@ -1,14 +1,10 @@
 import XMonad
 import XMonad.Actions.CycleWS
-import XMonad.Actions.PhysicalScreens
 import XMonad.Config.Gnome
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.SetWMName
-import XMonad.Layout.Grid
 import XMonad.Layout.NoBorders
-import XMonad.Layout.Reflect
 import XMonad.Layout.ResizableTile
-import XMonad.Layout.Tabbed
 import XMonad.Layout.ThreeColumns
 
 import qualified Data.Map as M
@@ -18,28 +14,29 @@ main = xmonad $ gnomeConfig
     { keys        = newKeys
     , layoutHook  = newLayout
     , manageHook  = manageDocks
-                 <+> newManageHook
+                 -- <+> newManageHook
                  <+> manageHook def
     , modMask     = mod4Mask
     , startupHook = startupHook gnomeConfig >> setWMName "LG3D"
     }
 
 newLayout = smartBorders ( avoidStruts (
-    -- 2 columns, main on the right
-    -- (   (ResizableTall 1 (2/100) (2/3) [])  -- wide main
-    -- ||| (ResizableTall 1 (2/100) (1/2) [])    -- equal width
     -- 2 columns, main on the left
-    (   (reflectHoriz $ ResizableTall 1 (2/100) (3/4) [])  -- wide main
-    ||| (reflectHoriz $ ResizableTall 1 (2/100) (1/2) [])    -- equal width
-    ||| Grid
+    (   (ResizableTall 1 (2/100) (2/3) [])  -- wide main
+    ||| (ResizableTall 1 (2/100) (1/2) [])    -- equal width
+    ||| (ThreeColMid 1 (2/100) (1/2))
+    -- 2 columns, main on the right
+    -- (   (reflectHoriz $ ResizableTall 1 (2/100) (2/3) [])  -- wide main
+    -- ||| (reflectHoriz $ ResizableTall 1 (2/100) (1/2) [])    -- equal width
+    -- ||| Grid
     )))
 
-newManageHook = composeAll
-    $ map (\n -> className =? n --> doFloat)
-    [ "Cssh"
-    , "Spotify"
-    , "Vlc"
-    ]
+-- newManageHook = composeAll
+--     $ map (\n -> className =? n --> doFloat)
+--     [ "Spotify"
+--     , "Cssh"
+--     , "Vlc"
+--     ]
 
 defaultKeys = keys def
 newKeys x = foldr (uncurry M.insert) (defaultKeys x) (toAddKeys x)
@@ -60,13 +57,13 @@ toAddKeys XConfig{modMask = modm} =
     , ((modm .|. shiftMask, xK_l),        spawn lockCmd)
     , ((modm .|. shiftMask, xK_s),        spawn screenCmd)
     -- , ((modm .|. shiftMask, xK_Return),   spawn termCmd)
-    , ((modm,               xK_KP_Enter), windows W.swapMaster)
+    -- , ((modm,               xK_KP_Enter), windows W.swapMaster)
     -- , ((modm .|. shiftMask, xK_d),        spawn "setxkbmap -layout dvorak")
     -- , ((modm .|. shiftMask, xK_q),        spawn "setxkbmap -layout us")
     ]
-    ++
+    -- ++
     -- flip screen #1 and #2
-    [ ((modm .|. mask, key), screenWorkspace sc >>= flip whenJust (windows . f))
-    | (key, sc) <- zip [xK_w, xK_e, xK_r] [1,0,2]
-    , (f, mask) <- [(W.view, 0), (W.shift, shiftMask)]
-    ]
+    -- [ ((modm .|. mask, key), screenWorkspace sc >>= flip whenJust (windows . f))
+    -- | (key, sc) <- zip [xK_w, xK_e, xK_r] [1,0,2]
+    -- , (f, mask) <- [(W.view, 0), (W.shift, shiftMask)]
+    -- ]

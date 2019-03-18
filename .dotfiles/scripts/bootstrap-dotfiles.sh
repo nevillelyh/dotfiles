@@ -13,10 +13,11 @@ set -e
 BREWS="ack colordiff git htop hub python tmux tree wget z"
 CASKS="alfred dropbox gitter macvim slack vlc"
 
-# Debian/Ubuntu:
+# Ubuntu:
 # build-essential - for GCC, GNU Make, etc.
 # ruby-dev - for Vim Command-T
-DEB_PKGS="ack-grep build-essential colordiff curl git htop ruby-dev tmux tree vim-nox zsh"
+# python3-distutils - missing on Ubuntu 18.04
+DEB_PKGS="ack-grep build-essential colordiff curl git htop python3-distutils ruby-dev tmux tree vim-nox zsh"
 
 # PIP:
 PIP_PKGS="autoenv ipython virtualenv virtualenvwrapper flake8"
@@ -48,7 +49,11 @@ _usr_local() {
 }
 
 _aptitude() {
+    sudo apt-get update
+    sudp apt-get install aptitude
     sudo aptitude install ${DEB_PKGS}
+    # zsh on Ubuntu 18.04 creates /usr/local/share
+    sudo chown $(whoami):$(groups | awk '{print $1}') /usr/local/share
 }
 
 _homebrew() {
@@ -124,6 +129,30 @@ _commandt() {
     cd ${HOME}
 }
 
+_xmonad() {
+    if ask "Install XMonad packages?"; then
+        sudo add-apt-repository ppa:gekkio/xmonad
+        sudo aptitude update
+        sudo aptitude install gmrun gnome-session-xmonad xmonad
+    fi
+}
+
+_xmonad() {
+    if ask "Install XMonad?"; then
+        sudo add-apt-repository ppa:gekkio/xmonad
+        sudo aptitude update
+        sudo aptitude install gmrun gnome-session-xmonad xmonad
+    fi
+}
+
+_jdk() {
+    if ask "Install JDK?"; then
+        sudo add-apt-repository ppa:webupd8team/java
+        sudo aptitude update
+        sudo aptitude install oracle-java8-installer
+    fi
+}
+
 cwd=$(pwd)
 
 _usr_local
@@ -134,5 +163,7 @@ _git
 _zsh
 _vundle
 _commandt
+[[ -f /usr/bin/lsb_release ]] && _xmonad
+[[ -f /usr/bin/lsb_release ]] && _jdk
 
 cd ${cwd}

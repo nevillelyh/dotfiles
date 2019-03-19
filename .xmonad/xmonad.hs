@@ -22,8 +22,8 @@ main = xmonad $ gnomeConfig
 
 newLayout = smartBorders ( avoidStruts (
     -- 2 columns, main on the left
-    (   (ThreeColMid 1 (2/100) (1/2))
-    ||| (ResizableTall 1 (2/100) (2/3) [])  -- wide main
+    (   (ThreeColMid 1 (2/100) (56/100))
+    ||| (ResizableTall 1 (2/100) (72/100) [])  -- wide main
     ||| (ResizableTall 1 (2/100) (1/2) [])    -- equal width
     -- 2 columns, main on the right
     -- (   (reflectHoriz $ ResizableTall 1 (2/100) (2/3) [])  -- wide main

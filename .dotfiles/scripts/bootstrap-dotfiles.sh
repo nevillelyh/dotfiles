@@ -137,19 +137,20 @@ _xmonad() {
     fi
 }
 
-_xmonad() {
-    if ask "Install XMonad?"; then
-        sudo add-apt-repository ppa:gekkio/xmonad
-        sudo aptitude update
-        sudo aptitude install gmrun gnome-session-xmonad xmonad
-    fi
-}
-
 _jdk() {
     if ask "Install JDK?"; then
         sudo add-apt-repository ppa:webupd8team/java
         sudo aptitude update
         sudo aptitude install oracle-java8-installer
+    fi
+}
+
+_desktop() {
+    if ask "Install desktop packages?"; then
+        sudo add-apt-repository ppa:gekkio/xmonad
+        sudo aptitude update
+        sudo aptitude install fonts-powerline gmrun gnome-session-xmonad xmonad
+        sudo cp ~/.dotfiles/scripts/50-logitech.conf /usr/share/X11/xorg.conf.d
     fi
 }
 
@@ -163,7 +164,7 @@ _git
 _zsh
 _vundle
 _commandt
-[[ -f /usr/bin/lsb_release ]] && _xmonad
 [[ -f /usr/bin/lsb_release ]] && _jdk
+[[ -f /usr/bin/lsb_release ]] && _desktop
 
 cd ${cwd}

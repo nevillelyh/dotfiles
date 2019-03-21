@@ -1,6 +1,6 @@
 #/bin/bash
 
-# bash -c "$(curl -fsSL https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/scripts/bootstrap-dotfiles.sh)"
+# bash -c "$(curl -fsSL https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/bootstrap-dotfiles.sh)"
 
 # fail early
 set -e
@@ -150,7 +150,7 @@ _desktop() {
         sudo add-apt-repository ppa:gekkio/xmonad
         sudo aptitude update
         sudo aptitude install fonts-powerline gmrun gnome-session-xmonad xmonad
-        sudo cp ~/.dotfiles/scripts/50-logitech.conf /usr/share/X11/xorg.conf.d
+        sudo cp ~/.dotfiles/files/50-logitech.conf /usr/share/X11/xorg.conf.d
     fi
 }
 

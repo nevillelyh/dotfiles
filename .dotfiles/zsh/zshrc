@@ -3,6 +3,7 @@
 
 [[ -d /usr/local/lib ]] && export LD_LIBRARY_PATH="/usr/local/lib"
 [[ -d ${HOME}/.dotfiles/scripts ]] && export PATH="${HOME}/.dotfiles/scripts:${PATH}"
+[[ -d ${HOME}/.cargo/bin ]] && export PATH="${HOME}/.cargo/bin:${PATH}"
 
 # add SSH keys
 KEYS=$(find ${HOME}/.ssh -name id_dsa -or -name id_rsa)

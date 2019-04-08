@@ -4,6 +4,7 @@ import XMonad.Config.Gnome
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.SetWMName
 import XMonad.Layout.NoBorders
+import XMonad.Layout.Reflect
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.ThreeColumns
 
@@ -24,11 +25,11 @@ newLayout = smartBorders ( avoidStruts (
     -- 2 columns, main on the left
     (   (ThreeColMid 1 (2/100) (56/100))
     ||| (ThreeColMid 1 (2/100) (40/100))
-    ||| (ResizableTall 1 (2/100) (72/100) [])  -- wide main
-    ||| (ResizableTall 1 (2/100) (1/2) [])    -- equal width
+    ||| (ResizableTall 1 (2/100) (72/100) []) -- wide main
+    ||| (ResizableTall 1 (2/100) (50/100) []) -- equal width
     -- 2 columns, main on the right
-    -- (   (reflectHoriz $ ResizableTall 1 (2/100) (2/3) [])  -- wide main
-    -- ||| (reflectHoriz $ ResizableTall 1 (2/100) (1/2) [])    -- equal width
+    -- ||| (reflectHoriz $ ResizableTall 1 (2/100) (72/100) []) -- wide main
+    -- ||| (reflectHoriz $ ResizableTall 1 (2/100) (50/100) []) -- equal width
     -- ||| Grid
     )))
 

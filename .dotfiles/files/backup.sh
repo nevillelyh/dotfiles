@@ -15,6 +15,11 @@ mkdir -p "$DEST"
 cd ~/Library/Application\ Support/Adobe/CameraRaw
 cp -a Settings "$DEST"
 
+DEST="$HOME/backup/Library/Adobe/Lightroom"
+mkdir -p "$DEST"
+cd ~/Library/Application\ Support/Adobe/Lightroom
+cp -a Local\ Adjustment\ Presets "$DEST"
+
 DEST="$HOME/backup/Library/MacDive"
 mkdir -p "$DEST"
 cd ~/Library/Application\ Support/MacDive

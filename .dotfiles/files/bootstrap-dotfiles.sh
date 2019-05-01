@@ -137,14 +137,6 @@ _xmonad() {
     fi
 }
 
-_jdk() {
-    if ask "Install JDK?"; then
-        sudo add-apt-repository ppa:webupd8team/java
-        sudo aptitude update
-        sudo aptitude install oracle-java8-installer
-    fi
-}
-
 _desktop() {
     if ask "Install desktop packages?"; then
         sudo add-apt-repository ppa:gekkio/xmonad
@@ -164,7 +156,6 @@ _git
 _zsh
 _vundle
 _commandt
-[[ -f /usr/bin/lsb_release ]] && _jdk
 [[ -f /usr/bin/lsb_release ]] && _desktop
 
 cd ${cwd}

@@ -6,6 +6,7 @@
 [[ -d ${HOME}/.cargo/bin ]] && export PATH="${HOME}/.cargo/bin:${PATH}"
 [[ -d ${HOME}/.jenv/bin ]] && export PATH="${HOME}/.jenv/bin:${PATH}"
 eval "$(jenv init -)"
+eval "$(jenv enable-plugin export)"
 
 # add SSH keys
 KEYS=$(find ${HOME}/.ssh -name id_dsa -or -name id_rsa)

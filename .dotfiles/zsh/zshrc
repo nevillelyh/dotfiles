@@ -23,6 +23,8 @@ unset AGENT
 
 export ACK_PAGER=less
 export EDITOR=vim
+# https://github.com/sbt/sbt-pgp/issues/138#issuecomment-407519040
+export GPG_TTY=$(tty)
 
 alias diff='colordiff'
 alias vi='vim -p'

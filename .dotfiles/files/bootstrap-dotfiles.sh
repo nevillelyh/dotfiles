@@ -10,7 +10,7 @@ set -e
 # Mac:
 # python - do not mess with OS X bundled python
 # zsh (with --disable-etcdir)
-BREWS="ack colordiff git htop hub python tmux tree wget z"
+BREWS="ack colordiff git htop hub pinentry-mac python tmux tree wget z"
 CASKS="alfred dropbox gitter macvim slack vlc"
 
 # Ubuntu:
@@ -115,7 +115,7 @@ EOF
 }
 
 _vundle() {
-    git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+    git clone https://github.com/gmarik/vundle.git ${HOME}/.vim/bundle/vundle
     vim -u ${HOME}/.vim/vimrc.d/vundle.vim +BundleInstall +qall
 }
 
@@ -129,20 +129,22 @@ _commandt() {
     cd ${HOME}
 }
 
-_xmonad() {
+_mac() {
+	mkdir -p ${HOME}/.gnupg
+	chmod 700 ${HOME}/.gnupg
+	cp ${HOME}/.dotfiles/files/gpg-agent.conf ${HOME}/.gnupg
+}
+_linux() {
     if ask "Install XMonad packages?"; then
         sudo add-apt-repository ppa:gekkio/xmonad
         sudo aptitude update
         sudo aptitude install gmrun gnome-session-xmonad xmonad
     fi
-}
-
-_desktop() {
     if ask "Install desktop packages?"; then
         sudo add-apt-repository ppa:gekkio/xmonad
         sudo aptitude update
         sudo aptitude install fonts-powerline gmrun gnome-session-xmonad xmonad
-        sudo cp ~/.dotfiles/files/50-logitech.conf /usr/share/X11/xorg.conf.d
+        sudo cp ${HOME}/.dotfiles/files/50-logitech.conf /usr/share/X11/xorg.conf.d
     fi
 }
 
@@ -156,6 +158,6 @@ _git
 _zsh
 _vundle
 _commandt
-[[ -f /usr/bin/lsb_release ]] && _desktop
+[[ -f /usr/bin/lsb_release ]] && _linux
 
 cd ${cwd}

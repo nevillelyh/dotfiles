@@ -18,6 +18,7 @@ if dein#load_state('/home/neville/.local/share/dein')
   "call dein#add('Shougo/neosnippet.vim')
   "call dein#add('Shougo/neosnippet-snippets')
   call dein#add('vim-airline/vim-airline')
+  call dein#add('edkolev/tmuxline.vim')
 
   " Required:
   call dein#end()

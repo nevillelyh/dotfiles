@@ -17,6 +17,7 @@ if dein#load_state('/home/neville/.local/share/dein')
   " Add or remove your plugins here like this:
   "call dein#add('Shougo/neosnippet.vim')
   "call dein#add('Shougo/neosnippet-snippets')
+  call dein#add('vim-airline/vim-airline')
 
   " Required:
   call dein#end()
@@ -33,3 +34,5 @@ syntax enable
 "endif
 
 "End dein Scripts-------------------------
+
+let g:airline_powerline_fonts = 1

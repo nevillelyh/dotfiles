@@ -36,4 +36,35 @@ syntax enable
 
 "End dein Scripts-------------------------
 
+" Look and feel
+behave xterm
 let g:airline_powerline_fonts = 1
+
+" Tabs and spaces
+set shiftwidth=4
+set expandtab
+
+" Indentation
+set smartindent
+
+" Search
+set ignorecase
+set smartcase
+
+" Visible characters
+set listchars=tab:»·,eol:↵,trail:⋅,extends:❯,precedes:❮
+set list
+
+" Window navigation
+nmap <C-H> <C-W>h
+nmap <C-J> <C-W>j
+nmap <C-K> <C-W>k
+nmap <C-L> <C-W>l
+
+" Tab navigation
+nmap <C-P> gT
+nmap <C-N> gt
+
+" Buffer navigation
+nmap <A-p> :bprevious<CR>
+nmap <A-n> :bnext<CR>

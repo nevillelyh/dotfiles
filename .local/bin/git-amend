@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# amend staged changes to the last commit
+# reuse the last commit message
+status=$(git diff --cached --numstat)
+[ -z "$status" ] || git commit --amend -C HEAD

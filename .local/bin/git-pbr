@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# push branch and create pull-request
+
+dest=origin
+if [ $# -ge 1 ]; then
+    dest=$1
+fi
+base=master
+if [ $# -eq 2 ]; then
+    base=$2
+fi
+
+src=$(git symbolic-ref --short HEAD)
+git push -u $dest $src
+hub pull-request -b $base

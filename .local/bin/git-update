@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# similar to svn update
+
+status=$(git status --porcelain --untracked-files=no)
+[ -z "$status" ] || git stash save "tmp-git-update"
+git pull
+[ -z "$status" ] || git stash pop

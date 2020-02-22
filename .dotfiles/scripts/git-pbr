@@ -10,6 +10,6 @@ if [ $# -eq 2 ]; then
     base=$2
 fi
 
-src=$(git symbolic-ref HEAD | sed -e 's/^refs\/heads\///')
+src=$(git symbolic-ref --short HEAD)
 git push -u ${dest} ${src}
 hub pull-request -b ${base}

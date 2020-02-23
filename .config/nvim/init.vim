@@ -17,6 +17,7 @@ if dein#load_state('/home/neville/.local/share/dein')
   " Add or remove your plugins here like this:
   "call dein#add('Shougo/neosnippet.vim')
   "call dein#add('Shougo/neosnippet-snippets')
+  call dein#add('crusoexia/vim-monokai')
   call dein#add('vim-airline/vim-airline')
   call dein#add('edkolev/tmuxline.vim')
 
@@ -38,6 +39,7 @@ syntax enable
 
 " Look and feel
 behave xterm
+colorscheme monokai
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 

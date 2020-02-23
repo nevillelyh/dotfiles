@@ -21,6 +21,8 @@ if dein#load_state('/home/neville/.local/share/dein')
   call dein#add('vim-airline/vim-airline')
   call dein#add('edkolev/tmuxline.vim')
   call dein#add('junegunn/fzf')
+  call dein#add('tpope/vim-fugitive')
+  call dein#add('airblade/vim-gitgutter') " [c/]c: prev/next hunk
 
   " Required:
   call dein#end()

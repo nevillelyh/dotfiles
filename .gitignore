@@ -1,8 +1,22 @@
 /.*
 .*.swp
 
+/Desktop
+/Documents
+/Downloads
+/Dropbox
+/Movies
+/Music
+/Pictures
+/Public
+
+/src
+
 # Mac
 .DS_Store
+/Applications
+/Creative Cloud Files
+/Library
 
 # Linux
 /snap

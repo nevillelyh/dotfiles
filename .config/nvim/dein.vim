@@ -17,16 +17,16 @@ if dein#load_state($HOME.'/.local/share/dein')
   " Add or remove your plugins here like this:
   "call dein#add('Shougo/neosnippet.vim')
   "call dein#add('Shougo/neosnippet-snippets')
-  call dein#add('crusoexia/vim-monokai')
-  call dein#add('vim-airline/vim-airline')
-  call dein#add('edkolev/tmuxline.vim')
-  call dein#add('ntpeters/vim-better-whitespace')
-  call dein#add('tpope/vim-sleuth')
-  call dein#add('tpope/vim-fugitive')
-  call dein#add('airblade/vim-gitgutter') " [c/]c: prev/next hunk
-  call dein#add('preservim/nerdcommenter')
-  call dein#add('vim-syntastic/syntastic')
-  call dein#add('junegunn/fzf')
+  call dein#add('crusoexia/vim-monokai', {'merged': 0})
+  call dein#add('vim-airline/vim-airline', {'merged': 0})
+  call dein#add('edkolev/tmuxline.vim', {'merged': 0})
+  call dein#add('ntpeters/vim-better-whitespace', {'merged': 0})
+  call dein#add('tpope/vim-sleuth', {'merged': 0})
+  call dein#add('tpope/vim-fugitive', {'merged': 0})
+  call dein#add('airblade/vim-gitgutter', {'merged': 0}) " [c/]c: prev/next hunk
+  call dein#add('preservim/nerdcommenter', {'merged': 0})
+  call dein#add('vim-syntastic/syntastic', {'merged': 0})
+  call dein#add('junegunn/fzf', {'merged': 0})
 
   " Required:
   call dein#end()

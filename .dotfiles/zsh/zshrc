@@ -10,7 +10,7 @@ eval "$(jenv enable-plugin export)"
 
 # add SSH keys
 if [[ -n $(pidof ssh-agent) ]]; then
-    find ${HOME}/.ssh -name id_dsa -or -name id_rsa -exec ssh-add {} \;
+    find ${HOME}/.ssh -name id_dsa -or -name id_rsa -exec ssh-add {} \; > /dev/null 2>&1
 fi
 
 # make SSH key forwarding work in screen and tmux

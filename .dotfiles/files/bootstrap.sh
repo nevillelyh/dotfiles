@@ -8,7 +8,7 @@ set -euo pipefail
 # python - leave macOS bundled python alone
 # pinentry-mac - for GPG
 BREWS="colordiff fzf git htop hub neovim pinentry-mac python tmux tree wget z"
-CASKS="adobe-creative-cloud alfred dropbox expressvpn gitter google-chrome google-cloud-sdk guitar-pro iterm2 keybase kindle macdive slack transmission visual-studio-code vlc"
+CASKS="adobe-creative-cloud alfred dropbox expressvpn gitter google-chrome google-cloud-sdk guitar-pro iterm2 keybase kindle macdive slack transmission visual-studio-code vimr vlc"
 
 # Linux packages:
 # python3-distutils - for pip

@@ -27,3 +27,7 @@ if [ -f $HOME/.local/bin/virtualenvwrapper.sh ]; then
     export PROJECT_HOME=$HOME/src/python
     source $HOME/.local/bin/virtualenvwrapper.sh
 fi
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/home/neville/.sdkman"
+[[ -s "/home/neville/.sdkman/bin/sdkman-init.sh" ]] && source "/home/neville/.sdkman/bin/sdkman-init.sh"

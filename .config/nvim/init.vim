@@ -39,6 +39,7 @@ syntax enable
 " Look and feel
 behave xterm
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
 
 " Tabs and spaces
 set shiftwidth=4

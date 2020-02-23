@@ -20,6 +20,7 @@ if dein#load_state('/home/neville/.local/share/dein')
   call dein#add('crusoexia/vim-monokai')
   call dein#add('vim-airline/vim-airline')
   call dein#add('edkolev/tmuxline.vim')
+  call dein#add('junegunn/fzf')
 
   " Required:
   call dein#end()
@@ -71,3 +72,6 @@ nmap <C-N> gt
 " Buffer navigation
 nmap <A-p> :bprevious<CR>
 nmap <A-n> :bnext<CR>
+
+" Plugins
+nmap <A-t> :FZF<CR>

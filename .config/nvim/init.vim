@@ -26,6 +26,7 @@ if dein#load_state('/home/neville/.local/share/dein')
   call dein#add('ntpeters/vim-better-whitespace')
   call dein#add('tpope/vim-sleuth')
   call dein#add('preservim/nerdcommenter')
+  call dein#add('vim-syntastic/syntastic')
 
   " Required:
   call dein#end()
@@ -84,3 +85,11 @@ let g:NERDSpaceDelims = 1
 nmap <A-/> <leader>ci<Down>
 vmap <A-/> <leader>ci
 vmap <A-?> <leader>cm
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0

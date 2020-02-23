@@ -84,7 +84,7 @@ _git() {
 }
 
 _neovim() {
-    nvim '+call dein#update() | q'
+    nvim -u $HOME/.config/nvim/dein.vim --headless '+call dein#install() | qall'
 }
 
 _pip() {

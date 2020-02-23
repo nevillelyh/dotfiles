@@ -14,6 +14,7 @@ esac
 
 # covered by /etc/alternatives
 # alias vi='vim'
+alias diff='colordiff'
 
 export EDITOR=vim
 

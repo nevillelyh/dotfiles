@@ -17,6 +17,10 @@ esac
 
 export EDITOR=vim
 
+if [[ -n $(pidof ssh-agent) ]]; then
+    ssh-add $HOME/.ssh/private/id_rsa $HOME/.ssh/spotify/id_rsa > /dev/null 2>&1
+fi
+
 if [ -f $HOME/.local/bin/virtualenvwrapper.sh ]; then
     export VIRTUALENVWRAPPER_PYTHON=$(which python3)
     export WORKON_HOME=$HOME/.virtualenvs

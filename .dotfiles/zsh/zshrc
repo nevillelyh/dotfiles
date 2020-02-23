@@ -34,9 +34,7 @@ alias gvim='gvim -p'
 alias mvn='mvn-color'
 
 # Google Cloud SDK
-if [[ -d /usr/local/gcloud/google-cloud-sdk ]]; then
-    source '/usr/local/gcloud/google-cloud-sdk/path.zsh.inc'
-    source '/usr/local/gcloud/google-cloud-sdk/completion.zsh.inc'
+if [[ -n $CLOUDSDK_HOME ]]; then
     alias gscat='gsutil cat'
     alias gscp='gsutil -m cp'
     alias gsdu='gsutil du'

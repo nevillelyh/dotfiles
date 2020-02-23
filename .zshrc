@@ -47,7 +47,7 @@ ZSH_THEME=""
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(colored-man-pages git mvn pip sbt scala zsh-syntax-highlighting z)
+plugins=(colored-man-pages gcloud git mvn pip sbt scala zsh-syntax-highlighting z)
 [[ "$(uname)" == "Darwin" ]] && plugins=(brew osx ${plugins})
 
 [[ -d ${HOME}/bin ]] && export PATH=${HOME}/bin:${PATH}

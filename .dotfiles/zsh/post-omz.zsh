@@ -16,7 +16,7 @@ esac
 # alias vi='vim'
 alias diff='colordiff'
 
-export EDITOR=vim
+export EDITOR=nvim
 
 if [[ -n $(pidof ssh-agent) ]]; then
     ssh-add $HOME/.ssh/private/id_rsa $HOME/.ssh/spotify/id_rsa > /dev/null 2>&1

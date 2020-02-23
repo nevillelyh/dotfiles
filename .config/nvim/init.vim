@@ -23,6 +23,7 @@ if dein#load_state('/home/neville/.local/share/dein')
   call dein#add('junegunn/fzf')
   call dein#add('tpope/vim-fugitive')
   call dein#add('airblade/vim-gitgutter') " [c/]c: prev/next hunk
+  call dein#add('ntpeters/vim-better-whitespace')
 
   " Required:
   call dein#end()

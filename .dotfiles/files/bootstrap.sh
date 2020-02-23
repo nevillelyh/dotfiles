@@ -84,6 +84,8 @@ _git() {
 }
 
 _neovim() {
+    mkdir -p $HOME/.local/share/dein/repos/github.com/Shougo
+    git clone git@github.com:Shougo/dein.vim.git $HOME/.local/share/dein/repos/github.com/Shougo/dein.vim
     nvim -u $HOME/.config/nvim/dein.vim --headless '+call dein#install() | qall'
 }
 

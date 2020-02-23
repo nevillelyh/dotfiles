@@ -25,6 +25,7 @@ if dein#load_state('/home/neville/.local/share/dein')
   call dein#add('airblade/vim-gitgutter') " [c/]c: prev/next hunk
   call dein#add('ntpeters/vim-better-whitespace')
   call dein#add('tpope/vim-sleuth')
+  call dein#add('preservim/nerdcommenter')
 
   " Required:
   call dein#end()
@@ -79,3 +80,7 @@ nmap <A-n> :bnext<CR>
 
 " Plugins
 nmap <A-t> :FZF<CR>
+let g:NERDSpaceDelims = 1
+nmap <A-/> <leader>ci<Down>
+vmap <A-/> <leader>ci
+vmap <A-?> <leader>cm

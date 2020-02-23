@@ -344,7 +344,13 @@ globalkeys = gears.table.join(
               {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"})
+              {description = "show the menubar", group = "launcher"}),
+
+    -- Custom bindings
+    awful.key({ modkey, "Mod1" }, "l", function () awful.spawn("gnome-screensaver-command --lock") end,
+              {description = "lock screen", group = "custom"}),
+    awful.key({ modkey, "Mod1" }, "s", function () awful.spawn("gnome-screenshot --interactive") end,
+              {description = "screenshot", group = "custom"})
 )
 
 clientkeys = gears.table.join(

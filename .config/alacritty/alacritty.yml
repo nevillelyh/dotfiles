@@ -648,3 +648,20 @@ colors:
 
 # Visual Bell
 # ...
+
+################################################################################
+
+window:
+  dimensions:
+    columns: 80
+    lines: 24
+
+font:
+  normal:
+    family: Fira Mono for Powerline
+  size: 12.0
+
+background_opacity: 0.8
+
+key_bindings:
+  - { key: N,      mods: Command,         action: SpawnNewInstance }

@@ -39,12 +39,21 @@ nmap <A-p> :bprevious<CR>
 nmap <A-n> :bnext<CR>
 
 " Plugins
+
+" FZF
+" Alt-O - git files
+" Alt-Shift-O - all files
 nmap <A-o> :call fzf#run(fzf#wrap({'source': 'git ls-files'}))<CR>
 nmap <A-O> :FZF<CR>
+
+" NERD Commenter
+" Alt-/ - Comment line(s)
+" Alt-Shift-/ - Comment block
 let g:NERDSpaceDelims = 1
 nmap <A-/> <leader>ci<Down>
 vmap <A-/> <leader>ci
 vmap <A-?> <leader>cm
+
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*

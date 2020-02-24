@@ -38,7 +38,8 @@ nmap <A-p> :bprevious<CR>
 nmap <A-n> :bnext<CR>
 
 " Plugins
-nmap <A-t> :FZF<CR>
+nmap <A-o> :call fzf#run(fzf#wrap({'source': 'git ls-files'}))<CR>
+nmap <A-O> :FZF<CR>
 let g:NERDSpaceDelims = 1
 nmap <A-/> <leader>ci<Down>
 vmap <A-/> <leader>ci

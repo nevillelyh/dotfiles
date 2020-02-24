@@ -2,6 +2,7 @@ source $HOME/.config/nvim/dein.vim
 
 " Look and feel
 behave xterm
+set termguicolors
 colorscheme monokai
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1

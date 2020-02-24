@@ -17,7 +17,7 @@ if dein#load_state($HOME.'/.local/share/dein')
   " Add or remove your plugins here like this:
   "call dein#add('Shougo/neosnippet.vim')
   "call dein#add('Shougo/neosnippet-snippets')
-  call dein#add('crusoexia/vim-monokai', {'merged': 0})
+  call dein#add('dracula/vim', {'merged': 0})
   call dein#add('vim-airline/vim-airline', {'merged': 0})
   call dein#add('edkolev/tmuxline.vim', {'merged': 0})
   call dein#add('ntpeters/vim-better-whitespace', {'merged': 0})

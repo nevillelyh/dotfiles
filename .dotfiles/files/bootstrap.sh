@@ -13,7 +13,7 @@ CASKS="adobe-creative-cloud alfred dropbox expressvpn gitter google-chrome googl
 # Linux packages:
 # python3-distutils - for pip
 # fonts-powerline - PowerlineSymbols only, no patched fonts
-DEB_PKGS="awesome colordiff fonts-powerline fzf gnome-screensaver htop neovim snapd tmux tree zsh"
+DEB_PKGS="awesome colordiff fonts-powerline fzf gnome-screensaver htop neovim neovim-qt snapd tmux tree zsh"
 
 # PIP packages:
 PIP_PKGS="ipython virtualenvwrapper flake8"

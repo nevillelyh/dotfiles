@@ -259,6 +259,34 @@ globalkeys = gears.table.join(
               {description = "view next", group = "tag"}),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
               {description = "go back", group = "tag"}),
+    awful.key({ modkey, "Shift"   }, "Left",
+        function()
+            if client.focus then
+                local i = client.focus.first_tag.index - 1
+                if i == 0 then
+                    i = 9
+                end
+                local tag = client.focus.screen.tags[i]
+                if tag then
+                    client.focus:move_to_tag(tag)
+                end
+            end
+        end,
+        {description = "move to previous", group = "tag"}),
+    awful.key({ modkey, "Shift"   }, "Right",
+        function()
+            if client.focus then
+                local i = client.focus.first_tag.index + 1
+                if i == 10 then
+                    i = 1
+                end
+                local tag = client.focus.screen.tags[i]
+                if tag then
+                    client.focus:move_to_tag(tag)
+                end
+            end
+        end,
+        {description = "move to next", group = "tag"}),
 
     awful.key({ modkey,           }, "j",
         function ()

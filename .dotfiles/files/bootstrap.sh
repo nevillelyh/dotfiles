@@ -64,6 +64,10 @@ _linux() {
     git clone https://github.com/powerline/fonts.git
     ./fonts/install.sh
     rm -rf fonts
+
+    git clone https://github.com/dracula/gnome-terminal
+    ./gnome-terminal/install.sh
+    rm -rf gnome-terminal
 }
 
 _mac() {

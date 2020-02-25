@@ -379,10 +379,10 @@ globalkeys = gears.table.join(
               {description = "show the menubar", group = "launcher"}),
 
     -- Custom bindings
-    awful.key({ modkey, "Mod1" }, "l", function () awful.spawn("gnome-screensaver-command --lock") end,
-              {description = "lock screen", group = "custom"}),
-    awful.key({ modkey, "Mod1" }, "s", function () awful.spawn("gnome-screenshot --interactive") end,
-              {description = "screenshot", group = "custom"})
+    awful.key({ modkey, "Shift"   }, "l", function () awful.spawn("gnome-screensaver-command --lock") end,
+              {description = "lock screen", group = "awesome"}),
+    awful.key({ modkey, "Shift"   }, "s", function () awful.spawn("gnome-screenshot --interactive") end,
+              {description = "screenshot", group = "awesome"})
 )
 
 clientkeys = gears.table.join(

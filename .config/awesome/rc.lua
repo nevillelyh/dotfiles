@@ -347,6 +347,16 @@ globalkeys = gears.table.join(
               {description = "select next", group = "layout"}),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
               {description = "select previous", group = "layout"}),
+    awful.key({ modkey, "Control" }, "space",
+        function ()
+            for _, tag in ipairs(awful.screen.focused().selected_tags) do
+                local tag = client.focus.first_tag
+                tag.master_width_factor = 0.5
+                tag.master_count = 1
+                tag.column_count = 1
+            end
+        end,
+        {description = "reset layout", group = "layout"}),
 
     awful.key({ modkey, "Shift"   }, "n",
               function ()

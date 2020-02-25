@@ -68,6 +68,9 @@ _linux() {
     git clone https://github.com/dracula/gnome-terminal
     ./gnome-terminal/install.sh
     rm -rf gnome-terminal
+
+    # workaround for Dropbox dependency on transitional libpango
+    # sudo dpkg -i --ignore-depends=libpango1.0-0 dropbox_2019.02.14_amd64.deb
 }
 
 _mac() {

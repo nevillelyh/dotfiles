@@ -24,6 +24,8 @@ local has_fdo, freedesktop = pcall(require, "freedesktop")
 
 local lain = require("lain")
 
+awful.util.spawn('dropbox start')
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)

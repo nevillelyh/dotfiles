@@ -80,7 +80,8 @@ theme.taglist_squares_unsel = themes_path .. "zenburn/taglist/squarez.png"
 -- }}}
 
 -- {{{ Misc
-theme.awesome_icon           = themes_path .. "zenburn/awesome-icon.png"
+-- https://github.com/lcpz/awesome-copycats/blob/master/themes/rainbow/icons/awesome.png
+theme.awesome_icon = os.getenv("HOME") .. "/.config/awesome/awesome.png"
 theme.menu_submenu_icon      = themes_path .. "default/submenu.png"
 -- }}}
 

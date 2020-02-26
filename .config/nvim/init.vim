@@ -3,6 +3,7 @@ source $HOME/.config/nvim/dein.vim
 " Look and feel
 behave xterm
 set termguicolors
+set mouse=a
 colorscheme dracula
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1

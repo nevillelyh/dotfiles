@@ -14,27 +14,28 @@ theme.wallpaper = themes_path .. "zenburn/zenburn-background.png"
 -- {{{ Styles
 theme.font      = "sans 8"
 
+-- https://github.com/dracula/i3/blob/master/.config/i3/config
 -- {{{ Colors
-theme.fg_normal  = "#DCDCCC"
-theme.fg_focus   = "#F0DFAF"
-theme.fg_urgent  = "#CC9393"
-theme.bg_normal  = "#3F3F3F"
-theme.bg_focus   = "#1E2320"
-theme.bg_urgent  = "#3F3F3F"
+theme.fg_normal  = "#BFBFBF" -- client.unfocused.text
+theme.fg_focus   = "#F8F8F2" -- client.focused.text
+theme.fg_urgent  = "#F8F8F2" -- client.urgent.text
+theme.bg_normal  = "#282A36" -- client.unfocused.bground
+theme.bg_focus   = "#282A36" -- client.unfocused.bground
+theme.bg_urgent  = "#FF5555" -- client.urgent.bground
 theme.bg_systray = theme.bg_normal
 -- }}}
 
 -- {{{ Borders
 theme.useless_gap   = dpi(0)
 theme.border_width  = dpi(2)
-theme.border_normal = "#3F3F3F"
-theme.border_focus  = "#6F6F6F"
-theme.border_marked = "#CC9393"
+theme.border_normal = "#282A36" -- client.unfocused.border
+theme.border_focus  = "#6272A4" -- client.focused.border
+theme.border_marked = "#44475A" -- client.urgent.border
 -- }}}
 
 -- {{{ Titlebars
-theme.titlebar_bg_focus  = "#3F3F3F"
-theme.titlebar_bg_normal = "#3F3F3F"
+theme.titlebar_bg_focus  = "#44475A" -- client.focused_inactive.bground
+theme.titlebar_bg_normal = "#282A36" -- client.unfocused.bground
 -- }}}
 
 -- There are other variable sets

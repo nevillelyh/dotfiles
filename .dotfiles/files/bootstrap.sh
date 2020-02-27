@@ -59,7 +59,6 @@ _linux() {
 
     sudo snap install spotify
     sudo snap install hub --classic
-    sudo snap install slack --classic
 
     git clone https://github.com/powerline/fonts.git
     ./fonts/install.sh
@@ -69,8 +68,14 @@ _linux() {
     ./gnome-terminal/install.sh
     rm -rf gnome-terminal
 
-    # workaround for Dropbox dependency on transitional libpango
-    # sudo dpkg -i --ignore-depends=libpango1.0-0 dropbox_2019.02.14_amd64.deb
+    # Dropbox has its own repository
+    # sudo aptitude install libpango1.0-0
+    # sudo dpkg -i dropbox_2019.02.14_amd64.deb
+    # Slack from Snap is broken
+    # sudo aptitude install gconf-service gconf2 libappindicator1
+    # sudo dpkg -i slack-desktop-4.3.2-amd64.deb
+    # Edit /usr/share/applications/slack.desktop to use wrapper
+    # for icon and _NET_WM_WINDOW_TYPE fixes
 }
 
 _mac() {

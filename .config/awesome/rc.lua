@@ -133,6 +133,29 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock("%a %H:%M")
 
+-- https://github.com/lcpz/awesome-copycats/tree/master/themes/powerarrow-dark/icons
+local icons_dir = os.getenv("HOME") .. "/.config/awesome/icons/"
+local mysysloadicon = wibox.widget.imagebox(icons_dir .. "temp.png")
+local mysysload = lain.widget.sysload({ settings = function()
+    widget:set_markup(load_1 .. " | " .. load_5 .. " | " .. load_15)
+end
+})
+local mycpuicon = wibox.widget.imagebox(icons_dir .. "cpu.png")
+local mycpu = lain.widget.cpu({ settings = function()
+    widget:set_markup(cpu_now.usage .. "%")
+end
+})
+local mymemicon = wibox.widget.imagebox(icons_dir .. "mem.png")
+local mymem = lain.widget.mem({ settings = function()
+    widget:set_markup(mem_now.perc .. "%")
+end
+})
+local myhddicon = wibox.widget.imagebox(icons_dir .. "hdd.png")
+local myhdd = lain.widget.fs({ settings = function()
+    widget:set_markup(fs_now["/"].percentage .. "%")
+end
+})
+
 local mycal = lain.widget.cal({
     attach_to = {mytextclock},
     notification_preset = {
@@ -244,8 +267,21 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
+            wibox.widget.textbox(" "),
+            mysysloadicon,
+            mysysload.widget,
+            wibox.widget.textbox(" "),
+            mycpuicon,
+            mycpu.widget,
+            mymemicon,
+            mymem.widget,
+            myhddicon,
+            myhdd.widget,
+            wibox.widget.textbox(" "),
             mykeyboardlayout,
+            wibox.widget.textbox(" "),
             mytextclock,
+            wibox.widget.textbox(" "),
             s.mylayoutbox,
         },
     }

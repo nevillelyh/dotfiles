@@ -155,6 +155,23 @@ local myhdd = lain.widget.fs({ settings = function()
     widget:set_markup(fs_now["/"].percentage .. "%")
 end
 })
+local mywifiicon = wibox.widget.imagebox()
+local myethicon = wibox.widget.imagebox()
+local mynet = lain.widget.net({ eth_state = "on", wifi_state = "on", settings = function()
+    for _, v in pairs(net_now.devices) do
+        if v.wifi then
+            mywifiicon:set_image(icons_dir .. "net.png")
+        else
+            mywifiicon:set_image(nil)
+        end
+        if v.ethernet then
+            myethicon:set_image(icons_dir .. "net_wired.png")
+        else
+            myethicon:set_image(nil)
+        end
+    end
+end
+})
 
 local mycal = lain.widget.cal({
     attach_to = {mytextclock},
@@ -277,6 +294,8 @@ awful.screen.connect_for_each_screen(function(s)
             mymem.widget,
             myhddicon,
             myhdd.widget,
+            mywifiicon,
+            myethicon,
             wibox.widget.textbox(" "),
             mykeyboardlayout,
             wibox.widget.textbox(" "),

@@ -133,6 +133,15 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock("%a %H:%M")
 
+local mycal = lain.widget.cal({
+    attach_to = {mytextclock},
+    notification_preset = {
+        font = "Fira Mono 10",
+        fg = "#BFBFBF",
+        bg = "#282A36"
+    }
+})
+
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
                     awful.button({ }, 1, function(t) t:view_only() end),

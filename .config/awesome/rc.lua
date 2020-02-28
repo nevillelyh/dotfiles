@@ -475,7 +475,9 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift"   }, "l", function () awful.spawn("gnome-screensaver-command --lock") end,
               {description = "lock screen", group = "awesome"}),
     awful.key({ modkey, "Shift"   }, "s", function () awful.spawn("gnome-screenshot --interactive") end,
-              {description = "screenshot", group = "awesome"})
+              {description = "screenshot", group = "awesome"}),
+    awful.key({ modkey,           }, "`", naughty.destroy_all_notifications,
+              {description = "dismiss notifications", group = "awesome"})
 )
 
 clientkeys = gears.table.join(

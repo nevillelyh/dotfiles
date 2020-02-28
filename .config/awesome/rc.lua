@@ -140,46 +140,46 @@ local my_notification_preset = {
     bg = "#282A36"
 }
 local icons_dir = os.getenv("HOME") .. "/.config/awesome/icons/"
-local mysysloadicon = wibox.widget.imagebox(icons_dir .. "temp.png")
-local mysysload = lain.widget.sysload({ settings = function()
+local my_sysload_icon = wibox.widget.imagebox(icons_dir .. "temp.png")
+local my_sysload = lain.widget.sysload({ settings = function()
     widget:set_markup(load_1 .. " | " .. load_5 .. " | " .. load_15)
 end
 })
-local mycpuicon = wibox.widget.imagebox(icons_dir .. "cpu.png")
-local mycpu = lain.widget.cpu({ settings = function()
+local my_cpu_icon = wibox.widget.imagebox(icons_dir .. "cpu.png")
+local my_cpu = lain.widget.cpu({ settings = function()
     widget:set_markup(cpu_now.usage .. "%")
 end
 })
-local mymemicon = wibox.widget.imagebox(icons_dir .. "mem.png")
-local mymem = lain.widget.mem({ settings = function()
+local my_mem_icon = wibox.widget.imagebox(icons_dir .. "mem.png")
+local my_mem = lain.widget.mem({ settings = function()
     widget:set_markup(mem_now.perc .. "%")
 end
 })
-local myhddicon = wibox.widget.imagebox(icons_dir .. "hdd.png")
-local myhdd = lain.widget.fs({
+local my_hdd_icon = wibox.widget.imagebox(icons_dir .. "hdd.png")
+local my_hdd = lain.widget.fs({
     notification_preset = my_notification_preset,
     settings = function()
         widget:set_markup(fs_now["/"].percentage .. "%")
     end
 })
-local mywifiicon = wibox.widget.imagebox()
-local myethicon = wibox.widget.imagebox()
-local mynet = lain.widget.net({ eth_state = "on", wifi_state = "on", settings = function()
+local my_wifi_icon = wibox.widget.imagebox()
+local my_eth_icon = wibox.widget.imagebox()
+local my_net = lain.widget.net({ eth_state = "on", wifi_state = "on", settings = function()
     for _, v in pairs(net_now.devices) do
         if v.wifi then
-            mywifiicon:set_image(icons_dir .. "net.png")
+            my_wifi_icon:set_image(icons_dir .. "net.png")
         else
-            mywifiicon:set_image(nil)
+            my_wifi_icon:set_image(nil)
         end
         if v.ethernet then
-            myethicon:set_image(icons_dir .. "net_wired.png")
+            my_eth_icon:set_image(icons_dir .. "net_wired.png")
         else
-            myethicon:set_image(nil)
+            my_eth_icon:set_image(nil)
         end
     end
 end
 })
-local mysep = wibox.widget {
+local my_separator = wibox.widget {
     widget = wibox.widget.separator,
     orientation = "vertical",
     forced_width = 5,
@@ -188,7 +188,7 @@ local mysep = wibox.widget {
     opacity = 0.0
 }
 
-local mycal = lain.widget.cal({
+local my_cal = lain.widget.cal({
     attach_to = {mytextclock},
     notification_preset = my_notification_preset
 })
@@ -295,23 +295,23 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
-            mysep,
-            mysysloadicon,
-            mysysload.widget,
-            mysep,
-            mycpuicon,
-            mycpu.widget,
-            mymemicon,
-            mymem.widget,
-            myhddicon,
-            myhdd.widget,
-            mywifiicon,
-            myethicon,
-            mysep,
+            my_separator,
+            my_sysload_icon,
+            my_sysload.widget,
+            my_separator,
+            my_cpu_icon,
+            my_cpu.widget,
+            my_mem_icon,
+            my_mem.widget,
+            my_hdd_icon,
+            my_hdd.widget,
+            my_wifi_icon,
+            my_eth_icon,
+            my_separator,
             mykeyboardlayout,
-            mysep,
+            my_separator,
             mytextclock,
-            mysep,
+            my_separator,
             s.mylayoutbox,
         },
     }

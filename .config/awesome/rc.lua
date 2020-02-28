@@ -140,9 +140,14 @@ local my_notification_preset = {
     bg = "#282A36"
 }
 local icons_dir = os.getenv("HOME") .. "/.config/awesome/icons/"
-local my_sysload_icon = wibox.widget.imagebox(icons_dir .. "temp.png")
+local my_sysload_icon = wibox.widget.imagebox(icons_dir .. "task.png")
 local my_sysload = lain.widget.sysload({ settings = function()
     widget:set_markup(load_1 .. " | " .. load_5 .. " | " .. load_15)
+end
+})
+local my_temp_icon = wibox.widget.imagebox(icons_dir .. "temp.png")
+local my_temp = lain.widget.temp({ settings = function()
+    widget:set_markup(coretemp_now)
 end
 })
 local my_cpu_icon = wibox.widget.imagebox(icons_dir .. "cpu.png")
@@ -299,6 +304,8 @@ awful.screen.connect_for_each_screen(function(s)
             my_sysload_icon,
             my_sysload.widget,
             my_separator,
+            my_temp_icon,
+            my_temp.widget,
             my_cpu_icon,
             my_cpu.widget,
             my_mem_icon,

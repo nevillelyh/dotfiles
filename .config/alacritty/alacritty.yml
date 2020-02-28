@@ -664,7 +664,7 @@ font:
     family: Fira Mono for Powerline
   size: 12.0
 
-background_opacity: 0.8
+background_opacity: 0.9
 
 key_bindings:
   - { key: N,     mods: Command,   action: SpawnNewInstance }

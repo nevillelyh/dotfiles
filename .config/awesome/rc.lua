@@ -172,6 +172,14 @@ local mynet = lain.widget.net({ eth_state = "on", wifi_state = "on", settings = 
     end
 end
 })
+local mysep = wibox.widget {
+    widget = wibox.widget.separator,
+    orientation = "vertical",
+    forced_width = 5,
+    thickness = 2,
+    color = "#44475A",
+    opacity = 0.0
+}
 
 local mycal = lain.widget.cal({
     attach_to = {mytextclock},
@@ -284,10 +292,10 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
-            wibox.widget.textbox(" "),
+            mysep,
             mysysloadicon,
             mysysload.widget,
-            wibox.widget.textbox(" "),
+            mysep,
             mycpuicon,
             mycpu.widget,
             mymemicon,
@@ -296,11 +304,11 @@ awful.screen.connect_for_each_screen(function(s)
             myhdd.widget,
             mywifiicon,
             myethicon,
-            wibox.widget.textbox(" "),
+            mysep,
             mykeyboardlayout,
-            wibox.widget.textbox(" "),
+            mysep,
             mytextclock,
-            wibox.widget.textbox(" "),
+            mysep,
             s.mylayoutbox,
         },
     }

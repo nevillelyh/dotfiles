@@ -134,6 +134,11 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 mytextclock = wibox.widget.textclock("%a %H:%M")
 
 -- https://github.com/lcpz/awesome-copycats/tree/master/themes/powerarrow-dark/icons
+local my_notification_preset = {
+    font = "Fira Mono 10",
+    fg = "#BFBFBF",
+    bg = "#282A36"
+}
 local icons_dir = os.getenv("HOME") .. "/.config/awesome/icons/"
 local mysysloadicon = wibox.widget.imagebox(icons_dir .. "temp.png")
 local mysysload = lain.widget.sysload({ settings = function()
@@ -151,9 +156,11 @@ local mymem = lain.widget.mem({ settings = function()
 end
 })
 local myhddicon = wibox.widget.imagebox(icons_dir .. "hdd.png")
-local myhdd = lain.widget.fs({ settings = function()
-    widget:set_markup(fs_now["/"].percentage .. "%")
-end
+local myhdd = lain.widget.fs({
+    notification_preset = my_notification_preset,
+    settings = function()
+        widget:set_markup(fs_now["/"].percentage .. "%")
+    end
 })
 local mywifiicon = wibox.widget.imagebox()
 local myethicon = wibox.widget.imagebox()
@@ -183,11 +190,7 @@ local mysep = wibox.widget {
 
 local mycal = lain.widget.cal({
     attach_to = {mytextclock},
-    notification_preset = {
-        font = "Fira Mono 10",
-        fg = "#BFBFBF",
-        bg = "#282A36"
-    }
+    notification_preset = my_notification_preset
 })
 
 -- Create a wibox for each screen and add it

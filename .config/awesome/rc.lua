@@ -303,7 +303,6 @@ awful.screen.connect_for_each_screen(function(s)
             my_separator,
             my_sysload_icon,
             my_sysload.widget,
-            my_separator,
             my_temp_icon,
             my_temp.widget,
             my_cpu_icon,

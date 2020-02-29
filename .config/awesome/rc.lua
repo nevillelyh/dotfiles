@@ -110,17 +110,17 @@ local restart_icon = icons_dir .. "reload.svg"
 local quit_icon = icons_dir .. "gtk-quit.svg"
 
 myawesomemenu = {
-   { "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end, hotkeys_icon },
-   { "manual", terminal .. " -e man awesome", help_icon },
-   { "edit config", editor_cmd .. " " .. awesome.conffile, editor_icon },
-   { "screenshot", screenshot, screenshot_icon },
-   { "lock screen", lock_screen, lock_icon },
-   { "restart", awesome.restart, restart_icon },
-   { "quit", function() awesome.quit() end, quit_icon },
+   { "Hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end, hotkeys_icon },
+   { "Manual", terminal .. " -e man awesome", help_icon },
+   { "Edit Config", editor_cmd .. " " .. awesome.conffile, editor_icon },
+   { "Screenshot", screenshot, screenshot_icon },
+   { "Lock Screen", lock_screen, lock_icon },
+   { "Restart", awesome.restart, restart_icon },
+   { "Quit", function() awesome.quit() end, quit_icon },
 }
 
 local menu_awesome = { "awesome", myawesomemenu, beautiful.awesome_icon }
-local menu_terminal = { "open terminal", terminal, terminal_icon }
+local menu_terminal = { "Open Terminal", terminal, terminal_icon }
 
 if has_fdo then
     mymainmenu = freedesktop.menu.build({

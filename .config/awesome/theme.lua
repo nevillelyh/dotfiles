@@ -83,7 +83,7 @@ theme.taglist_squares_unsel = themes_path .. "zenburn/taglist/squarez.png"
 -- {{{ Misc
 -- https://github.com/lcpz/awesome-copycats/blob/master/themes/rainbow/icons/awesome.png
 theme.awesome_icon = awesome_path .. "icons/awesome.png"
-theme.menu_submenu_icon      = themes_path .. "default/submenu.png"
+theme.menu_submenu_icon      = awesome_path .. "icons/submenu.png"
 -- }}}
 
 -- {{{ Layout

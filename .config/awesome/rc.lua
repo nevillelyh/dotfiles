@@ -136,7 +136,7 @@ mytextclock = wibox.widget.textclock("%a %H:%M")
 
 -- https://github.com/lcpz/awesome-copycats/tree/master/themes/powerarrow-dark/icons
 local my_notification_preset = {
-    font = "Fira Mono 10",
+    font = "Fira Mono 9",
     fg = "#BFBFBF",
     bg = "#282A36"
 }

@@ -93,16 +93,24 @@ awful.layout.layouts = {
 
 -- {{{ Menu
 -- Create a launcher widget and a main menu
+local icons_dir = os.getenv("HOME") .. "/.config/awesome/icons/"
+local hotkeys_icon = icons_dir .. "help-keybord-shortcuts.svg"
+local terminal_icon = icons_dir .. "cm_runterm.svg"
+local help_icon = icons_dir .. "help.svg"
+local editor_icon = icons_dir .. "edit.svg"
+local restart_icon = icons_dir .. "reload.svg"
+local quit_icon = icons_dir .. "gtk-quit.svg"
+
 myawesomemenu = {
-   { "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
-   { "manual", terminal .. " -e man awesome" },
-   { "edit config", editor_cmd .. " " .. awesome.conffile },
-   { "restart", awesome.restart },
-   { "quit", function() awesome.quit() end },
+   { "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end, hotkeys_icon },
+   { "manual", terminal .. " -e man awesome", help_icon },
+   { "edit config", editor_cmd .. " " .. awesome.conffile, editor_icon },
+   { "restart", awesome.restart, restart_icon },
+   { "quit", function() awesome.quit() end, quit_icon },
 }
 
 local menu_awesome = { "awesome", myawesomemenu, beautiful.awesome_icon }
-local menu_terminal = { "open terminal", terminal }
+local menu_terminal = { "open terminal", terminal, terminal_icon }
 
 if has_fdo then
     mymainmenu = freedesktop.menu.build({
@@ -140,7 +148,6 @@ local my_notification_preset = {
     fg = "#BFBFBF",
     bg = "#282A36"
 }
-local icons_dir = os.getenv("HOME") .. "/.config/awesome/icons/"
 local my_sysload_icon = wibox.widget.imagebox(icons_dir .. "task.png")
 local my_sysload = lain.widget.sysload({ settings = function()
     widget:set_markup(load_1 .. " | " .. load_5 .. " | " .. load_15)

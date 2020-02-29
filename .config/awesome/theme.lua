@@ -12,7 +12,7 @@ theme.wallpaper = os.getenv("HOME") .. "/.config/awesome/wallpapers/pro-dark.png
 -- }}}
 
 -- {{{ Styles
-theme.font      = "sans 8"
+theme.font      = "Fira Sans Bold 9"
 
 -- https://github.com/dracula/i3/blob/master/.config/i3/config
 -- {{{ Colors

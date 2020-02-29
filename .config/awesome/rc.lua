@@ -93,11 +93,19 @@ awful.layout.layouts = {
 
 -- {{{ Menu
 -- Create a launcher widget and a main menu
+local lock_screen = function()
+    awful.spawn("gnome-screensaver-command --lock")
+end
+local screenshot = function ()
+    awful.spawn("gnome-screenshot --interactive")
+end
 local icons_dir = os.getenv("HOME") .. "/.config/awesome/icons/"
 local hotkeys_icon = icons_dir .. "help-keybord-shortcuts.svg"
 local terminal_icon = icons_dir .. "cm_runterm.svg"
 local help_icon = icons_dir .. "help.svg"
 local editor_icon = icons_dir .. "edit.svg"
+local screenshot_icon = icons_dir .. "camera-on.svg"
+local lock_icon = icons_dir .. "lock.svg"
 local restart_icon = icons_dir .. "reload.svg"
 local quit_icon = icons_dir .. "gtk-quit.svg"
 
@@ -105,6 +113,8 @@ myawesomemenu = {
    { "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end, hotkeys_icon },
    { "manual", terminal .. " -e man awesome", help_icon },
    { "edit config", editor_cmd .. " " .. awesome.conffile, editor_icon },
+   { "screenshot", screenshot, screenshot_icon },
+   { "lock screen", lock_screen, lock_icon },
    { "restart", awesome.restart, restart_icon },
    { "quit", function() awesome.quit() end, quit_icon },
 }
@@ -490,9 +500,9 @@ globalkeys = gears.table.join(
               {description = "show the menubar", group = "launcher"}),
 
     -- Custom bindings
-    awful.key({ modkey, "Shift"   }, "l", function () awful.spawn("gnome-screensaver-command --lock") end,
+    awful.key({ modkey, "Shift"   }, "l", lock_screen,
               {description = "lock screen", group = "awesome"}),
-    awful.key({ modkey, "Shift"   }, "s", function () awful.spawn("gnome-screenshot --interactive") end,
+    awful.key({ modkey, "Shift"   }, "s", screenshot,
               {description = "screenshot", group = "awesome"}),
     awful.key({ modkey,           }, "`", naughty.destroy_all_notifications,
               {description = "dismiss notifications", group = "awesome"})

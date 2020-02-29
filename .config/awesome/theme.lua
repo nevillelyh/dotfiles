@@ -8,7 +8,8 @@ local dpi = require("beautiful.xresources").apply_dpi
 
 -- {{{ Main
 local theme = {}
-theme.wallpaper = os.getenv("HOME") .. "/.config/awesome/wallpapers/pro-dark.png"
+local awesome_path = os.getenv("HOME") .. "/.config/awesome/"
+theme.wallpaper = awesome_path .. "wallpapers/pro-dark.png"
 -- }}}
 
 -- {{{ Styles
@@ -81,7 +82,7 @@ theme.taglist_squares_unsel = themes_path .. "zenburn/taglist/squarez.png"
 
 -- {{{ Misc
 -- https://github.com/lcpz/awesome-copycats/blob/master/themes/rainbow/icons/awesome.png
-theme.awesome_icon = os.getenv("HOME") .. "/.config/awesome/icons/awesome.png"
+theme.awesome_icon = awesome_path .. "icons/awesome.png"
 theme.menu_submenu_icon      = themes_path .. "default/submenu.png"
 -- }}}
 

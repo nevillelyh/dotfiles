@@ -185,6 +185,14 @@ local my_net = lain.widget.net({ eth_state = "on", wifi_state = "on", settings =
     end
 end
 })
+local my_weather = lain.widget.weather({
+    units = "imperial",
+    city_id = "5128581",
+    notification_preset = my_notification_preset,
+    settings = function()
+        widget:set_markup(string.format("%d°F", math.floor(weather_now["main"]["temp"])))
+    end
+})
 local my_separator = wibox.widget {
     widget = wibox.widget.separator,
     orientation = "vertical",
@@ -315,6 +323,8 @@ awful.screen.connect_for_each_screen(function(s)
             my_wifi_icon,
             my_eth_icon,
             my_separator,
+            my_weather.icon,
+            my_weather.widget,
             mykeyboardlayout,
             my_separator,
             mytextclock,

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -euo pipefail
+
+status=$(git status --porcelain --untracked-files=no)
+[ -z "$status" ] || git stash save "tmp-git-update"
+git pull
+git submodule update --remote
+[ -z "$status" ] || git stash pop
+
+nvim -u $HOME/.config/nvim/dein.vim --headless '+call dein#update() | qall'

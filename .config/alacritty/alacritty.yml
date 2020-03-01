@@ -672,6 +672,8 @@ key_bindings:
   # Fix Alt-* on macOS
   - { key: B,     mods: Alt,       chars: "\x1bb"           }
   - { key: F,     mods: Alt,       chars: "\x1bf"           }
+  - { key: P,     mods: Alt,       chars: "\x1bp"           }
+  - { key: N,     mods: Alt,       chars: "\x1bn"           }
   - { key: O,     mods: Alt,       chars: "\x1bo"           }
   - { key: O,     mods: Alt|Shift, chars: "\x1bO"           }
   - { key: Slash, mods: Alt,       chars: "\x1b/"           }

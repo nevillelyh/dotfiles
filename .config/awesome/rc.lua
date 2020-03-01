@@ -342,6 +342,7 @@ awful.screen.connect_for_each_screen(function(s)
             my_separator,
             my_weather.icon,
             my_weather.widget,
+            my_separator,
             mykeyboardlayout,
             my_separator,
             mytextclock,

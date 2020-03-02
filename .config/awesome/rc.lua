@@ -22,11 +22,12 @@ require("awful.hotkeys_popup.keys")
 local debian = require("debian.menu")
 local has_fdo, freedesktop = pcall(require, "freedesktop")
 
+local awesome_path = os.getenv("HOME") .. "/.config/awesome/"
 local lain = require("lain")
 
 awful.util.spawn("dropbox start")
 awful.util.spawn("compton -b")
-awful.util.spawn(os.getenv("HOME") .. "/.config/awesome/xautolock.sh")
+awful.util.spawn(awesome_path .. "xautolock.sh")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -55,8 +56,7 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
--- beautiful.init(gears.filesystem.get_themes_dir() .. "zenburn/theme.lua")
-beautiful.init(os.getenv("HOME") .. "/.config/awesome/theme.lua")
+beautiful.init(awesome_path .. "theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "x-terminal-emulator"
@@ -100,7 +100,9 @@ end
 local screenshot = function ()
     awful.spawn("gnome-screenshot --interactive")
 end
-local icons_dir = os.getenv("HOME") .. "/.config/awesome/icons/"
+
+-- https://github.com/PapirusDevelopmentTeam/papirus-icon-theme/tree/master/ePapirus/24x24/actions
+local icons_dir = awesome_path .. "icons/"
 local hotkeys_icon = icons_dir .. "help-keybord-shortcuts.svg"
 local terminal_icon = icons_dir .. "cm_runterm.svg"
 local help_icon = icons_dir .. "help.svg"
@@ -153,12 +155,13 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock("%a %H:%M")
 
--- https://github.com/lcpz/awesome-copycats/tree/master/themes/powerarrow-dark/icons
 local my_notification_preset = {
     font = "Fira Mono 9",
     fg = "#BFBFBF",
     bg = "#282A36"
 }
+
+-- https://github.com/lcpz/awesome-copycats/tree/master/themes/powerarrow-dark/icons
 local my_sysload_icon = wibox.widget.imagebox(icons_dir .. "task.png")
 local my_sysload = lain.widget.sysload({ settings = function()
     widget:set_markup(load_1 .. " | " .. load_5 .. " | " .. load_15)

@@ -22,6 +22,13 @@ if [[ -n $(pidof ssh-agent) ]]; then
     ssh-add $HOME/.ssh/private/id_rsa $HOME/.ssh/spotify/id_rsa > /dev/null 2>&1
 fi
 
+if [ -f $HOME/.local/bin/virtualenvwrapper.sh ]; then
+    export VIRTUALENVWRAPPER_PYTHON=$(which python3)
+    export WORKON_HOME=$HOME/.virtualenvs
+    export PROJECT_HOME=$HOME/src/python
+    source $HOME/.local/bin/virtualenvwrapper.sh
+fi
+
 if [[ -n $CLOUDSDK_HOME ]]; then
     alias gscat='gsutil cat'
     alias gsdu='gsutil du'
@@ -29,13 +36,6 @@ if [[ -n $CLOUDSDK_HOME ]]; then
     alias gscp='gsutil -m cp'
     alias gsmv='gsutil -m mv'
     alias gsrm='gsutil -m rm'
-fi
-
-if [ -f $HOME/.local/bin/virtualenvwrapper.sh ]; then
-    export VIRTUALENVWRAPPER_PYTHON=$(which python3)
-    export WORKON_HOME=$HOME/.virtualenvs
-    export PROJECT_HOME=$HOME/src/python
-    source $HOME/.local/bin/virtualenvwrapper.sh
 fi
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!

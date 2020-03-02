@@ -24,8 +24,8 @@ local has_fdo, freedesktop = pcall(require, "freedesktop")
 
 local lain = require("lain")
 
-awful.util.spawn('dropbox start')
-awful.util.spawn('compton -b')
+awful.util.spawn("dropbox start")
+awful.util.spawn("compton -b")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to

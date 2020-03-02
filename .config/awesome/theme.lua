@@ -3,12 +3,13 @@
 --    By Adrian C. (anrxc)   --
 -------------------------------
 
+local awesome_path = os.getenv("HOME") .. "/.config/awesome/"
 local themes_path = require("gears.filesystem").get_themes_dir()
 local dpi = require("beautiful.xresources").apply_dpi
 
 -- {{{ Main
 local theme = {}
-local awesome_path = os.getenv("HOME") .. "/.config/awesome/"
+-- https://github.com/4ban/awesome-pro/blob/master/themes/pro-dark/wallpapers/pro-dark.png
 theme.wallpaper = awesome_path .. "wallpapers/pro-dark.png"
 -- }}}
 
@@ -84,7 +85,8 @@ theme.taglist_squares_unsel = themes_path .. "zenburn/taglist/squarez.png"
 
 -- {{{ Misc
 -- https://github.com/lcpz/awesome-copycats/blob/master/themes/rainbow/icons/awesome.png
-theme.awesome_icon = awesome_path .. "icons/awesome.png"
+theme.awesome_icon           = awesome_path .. "icons/awesome.png"
+-- https://github.com/lcpz/awesome-copycats/blob/master/themes/powerarrow-dark/icons/submenu.png
 theme.menu_submenu_icon      = awesome_path .. "icons/submenu.png"
 -- }}}
 
@@ -105,13 +107,12 @@ theme.layout_cornernw   = themes_path .. "zenburn/layouts/cornernw.png"
 theme.layout_cornerne   = themes_path .. "zenburn/layouts/cornerne.png"
 theme.layout_cornersw   = themes_path .. "zenburn/layouts/cornersw.png"
 theme.layout_cornerse   = themes_path .. "zenburn/layouts/cornerse.png"
-theme.lain_icons        = os.getenv("HOME") .. "/.config/awesome/lain/icons/layout/zenburn/"
-theme.layout_centerwork = theme.lain_icons .. "centerwork.png"
+theme.layout_centerwork = awesome_path .. "lain/icons/layout/zenburn/centerwork.png"
 -- }}}
 
 -- {{{ Titlebar
 -- https://github.com/lcpz/awesome-copycats/tree/master/themes/blackburn/icons/titlebar
-local titlebar_path = os.getenv("HOME") .. "/.config/awesome/titlebar/"
+local titlebar_path = awesome_path .. "titlebar/"
 theme.titlebar_close_button_focus  = titlebar_path .. "close_focus.png"
 theme.titlebar_close_button_normal = titlebar_path .. "close_normal.png"
 

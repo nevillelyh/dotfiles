@@ -673,6 +673,8 @@ key_bindings:
   # bash/zsh back/forward one word
   - { key: B,     mods: Alt,       chars: "\x1bb"           }
   - { key: F,     mods: Alt,       chars: "\x1bf"           }
+  # FZF cd into directory
+  - { key: C,     mods: Alt,       chars: "\x1bc"           }
   # Vim previous/next buffer
   - { key: P,     mods: Alt,       chars: "\x1bp"           }
   - { key: N,     mods: Alt,       chars: "\x1bn"           }

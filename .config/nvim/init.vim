@@ -43,10 +43,10 @@ nmap <A-n> :bnext<CR>
 " Plugins
 
 " FZF
-" Alt-O - git files
-" Alt-Shift-O - all files
-nmap <A-o> :call fzf#run(fzf#wrap({'source': 'git ls-files'}))<CR>
-nmap <A-O> :FZF<CR>
+" Alt-O - with FZF_DEFAULT_COMMAND='fd -type f'
+" Alt-Shift-O - with system 'find' which includes ignored files
+nmap <A-o> :FZF<CR>
+nmap <A-O> :call fzf#run(fzf#wrap({'source': 'find . -type f'}))<CR>
 
 "Indent Guides
 let g:indent_guides_enable_on_vim_startup = 1

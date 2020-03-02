@@ -48,6 +48,10 @@ nmap <A-n> :bnext<CR>
 nmap <A-o> :call fzf#run(fzf#wrap({'source': 'git ls-files'}))<CR>
 nmap <A-O> :FZF<CR>
 
+"Indent Guides
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_guide_size = 1
+
 " NERD Commenter
 " Alt-/ - Comment line(s)
 " Alt-Shift-/ - Comment block

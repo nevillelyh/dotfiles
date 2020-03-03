@@ -380,7 +380,7 @@ globalkeys = gears.table.join(
             if client.focus then
                 local i = client.focus.first_tag.index - 1
                 if i == 0 then
-                    i = 9
+                    i = #client.focus.screen.tags
                 end
                 local tag = client.focus.screen.tags[i]
                 if tag then
@@ -393,7 +393,7 @@ globalkeys = gears.table.join(
         function()
             if client.focus then
                 local i = client.focus.first_tag.index + 1
-                if i == 10 then
+                if i == #client.focus.screen.tags + 1 then
                     i = 1
                 end
                 local tag = client.focus.screen.tags[i]

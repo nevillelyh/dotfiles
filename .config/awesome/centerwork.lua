@@ -1,6 +1,7 @@
 local awful = require("awful")
+local gears = require("gears")
 
-function compare_position(a, b)
+local function compare_position(a, b)
     if a.x == b.x then
         return a.y < b.y
     else
@@ -8,70 +9,53 @@ function compare_position(a, b)
     end
 end
 
-function get_neighbors()
+local function clients_by_position()
     local this = client.focus
     if this then
-        clients = client.focus.first_tag:clients()
-        table.sort(clients, compare_position)
+        sorted = client.focus.first_tag:clients()
+        table.sort(sorted, compare_position)
 
-        local current = 0
-        for i, that in ipairs(clients) do
+        local idx = 0
+        for i, that in ipairs(sorted) do
             if this.window == that.window then
-                current = i
+                idx = i
             end
         end
 
-        if current > 0 then
-            local n = #clients
-            local next = current + 1
-            if next > n then
-                next = 1
-            end
-            local prev = current - 1
-            if prev == 0 then
-                prev = n
-            end
-            return { prev = clients[prev], next = clients[next] }
+        if idx > 0 then
+            return { sorted = sorted, idx = idx }
         end
     end
     return {}
 end
 
-local centerwork = {}
+local function in_centerwork()
+    return client.focus and client.focus.first_tag.layout.name == "centerwork"
+end
 
-function centerwork.current_layout()
-    if client.focus and client.focus.first_tag.layout.name == "centerwork" then
-        return true
+local centerwork = { focus = {}, swap = {} }
+
+function centerwork.focus.byidx(i)
+    if in_centerwork() then
+        local cls = clients_by_position()
+        if cls.idx then
+            local target = cls.sorted[gears.math.cycle(#cls.sorted, cls.idx + i)]
+            awful.client.focus.byidx(0, target)
+        end
     else
-        return false
+        awful.client.focus.byidx(i)
     end
 end
 
-function centerwork.focus_prev()
-    local neighbors = get_neighbors()
-    if neighbors.prev and neighbors.next then
-        awful.client.focus.byidx(0, neighbors.prev)
-    end
-end
-
-function centerwork.focus_next()
-    local neighbors = get_neighbors()
-    if neighbors.prev and neighbors.next then
-        awful.client.focus.byidx(0, neighbors.next)
-    end
-end
-
-function centerwork.swap_prev()
-    local neighbors = get_neighbors()
-    if neighbors.prev and neighbors.next then
-        client.focus:swap(neighbors.prev)
-    end
-end
-
-function centerwork.swap_next()
-    local neighbors = get_neighbors()
-    if neighbors.prev and neighbors.next then
-        client.focus:swap(neighbors.next)
+function centerwork.swap.byidx(i)
+    if in_centerwork() then
+        local cls = clients_by_position()
+        if cls.idx then
+            local target = cls.sorted[gears.math.cycle(#cls.sorted, cls.idx + i)]
+            client.focus:swap(target)
+        end
+    else
+        awful.client.swap.byidx(i)
     end
 end
 

@@ -24,6 +24,7 @@ local has_fdo, freedesktop = pcall(require, "freedesktop")
 
 local awesome_path = os.getenv("HOME") .. "/.config/awesome/"
 local lain = require("lain")
+local volume = require("volume")
 local spotify = require("awesome-wm-widgets.spotify-widget.spotify")
 
 awful.util.spawn("dropbox start")
@@ -349,6 +350,8 @@ awful.screen.connect_for_each_screen(function(s)
             my_hdd.widget,
             my_wifi_icon,
             my_eth_icon,
+            my_separator,
+            volume({ display_notification = true }),
             my_separator,
             my_weather.icon,
             my_weather.widget,

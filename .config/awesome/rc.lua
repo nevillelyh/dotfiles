@@ -123,7 +123,7 @@ myawesomemenu = {
    { "Quit", function() awesome.quit() end, quit_icon },
 }
 
-local menu_awesome = { "awesome", myawesomemenu, beautiful.awesome_icon }
+local menu_awesome = { "Awesome", myawesomemenu, beautiful.awesome_icon }
 local menu_terminal = { "Open Terminal", terminal, terminal_icon }
 
 if has_fdo then

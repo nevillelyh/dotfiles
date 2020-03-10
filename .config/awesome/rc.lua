@@ -24,6 +24,7 @@ local has_fdo, freedesktop = pcall(require, "freedesktop")
 
 local awesome_path = os.getenv("HOME") .. "/.config/awesome/"
 local lain = require("lain")
+local spotify = require("awesome-wm-widgets.spotify-widget.spotify")
 
 awful.util.spawn("dropbox start")
 awful.util.spawn("compton -b")
@@ -329,6 +330,11 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
+            spotify({
+                -- https://github.com/PapirusDevelopmentTeam/papirus-icon-theme/blob/master/ePapirus/24x24/panel/spotify-indicator.svg
+                play_icon = icons_dir .. "spotify-indicator.svg",
+                pause_icon = icons_dir .. "spotify-indicator.svg",
+            }),
             wibox.widget.systray(),
             my_separator,
             my_sysload_icon,

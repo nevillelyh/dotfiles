@@ -337,6 +337,7 @@ awful.screen.connect_for_each_screen(function(s)
                 pause_icon = icons_dir .. "spotify-indicator-patched.svg",
                 font = "Fira Sans Bold 9"
             }),
+            my_separator,
             wibox.widget.systray(),
             my_separator,
             my_sysload_icon,

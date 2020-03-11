@@ -527,7 +527,20 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift"   }, "s", screenshot,
               {description = "screenshot", group = "awesome"}),
     awful.key({ modkey,           }, "`", naughty.destroy_all_notifications,
-              {description = "dismiss notifications", group = "awesome"})
+              {description = "dismiss notifications", group = "awesome"}),
+
+    awful.key({ }, "XF86AudioPlay",        function() awful.spawn("sp play") end,
+              {description = "Spotify - play",     group = "media"}),
+    awful.key({ }, "XF86AudioPrev",        function() awful.spawn("sp prev") end,
+              {description = "Spotify - previous", group = "media"}),
+    awful.key({ }, "XF86AudioNext",        function() awful.spawn("sp next") end,
+              {description = "Spotify - next",     group = "media"}),
+    awful.key({ }, "XF86AudioMute",        function() awful.spawn("amixer -D pulse sset Master toggle") end,
+              {description = "mute volume",        group = "media"}),
+    awful.key({ }, "XF86AudioLowerVolume", function() awful.spawn("amixer -D pulse sset Master 5%-") end,
+              {description = "lower volume",       group = "media"}),
+    awful.key({ }, "XF86AudioRaiseVolume", function() awful.spawn("amixer -D pulse sset Master 5%+") end,
+              {description = "raise volume",       group = "media"})
 )
 
 clientkeys = gears.table.join(

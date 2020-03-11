@@ -334,7 +334,7 @@ awful.screen.connect_for_each_screen(function(s)
             spotify({
                 -- https://github.com/PapirusDevelopmentTeam/papirus-icon-theme/blob/master/ePapirus/24x24/panel/spotify-indicator.svg
                 play_icon = icons_dir .. "spotify-indicator.svg",
-                pause_icon = icons_dir .. "spotify-indicator.svg",
+                pause_icon = icons_dir .. "spotify-indicator-patched.svg",
                 font = "Fira Sans Bold 9"
             }),
             wibox.widget.systray(),

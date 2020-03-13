@@ -537,6 +537,8 @@ globalkeys = gears.table.join(
               {description = "Spotify - previous", group = "media"}),
     awful.key({ }, "XF86AudioNext",        function() awful.spawn("sp next") end,
               {description = "Spotify - next",     group = "media"}),
+    -- pactl set-default-sink [sink]
+    -- amixer -D pulse sget Master
     awful.key({ }, "XF86AudioMute",        function() awful.spawn("amixer -D pulse sset Master toggle") end,
               {description = "mute volume",        group = "media"}),
     awful.key({ }, "XF86AudioLowerVolume", function() awful.spawn("amixer -D pulse sset Master 5%-") end,

@@ -41,6 +41,8 @@ if [[ -n $CLOUDSDK_HOME ]]; then
     alias gsrm='gsutil -m rm'
 fi
 
+[[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"

@@ -25,11 +25,11 @@ fi
 export FZF_DEFAULT_COMMAND='fd --type f'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-if [ -f $HOME/.local/bin/virtualenvwrapper.sh ]; then
+if type virtualenvwrapper.sh >/dev/null 2>&1; then
     export VIRTUALENVWRAPPER_PYTHON=$(which python3)
     export WORKON_HOME=$HOME/.virtualenvs
     export PROJECT_HOME=$HOME/src/python
-    source $HOME/.local/bin/virtualenvwrapper.sh
+    source $(which virtualenvwrapper.sh)
 fi
 
 if [[ -n $CLOUDSDK_HOME ]]; then

@@ -110,7 +110,7 @@ _pip() {
         SUDO="sudo"
     fi
     curl https://bootstrap.pypa.io/get-pip.py | ${SUDO} python3
-    ${SUDO} pip3 install ${PIP_PKGS}
+    pip3 install ${PIP_PKGS}
 }
 
 _sdkman() {

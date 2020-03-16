@@ -48,10 +48,6 @@ nmap <A-n> :bnext<CR>
 nmap <A-o> :FZF<CR>
 nmap <A-O> :call fzf#run(fzf#wrap({'source': 'find . -type f'}))<CR>
 
-"Indent Guides
-let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_guide_size = 1
-
 " NERD Commenter
 " Alt-/ - Comment line(s)
 " Alt-Shift-/ - Comment block

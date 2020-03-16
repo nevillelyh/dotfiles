@@ -216,13 +216,10 @@ local my_weather = lain.widget.weather({
         widget:set_markup(string.format("%d°F", math.floor(weather_now["main"]["temp"])))
     end
 })
+local my_layout = wibox.layout.align.horizontal()
+my_layout.forced_width = 5
 local my_separator = wibox.widget {
-    widget = wibox.widget.separator,
-    orientation = "vertical",
-    forced_width = 5,
-    thickness = 2,
-    color = "#44475A",
-    opacity = 0.0
+    layout = my_layout
 }
 
 local my_cal = lain.widget.cal({

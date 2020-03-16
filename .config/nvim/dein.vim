@@ -21,7 +21,6 @@ if dein#load_state($HOME.'/.local/share/dein')
   call dein#add('vim-airline/vim-airline', {'merged': 0})
   call dein#add('edkolev/tmuxline.vim', {'merged': 0})
   call dein#add('ntpeters/vim-better-whitespace', {'merged': 0})
-  call dein#add('nathanaelkane/vim-indent-guides', {'merged': 0})
   call dein#add('tpope/vim-sleuth', {'merged': 0})
   call dein#add('tpope/vim-fugitive', {'merged': 0})
   call dein#add('airblade/vim-gitgutter', {'merged': 0}) " [c/]c: prev/next hunk

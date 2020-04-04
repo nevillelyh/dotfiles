@@ -8,12 +8,6 @@ case "$(uname -s)" in
         ;;
 esac
 
-# covered by oh-my-zsh plugin
-# aliasing to 'hub' breaks completion
-# alias g='git'
-
-# covered by /etc/alternatives
-# alias vi='vim'
 alias diff='colordiff'
 
 export EDITOR=nvim

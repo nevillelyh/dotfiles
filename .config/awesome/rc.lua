@@ -350,7 +350,7 @@ awful.screen.connect_for_each_screen(function(s)
             my_wifi_icon,
             my_eth_icon,
             my_separator,
-            volume(),
+            volume({ display_notification = true }),
             my_separator,
             my_weather.icon,
             my_weather.widget,

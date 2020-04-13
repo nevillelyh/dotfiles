@@ -7,14 +7,14 @@ set -euo pipefail
 # Mac packages:
 # python - leave macOS bundled python alone
 # pinentry-mac - for GPG
-BREWS="colordiff fd fzf git htop hub neovim pinentry-mac python tmux tree wget z"
+BREWS="colordiff fd fzf git htop hub neovim pinentry-mac python tig tmux tree wget z"
 CASKS="adobe-creative-cloud alacritty alfred dropbox expressvpn gitter google-chrome google-cloud-sdk guitar-pro iterm2 keybase kindle macdive slack transmission visual-studio-code vimr vlc"
 
 # Linux packages:
 # compton - for alacritty background opacity
 # fonts-powerline - PowerlineSymbols only, no patched fonts
 # gnome-screensaver xautolock xcalib - for screen locking in awesome
-DEB_PKGS="alacritty awesome colordiff compton fd-find fonts-powerline fzf gnome-screensaver htop neovim neovim-qt snapd tmux tree xautolock xcalib zsh"
+DEB_PKGS="alacritty awesome colordiff compton fd-find fonts-powerline fzf gnome-screensaver htop neovim neovim-qt snapd tig tmux tree xautolock xcalib zsh"
 
 # PIP packages:
 PIP_PKGS="ipython virtualenvwrapper flake8"

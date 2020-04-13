@@ -9,3 +9,5 @@ git submodule update --remote
 [ -z "$status" ] || git stash pop
 
 nvim -u $HOME/.config/nvim/dein.vim --headless '+call dein#update() | qall'
+
+sdk upgrade

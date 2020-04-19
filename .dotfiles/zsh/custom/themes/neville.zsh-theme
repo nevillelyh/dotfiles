@@ -15,8 +15,8 @@ rprompt_pwd() {
 }
 
 rprompt_vcs() {
-    local prefix="%{$fg_bold[cyan]%}%r:%S %{$fg_bold[green]%}["
-    local postfix="%{$fg_bold[green]%}]%{$reset_color%}"
+    local prefix="%{$fg_bold[cyan]%}%r:%S %{$fg_bold[blue]%}["
+    local postfix="%{$fg_bold[blue]%}]%{$reset_color%}"
     local action="%{$fg_bold[magenta]%}%a"
     if [[ -z $(git ls-files --other --exclude-standard 2> /dev/null) ]]; then
         local branch="%b%c%u"
@@ -25,7 +25,7 @@ rprompt_vcs() {
     fi
     numstash=$(git stash list | wc -l)
     if [[ ${numstash} -gt 0 ]]; then
-        local stash="%{$fg_bold[blue]%}@{${numstash}}"
+        local stash="%{$fg_bold[magenta]%}@{${numstash}}"
     else
         local stash=""
     fi

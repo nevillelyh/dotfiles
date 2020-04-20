@@ -8,6 +8,7 @@ case "$(uname -s)" in
         ;;
 esac
 
+alias cat='bat'
 alias diff='colordiff'
 
 export EDITOR=nvim

@@ -76,6 +76,8 @@ _linux() {
     # Slack from Snap is broken
     # sudo aptitude install gconf-service gconf2 libappindicator1
     # sudo dpkg -i slack-desktop-4.3.2-amd64.deb
+    # Edit /usr/share/applications/slack.desktop to use wrapper
+    # for icon and _NET_WM_WINDOW_TYPE fixes
 }
 
 _mac() {

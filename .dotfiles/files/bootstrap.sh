@@ -14,7 +14,7 @@ CASKS="adobe-creative-cloud alacritty alfred dropbox expressvpn gitter google-ch
 # compton - for alacritty background opacity
 # fonts-powerline - PowerlineSymbols only, no patched fonts
 # gnome-screensaver xautolock xcalib - for screen locking in awesome
-# bat - outdated in Ubuntu 19.10, use binary instead
+# bat - outdated in Ubuntu 19.10/20.04, use binary instead
 DEB_PKGS="alacritty awesome colordiff compton fd-find fonts-powerline fzf gnome-screensaver htop neovim neovim-qt snapd tig tmux tree xautolock xcalib zsh"
 
 # PIP packages:

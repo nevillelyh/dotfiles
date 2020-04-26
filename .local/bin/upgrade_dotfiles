@@ -15,4 +15,4 @@ nvim -u $HOME/.config/nvim/dein.vim --headless '+call dein#update() | qall'
 
 set +u
 source "$HOME/.sdkman/bin/sdkman-init.sh"
-sdk upgrade
+sdk update

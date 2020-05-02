@@ -71,11 +71,9 @@ _linux() {
     rm -rf gnome-terminal
 
     # Dropbox has its own repository
-    # sudo aptitude install libpango1.0-0
-    # sudo dpkg -i dropbox_2019.02.14_amd64.deb
+    # sudo dpkg -i dropbox_*_amd64.deb
     # Slack from Snap is broken
-    # sudo aptitude install gconf-service gconf2 libappindicator1
-    # sudo dpkg -i slack-desktop-4.3.2-amd64.deb
+    # sudo dpkg -i slack-desktop-*-amd64.deb
     # Edit /usr/share/applications/slack.desktop to use wrapper
     # for icon and _NET_WM_WINDOW_TYPE fixes
 }
@@ -141,6 +139,7 @@ _zsh() {
 }
 
 [[ -f $HOME/.ssh/private/id_rsa ]] || die 'SSH private key not found'
+ssh-add $HOME/.ssh/private/id_rsa
 
 case "$(uname -s)" in
     Darwin)

@@ -27,9 +27,10 @@ local lain = require("lain")
 local volume = require("volume")
 local spotify = require("awesome-wm-widgets.spotify-widget.spotify")
 
-awful.util.spawn("dropbox start")
 awful.util.spawn("compton -b")
+awful.util.spawn("gnome-screensaver")
 awful.util.spawn(awesome_path .. "xautolock.sh")
+awful.util.spawn("dropbox start")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to

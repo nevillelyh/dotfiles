@@ -31,6 +31,7 @@ awful.util.spawn("compton -b")
 awful.util.spawn("gnome-screensaver")
 awful.util.spawn(awesome_path .. "xautolock.sh")
 awful.util.spawn("dropbox start")
+awful.util.spawn(os.getenv("HOME") .. "/.local/share/JetBrains/Toolbox/bin/jetbrains-toolbox")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to

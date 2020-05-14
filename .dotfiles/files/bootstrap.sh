@@ -114,6 +114,8 @@ _pip() {
 
 _sdkman() {
     curl -s "https://get.sdkman.io" | bash
+
+    set +u
     source "$HOME/.sdkman/bin/sdkman-init.sh"
 
     local JDK_VERSION=$(sdk list java | grep -o '8\.[^ ]*\.hs-adpt' | head -n 1)
@@ -132,6 +134,7 @@ _sdkman() {
 
     sdk install sbt
     sdk default sbt
+    set -u
 }
 
 _zsh() {

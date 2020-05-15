@@ -29,6 +29,7 @@ local spotify = require("awesome-wm-widgets.spotify-widget.spotify")
 
 awful.util.spawn("compton -b")
 awful.util.spawn("gnome-screensaver")
+awful.util.spawn(awesome_path .. "audio.sh")
 awful.util.spawn(awesome_path .. "xautolock.sh")
 awful.util.spawn("dropbox start")
 awful.util.spawn(os.getenv("HOME") .. "/.local/share/JetBrains/Toolbox/bin/jetbrains-toolbox")

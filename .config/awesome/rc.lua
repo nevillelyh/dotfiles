@@ -197,17 +197,21 @@ local my_hdd = lain.widget.fs({
 local my_wifi_icon = wibox.widget.imagebox()
 local my_eth_icon = wibox.widget.imagebox()
 local my_net = lain.widget.net({ eth_state = "on", wifi_state = "on", settings = function()
+    local has_wifi = false
+    local has_eth = false
     for _, v in pairs(net_now.devices) do
         if v.wifi then
-            my_wifi_icon:set_image(icons_dir .. "net.png")
-        else
-            my_wifi_icon:set_image(nil)
+            has_wifi = true
         end
         if v.ethernet then
-            my_eth_icon:set_image(icons_dir .. "net_wired.png")
-        else
-            my_eth_icon:set_image(nil)
+            has_eth = true
         end
+    end
+    if has_wifi then
+        my_wifi_icon:set_image(icons_dir .. "net.png")
+    end
+    if has_eth then
+        my_eth_icon:set_image(icons_dir .. "net_wired.png")
     end
 end
 })

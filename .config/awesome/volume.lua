@@ -26,10 +26,10 @@ function volume:toggle()
 end
 
 function volume:raise()
-    volume:_cmd('amixer ' .. volume.device .. ' sset Master 5%+')
+    volume:_cmd('amixer ' .. volume.device .. ' sset Master 2%+')
 end
 function volume:lower()
-    volume:_cmd('amixer ' .. volume.device .. ' sset Master 5%-')
+    volume:_cmd('amixer ' .. volume.device .. ' sset Master 2%-')
 end
 
 --{{{ Icon and notification update

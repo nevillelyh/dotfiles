@@ -223,6 +223,12 @@ local my_net = lain.widget.net({ eth_state = "on", wifi_state = "on", settings =
     my_wired_icon:set_image(wired_icon)
 end
 })
+my_wifi_icon:connect_signal("button::press", function(_,_,_,button)
+    if (button == 1) then awful.spawn("gnome-control-center wifi") end
+end)
+my_wired_icon:connect_signal("button::press", function(_,_,_,button)
+    if (button == 1) then awful.spawn("gnome-control-center network") end
+end)
 local my_weather = lain.widget.weather({
     units = "imperial",
     city_id = "5128581",

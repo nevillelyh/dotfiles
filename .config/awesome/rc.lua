@@ -167,27 +167,28 @@ local my_notification_preset = {
 }
 
 -- https://github.com/lcpz/awesome-copycats/tree/master/themes/powerarrow-dark/icons
-local my_sysload_icon = wibox.widget.imagebox(icons_dir .. "task.png")
+local epapirus_dir = icons_dir .. "ePapirus/"
+local my_sysload_icon = wibox.widget.imagebox(epapirus_dir .. "gpm-monitor.svg")
 local my_sysload = lain.widget.sysload({ settings = function()
     widget:set_markup(load_1 .. " | " .. load_5 .. " | " .. load_15)
 end
 })
-local my_temp_icon = wibox.widget.imagebox(icons_dir .. "temp.png")
+local my_temp_icon = wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-fan.svg")
 local my_temp = lain.widget.temp({ settings = function()
     widget:set_markup(coretemp_now)
 end
 })
-local my_cpu_icon = wibox.widget.imagebox(icons_dir .. "cpu.png")
+local my_cpu_icon = wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-cpu.svg")
 local my_cpu = lain.widget.cpu({ settings = function()
     widget:set_markup(cpu_now.usage .. "%")
 end
 })
-local my_mem_icon = wibox.widget.imagebox(icons_dir .. "mem.png")
+local my_mem_icon = wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-memory.svg")
 local my_mem = lain.widget.mem({ settings = function()
     widget:set_markup(mem_now.perc .. "%")
 end
 })
-local my_hdd_icon = wibox.widget.imagebox(icons_dir .. "hdd.png")
+local my_hdd_icon = wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-disk.svg")
 local my_hdd = lain.widget.fs({
     notification_preset = my_notification_preset,
     settings = function()

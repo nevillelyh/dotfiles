@@ -196,24 +196,31 @@ local my_hdd = lain.widget.fs({
     end
 })
 local my_wifi_icon = wibox.widget.imagebox()
-local my_eth_icon = wibox.widget.imagebox()
+local my_wired_icon = wibox.widget.imagebox()
 local my_net = lain.widget.net({ eth_state = "on", wifi_state = "on", settings = function()
-    local has_wifi = false
-    local has_eth = false
+    local wifi_icon = nil
+    local wired_icon = nil
     for _, v in pairs(net_now.devices) do
         if v.wifi then
-            has_wifi = true
+            wifi_icon = epapirus_dir .. "network-wireless-signal-"
+            if v.signal >= -30 then
+                wifi_icon = wifi_icon .. "excellent.svg"
+            elseif v.signal >= -67 then
+                wifi_icon = wifi_icon .. "good.svg"
+            elseif v.signal >= -70 then
+                wifi_icon = wifi_icon .. "ok.svg"
+            elseif v.signal >= -80 then
+                wifi_icon = wifi_icon .. "low.svg"
+            else
+                wifi_icon = wifi_icon .. "none.svg"
+            end
         end
         if v.ethernet then
-            has_eth = true
+            wired_icon = epapirus_dir .. "network-wired.svg"
         end
     end
-    if has_wifi then
-        my_wifi_icon:set_image(icons_dir .. "net.png")
-    end
-    if has_eth then
-        my_eth_icon:set_image(icons_dir .. "net_wired.png")
-    end
+    my_wifi_icon:set_image(wifi_icon)
+    my_wired_icon:set_image(wired_icon)
 end
 })
 local my_weather = lain.widget.weather({
@@ -356,7 +363,7 @@ awful.screen.connect_for_each_screen(function(s)
             my_hdd_icon,
             my_hdd.widget,
             my_wifi_icon,
-            my_eth_icon,
+            my_wired_icon,
             my_separator,
             volume({ display_notification = true }),
             my_separator,

@@ -214,9 +214,14 @@ local my_net = lain.widget.net({ eth_state = "on", wifi_state = "on", settings =
             else
                 wifi_icon = wifi_icon .. "none.svg"
             end
+            my_wifi_icon.signal = v.signal
+            my_wifi_icon.icon = wifi_icon
+            my_wifi_icon.stats = string.format("TX: %dKB / RX: %dKB", v.sent, v.received)
         end
         if v.ethernet then
             wired_icon = epapirus_dir .. "network-wired.svg"
+            my_wired_icon.icon = wired_icon
+            my_wired_icon.stats = string.format("TX: %dKB / RX: %dKB", v.sent, v.received)
         end
     end
     my_wifi_icon:set_image(wifi_icon)
@@ -228,6 +233,42 @@ my_wifi_icon:connect_signal("button::press", function(_,_,_,button)
 end)
 my_wired_icon:connect_signal("button::press", function(_,_,_,button)
     if (button == 1) then awful.spawn("gnome-control-center network") end
+end)
+local helpers = require("lain.helpers")
+local dpi = require("beautiful").xresources.apply_dpi
+my_wifi_icon:connect_signal("mouse::enter", function()
+    awful.spawn.easy_async("iwgetid -r", function(stdout, stderr, exitreason, exitcode)
+        local ssid = stdout:gsub('%s+', '')
+        local msg = string.format("SSID: %s\nSignal: %sdBm\n%s", ssid, my_wifi_icon.signal, my_wifi_icon.stats)
+        my_wifi_icon.notification = naughty.notify({
+            title = "Wireless",
+            text = msg,
+            icon = my_wifi_icon.icon,
+            icon_size = dpi(16),
+            position = my_wifi_icon.position,
+            timeout = keep and 0 or 2, hover_timeout = 0.5,
+            width = 200,
+            screen = mouse.screen
+        })
+    end)
+end)
+my_wifi_icon:connect_signal("mouse::leave", function()
+    naughty.destroy(my_wifi_icon.notification)
+end)
+my_wired_icon:connect_signal("mouse::enter", function()
+    my_wired_icon.notification = naughty.notify({
+        title = "Wired",
+        text = my_wired_icon.stats,
+        icon = my_wired_icon.icon,
+        icon_size = dpi(16),
+        position = my_wired_icon.position,
+        timeout = keep and 0 or 2, hover_timeout = 0.5,
+        width = 200,
+        screen = mouse.screen
+    })
+end)
+my_wired_icon:connect_signal("mouse::leave", function()
+    naughty.destroy(my_wired_icon.notification)
 end)
 local my_weather = lain.widget.weather({
     units = "imperial",

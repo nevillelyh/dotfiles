@@ -203,13 +203,13 @@ local my_net = lain.widget.net({ eth_state = "on", wifi_state = "on", settings =
     for _, v in pairs(net_now.devices) do
         if v.wifi then
             wifi_icon = epapirus_dir .. "network-wireless-signal-"
-            if v.signal >= -30 then
+            if v.signal >= -50 then
                 wifi_icon = wifi_icon .. "excellent.svg"
-            elseif v.signal >= -67 then
+            elseif v.signal >= -60 then
                 wifi_icon = wifi_icon .. "good.svg"
-            elseif v.signal >= -70 then
+            elseif v.signal >= -67 then
                 wifi_icon = wifi_icon .. "ok.svg"
-            elseif v.signal >= -80 then
+            elseif v.signal >= -70 then
                 wifi_icon = wifi_icon .. "low.svg"
             else
                 wifi_icon = wifi_icon .. "none.svg"

@@ -15,8 +15,8 @@ local naughty = require("naughty")
 local gfs = require("gears.filesystem")
 local dpi = require('beautiful').xresources.apply_dpi
 
-local PATH_TO_ICONS = os.getenv("HOME") .. "/.config/awesome/icons/"
-local volume_icon_name="audio-volume-high-symbolic"
+local PATH_TO_ICONS = os.getenv("HOME") .. "/.config/awesome/icons/ePapirus/"
+local volume_icon_name="audio-volume-muted"
 local GET_VOLUME_CMD = 'amixer sget Master'
 
 local volume = {device = '', display_notification = false, notification = nil}
@@ -41,19 +41,19 @@ end
 local function parse_output(stdout)
     local level = string.match(stdout, "(%d?%d?%d)%%")
     if stdout:find("%[off%]") then
-        volume_icon_name="audio-volume-muted-symbolic-patched"
+        volume_icon_name="audio-volume-muted-blocking"
         return level.."% <span color=\"red\"><b>Mute</b></span>"
     end
     level = tonumber(string.format("% 3d", level))
 
     if (level >= 0 and level < 25) then
-        volume_icon_name="audio-volume-muted-symbolic"
+        volume_icon_name="audio-volume-muted"
     elseif (level < 50) then
-        volume_icon_name="audio-volume-low-symbolic"
+        volume_icon_name="audio-volume-low"
     elseif (level < 75) then
-        volume_icon_name="audio-volume-medium-symbolic"
+        volume_icon_name="audio-volume-medium"
     else
-        volume_icon_name="audio-volume-high-symbolic"
+        volume_icon_name="audio-volume-high"
     end
     return level.."%"
 end
@@ -114,7 +114,7 @@ local function worker(args)
     volume.widget = wibox.widget {
         {
             id = "icon",
-            image = PATH_TO_ICONS .. "audio-volume-muted-symbolic.svg",
+            image = PATH_TO_ICONS .. "audio-volume-muted.svg",
             resize = false,
             widget = wibox.widget.imagebox,
         },

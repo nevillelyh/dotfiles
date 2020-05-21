@@ -26,6 +26,7 @@ local awesome_path = os.getenv("HOME") .. "/.config/awesome/"
 local lain = require("lain")
 local volume = require("volume")
 local weather_widget = require("weather")
+local cal_widget = require("calendar")
 local spotify = require("awesome-wm-widgets.spotify-widget.spotify")
 
 awful.util.spawn("compton -b")
@@ -160,6 +161,10 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 -- {{{ Wibar
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock("%a %H:%M")
+local cw = cal_widget({ theme = 'dracula', placement = 'top_right' })
+mytextclock:connect_signal("button::press", function(_, _, _, button)
+    if button == 1 then cw.toggle() end
+end)
 
 local my_notification_preset = {
     font = "Fira Mono 9",
@@ -276,11 +281,6 @@ my_layout.forced_width = 5
 local my_separator = wibox.widget {
     layout = my_layout
 }
-
-local my_cal = lain.widget.cal({
-    attach_to = {mytextclock},
-    notification_preset = my_notification_preset
-})
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(

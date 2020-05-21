@@ -25,6 +25,7 @@ local has_fdo, freedesktop = pcall(require, "freedesktop")
 local awesome_path = os.getenv("HOME") .. "/.config/awesome/"
 local lain = require("lain")
 local volume = require("volume")
+local weather_widget = require("weather")
 local spotify = require("awesome-wm-widgets.spotify-widget.spotify")
 
 awful.util.spawn("compton -b")
@@ -270,14 +271,6 @@ end)
 my_wired_icon:connect_signal("mouse::leave", function()
     naughty.destroy(my_wired_icon.notification)
 end)
-local my_weather = lain.widget.weather({
-    units = "imperial",
-    city_id = "5128581",
-    notification_preset = my_notification_preset,
-    settings = function()
-        widget:set_markup(string.format("%d°F", math.floor(weather_now["main"]["temp"])))
-    end
-})
 local my_layout = wibox.layout.align.horizontal()
 my_layout.forced_width = 5
 local my_separator = wibox.widget {
@@ -412,8 +405,12 @@ awful.screen.connect_for_each_screen(function(s)
             my_wifi_icon,
             my_wired_icon,
             volume({ display_notification = true }),
-            my_weather.icon,
-            my_weather.widget,
+            weather_widget({
+                api_key = "cd9f81ebc51ba66bbc40e0872d4464ef",
+                city = "Brooklyn, US",
+                units = "imperial",
+                font = "Fira Sans Bold 9"
+            }),
             my_separator,
             mykeyboardlayout,
             my_separator,

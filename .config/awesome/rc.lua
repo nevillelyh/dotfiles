@@ -175,7 +175,7 @@ end
 })
 local my_temp_icon = wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-fan.svg")
 local my_temp = lain.widget.temp({ settings = function()
-    widget:set_markup(coretemp_now)
+    widget:set_markup(coretemp_now .. "°C")
 end
 })
 local my_cpu_icon = wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-cpu.svg")

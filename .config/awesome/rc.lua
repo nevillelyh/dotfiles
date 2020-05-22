@@ -160,7 +160,7 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock("%a %H:%M")
+mytextclock = wibox.widget.textclock("%a %I:%M %p")
 local cw = cal_widget({ theme = 'dracula', placement = 'top_right' })
 mytextclock:connect_signal("button::press", function(_, _, _, button)
     if button == 1 then cw.toggle() end

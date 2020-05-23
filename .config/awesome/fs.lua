@@ -89,9 +89,9 @@ local function factory(args)
                     fs_now[path] = {
                         units      = fs.units[units],
                         percentage = math.floor(100 * used / size), -- used percentage
-                        size       = size / math.pow(1024, math.floor(units)),
-                        used       = used / math.pow(1024, math.floor(units)),
-                        free       = free / math.pow(1024, math.floor(units))
+                        size       = size / math.pow(1024, units),
+                        used       = used / math.pow(1024, units),
+                        free       = free / math.pow(1024, units)
                     }
 
                     if fs_now[path].percentage > 0 then -- don't notify unused file systems
@@ -121,14 +121,16 @@ local function factory(args)
             end
         end
 
-        local fmt = "%-" .. tostring(pathlen) .. "s %4s\t%6s\t%6s\n"
-        local notifytable = { [1] = string.format(fmt, "path", "used", "free", "size") }
-        fmt = "\n%-" .. tostring(pathlen) .. "s %3s%%\t%6.2f\t%6.2f %s"
+        local fmt = "<b>%-" .. tostring(pathlen) .. "s %4s\t%6s\t%6s\t%6s</b>"
+        local notifytable = { [1] = string.format(fmt, "Path", "Use%", "Used", "Free", "Total") }
+        fmt = "%-" .. tostring(pathlen) .. "s %3s%%\t%6.2f\t%6.2f\t%6.2f %s"
         for _, path in ipairs(notifypaths) do
-            notifytable[#notifytable+1] = string.format(fmt, path, fs_now[path].percentage, fs_now[path].free, fs_now[path].size, fs_now[path].units)
+            local f = fs_now[path]
+            notifytable[#notifytable+1] =
+                string.format(fmt, path, f.percentage, f.used, f.free, f.size, f.units)
         end
 
-        fs.notification_preset.text = tconcat(notifytable)
+        fs.notification_preset.text = tconcat(notifytable, "\n")
     end
 
     if showpopup == "on" then

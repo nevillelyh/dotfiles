@@ -189,6 +189,25 @@ local my_cpu = lain.widget.cpu({ settings = function()
     widget:set_markup(cpu_now.usage .. "%")
 end
 })
+local my_gpu_icon = wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-gpu.svg")
+local gpu = require("gpu")
+my_gpu = gpu({
+    notification_preset = {
+        font = "Fira Mono 9",
+        fg = "#BFBFBF",
+        bg = "#282A36"
+    },
+    settings = function()
+        local text = ""
+        for i, g in ipairs(gpu_now) do
+            if i > 1 then
+                text = text .. " | "
+            end
+            text = text .. tostring(g.gpu_util) .. "%"
+        end
+        widget:set_markup(text)
+    end
+})
 local my_mem_icon = wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-memory.svg")
 local my_mem = lain.widget.mem({ settings = function()
     widget:set_markup(mem_now.perc .. "%")
@@ -404,6 +423,8 @@ awful.screen.connect_for_each_screen(function(s)
             my_temp1.widget,
             my_cpu_icon,
             my_cpu.widget,
+            my_gpu_icon,
+            my_gpu.widget,
             my_mem_icon,
             my_mem.widget,
             my_hdd_icon,

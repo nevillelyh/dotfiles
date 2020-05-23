@@ -166,12 +166,6 @@ mytextclock:connect_signal("button::press", function(_, _, _, button)
     if button == 1 then cw.toggle() end
 end)
 
-local my_notification_preset = {
-    font = "Fira Mono 9",
-    fg = "#BFBFBF",
-    bg = "#282A36"
-}
-
 -- https://github.com/lcpz/awesome-copycats/tree/master/themes/powerarrow-dark/icons
 local epapirus_dir = icons_dir .. "ePapirus/"
 local my_sysload_icon = wibox.widget.imagebox(epapirus_dir .. "gpm-monitor.svg")
@@ -201,8 +195,13 @@ local my_mem = lain.widget.mem({ settings = function()
 end
 })
 local my_hdd_icon = wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-disk.svg")
-local my_hdd = lain.widget.fs({
-    notification_preset = my_notification_preset,
+local fs = require("fs")
+local my_hdd = fs({
+    notification_preset = {
+        font = "Fira Mono 9",
+        fg = "#BFBFBF",
+        bg = "#282A36"
+    },
     settings = function()
         widget:set_markup(fs_now["/"].percentage .. "%")
     end

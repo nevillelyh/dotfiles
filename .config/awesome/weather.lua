@@ -200,8 +200,9 @@ local function worker(args)
         notification = naughty.notify{
             icon = path_to_icons .. icon_map[resp.weather[1].icon],
             icon_size=20,
+            title = 'Weather',
             text =
-                '<big>' .. resp.weather[1].main .. ' (' .. resp.weather[1].description .. ')</big><br>' ..
+                '<b>' .. resp.weather[1].main .. ' (' .. resp.weather[1].description .. ')</b><br>' ..
                 '<b>Humidity:</b> ' .. resp.main.humidity .. '%<br>' ..
                 '<b>Temperature:</b> ' .. gen_temperature_str(resp.main.temp, '%.1f',
                                               both_units_popup) .. '<br>' ..

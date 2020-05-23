@@ -94,7 +94,8 @@ local function factory(args)
                         free       = free / math.pow(1024, units)
                     }
 
-                    if fs_now[path].percentage > 0 then -- don't notify unused file systems
+                    local dev = Gio.unix_mount_get_device_path(mount)
+                    if dev:match("^/dev/sd%a+%d+$") then
                         notifypaths[#notifypaths+1] = path
 
                         if #path > pathlen then

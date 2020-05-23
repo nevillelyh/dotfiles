@@ -19,3 +19,5 @@
 	st = status
 [merge]
 	tool = vimdiff
+[hub]
+	host = ghe.spotify.net

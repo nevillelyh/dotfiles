@@ -410,7 +410,7 @@ awful.screen.connect_for_each_screen(function(s)
             my_hdd.widget,
             my_wifi_icon,
             my_wired_icon,
-            volume({ display_notification = true }),
+            volume({ display_notification = true, delta = 2 }),
             weather_widget({
                 api_key = "cd9f81ebc51ba66bbc40e0872d4464ef",
                 city = "Brooklyn, US",

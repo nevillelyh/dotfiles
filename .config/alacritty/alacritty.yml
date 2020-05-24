@@ -667,8 +667,6 @@ font:
 background_opacity: 0.9
 
 key_bindings:
-  - { key: N,     mods: Command,   action: SpawnNewInstance }
-  - { key: F,     mods: Command,   action: ToggleFullscreen }
   # Fix Alt-* on macOS
   # bash/zsh back/forward one word
   - { key: B,     mods: Alt,       chars: "\x1bb"           }

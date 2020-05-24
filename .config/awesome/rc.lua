@@ -202,6 +202,24 @@ local my_cpu = wibox.widget {
     layout = wibox.layout.fixed.horizontal,
 }
 
+local my_mem = wibox.widget {
+    wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-memory.svg"),
+    lain.widget.mem({
+        settings = function() widget:set_markup(mem_now.perc .. "%") end
+    }).widget,
+    layout = wibox.layout.fixed.horizontal,
+}
+
+my_sysload:connect_signal("button::press", function(_,_,_,button)
+    if (button == 1) then awful.spawn("gnome-system-monitor -p") end
+end)
+my_cpu:connect_signal("button::press", function(_,_,_,button)
+    if (button == 1) then awful.spawn("gnome-system-monitor -r") end
+end)
+my_mem:connect_signal("button::press", function(_,_,_,button)
+    if (button == 1) then awful.spawn("gnome-system-monitor -r") end
+end)
+
 local notification_preset = {
     font = "Fira Mono 9",
     fg = "#BFBFBF",
@@ -224,14 +242,9 @@ local my_gpu = wibox.widget {
     }).widget,
     layout = wibox.layout.fixed.horizontal,
 }
-
-local my_mem = wibox.widget {
-    wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-memory.svg"),
-    lain.widget.mem({
-        settings = function() widget:set_markup(mem_now.perc .. "%") end
-    }).widget,
-    layout = wibox.layout.fixed.horizontal,
-}
+my_gpu:connect_signal("button::press", function(_,_,_,button)
+    if (button == 1) then awful.spawn("nvidia-settings") end
+end)
 
 local fs = require("fs")
 local my_hdd = wibox.widget {
@@ -242,6 +255,9 @@ local my_hdd = wibox.widget {
     }).widget,
     layout = wibox.layout.fixed.horizontal,
 }
+my_hdd:connect_signal("button::press", function(_,_,_,button)
+    if (button == 1) then awful.spawn("gnome-disks") end
+end)
 
 local my_wifi_icon = wibox.widget.imagebox()
 local my_wired_icon = wibox.widget.imagebox()
@@ -315,6 +331,16 @@ my_wired_icon:connect_signal("mouse::enter", function()
 end)
 my_wired_icon:connect_signal("mouse::leave", function()
     naughty.destroy(my_wired_icon.notification)
+end)
+
+local my_weather = weather({
+    api_key = "cd9f81ebc51ba66bbc40e0872d4464ef",
+    city = "Brooklyn, US",
+    units = "imperial",
+    font = "Fira Sans Bold 9"
+})
+my_weather:connect_signal("button::press", function(_,_,_,button)
+    if (button == 1) then awful.spawn("gnome-weather") end
 end)
 
 local my_layout = wibox.layout.align.horizontal()
@@ -436,18 +462,13 @@ awful.screen.connect_for_each_screen(function(s)
             my_sysload,
             my_temp,
             my_cpu,
-            my_gpu,
             my_mem,
+            my_gpu,
             my_hdd,
             my_wifi_icon,
             my_wired_icon,
             volume({ display_notification = true, delta = 2 }),
-            weather({
-                api_key = "cd9f81ebc51ba66bbc40e0872d4464ef",
-                city = "Brooklyn, US",
-                units = "imperial",
-                font = "Fira Sans Bold 9"
-            }),
+            my_weather,
             my_separator,
             mykeyboardlayout,
             my_separator,

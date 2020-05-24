@@ -27,6 +27,7 @@ if dein#load_state($HOME.'/.local/share/dein')
   call dein#add('preservim/nerdcommenter', {'merged': 0})
   call dein#add('vim-syntastic/syntastic', {'merged': 0})
   call dein#add('junegunn/fzf', {'merged': 0})
+  call dein#add('kamykn/spelunker.vim', {'merged': 0})
 
   " Required:
   call dein#end()

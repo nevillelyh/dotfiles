@@ -168,30 +168,39 @@ end)
 
 local epapirus_dir = icons_dir .. "ePapirus/"
 
-local my_sysload_icon = wibox.widget.imagebox(epapirus_dir .. "gpm-monitor.svg")
-local my_sysload = lain.widget.sysload({
-    settings = function() widget:set_markup(load_1 .. " | " .. load_5 .. " | " .. load_15) end
-})
+local my_sysload = wibox.widget {
+    wibox.widget.imagebox(epapirus_dir .. "gpm-monitor.svg"),
+    lain.widget.sysload({
+        settings = function() widget:set_markup(load_1 .. " | " .. load_5 .. " | " .. load_15) end
+    }).widget,
+    layout = wibox.layout.fixed.horizontal,
+}
 
 local temp = require("temp")
-local my_temp_icon = wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-fan.svg")
-local my_temp = temp({
-    settings = function()
-        local text = ""
-        local i = 0
-        for _, t in pairs(coretemp_now) do
-            if i > 0 then text = text .. " | " end
-            text = text .. tostring(t) .. "°C"
-            i = i + 1
+local my_temp = wibox.widget {
+    wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-fan.svg"),
+    temp({
+        settings = function()
+            local text = ""
+            local i = 0
+            for _, t in pairs(coretemp_now) do
+                if i > 0 then text = text .. " | " end
+                text = text .. tostring(t) .. "°C"
+                i = i + 1
+            end
+            widget:set_markup(text)
         end
-        widget:set_markup(text)
-    end
-})
+    }),
+    layout = wibox.layout.fixed.horizontal,
+}
 
-local my_cpu_icon = wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-cpu.svg")
-local my_cpu = lain.widget.cpu({
-    settings = function() widget:set_markup(cpu_now.usage .. "%") end
-})
+local my_cpu = wibox.widget {
+    wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-cpu.svg"),
+    lain.widget.cpu({
+        settings = function() widget:set_markup(cpu_now.usage .. "%") end
+    }).widget,
+    layout = wibox.layout.fixed.horizontal,
+}
 
 local notification_preset = {
     font = "Fira Mono 9",
@@ -200,31 +209,39 @@ local notification_preset = {
 }
 
 local gpu = require("gpu")
-local my_gpu_icon = wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-gpu.svg")
-local my_gpu = gpu({
-    notification_preset = notification_preset,
-    settings = function()
-        local text = ""
-        for i, g in ipairs(gpu_now) do
-            if i > 1 then text = text .. " | " end
-            text = text .. tostring(g.gpu_util) .. "%"
+local my_gpu = wibox.widget {
+    wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-gpu.svg"),
+    gpu({
+        notification_preset = notification_preset,
+        settings = function()
+            local text = ""
+            for i, g in ipairs(gpu_now) do
+                if i > 1 then text = text .. " | " end
+                text = text .. tostring(g.gpu_util) .. "%"
+            end
+            widget:set_markup(text)
         end
-        widget:set_markup(text)
-    end
-})
+    }).widget,
+    layout = wibox.layout.fixed.horizontal,
+}
 
-local my_mem_icon = wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-memory.svg")
-local my_mem = lain.widget.mem({ settings = function()
-    widget:set_markup(mem_now.perc .. "%")
-end
-})
+local my_mem = wibox.widget {
+    wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-memory.svg"),
+    lain.widget.mem({
+        settings = function() widget:set_markup(mem_now.perc .. "%") end
+    }).widget,
+    layout = wibox.layout.fixed.horizontal,
+}
 
 local fs = require("fs")
-local my_hdd_icon = wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-disk.svg")
-local my_hdd = fs({
-    notification_preset = notification_preset,
-    settings = function() widget:set_markup(fs_now["/"].percentage .. "%") end
-})
+local my_hdd = wibox.widget {
+    wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-disk.svg"),
+    fs({
+        notification_preset = notification_preset,
+        settings = function() widget:set_markup(fs_now["/"].percentage .. "%") end
+    }).widget,
+    layout = wibox.layout.fixed.horizontal,
+}
 
 local my_wifi_icon = wibox.widget.imagebox()
 local my_wired_icon = wibox.widget.imagebox()
@@ -416,18 +433,12 @@ awful.screen.connect_for_each_screen(function(s)
             my_separator,
             wibox.widget.systray(),
             my_separator,
-            my_sysload_icon,
-            my_sysload.widget,
-            my_temp_icon,
-            my_temp.widget,
-            my_cpu_icon,
-            my_cpu.widget,
-            my_gpu_icon,
-            my_gpu.widget,
-            my_mem_icon,
-            my_mem.widget,
-            my_hdd_icon,
-            my_hdd.widget,
+            my_sysload,
+            my_temp,
+            my_cpu,
+            my_gpu,
+            my_mem,
+            my_hdd,
             my_wifi_icon,
             my_wired_icon,
             volume({ display_notification = true, delta = 2 }),

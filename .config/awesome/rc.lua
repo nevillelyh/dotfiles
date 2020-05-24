@@ -174,14 +174,19 @@ local my_sysload = lain.widget.sysload({ settings = function()
 end
 })
 local my_temp_icon = wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-fan.svg")
-local my_temp0 = lain.widget.temp({
-    tempfile = "/sys/devices/virtual/thermal/thermal_zone0/temp",
-    settings = function() widget:set_markup(coretemp_now .. "°C") end
-})
-local my_temp1 = lain.widget.temp({
-    tempfile = "/sys/devices/virtual/thermal/thermal_zone1/temp",
+local temp = require("temp")
+local my_temp = temp({
     settings = function()
-        if coretemp_now ~= "N/A" then widget:set_markup(" | " .. coretemp_now .. "°C") end
+        local text = ""
+        local i = 0
+        for _, t in pairs(coretemp_now) do
+            if i > 0 then
+                text = text .. " | "
+            end
+            text = text .. tostring(t) .. "°C"
+            i = i + 1
+        end
+        widget:set_markup(text)
     end
 })
 local my_cpu_icon = wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-cpu.svg")
@@ -419,8 +424,7 @@ awful.screen.connect_for_each_screen(function(s)
             my_sysload_icon,
             my_sysload.widget,
             my_temp_icon,
-            my_temp0.widget,
-            my_temp1.widget,
+            my_temp.widget,
             my_cpu_icon,
             my_cpu.widget,
             my_gpu_icon,

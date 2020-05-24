@@ -171,7 +171,7 @@ local epapirus_dir = icons_dir .. "ePapirus/"
 local my_sysload = wibox.widget {
     wibox.widget.imagebox(epapirus_dir .. "gpm-monitor.svg"),
     lain.widget.sysload({
-        settings = function() widget:set_markup(load_1 .. " | " .. load_5 .. " | " .. load_15) end
+        settings = function() widget:set_markup(load_1 .. " | " .. load_5 .. " | " .. load_15) end,
     }).widget,
     layout = wibox.layout.fixed.horizontal,
 }
@@ -189,7 +189,7 @@ local my_temp = wibox.widget {
                 i = i + 1
             end
             widget:set_markup(text)
-        end
+        end,
     }),
     layout = wibox.layout.fixed.horizontal,
 }
@@ -197,7 +197,7 @@ local my_temp = wibox.widget {
 local my_cpu = wibox.widget {
     wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-cpu.svg"),
     lain.widget.cpu({
-        settings = function() widget:set_markup(cpu_now.usage .. "%") end
+        settings = function() widget:set_markup(cpu_now.usage .. "%") end,
     }).widget,
     layout = wibox.layout.fixed.horizontal,
 }
@@ -205,7 +205,7 @@ local my_cpu = wibox.widget {
 local my_mem = wibox.widget {
     wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-memory.svg"),
     lain.widget.mem({
-        settings = function() widget:set_markup(mem_now.perc .. "%") end
+        settings = function() widget:set_markup(mem_now.perc .. "%") end,
     }).widget,
     layout = wibox.layout.fixed.horizontal,
 }
@@ -223,7 +223,7 @@ end)
 local notification_preset = {
     font = "Fira Mono 9",
     fg = "#BFBFBF",
-    bg = "#282A36"
+    bg = "#282A36",
 }
 
 local gpu = require("gpu")
@@ -238,7 +238,7 @@ local my_gpu = wibox.widget {
                 text = text .. tostring(g.gpu_util) .. "%"
             end
             widget:set_markup(text)
-        end
+        end,
     }).widget,
     layout = wibox.layout.fixed.horizontal,
 }
@@ -251,7 +251,7 @@ local my_hdd = wibox.widget {
     wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-disk.svg"),
     fs({
         notification_preset = notification_preset,
-        settings = function() widget:set_markup(fs_now["/"].percentage .. "%") end
+        settings = function() widget:set_markup(fs_now["/"].percentage .. "%") end,
     }).widget,
     layout = wibox.layout.fixed.horizontal,
 }
@@ -290,7 +290,7 @@ local my_net = lain.widget.net({ eth_state = "on", wifi_state = "on", settings =
     end
     my_wifi_icon:set_image(wifi_icon)
     my_wired_icon:set_image(wired_icon)
-end
+end,
 })
 my_wifi_icon:connect_signal("button::press", function(_,_,_,button)
     if (button == 1) then awful.spawn("gnome-control-center wifi") end
@@ -310,7 +310,7 @@ my_wifi_icon:connect_signal("mouse::enter", function()
             position = my_wifi_icon.position,
             timeout = keep and 0 or 2, hover_timeout = 0.5,
             width = 200,
-            screen = mouse.screen
+            screen = mouse.screen,
         })
     end)
 end)
@@ -326,7 +326,7 @@ my_wired_icon:connect_signal("mouse::enter", function()
         position = my_wired_icon.position,
         timeout = keep and 0 or 2, hover_timeout = 0.5,
         width = 200,
-        screen = mouse.screen
+        screen = mouse.screen,
     })
 end)
 my_wired_icon:connect_signal("mouse::leave", function()
@@ -337,7 +337,7 @@ local my_weather = weather({
     api_key = "cd9f81ebc51ba66bbc40e0872d4464ef",
     city = "Brooklyn, US",
     units = "imperial",
-    font = "Fira Sans Bold 9"
+    font = "Fira Sans Bold 9",
 })
 my_weather:connect_signal("button::press", function(_,_,_,button)
     if (button == 1) then awful.spawn("gnome-weather") end
@@ -345,9 +345,7 @@ end)
 
 local my_layout = wibox.layout.align.horizontal()
 my_layout.forced_width = 5
-local my_separator = wibox.widget {
-    layout = my_layout
-}
+local my_separator = wibox.widget { layout = my_layout }
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -454,7 +452,7 @@ awful.screen.connect_for_each_screen(function(s)
                 -- https://github.com/PapirusDevelopmentTeam/papirus-icon-theme/blob/master/ePapirus/24x24/panel/spotify-indicator.svg
                 play_icon = icons_dir .. "spotify-indicator.svg",
                 pause_icon = icons_dir .. "spotify-indicator-patched.svg",
-                font = "Fira Sans Bold 9"
+                font = "Fira Sans Bold 9",
             }),
             my_separator,
             wibox.widget.systray(),

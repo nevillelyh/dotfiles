@@ -79,7 +79,7 @@ local function worker(args)
         ["10n"] = "weather-showers.svg",
         ["11n"] = "weather-storm.svg",
         ["13n"] = "weather-snow.svg",
-        ["50n"] = "weather-fog.svg"
+        ["50n"] = "weather-fog.svg",
     }
 
     --- Return wind direction as a string.
@@ -169,7 +169,7 @@ local function worker(args)
                 -- 'b' — block timeout
                 req_sock:settimeout(0.001, 'b')
                 return req_sock
-            end
+            end,
         }
         if (resp_json ~= nil) then
             resp_json = table.concat(resp_json)
@@ -212,7 +212,7 @@ local function worker(args)
             timeout = 5, hover_timeout = 10,
             position = position,
             screen = mouse.screen,
-            width = (both_units_popup == true and 210 or 200)
+            width = (both_units_popup == true and 210 or 200),
         }
     end)
 

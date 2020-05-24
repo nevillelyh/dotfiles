@@ -27,7 +27,7 @@ local function worker(args)
             weekend_day_bg = '#3B4252',
             weekday_fg = '#88C0D0',
             header_fg = '#E5E9F0',
-            border = '#4C566A'
+            border = '#4C566A',
         },
         outrun = {
             bg = '#0d0221',
@@ -37,7 +37,7 @@ local function worker(args)
             weekend_day_bg = '#261447',
             weekday_fg = '#2de6e2',
             header_fg = '#f6019d',
-            border = '#261447'
+            border = '#261447',
         },
         dark = {
             bg = '#000000',
@@ -47,7 +47,7 @@ local function worker(args)
             weekend_day_bg = '#444444',
             weekday_fg = '#ffffff',
             header_fg = '#ffffff',
-            border = '#333333'
+            border = '#333333',
         },
         light = {
             bg = '#ffffff',
@@ -57,7 +57,7 @@ local function worker(args)
             weekend_day_bg = '#AAAAAA',
             weekday_fg = '#000000',
             header_fg = '#000000',
-            border = '#CCCCCC'
+            border = '#CCCCCC',
         },
         monokai = {
             bg = '#272822',
@@ -67,7 +67,7 @@ local function worker(args)
             weekend_day_bg = '#75715E',
             weekday_fg = '#FD971F',
             header_fg = '#F92672',
-            border = '#75715E'
+            border = '#75715E',
         },
         dracula = {
             bg = '#282A36',
@@ -77,8 +77,8 @@ local function worker(args)
             weekend_day_bg = '#44475A',
             weekday_fg = '#BFBFBF',
             header_fg = '#F8F8F2',
-            border = '#44475A'
-        }
+            border = '#44475A',
+        },
     }
 
     local args = args or {}
@@ -110,20 +110,20 @@ local function worker(args)
 
     styles.normal = {
         markup = function(t) return t end,
-        shape = rounded_shape(4)
+        shape = rounded_shape(4),
     }
 
     styles.focus = {
         fg_color = calendar_themes[theme].focus_date_fg,
         bg_color = calendar_themes[theme].focus_date_bg,
         markup = function(t) return '<b>' .. t .. '</b>' end,
-        shape = rounded_shape(4)
+        shape = rounded_shape(4),
     }
 
     styles.header = {
         fg_color = calendar_themes[theme].header_fg,
         bg_color = calendar_themes[theme].bg,
-        markup = function(t) return '<b>' .. t .. '</b>' end
+        markup = function(t) return '<b>' .. t .. '</b>' end,
     }
 
     styles.weekday = {
@@ -158,17 +158,17 @@ local function worker(args)
                 {
                     widget,
                     halign = 'center',
-                    widget = wibox.container.place
+                    widget = wibox.container.place,
                 },
                 margins = (props.padding or 2) + (props.border_width or 0),
-                widget = wibox.container.margin
+                widget = wibox.container.margin,
             },
             shape = props.shape,
             shape_border_color = props.border_color or '#000000',
             shape_border_width = props.border_width or 0,
             fg = props.fg_color or calendar_themes[theme].fg,
             bg = props.bg_color or default_bg,
-            widget = wibox.container.background
+            widget = wibox.container.background,
         }
 
         return ret
@@ -179,7 +179,7 @@ local function worker(args)
         font = beautiful.get_font(),
         fn_embed = decorate_cell,
         long_weekdays = true,
-        widget = wibox.widget.calendar.month
+        widget = wibox.widget.calendar.month,
     }
 
     local popup = awful.popup {
@@ -189,7 +189,7 @@ local function worker(args)
         offset = { y = 5 },
         border_width = 1,
         border_color = calendar_themes[theme].border,
-        widget = cal
+        widget = cal,
     }
 
     popup:buttons(

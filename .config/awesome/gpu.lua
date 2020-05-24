@@ -5,9 +5,7 @@ local wibox   = require("wibox")
 local naughty = require("naughty")
 
 local function factory(args)
-    local gpu = {
-        widget = wibox.widget.textbox()
-    }
+    local gpu = { widget = wibox.widget.textbox() }
 
     function gpu.hide()
         if not gpu.notification then return end
@@ -20,7 +18,7 @@ local function factory(args)
         gpu.notification_preset.screen = gpu.followtag and focused() or scr or 1
         gpu.notification = naughty.notify {
             preset  = gpu.notification_preset,
-            timeout = type(seconds) == "number" and seconds or 5
+            timeout = type(seconds) == "number" and seconds or 5,
         }
     end
 
@@ -36,7 +34,7 @@ local function factory(args)
         gpu.notification_preset = {
             font = "Monospace 10",
             fg   = "#FFFFFF",
-            bg   = "#000000"
+            bg   = "#000000",
         }
     end
 
@@ -48,7 +46,7 @@ local function factory(args)
             "utilization.memory",
             "memory.used",
             "memory.free",
-            "memory.total"
+            "memory.total",
         }
         local cmd = "nvidia-smi --query-gpu=" .. table.concat(fields, ",") .. " --format=csv,noheader,nounits"
         helpers.async(cmd, function(stdout, exit_code)

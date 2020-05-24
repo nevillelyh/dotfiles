@@ -251,12 +251,12 @@ local my_net = lain.widget.net({ eth_state = "on", wifi_state = "on", settings =
             end
             my_wifi_icon.signal = v.signal
             my_wifi_icon.icon = wifi_icon
-            my_wifi_icon.stats = string.format("TX: %dKB / RX: %dKB", v.sent, v.received)
+            my_wifi_icon.stats = string.format("TX: %sKB / RX: %sKB", v.sent, v.received)
         end
         if v.ethernet then
             wired_icon = epapirus_dir .. "network-wired.svg"
             my_wired_icon.icon = wired_icon
-            my_wired_icon.stats = string.format("TX: %dKB / RX: %dKB", v.sent, v.received)
+            my_wired_icon.stats = string.format("TX: %sKB / RX: %sKB", v.sent, v.received)
         end
     end
     my_wifi_icon:set_image(wifi_icon)

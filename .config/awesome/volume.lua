@@ -81,7 +81,7 @@ local function notif(msg, keep)
             position = volume.position,
             timeout = keep and 0 or 2, hover_timeout = 0.5,
             width = 200,
-            screen = mouse.screen
+            screen = mouse.screen,
         }
     end
 end
@@ -106,7 +106,7 @@ local function worker(args)
         naughty.notify{
             title = "Volume Widget",
             text = "Folder with icons doesn't exist: " .. PATH_TO_ICONS,
-            preset = naughty.config.presets.critical
+            preset = naughty.config.presets.critical,
         }
         return
     end
@@ -122,7 +122,7 @@ local function worker(args)
         layout = wibox.container.margin(_, _, _, 0),
         set_image = function(self, path)
             self.icon.image = path
-        end
+        end,
     }
 --}}}
 --{{{ Spawn functions

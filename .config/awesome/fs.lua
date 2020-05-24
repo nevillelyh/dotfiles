@@ -31,8 +31,8 @@ local function factory(args)
         units = {
             [1] = "KiB", [2] = "MiB", [3] = "GiB",
             [4] = "TiB", [5] = "PiB", [6] = "EiB",
-            [7] = "ZiB", [8] = "YiB"
-        }
+            [7] = "ZiB", [8] = "YiB",
+        },
     }
 
     function fs.hide()
@@ -46,7 +46,7 @@ local function factory(args)
         fs.notification_preset.screen = fs.followtag and focused() or scr or 1
         fs.notification = naughty.notify {
             preset  = fs.notification_preset,
-            timeout = type(seconds) == "number" and seconds or 5
+            timeout = type(seconds) == "number" and seconds or 5,
         }
     end
 
@@ -64,7 +64,7 @@ local function factory(args)
         fs.notification_preset = {
             font = "Monospace 10",
             fg   = "#FFFFFF",
-            bg   = "#000000"
+            bg   = "#000000",
         }
     end
 
@@ -91,7 +91,7 @@ local function factory(args)
                         percentage = math.floor(100 * used / size), -- used percentage
                         size       = size / math.pow(1024, units),
                         used       = used / math.pow(1024, units),
-                        free       = free / math.pow(1024, units)
+                        free       = free / math.pow(1024, units),
                     }
 
                     local dev = Gio.unix_mount_get_device_path(mount)
@@ -114,7 +114,7 @@ local function factory(args)
                 naughty.notify {
                     preset = naughty.config.presets.critical,
                     title  = "Warning",
-                    text   = string.format("%s is above %d%% (%d%%)", partition, threshold, fs_now[partition].percentage)
+                    text   = string.format("%s is above %d%% (%d%%)", partition, threshold, fs_now[partition].percentage),
                 }
                 helpers.set_map(partition, true)
             else

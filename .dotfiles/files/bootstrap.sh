@@ -137,6 +137,10 @@ _sdkman() {
     set -u
 }
 
+_cargo() {
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+}
+
 _zsh() {
     chsh -s /bin/zsh
 }
@@ -158,4 +162,5 @@ _git
 _neovim
 _pip
 _sdkman
+_cargo
 _zsh

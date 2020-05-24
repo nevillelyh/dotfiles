@@ -60,6 +60,10 @@ local function factory(args)
                 local i = 0
                 for f in line:gmatch("([^,]+),? *") do
                     if i == 0 then
+                        f = f:gsub("^GeForce +", "")
+                        f = f:gsub("^Quadro +", "")
+                        f = f:gsub("^Tesla +", "")
+                        f = f:gsub("^TITAN +", "")
                         g.name = f
                         if #f > namelen then
                             namelen = #f

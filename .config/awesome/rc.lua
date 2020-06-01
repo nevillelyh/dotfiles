@@ -115,6 +115,7 @@ local help_icon = icons_dir .. "help.svg"
 local editor_icon = icons_dir .. "edit.svg"
 local screenshot_icon = icons_dir .. "camera-on.svg"
 local lock_icon = icons_dir .. "lock.svg"
+local suspend_icon = icons_dir .. "chronometer-pause.svg"
 local restart_icon = icons_dir .. "reload.svg"
 local quit_icon = icons_dir .. "gtk-quit.svg"
 
@@ -124,6 +125,7 @@ myawesomemenu = {
    { "Edit Config", editor_cmd .. " " .. awesome.conffile, editor_icon },
    { "Screenshot", screenshot, screenshot_icon },
    { "Lock Screen", lock_screen, lock_icon },
+   { "Suspend", function() awful.spawn("systemctl suspend") end, suspend_icon },
    { "Restart", awesome.restart, restart_icon },
    { "Quit", function() awesome.quit() end, quit_icon },
 }

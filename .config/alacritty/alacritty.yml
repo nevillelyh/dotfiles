@@ -652,7 +652,7 @@ colors:
 ################################################################################
 
 env:
-  WINIT_HIDPI_FACTOR: '0.90'
+  WINIT_X11_SCALE_FACTOR: '0.90'
 
 window:
   dimensions:

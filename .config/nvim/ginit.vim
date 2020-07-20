@@ -1,1 +1,1 @@
-set guifont=Fira\ Mono\ for\ Powerline:h12
+GuiFont! Fira\ Mono\ for\ Powerline:h9

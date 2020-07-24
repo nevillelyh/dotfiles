@@ -158,6 +158,22 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 
 -- Keyboard map indicator and switcher
 -- mykeyboardlayout = awful.widget.keyboardlayout()
+kbdcfg = {
+    cmd = "setxkbmap",
+    layout = {{"us", "", "US"}, {"us", "altgr-intl", "US-AltGr"}},
+    current = 1,
+    widget = wibox.widget.textbox(),
+    switch = function()
+        kbdcfg.current = kbdcfg.current % #(kbdcfg.layout) + 1
+        local t = kbdcfg.layout[kbdcfg.current]
+        os.execute(kbdcfg.cmd .. " " .. t[1] .. " " .. t[2])
+        kbdcfg.widget:set_text(" " .. t[3] .. " ")
+    end
+}
+kbdcfg.widget:buttons(awful.util.table.join(
+    awful.button({}, 1, function() kbdcfg.switch() end)
+))
+kbdcfg.widget:set_text(" " .. kbdcfg.layout[kbdcfg.current][3] .. " ")
 
 -- {{{ Wibar
 -- Create a textclock widget
@@ -470,6 +486,8 @@ awful.screen.connect_for_each_screen(function(s)
             volume({ display_notification = true, delta = 2 }),
             my_weather,
             my_separator,
+            -- mykeyboardlayout,
+            kbdcfg.widget,
             mytextclock,
             my_separator,
             s.mylayoutbox,

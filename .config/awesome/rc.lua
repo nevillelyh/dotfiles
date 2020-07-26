@@ -658,6 +658,8 @@ globalkeys = gears.table.join(
               {description = "screenshot", group = "awesome"}),
     awful.key({ modkey,           }, "`", naughty.destroy_all_notifications,
               {description = "dismiss notifications", group = "awesome"}),
+    awful.key({ modkey, "Mod1"    }, "space", my_keys.next_layout,
+              {description = "next keyboard layout", group = "awesome"}),
 
     awful.key({ }, "XF86AudioPlay",        function() awful.spawn("sp play") end,
               {description = "Spotify - play",     group = "media"}),

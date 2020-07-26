@@ -15,8 +15,8 @@ theme.wallpaper = awesome_path .. "wallpapers/pro-dark.png"
 
 -- {{{ Styles
 theme.font      = "Fira Sans Bold 9"
-theme.hotkeys_font             = "Fira Mono 10"
-theme.hotkeys_description_font = "Fira Mono 10"
+theme.hotkeys_font             = "Fira Mono 9"
+theme.hotkeys_description_font = "Fira Mono 9"
 
 -- https://github.com/dracula/i3/blob/master/.config/i3/config
 -- {{{ Colors

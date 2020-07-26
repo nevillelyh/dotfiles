@@ -352,14 +352,14 @@ my_wired_icon:connect_signal("mouse::leave", function()
 end)
 
 local my_weather = weather({
+    coordinates = {40.6756953, -73.9650304},
     api_key = "cd9f81ebc51ba66bbc40e0872d4464ef",
-    city = "Brooklyn, US",
+    font_name = "Fira Sans Bold",
     units = "imperial",
-    font = "Fira Sans Bold 9",
+    time_format_12h = true,
+    show_hourly_forecast = true,
+    show_daily_forecast = true,
 })
-my_weather:connect_signal("button::press", function(_,_,_,button)
-    if (button == 1) then awful.spawn("gnome-weather") end
-end)
 
 local my_layout = wibox.layout.align.horizontal()
 my_layout.forced_width = 5

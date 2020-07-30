@@ -25,7 +25,7 @@ local has_fdo, freedesktop = pcall(require, "freedesktop")
 local awesome_path = os.getenv("HOME") .. "/.config/awesome/"
 local lain = require("lain")
 local volume = require("volume")
-local weather = require("weather")
+local weather = require("awesome-wm-widgets.weather-widget.weather")
 local spotify = require("awesome-wm-widgets.spotify-widget.spotify")
 
 awful.util.spawn("compton -b")

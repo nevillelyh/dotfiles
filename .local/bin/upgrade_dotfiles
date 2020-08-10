@@ -1,10 +1,11 @@
 #!/bin/zsh
 
+source "$HOME/.dotfiles/oh-my-zsh/oh-my-zsh.sh"
+omz update
+
 set -euo pipefail
 
-source "$HOME/.dotfiles/oh-my-zsh/lib/functions.zsh"
-upgrade_oh_my_zsh
-
+cd $HOME
 STATUS=$(git status --porcelain --untracked-files=no)
 [ -z "$STATUS" ] || git stash save "tmp-git-update"
 git pull

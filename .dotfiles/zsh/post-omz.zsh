@@ -11,6 +11,11 @@ esac
 alias cat='bat'
 alias diff='colordiff'
 
+function zt() {
+    z $1
+    ts $1
+}
+
 export EDITOR=nvim
 
 if [[ -n $(pidof ssh-agent) ]]; then

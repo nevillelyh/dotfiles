@@ -155,12 +155,12 @@ local shutdown_icon = icons_dir .. "system-devices-panel.svg"
 
 mysystemmenu = awful.menu({
     items = {
-        { "Screenshot",  screenshot,                                       screenshot_icon },
-        { "Lock Screen", lock_screen,                                      lock_icon },
-        { "Log Out",     function() awful.quit() end,                      logout_icon },
-        { "Sleep",       function() awful.spawn("systemctl suspend") end,  sleep_icon },
-        { "Restart",     function() awful.spawn("systemctl reboot") end,   restart_icon },
-        { "Shutdown",    function() awful.spawn("systemctl poweroff") end, shutdown_icon },
+        { "Screenshot", screenshot,                                       screenshot_icon },
+        { "Lock",       lock_screen,                                      lock_icon },
+        { "Log Out",    function() awful.quit() end,                      logout_icon },
+        { "Suspend",    function() awful.spawn("systemctl suspend") end,  sleep_icon },
+        { "Restart",    function() awful.spawn("systemctl reboot") end,   restart_icon },
+        { "Power Off",  function() awful.spawn("systemctl poweroff") end, shutdown_icon },
     }
 })
 

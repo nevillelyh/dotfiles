@@ -376,7 +376,7 @@ local my_weather = weather({
 })
 
 local my_layout = wibox.layout.align.horizontal()
-my_layout.forced_width = 5
+my_layout.forced_width = 3
 local my_separator = wibox.widget { layout = my_layout }
 
 -- Create a wibox for each screen and add it
@@ -488,7 +488,6 @@ awful.screen.connect_for_each_screen(function(s)
             }),
             my_separator,
             wibox.widget.systray(),
-            my_separator,
             my_sysload,
             my_temp,
             my_cpu,
@@ -499,10 +498,8 @@ awful.screen.connect_for_each_screen(function(s)
             my_wired_icon,
             volume({ display_notification = true, delta = 2 }),
             my_weather,
-            my_separator,
             -- mykeyboardlayout,
             my_keys.widget,
-            my_separator,
             mytextclock,
             mysystemlauncher,
             s.mylayoutbox,

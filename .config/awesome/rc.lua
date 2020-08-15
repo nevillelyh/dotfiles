@@ -174,7 +174,7 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- mykeyboardlayout = awful.widget.keyboardlayout()
 my_keys = {
     cmd = "setxkbmap",
-    layout = {{"us", "", "US"}, {"us", "altgr-intl", "US-AltGr"}},
+    layout = {{"us", "", "🇺🇸"}, {"us", "altgr-intl", "🔣"}},
     current = 1,
     widget = wibox.widget.textbox(),
     next_layout = function()
@@ -502,8 +502,8 @@ awful.screen.connect_for_each_screen(function(s)
             my_separator,
             -- mykeyboardlayout,
             my_keys.widget,
-            mytextclock,
             my_separator,
+            mytextclock,
             mysystemlauncher,
             s.mylayoutbox,
         },

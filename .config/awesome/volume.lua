@@ -119,7 +119,7 @@ local function worker(args)
             resize = false,
             widget = wibox.widget.imagebox,
         },
-        layout = wibox.container.margin(_, _, _, 0),
+        layout = wibox.container.margin(_, _, _, 1),
         set_image = function(self, path)
             self.icon.image = path
         end,

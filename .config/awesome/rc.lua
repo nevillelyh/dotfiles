@@ -113,21 +113,15 @@ local hotkeys_icon = icons_dir .. "help-keybord-shortcuts.svg"
 local terminal_icon = icons_dir .. "cm_runterm.svg"
 local help_icon = icons_dir .. "help.svg"
 local editor_icon = icons_dir .. "edit.svg"
-local screenshot_icon = icons_dir .. "camera-on.svg"
-local lock_icon = icons_dir .. "lock.svg"
-local suspend_icon = icons_dir .. "chronometer-pause.svg"
 local restart_icon = icons_dir .. "reload.svg"
 local quit_icon = icons_dir .. "gtk-quit.svg"
 
 myawesomemenu = {
-   { "Hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end, hotkeys_icon },
-   { "Manual", terminal .. " -e man awesome", help_icon },
-   { "Edit Config", editor_cmd .. " " .. awesome.conffile, editor_icon },
-   { "Screenshot", screenshot, screenshot_icon },
-   { "Lock Screen", lock_screen, lock_icon },
-   { "Suspend", function() awful.spawn("systemctl suspend") end, suspend_icon },
-   { "Restart", awesome.restart, restart_icon },
-   { "Quit", function() awesome.quit() end, quit_icon },
+    { "Hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end, hotkeys_icon },
+    { "Manual", terminal .. " -e man awesome", help_icon },
+    { "Edit Config", editor_cmd .. " " .. awesome.conffile, editor_icon },
+    { "Restart", awesome.restart, restart_icon },
+    { "Quit", function() awesome.quit() end, quit_icon },
 }
 
 local menu_awesome = { "Awesome", myawesomemenu, beautiful.awesome_icon }
@@ -151,6 +145,26 @@ end
 
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
+
+local screenshot_icon = icons_dir .. "camera-on.svg"
+local lock_icon = icons_dir .. "lock.svg"
+local logout_icon = icons_dir .. "application-exit.svg"
+local sleep_icon = icons_dir .. "chronometer-pause.svg"
+local restart_icon = icons_dir .. "system-restart-panel.svg"
+local shutdown_icon = icons_dir .. "system-devices-panel.svg"
+
+mysystemmenu = awful.menu({
+    items = {
+        { "Screenshot",  screenshot,                                       screenshot_icon },
+        { "Lock Screen", lock_screen,                                      lock_icon },
+        { "Log Out",     function() awful.quit() end,                      logout_icon },
+        { "Sleep",       function() awful.spawn("systemctl suspend") end,  sleep_icon },
+        { "Restart",     function() awful.spawn("systemctl reboot") end,   restart_icon },
+        { "Shutdown",    function() awful.spawn("systemctl poweroff") end, shutdown_icon },
+    }
+})
+
+mysystemlauncher = awful.widget.launcher({ image = shutdown_icon, menu = mysystemmenu})
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
@@ -490,6 +504,7 @@ awful.screen.connect_for_each_screen(function(s)
             my_keys.widget,
             mytextclock,
             my_separator,
+            mysystemlauncher,
             s.mylayoutbox,
         },
     }

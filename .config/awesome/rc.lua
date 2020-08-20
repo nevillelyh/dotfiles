@@ -172,9 +172,15 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 
 -- Keyboard map indicator and switcher
 -- mykeyboardlayout = awful.widget.keyboardlayout()
+unicode_us = "🇺🇸"
+unicode_altgr = "🇺🇳"
 my_keys = {
     cmd = "setxkbmap",
-    layout = {{"us", "", "🇺🇸"}, {"us", "altgr-intl", "🔣"}},
+    layout = {
+        {"us", "", unicode_us},
+        {"us", "altgr-intl", unicode_altgr},
+        {"us", "colemak", "CO"}
+    },
     current = 1,
     widget = wibox.widget.textbox(),
     next_layout = function()

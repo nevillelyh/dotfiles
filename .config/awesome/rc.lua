@@ -867,6 +867,7 @@ awful.rules.rules = {
 
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
+local toolbox_startup = false
 client.connect_signal("manage", function (c)
     -- Set the windows at the slave,
     -- i.e. put it at the end of others instead of setting it master.
@@ -877,6 +878,11 @@ client.connect_signal("manage", function (c)
       and not c.size_hints.program_position then
         -- Prevent clients from being unreachable after screen count changes.
         awful.placement.no_offscreen(c)
+    end
+
+    if c.name == "JetBrains Toolbox" and not toolbox_startup then
+        c:kill()
+        toolbox_startup = true
     end
 end)
 

@@ -58,6 +58,111 @@ local function parse_output(stdout)
     return level.."%"
 end
 
+--------------------------------------------------
+--  Device menus
+--------------------------------------------------
+
+local awful = require("awful")
+local default_source = ""
+local default_sink = ""
+local sources = {}
+local sinks = {}
+
+local function parse_devices(stdout)
+    local name = ""
+    local desc = ""
+    devices = {}
+    for line in stdout:gmatch("[^\r\n]+") do
+        local n = string.match(line, " *Name: (.*)")
+        local d = string.match(line, " *Description: (.*)")
+        if n then
+            name = n
+        end
+        if d then
+            desc = d:gsub("^Monitor of ", "")
+        end
+        if name ~= "" and desc ~= "" then
+            devices[#devices + 1] = { name = name, desc = desc }
+            name = ""
+            desc = ""
+        end
+    end
+    return devices
+end
+
+local in_icon = PATH_TO_ICONS .. "audio-input-microphone.svg"
+local out_icon = PATH_TO_ICONS .. "audio-speakers.svg"
+
+function volume:_update_menu()
+    if default_source ~= "" and default_sink ~= "" and #sources > 0 and #sinks > 0 then
+        local source_items = {}
+        for _, s in ipairs(sources) do
+            if string.match(s.name, "^alsa_input.") then
+                local desc = s.desc
+                local icon = nil
+                if s.name == default_source then
+                    icon = in_icon
+                end
+                local cmd = "pactl set-default-source " .. s.name
+                source_items[#source_items + 1] = { desc, function()
+                    default_source = ""
+                    awful.spawn(cmd)
+                    volume:_init_menu()
+                end, icon, theme = { width = 350 } }
+            end
+        end
+
+        local sink_items = {}
+        for _, s in ipairs(sinks) do
+            if string.match(s.name, "^alsa_output.") then
+                local desc = s.desc
+                local icon = nil
+                if s.name == default_sink then
+                    icon = out_icon
+                end
+                local cmd = "pactl set-default-sink " .. s.name
+                sink_items[#sink_items + 1] = { desc, function()
+                    awful.spawn(cmd)
+                    default_sink = ""
+                    volume:_init_menu()
+                end, icon, theme = { width = 350 } }
+            end
+        end
+
+        volume.menu = awful.menu({ items = {
+            { "Mute", function() volume.toggle() end, PATH_TO_ICONS .. "audio-volume-muted-blocking.svg" },
+            { "Input", source_items, in_icon },
+            { "Output", sink_items, out_icon },
+        } })
+    end
+end
+
+function volume:_init_menu()
+    spawn.easy_async("pactl info", function(stdout, stderr, exitreason, exitcode)
+        for line in stdout:gmatch("[^\r\n]+") do
+            local src = string.match(line, "Default Source: (.*)")
+            local sink = string.match(line, "Default Sink: (.*)")
+            if src then
+                default_source = src
+            end
+            if sink then
+                default_sink = sink
+            end
+        end
+        volume:_update_menu()
+    end)
+
+    spawn.easy_async("pactl list sources", function(stdout, stderr, exitreason, exitcode)
+        sources = parse_devices(stdout)
+        volume:_update_menu()
+    end)
+
+    spawn.easy_async("pactl list sinks", function(stdout, stderr, exitreason, exitcode)
+        sinks = parse_devices(stdout)
+        volume:_update_menu()
+    end)
+end
+
 --------------------------------------------------------
 --Update the icon and the notification if needed
 --------------------------------------------------------
@@ -147,10 +252,11 @@ local function worker(args)
     - clicking on the widget to mute/unmute
     - scrolling when cursor is over the widget
     ]]
+    volume.menu = nil
     volume.widget:connect_signal("button::press", function(_,_,_,button)
         if (button == 4)     then volume.raise()
         elseif (button == 5) then volume.lower()
-        elseif (button == 1) then volume.toggle()
+        elseif (button == 1) then volume.menu:show()
         end
     end)
     if volume.display_notification then
@@ -165,6 +271,8 @@ local function worker(args)
         volume.widget.image = PATH_TO_ICONS .. volume_icon_name .. ".svg"
     end)
 --}}}
+
+    volume:_init_menu()
 
     return volume.widget
 end

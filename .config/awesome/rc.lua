@@ -170,30 +170,7 @@ mysystemlauncher = awful.widget.launcher({ image = shutdown_icon, menu = mysyste
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
 
--- Keyboard map indicator and switcher
 -- mykeyboardlayout = awful.widget.keyboardlayout()
-unicode_us = "🇺🇸"
-unicode_altgr = "🇺🇳"
-my_keys = {
-    cmd = "setxkbmap",
-    layout = {
-        {"us", "", unicode_us},
-        {"us", "altgr-intl", unicode_altgr},
-        {"us", "colemak", "CO"}
-    },
-    current = 1,
-    widget = wibox.widget.textbox(),
-    next_layout = function()
-        my_keys.current = my_keys.current % #(my_keys.layout) + 1
-        local t = my_keys.layout[my_keys.current]
-        os.execute(my_keys.cmd .. " " .. t[1] .. " " .. t[2])
-        my_keys.widget:set_text(" " .. t[3] .. " ")
-    end
-}
-my_keys.widget:buttons(awful.util.table.join(
-    awful.button({}, 1, function() my_keys.next_layout() end)
-))
-my_keys.widget:set_text(" " .. my_keys.layout[my_keys.current][3] .. " ")
 
 -- {{{ Wibar
 -- Create a textclock widget
@@ -505,7 +482,6 @@ awful.screen.connect_for_each_screen(function(s)
             volume({ display_notification = true, delta = 2 }),
             my_weather,
             -- mykeyboardlayout,
-            my_keys.widget,
             mytextclock,
             mysystemlauncher,
             s.mylayoutbox,
@@ -676,8 +652,6 @@ globalkeys = gears.table.join(
               {description = "screenshot", group = "awesome"}),
     awful.key({ modkey,           }, "`", naughty.destroy_all_notifications,
               {description = "dismiss notifications", group = "awesome"}),
-    awful.key({ modkey, "Mod1"    }, "space", my_keys.next_layout,
-              {description = "next keyboard layout", group = "awesome"}),
 
     awful.key({ }, "XF86AudioPlay",        function() awful.spawn("sp play") end,
               {description = "Spotify - play",     group = "media"}),

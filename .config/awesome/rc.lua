@@ -498,8 +498,6 @@ root.buttons(gears.table.join(
 ))
 -- }}}
 
-local centerwork = require("centerwork")
-
 -- {{{ Key bindings
 globalkeys = gears.table.join(
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
@@ -541,13 +539,13 @@ globalkeys = gears.table.join(
 
     awful.key({ modkey,           }, "j",
         function ()
-            centerwork.focus.byidx( 1)
+            lain.layout.centerwork.focus.byidx( 1)
         end,
         {description = "focus next by index", group = "client"}
     ),
     awful.key({ modkey,           }, "k",
         function ()
-            centerwork.focus.byidx(-1)
+            lain.layout.centerwork.focus.byidx(-1)
         end,
         {description = "focus previous by index", group = "client"}
     ),
@@ -557,12 +555,12 @@ globalkeys = gears.table.join(
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j",
         function ()
-            centerwork.swap.byidx( 1)
+            lain.layout.centerwork.swap.byidx( 1)
         end,
         {description = "swap with next client by index", group = "client"}),
     awful.key({ modkey, "Shift"   }, "k",
         function ()
-            centerwork.swap.byidx(-1)
+            lain.layout.centerwork.swap.byidx(-1)
         end,
         {description = "swap with previous client by index", group = "client"}),
     awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end,

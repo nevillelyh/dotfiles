@@ -28,7 +28,7 @@ die() {
 _homebrew() {
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     brew install $BREWS
-    brew cask install $CASKS
+    brew install --cask $CASKS
 }
 
 _aptitude() {

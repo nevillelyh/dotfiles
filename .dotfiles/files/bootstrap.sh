@@ -8,7 +8,7 @@ set -euo pipefail
 # python - leave macOS bundled python alone
 # pinentry-mac - for GPG
 BREWS="bat colordiff fd fzf git htop hub neovim pinentry-mac python tig tmux tree wget z"
-CASKS="adobe-creative-cloud alacritty alfred dropbox expressvpn gitter google-chrome google-cloud-sdk guitar-pro iterm2 keybase kindle macdive slack transmission visual-studio-code vimr vlc"
+CASKS="adobe-creative-cloud alacritty alfred dropbox expressvpn google-chrome google-cloud-sdk guitar-pro iterm2 keybase kindle macdive slack transmission visual-studio-code vimr vlc"
 
 # Linux packages:
 # compton - for alacritty background opacity

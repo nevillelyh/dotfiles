@@ -7,8 +7,10 @@ set -euo pipefail
 # Mac packages:
 # python - leave macOS bundled python alone
 # pinentry-mac - for GPG
+# App Store - Kindle, Slack, The Unarchiver
 BREWS="bat colordiff fd fzf git htop hub neovim pinentry-mac python tig tmux tree wget z"
-CASKS="adobe-creative-cloud alacritty alfred dropbox expressvpn google-chrome google-cloud-sdk guitar-pro iterm2 jetbrains-toolbox joplin keybase kindle macdive shearwater-cloud slack transmission visual-studio-code vimr vlc"
+CASKS="alacritty alfred dropbox google-chrome google-cloud-sdk iterm2 jetbrains-toolbox joplin keybase slack visual-studio-code vimr"
+CASKS_OPT="adobe-create-cloud expressvpn guitar-pro macdive shearwater-cloud transmission vlc"
 
 # Linux packages:
 # compton - for alacritty background opacity
@@ -29,6 +31,13 @@ _homebrew() {
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     brew install $BREWS
     brew install --cask $CASKS
+
+    read -p "Install optional casks (y/N)? " -n 1 -r
+    echo    # (optional) move to a new line
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+        brew install --cask $CASKS_OPT
+    fi
 }
 
 _aptitude() {

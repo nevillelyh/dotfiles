@@ -127,6 +127,16 @@ _git() {
     git branch --set-upstream-to=origin/master
 }
 
+_gnupg() {
+    [[ -d ${HOME}/.gnupg ]] && exit
+    [[ "$(uname -s)" != "Darwin" ]] && exit
+    echo "Setting up GnuPG"
+
+    mkdir -p ${HOME}/.gnupg
+    chmod 700 ${HOME}/.gnupg
+    cp ${HOME}/.dotfiles/files/gpg-agent.conf ${HOME}/.gnupg
+}
+
 _neovim() {
     DIR=$HOME/.local/share/dein/repos/github.com/Shougo
     [[ -d $DIR ]] && exit
@@ -204,6 +214,7 @@ case "$(uname -s)" in
         ;;
 esac
 _git
+_gnupg
 _neovim
 _pip
 _sdkman

@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 # bash -c "$(curl -fsSL https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/bootstrap.sh)"
 

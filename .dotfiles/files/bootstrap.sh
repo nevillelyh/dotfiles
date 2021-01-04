@@ -151,7 +151,7 @@ _pip() {
     command -v ipython &> /dev/null && exit
     echo "Setting up Python"
 
-    owner=$(ls -l /usr | grep '\<local$' | awk '{print $3}')
+    owner=$(ls -l /usr/local/lib | grep '\<python.*$' | awk '{print $3}')
     if [[ "${owner}" == "$(whoami)" ]]; then
         SUDO=""
     else

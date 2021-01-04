@@ -28,6 +28,9 @@ die() {
 }
 
 _homebrew() {
+    command -v brew &> /dev/null && exit
+    echo "Setting up Homebrew"
+
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     brew install $BREWS
     brew install --cask $CASKS
@@ -41,6 +44,9 @@ _homebrew() {
 }
 
 _aptitude() {
+    command -v htop &> /dev/null && exit
+    echo "Setting up Aptitude"
+
     sudo apt-get install aptitude
     sudo aptitude update
     sudo aptitude upgrade
@@ -48,6 +54,9 @@ _aptitude() {
 }
 
 _linux() {
+    command -v hub &> /dev/null && exit
+    echo "Setting up Linux specifics"
+
     wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
     sudo dpkg -i google-chrome-stable_current_amd64.deb
     rm google-chrome-stable_current_amd64.deb
@@ -88,12 +97,18 @@ _linux() {
 }
 
 _mac() {
+    [[ -d ${HOME}/.gnupg ]] && exit
+    echo "Setting up Mac specifics"
+
     mkdir -p ${HOME}/.gnupg
     chmod 700 ${HOME}/.gnupg
     cp ${HOME}/.dotfiles/files/gpg-agent.conf ${HOME}/.gnupg
 }
 
 _git() {
+    [[ -d ${HOME}/.dotfiles/oh-my-zsh ]] && exit
+    echo "Setting up Git"
+
     cd $HOME
     git init
     git config branch.master.rebase true
@@ -105,12 +120,19 @@ _git() {
 }
 
 _neovim() {
-    mkdir -p $HOME/.local/share/dein/repos/github.com/Shougo
-    git clone git@github.com:Shougo/dein.vim.git $HOME/.local/share/dein/repos/github.com/Shougo/dein.vim
+    DIR=$HOME/.local/share/dein/repos/github.com/Shougo
+    [[ -d $DIR ]] && exit
+    echo "Setting up NeoVim"
+
+    mkdir -p $DIR
+    git clone git@github.com:Shougo/dein.vim.git $DIR/dein.vim
     nvim -u $HOME/.config/nvim/dein.vim --headless '+call dein#install() | qall'
 }
 
 _pip() {
+    command -v ipython &> /dev/null && exit
+    echo "Setting up Python"
+
     owner=$(ls -l /usr | grep '\<local$' | awk '{print $3}')
     if [[ "${owner}" == "$(whoami)" ]]; then
         SUDO=""
@@ -122,6 +144,9 @@ _pip() {
 }
 
 _sdkman() {
+    command -v sbt &> /dev/null && exit
+    echo "Setting up SDKMAN"
+
     curl -s "https://get.sdkman.io" | bash
 
     set +u
@@ -147,6 +172,9 @@ _sdkman() {
 }
 
 _cargo() {
+    command -v cargo &> /dev/null && exit
+    echo "Setting up Rust"
+
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 }
 

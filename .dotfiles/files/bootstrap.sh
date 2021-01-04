@@ -28,7 +28,7 @@ die() {
 }
 
 _homebrew() {
-    command -v brew &> /dev/null && exit
+    command -v brew &> /dev/null && return
     echo "Setting up Homebrew"
 
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -48,7 +48,7 @@ _homebrew() {
 }
 
 _aptitude() {
-    command -v htop &> /dev/null && exit
+    command -v htop &> /dev/null && return
     echo "Setting up Aptitude"
 
     sudo apt-get install aptitude
@@ -58,7 +58,7 @@ _aptitude() {
 }
 
 _linux() {
-    command -v hub &> /dev/null && exit
+    command -v hub &> /dev/null && return
     echo "Setting up Linux specifics"
 
     wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -101,7 +101,7 @@ _linux() {
 }
 
 _mac() {
-    [[ -d ${HOME}/Library/Fonts ]] && exit
+    [[ -d ${HOME}/Library/Fonts ]] && return
     echo "Setting up Mac specifics"
 
     read -p "Enter hostname: "
@@ -115,7 +115,7 @@ _mac() {
 }
 
 _git() {
-    [[ -d ${HOME}/.dotfiles/oh-my-zsh ]] && exit
+    [[ -d ${HOME}/.dotfiles/oh-my-zsh ]] && return
     echo "Setting up Git"
 
     cd $HOME
@@ -129,8 +129,8 @@ _git() {
 }
 
 _gnupg() {
-    [[ -d ${HOME}/.gnupg ]] && exit
-    [[ "$(uname -s)" != "Darwin" ]] && exit
+    [[ -d ${HOME}/.gnupg ]] && return
+    [[ "$(uname -s)" != "Darwin" ]] && return
     echo "Setting up GnuPG"
 
     mkdir -p ${HOME}/.gnupg
@@ -140,7 +140,7 @@ _gnupg() {
 
 _neovim() {
     DIR=$HOME/.local/share/dein/repos/github.com/Shougo
-    [[ -d $DIR ]] && exit
+    [[ -d $DIR ]] && return
     echo "Setting up NeoVim"
 
     mkdir -p $DIR
@@ -149,7 +149,7 @@ _neovim() {
 }
 
 _pip() {
-    command -v ipython &> /dev/null && exit
+    command -v ipython &> /dev/null && return
     echo "Setting up Python"
 
     DIR=/usr/local/lib
@@ -166,7 +166,7 @@ _pip() {
 }
 
 _sdkman() {
-    command -v sbt &> /dev/null && exit
+    command -v sbt &> /dev/null && return
     echo "Setting up SDKMAN"
 
     curl -s "https://get.sdkman.io" | bash
@@ -194,7 +194,7 @@ _sdkman() {
 }
 
 _cargo() {
-    command -v cargo &> /dev/null && exit
+    command -v cargo &> /dev/null && return
     echo "Setting up Rust"
 
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh

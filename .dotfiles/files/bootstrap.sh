@@ -100,12 +100,17 @@ _linux() {
 }
 
 _mac() {
-    [[ -d ${HOME}/.gnupg ]] && exit
+    [[ -d ${HOME}/Library/Fonts ]] && exit
     echo "Setting up Mac specifics"
 
-    mkdir -p ${HOME}/.gnupg
-    chmod 700 ${HOME}/.gnupg
-    cp ${HOME}/.dotfiles/files/gpg-agent.conf ${HOME}/.gnupg
+    read -p "Enter hostname: "
+    sudo scutil --set ComputerName $REPLY
+    sudo scutil --set HostName $REPLY
+    sudo scutil --set LocalHostName $REPLY
+
+    git clone https://github.com/powerline/fonts.git
+    ./fonts/install.sh
+    rm -rf fonts
 }
 
 _git() {

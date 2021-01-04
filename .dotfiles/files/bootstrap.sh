@@ -31,12 +31,15 @@ _homebrew() {
     command -v brew &> /dev/null && exit
     echo "Setting up Homebrew"
 
-    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     brew install $BREWS
     brew install --cask $CASKS
 
+    # May be pre-installed
+    [[ -d "/Applications/Google Chrome.app" ]] || brew install --cask google-chrome
+
     read -p "Install optional casks (y/N)? " -n 1 -r
-    echo    # (optional) move to a new line
+    echo # (optional) move to a new line
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
         brew install --cask $CASKS_OPT

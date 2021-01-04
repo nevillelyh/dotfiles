@@ -38,6 +38,7 @@ _homebrew() {
 
     # May be pre-installed
     [[ -d "/Applications/Google Chrome.app" ]] || brew install --cask google-chrome
+    [[ -d "/Applications/Spotify.app" ]] || brew install --cask spotify
 
     read -p "Install optional casks (y/N)? " -n 1 -r
     echo # (optional) move to a new line

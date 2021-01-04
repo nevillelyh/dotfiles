@@ -10,7 +10,7 @@ set -euo pipefail
 # App Store - Kindle, Slack, The Unarchiver
 BREWS="bat colordiff fd fzf git htop hub neovim pinentry-mac python tig tmux tree wget z"
 CASKS="alacritty alfred dropbox google-cloud-sdk iterm2 jetbrains-toolbox joplin keybase visual-studio-code vimr"
-CASKS_OPT="adobe-create-cloud expressvpn guitar-pro macdive shearwater-cloud transmission vlc"
+CASKS_OPT="adobe-creative-cloud expressvpn guitar-pro macdive shearwater-cloud transmission vlc"
 
 # Linux packages:
 # compton - for alacritty background opacity

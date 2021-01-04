@@ -32,6 +32,7 @@ _homebrew() {
     echo "Setting up Homebrew"
 
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    [[ -d /opt/homebrew ]] && export PATH=/opt/homebrew/bin:$PATH
     brew install $BREWS
     brew install --cask $CASKS
 
@@ -151,7 +152,10 @@ _pip() {
     command -v ipython &> /dev/null && exit
     echo "Setting up Python"
 
-    owner=$(ls -l /usr/local/lib | grep '\<python.*$' | awk '{print $3}')
+    DIR=/usr/local/lib
+    [[ -d /opt/homebrew ]] && DIR=/opt/homebrew/lib
+
+    owner=$(ls -l $DIR | grep '\<python.*$' | awk '{print $3}')
     if [[ "${owner}" == "$(whoami)" ]]; then
         SUDO=""
     else

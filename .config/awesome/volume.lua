@@ -19,7 +19,13 @@ local PATH_TO_ICONS = os.getenv("HOME") .. "/.config/awesome/icons/ePapirus/"
 local volume_icon_name="audio-volume-muted"
 local GET_VOLUME_CMD = 'amixer sget Master'
 
-local volume = {device = '', display_notification = false, notification = nil, delta = 5}
+local volume = {
+    device = '',
+    display_notification = false,
+    display_notification_onClick = true,
+    notification = nil,
+    delta = 5
+}
 
 function volume:toggle()
     volume:_cmd('amixer ' .. volume.device .. ' sset Master toggle')
@@ -169,14 +175,14 @@ end
 local function update_graphic(widget, stdout, _, _, _)
     local txt = parse_output(stdout)
     widget.image = PATH_TO_ICONS .. volume_icon_name .. ".svg"
-    if volume.display_notification then
+    if (volume.display_notification or volume.display_notification_onClick) then
         volume.notification.iconbox.image = PATH_TO_ICONS .. volume_icon_name .. ".svg"
         naughty.replace_text(volume.notification, "Volume", txt)
     end
 end
 
 local function notif(msg, keep)
-    if volume.display_notification then
+    if (volume.display_notification or (keep and volume.display_notification_onClick)) then
         naughty.destroy(volume.notification)
         volume.notification= naughty.notify{
             text =  msg,
@@ -186,19 +192,20 @@ local function notif(msg, keep)
             position = volume.position,
             timeout = keep and 0 or 2, hover_timeout = 0.5,
             width = 200,
-            screen = mouse.screen,
+            screen = mouse.screen
         }
     end
 end
 
 --}}}
 
-local function worker(args)
+local function worker(user_args)
 --{{{ Args
-    local args = args or {}
+    local args = user_args or {}
 
     local volume_audio_controller = args.volume_audio_controller or 'pulse'
     volume.display_notification = args.display_notification or false
+    volume.display_notification_onClick = args.display_notification_onClick or true
     volume.position = args.notification_position or "top_right"
     if volume_audio_controller == 'pulse' then
         volume.device = '-D pulse'
@@ -211,7 +218,7 @@ local function worker(args)
         naughty.notify{
             title = "Volume Widget",
             text = "Folder with icons doesn't exist: " .. PATH_TO_ICONS,
-            preset = naughty.config.presets.critical,
+            preset = naughty.config.presets.critical
         }
         return
     end
@@ -227,7 +234,7 @@ local function worker(args)
         layout = wibox.container.margin(_, _, _, 1),
         set_image = function(self, path)
             self.icon.image = path
-        end,
+        end
     }
 --}}}
 --{{{ Spawn functions
@@ -239,10 +246,9 @@ local function worker(args)
     end
 
     local function show()
-        spawn.easy_async(GET_VOLUME_CMD,
-        function(stdout, _, _, _)
-        txt = parse_output(stdout)
-        notif(txt, true)
+        spawn.easy_async(GET_VOLUME_CMD, function(stdout, _, _, _)
+            local txt = parse_output(stdout)
+            notif(txt, true)
         end
         )
     end
@@ -266,7 +272,7 @@ local function worker(args)
 --}}}
 
 --{{{ Set initial icon
-    spawn.easy_async(GET_VOLUME_CMD, function(stdout, stderr, exitreason, exitcode)
+    spawn.easy_async(GET_VOLUME_CMD, function(stdout)
         parse_output(stdout)
         volume.widget.image = PATH_TO_ICONS .. volume_icon_name .. ".svg"
     end)

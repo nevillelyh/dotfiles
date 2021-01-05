@@ -157,7 +157,7 @@ mysystemmenu = awful.menu({
     items = {
         { "Screenshot", screenshot,                                       screenshot_icon },
         { "Lock",       lock_screen,                                      lock_icon },
-        { "Log Out",    function() awful.quit() end,                      logout_icon },
+        { "Log Out",    function() awesome.quit() end,                    logout_icon },
         { "Suspend",    function() awful.spawn("systemctl suspend") end,  sleep_icon },
         { "Restart",    function() awful.spawn("systemctl reboot") end,   restart_icon },
         { "Power Off",  function() awful.spawn("systemctl poweroff") end, shutdown_icon },

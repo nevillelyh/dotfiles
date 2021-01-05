@@ -12,11 +12,11 @@ local Gio        = require("lgi").Gio
 local focused    = require("awful.screen").focused
 local wibox      = require("wibox")
 local naughty    = require("naughty")
+local gears      = require("gears")
 local math       = math
 local string     = string
 local tconcat    = table.concat
 local type       = type
-local tonumber   = tonumber
 local query_size = Gio.FILE_ATTRIBUTE_FILESYSTEM_SIZE
 local query_free = Gio.FILE_ATTRIBUTE_FILESYSTEM_FREE
 local query_used = Gio.FILE_ATTRIBUTE_FILESYSTEM_USED
@@ -26,6 +26,8 @@ local query      = query_size .. "," .. query_free .. "," .. query_used
 -- lain.widget.fs
 
 local function factory(args)
+    args     = args or {}
+
     local fs = {
         widget = wibox.widget.textbox(),
         units = {
@@ -42,15 +44,16 @@ local function factory(args)
     end
 
     function fs.show(seconds, scr)
-        fs.hide(); fs.update()
-        fs.notification_preset.screen = fs.followtag and focused() or scr or 1
-        fs.notification = naughty.notify {
-            preset  = fs.notification_preset,
-            timeout = type(seconds) == "number" and seconds or 5,
-        }
+        fs.hide()
+        fs.update(function()
+            fs.notification_preset.screen = fs.followtag and focused() or scr or 1
+            fs.notification = naughty.notify {
+                preset  = fs.notification_preset,
+                timeout = type(seconds) == "number" and seconds or 5
+            }
+        end)
     end
 
-    local args      = args or {}
     local timeout   = args.timeout or 600
     local partition = args.partition
     local threshold = args.threshold or 99
@@ -68,7 +71,7 @@ local function factory(args)
         }
     end
 
-    function fs.update()
+    local function update_synced()
         local pathlen = 10
         fs_now = {}
 
@@ -132,6 +135,15 @@ local function factory(args)
         end
 
         fs.notification_preset.text = tconcat(notifytable, "\n")
+    end
+
+    function fs.update(callback)
+        Gio.Async.start(gears.protected_call.call)(function()
+            update_synced()
+            if callback then
+                callback()
+            end
+        end)
     end
 
     if showpopup == "on" then

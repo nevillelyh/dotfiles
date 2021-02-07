@@ -20,7 +20,7 @@ CASKS_OPT="adobe-creative-cloud expressvpn guitar-pro macdive shearwater-cloud t
 DEB_PKGS="alacritty awesome colordiff compton fd-find fonts-powerline fzf gnome-screensaver htop neovim neovim-qt snapd tig tmux tree ubuntu-restricted-extras xautolock xcalib zsh"
 
 # PIP packages:
-PIP_PKGS="ipython virtualenvwrapper flake8"
+PIP_PKGS="flake8 ipython virtualenvwrapper"
 
 die() {
     echo "Error: $1"

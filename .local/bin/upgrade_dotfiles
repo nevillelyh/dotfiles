@@ -1,8 +1,5 @@
 #!/bin/zsh
 
-source "$HOME/.dotfiles/oh-my-zsh/oh-my-zsh.sh"
-omz update
-
 set -euo pipefail
 
 cd $HOME
@@ -15,6 +12,10 @@ git submodule update --remote
 nvim -u $HOME/.config/nvim/dein.vim --headless '+call dein#update() | qall'
 
 set +eu
+
+source "$HOME/.dotfiles/oh-my-zsh/oh-my-zsh.sh"
+omz update
+
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk update
 sdk upgrade

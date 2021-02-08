@@ -14,8 +14,13 @@ git submodule update --remote
 
 nvim -u $HOME/.config/nvim/dein.vim --headless '+call dein#update() | qall'
 
-set +u
+set +eu
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk update
+sdk upgrade
+
+set -euo pipefail
+
+pip install --upgrade flake8 ipython pip virtualenvwrapper
 
 rustup update

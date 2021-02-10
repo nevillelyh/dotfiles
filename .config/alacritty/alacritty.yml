@@ -656,8 +656,8 @@ env:
 
 window:
   dimensions:
-    columns: 80
-    lines: 24
+    columns: 132
+    lines: 43
 
 font:
   normal:

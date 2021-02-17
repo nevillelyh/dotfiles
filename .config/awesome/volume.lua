@@ -52,11 +52,11 @@ local function parse_output(stdout)
     end
     level = tonumber(string.format("% 3d", level))
 
-    if (level >= 0 and level < 25) then
+    if (level >= 0 and level < 12.5) then
         volume_icon_name="audio-volume-muted"
-    elseif (level < 50) then
+    elseif (level < 25) then
         volume_icon_name="audio-volume-low"
-    elseif (level < 75) then
+    elseif (level < 50) then
         volume_icon_name="audio-volume-medium"
     else
         volume_icon_name="audio-volume-high"

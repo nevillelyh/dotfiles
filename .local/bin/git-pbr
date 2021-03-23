@@ -8,7 +8,7 @@ dest=origin
 if [ $# -ge 1 ]; then
     dest=$1
 fi
-base=master
+base=$(git remote show origin | grep "HEAD branch" | awk '{print $3}')
 if [ $# -eq 2 ]; then
     base=$2
 fi

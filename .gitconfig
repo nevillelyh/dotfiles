@@ -22,3 +22,5 @@
 	tool = vimdiff
 [hub]
 	host = ghe.spotify.net
+[commit]
+	gpgsign = true

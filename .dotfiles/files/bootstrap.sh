@@ -170,6 +170,17 @@ _pip() {
     pip3 install ${PIP_PKGS}
 }
 
+_jdk() {
+	set +u
+    source "$HOME/.sdkman/bin/sdkman-init.sh"
+	VERSION="$1"
+	SUFFIX="$2"
+
+	local JDK_VERSION=$(sdk list java | grep -o "$VERSION\.[^ ]*$SUFFIX" | head -n 1)
+    [[ -z "$JDK_VERSION" ]] && die 'No Java $VERSION SDK available'
+    echo sdk install java $JDK_VERSION
+}
+
 _sdkman() {
     command -v sbt &> /dev/null && return
     echo "Setting up SDKMAN"
@@ -179,13 +190,13 @@ _sdkman() {
     set +u
     source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-    local JDK_VERSION=$(sdk list java | grep -o '8\.[^ ]*\.hs-adpt' | head -n 1)
-    [[ -z "$JDK_VERSION" ]] && die 'No Java 8 SDK available'
-    sdk install java $JDK_VERSION
+    _jdk 11 ".hs-adpt"
+    _jdk 8 ".hs-adpt"
 
-    local JDK_VERSION=$(sdk list java | grep -o '11\.[^ ]*\.hs-adpt' | head -n 1)
-    [[ -z "$JDK_VERSION" ]] && die 'No Java 11 SDK available'
-    sdk install java $JDK_VERSION
+    if [[ "$(uname -s)" == "Darwin" ]] && [[ "$(uname -m)" == "arm64" ]]; then
+        _jdk 11 "-zulu"
+        _jdk 8 "-zulu"
+    fi
 
     sdk install maven
     sdk default maven

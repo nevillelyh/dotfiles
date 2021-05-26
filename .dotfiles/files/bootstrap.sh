@@ -141,6 +141,9 @@ _gnupg() {
     mkdir -p ${HOME}/.gnupg
     chmod 700 ${HOME}/.gnupg
     cp ${HOME}/.dotfiles/files/gpg-agent.conf ${HOME}/.gnupg
+
+    # https://gpgtools.tenderapp.com/kb/gpg-mail-faq/gpg-mail-hidden-settings#disable-option-to-store-password-in-macos-keychain
+    defaults write org.gpgtools.common DisableKeychain -bool yes
 }
 
 _neovim() {

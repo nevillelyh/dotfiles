@@ -8,7 +8,7 @@ set -euo pipefail
 # python - leave macOS bundled python alone
 # pinentry-mac - for GPG
 # App Store - Kindle, Slack, The Unarchiver
-BREWS="bat colordiff fd fzf git gpg htop hub neovim pinentry-mac python tig tmux tree wget z"
+BREWS="bat colordiff fd fzf git gpg htop hub neovim pinentry-mac python ripgrep tig tmux tree wget z"
 CASKS="alacritty alfred dropbox google-cloud-sdk iterm2 jetbrains-toolbox joplin keybase sublime-text visual-studio-code vimr"
 CASKS_OPT="adobe-creative-cloud expressvpn guitar-pro macdive shearwater-cloud transmission vlc"
 
@@ -17,7 +17,7 @@ CASKS_OPT="adobe-creative-cloud expressvpn guitar-pro macdive shearwater-cloud t
 # fonts-powerline - PowerlineSymbols only, no patched fonts
 # gnome-screensaver xautolock xcalib - for screen locking in awesome
 # bat - outdated in Ubuntu 19.10/20.04, use binary instead
-DEB_PKGS="alacritty awesome colordiff compton fd-find fonts-powerline fzf gnome-screensaver htop neovim neovim-qt snapd tig tmux tree ubuntu-restricted-extras xautolock xcalib zsh"
+DEB_PKGS="alacritty awesome colordiff compton fd-find fonts-powerline fzf gnome-screensaver htop neovim neovim-qt snapd ripgrep tig tmux tree ubuntu-restricted-extras xautolock xcalib zsh"
 
 # PIP packages:
 PIP_PKGS="flake8 ipython virtualenvwrapper"

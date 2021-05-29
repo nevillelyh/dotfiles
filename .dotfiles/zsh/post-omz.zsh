@@ -10,6 +10,13 @@ esac
 
 alias cat='bat'
 alias diff='colordiff'
+alias l='exa -la' # 'ls -lah'
+alias la='exa -la' # 'ls -lAh'
+alias ll='exa -l' # 'ls -lh'
+alias ls='exa' # 'ls -G'
+alias lsa='exa -la' # 'ls -lah'
+alias lsg='exa -l --git'
+alias lst='exa -l -r -s modified'
 
 function zt() {
     z $1

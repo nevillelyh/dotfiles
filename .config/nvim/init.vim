@@ -1,5 +1,12 @@
 source $HOME/.config/nvim/dein.vim
 
+if exists('g:vv')
+  VVset nobold
+  VVset noitalic
+  VVset fontfamily=Fira\ Mono\ for\ Powerline
+  VVset fontsize=12
+endif
+
 " Look and feel
 behave xterm
 set termguicolors

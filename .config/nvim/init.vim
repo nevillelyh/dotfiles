@@ -15,6 +15,13 @@ colorscheme dracula
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tmuxline#enabled = 0
+if has('mac')
+  if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+  endif
+  "The default column number symbol is missing
+  let g:airline_symbols.colnr = "\u2105:"
+endif
 let g:tmuxline_theme = 'nightly_fox'
 let g:tmuxline_preset = 'minimal'
 

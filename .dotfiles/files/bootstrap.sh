@@ -9,7 +9,7 @@ set -euo pipefail
 # pinentry-mac - for GPG
 # App Store - Kindle, Slack, The Unarchiver
 BREWS="bat colordiff exa fd fzf git gpg htop hub neovim pinentry-mac python ripgrep tig tmux wget z"
-CASKS="alacritty alfred dropbox google-cloud-sdk iterm2 jetbrains-toolbox joplin sublime-text visual-studio-code vv"
+CASKS="alacritty alfred dropbox google-cloud-sdk iterm2 jetbrains-toolbox joplin sublime-text visual-studio-code vimr"
 CASKS_OPT="adobe-creative-cloud expressvpn guitar-pro macdive shearwater-cloud transmission vlc"
 
 # Linux packages:

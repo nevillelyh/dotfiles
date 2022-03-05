@@ -8,7 +8,7 @@ set -euo pipefail
 # python - leave macOS bundled python alone
 # pinentry-mac - for GPG
 # App Store - Kindle, Slack, The Unarchiver
-BREWS="bat colordiff exa fd fzf git gpg htop hub neovim pinentry-mac python ripgrep tig tmux wget z"
+BREWS="bat colordiff exa fd fzf git git-delta gpg htop hub neovim pinentry-mac python ripgrep tig tmux wget z"
 CASKS="alacritty alfred dropbox google-cloud-sdk iterm2 jetbrains-toolbox joplin sublime-text visual-studio-code vimr"
 CASKS_OPT="adobe-creative-cloud expressvpn guitar-pro macdive shearwater-cloud transmission vlc"
 

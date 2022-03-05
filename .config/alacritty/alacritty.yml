@@ -653,6 +653,7 @@ colors:
 
 env:
   WINIT_X11_SCALE_FACTOR: '0.90'
+  TERM: xterm-256color
 
 window:
   dimensions:

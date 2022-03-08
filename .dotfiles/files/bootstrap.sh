@@ -53,6 +53,7 @@ _aptitude() {
     command -v htop &> /dev/null && return
     echo "Setting up Aptitude"
 
+    sudo add-apt-repository ppa:neovim-ppa/stable
     sudo apt-get install aptitude
     sudo aptitude update
     sudo aptitude upgrade

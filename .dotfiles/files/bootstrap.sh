@@ -191,16 +191,19 @@ _sdkman() {
     echo "Setting up SDKMAN"
 
     curl -s "https://get.sdkman.io" | bash
+    sed -i 's/sdkman_rosetta2_compatible=true/sdkman_rosetta2_compatible=false/g' $HOME/.sdkman/etc/config
 
     set +u
     source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-    _jdk 11 ".hs-adpt"
-    _jdk 8 ".hs-adpt"
-
     if [[ "$(uname -s)" == "Darwin" ]] && [[ "$(uname -m)" == "arm64" ]]; then
-        _jdk 11 "-zulu"
         _jdk 8 "-zulu"
+        _jdk 11 "-zulu"
+        _jdk 17 "-tem"
+    else
+        _jdk 8 "-tem"
+        _jdk 11 "-tem"
+        _jdk 17 "-tem"
     fi
 
     sdk install maven

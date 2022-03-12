@@ -6,7 +6,7 @@ cd $HOME
 STATUS=$(git status --porcelain --untracked-files=no)
 [ -z "$STATUS" ] || git stash save "tmp-git-update"
 git pull
-git submodule update --remote
+git submodule update --init --remote
 [ -z "$STATUS" ] || git stash pop
 
 nvim -u $HOME/.config/nvim/dein.vim --headless '+call dein#update() | qall'

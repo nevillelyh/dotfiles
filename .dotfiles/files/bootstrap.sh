@@ -86,14 +86,8 @@ _linux() {
     sudo apt-get update
     sudo apt-get install code sublime-text # or code-insiders
 
-
-
     sudo snap install spotify
     sudo snap install hub --classic
-
-    git clone https://github.com/powerline/fonts.git
-    ./fonts/install.sh
-    rm -rf fonts
 
     git clone https://github.com/dracula/gnome-terminal
     ./gnome-terminal/install.sh
@@ -108,7 +102,6 @@ _linux() {
 }
 
 _mac() {
-    [[ -d ${HOME}/Library/Fonts ]] && return
     echo "Setting up Mac specifics"
 
     read -p "Enter hostname: "
@@ -116,9 +109,23 @@ _mac() {
     sudo scutil --set HostName $REPLY
     sudo scutil --set LocalHostName $REPLY
 
-    git clone https://github.com/powerline/fonts.git
-    ./fonts/install.sh
+}
+
+_fonts() {
+    echo "Setting up fonts"
+
+    git clone https://github.com/powerline/fonts
+    cd fonts
+    ./install.sh
+    cd ..
     rm -rf fonts
+
+    git clone --filter=blob:none --sparse https://github.com/ryanoasis/nerd-fonts
+    cd nerd-fonts
+    git sparse-checkout add patched-fonts/Meslo
+    ./install.sh Meslo
+    cd ..
+    rm -rf nerd-fonts
 }
 
 _git() {

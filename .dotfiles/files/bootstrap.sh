@@ -24,13 +24,28 @@ DEB_PKGS="alacritty awesome colordiff compton exa fd-find fonts-powerline fzf gn
 PIP_PKGS="flake8 ipython virtualenvwrapper"
 
 die() {
-    echo "Error: $1"
+    msg_box "Error: $1"
     exit 1
 }
 
-_homebrew() {
+msg_box() {
+    LINE="##$(echo "$1" | sed 's/./#/g')##"
+    echo "$LINE"
+    echo "# $1 #"
+    echo "$LINE"
+}
+
+setup_ssh() {
+    [[ -f $HOME/.ssh/private/id_rsa ]] || die 'SSH private key not found'
+    killall -q ssh-agent || true
+    eval $(ssh-agent -s)
+    ssh-add $HOME/.ssh/private/id_rsa
+}
+
+setup_homebrew() {
+    [[ "$UNAME_S" != "Darwin" ]] && return
     command -v brew &> /dev/null && return
-    echo "Setting up Homebrew"
+    msg_box "Setting up Homebrew"
 
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     [[ -d /opt/homebrew ]] && export PATH=/opt/homebrew/bin:$PATH
@@ -49,9 +64,10 @@ _homebrew() {
     fi
 }
 
-_aptitude() {
+setup_aptitude() {
+    [[ "$UNAME_S" != "Linux" ]] && return
     command -v htop &> /dev/null && return
-    echo "Setting up Aptitude"
+    msg_box "Setting up Aptitude"
 
     sudo add-apt-repository ppa:neovim-ppa/stable
     sudo apt-get install aptitude
@@ -60,9 +76,10 @@ _aptitude() {
     sudo aptitude install $DEB_PKGS
 }
 
-_linux() {
+setup_linux() {
+    [[ "$UNAME_S" != "Linux" ]] && return
     command -v hub &> /dev/null && return
-    echo "Setting up Linux specifics"
+    msg_box "Setting up Linux specifics"
 
     wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
     sudo dpkg -i google-chrome-stable_current_amd64.deb
@@ -101,8 +118,9 @@ _linux() {
     # for icon and _NET_WM_WINDOW_TYPE fixes
 }
 
-_mac() {
-    echo "Setting up Mac specifics"
+setup_mac() {
+    [[ "$UNAME_S" != "Darwin" ]] && return
+    msg_box "Setting up Mac specifics"
 
     read -p "Enter hostname: "
     sudo scutil --set ComputerName $REPLY
@@ -111,8 +129,8 @@ _mac() {
 
 }
 
-_fonts() {
-    echo "Setting up fonts"
+setup_fonts() {
+    msg_box "Setting up fonts"
 
     git clone https://github.com/powerline/fonts
     cd fonts
@@ -124,9 +142,9 @@ _fonts() {
     # https://github.com/romkatv/powerlevel10k#fonts
 }
 
-_git() {
+setup_git() {
     [[ -d ${HOME}/.dotfiles/oh-my-zsh ]] && return
-    echo "Setting up Git"
+    msg_box "Setting up Git"
 
     cd $HOME
     git init
@@ -138,10 +156,10 @@ _git() {
     git branch --set-upstream-to=origin/master
 }
 
-_gnupg() {
+setup_gnupg() {
     [[ -d ${HOME}/.gnupg ]] && return
-    [[ "$(uname -s)" != "Darwin" ]] && return
-    echo "Setting up GnuPG"
+    [[ "$UNAME_S" != "Darwin" ]] && return
+    msg_box "Setting up GnuPG"
 
     mkdir -p ${HOME}/.gnupg
     chmod 700 ${HOME}/.gnupg
@@ -151,19 +169,19 @@ _gnupg() {
     defaults write org.gpgtools.common DisableKeychain -bool yes
 }
 
-_neovim() {
+setup_neovim() {
     DIR=$HOME/.local/share/dein/repos/github.com/Shougo
     [[ -d $DIR ]] && return
-    echo "Setting up NeoVim"
+    msg_box "Setting up NeoVim"
 
     mkdir -p $DIR
     git clone git@github.com:Shougo/dein.vim.git $DIR/dein.vim
     nvim -u $HOME/.config/nvim/dein.vim --headless '+call dein#install() | qall'
 }
 
-_pip() {
+setup_pip() {
     command -v ipython &> /dev/null && return
-    echo "Setting up Python"
+    msg_box "Setting up Python"
 
     DIR=/usr/local/lib
     [[ -d /opt/homebrew ]] && DIR=/opt/homebrew/lib
@@ -178,20 +196,20 @@ _pip() {
     pip3 install ${PIP_PKGS}
 }
 
-_jdk() {
-	set +u
+setup_jdk() {
+    set +u
     source "$HOME/.sdkman/bin/sdkman-init.sh"
-	VERSION="$1"
-	SUFFIX="$2"
+    VERSION="$1"
+    SUFFIX="$2"
 
-	local JDK_VERSION=$(sdk list java | grep -o "$VERSION\.[^ ]*$SUFFIX" | head -n 1)
+    local JDK_VERSION=$(sdk list java | grep -o "$VERSION\.[^ ]*$SUFFIX" | head -n 1)
     [[ -z "$JDK_VERSION" ]] && die 'No Java $VERSION SDK available'
-    echo sdk install java $JDK_VERSION
+    sdk install java $JDK_VERSION
 }
 
-_sdkman() {
+setup_sdkman() {
     command -v sbt &> /dev/null && return
-    echo "Setting up SDKMAN"
+    msg_box "Setting up SDKMAN"
 
     curl -s "https://get.sdkman.io" | bash
     sed -i 's/sdkman_rosetta2_compatible=true/sdkman_rosetta2_compatible=false/g' $HOME/.sdkman/etc/config
@@ -199,14 +217,14 @@ _sdkman() {
     set +u
     source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-    if [[ "$(uname -s)" == "Darwin" ]] && [[ "$(uname -m)" == "arm64" ]]; then
-        _jdk 8 "-zulu"
-        _jdk 11 "-zulu"
-        _jdk 17 "-tem"
+    if [[ "$UNAME_S" == "Darwin" ]] && [[ "$UNAME_M" == "arm64" ]]; then
+        setup_jdk 8 "-zulu"
+        setup_jdk 11 "-zulu"
+        setup_jdk 17 "-tem"
     else
-        _jdk 8 "-tem"
-        _jdk 11 "-tem"
-        _jdk 17 "-tem"
+        setup_jdk 8 "-tem"
+        setup_jdk 11 "-tem"
+        setup_jdk 17 "-tem"
     fi
 
     sdk install maven
@@ -220,34 +238,45 @@ _sdkman() {
     set -u
 }
 
-_cargo() {
+setup_cargo() {
     command -v cargo &> /dev/null && return
-    echo "Setting up Rust"
+    msg_box "Setting up Rust"
 
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 }
 
-_zsh() {
+setup_zsh() {
+    [[ "$SHELL" == "/bin/zsh" ]] && return
+    msg_box "Setting up zsh"
     chsh -s /bin/zsh
 }
 
-[[ -f $HOME/.ssh/private/id_rsa ]] || die 'SSH private key not found'
-ssh-add $HOME/.ssh/private/id_rsa
+UNAME_S=$(uname -s)
+UNAME_M=$(uname -m)
 
-case "$(uname -s)" in
+if [ $# -eq 1 ]; then
+    msg_box "Setting up single step $1"
+    setup_$1
+    exit
+fi
+exit
+
+setup_ssh
+
+case "$UNAME_S" in
     Darwin)
-        _homebrew
-        _mac
+        setup_homebrew
+        setup_mac
         ;;
     Linux)
-        _aptitude
-        _linux
+        setup_aptitude
+        setup_linux
         ;;
 esac
-_git
-_gnupg
-_neovim
-_pip
-_sdkman
-_cargo
-_zsh
+setup_git
+setup_gnupg
+setup_neovim
+setup_pip
+setup_sdkman
+setup_cargo
+setup_zsh

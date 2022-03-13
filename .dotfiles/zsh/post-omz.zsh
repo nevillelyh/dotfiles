@@ -26,7 +26,7 @@ function zt() {
 export EDITOR=nvim
 
 if [[ -n $(pidof ssh-agent) ]]; then
-    ssh-add $HOME/.ssh/private/id_rsa $HOME/.ssh/spotify/id_rsa > /dev/null 2>&1
+    ssh-add $HOME/.ssh/private/id_rsa > /dev/null 2>&1
 fi
 
 export FZF_DEFAULT_COMMAND="$FD_COMMAND --type f"

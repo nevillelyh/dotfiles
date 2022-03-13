@@ -120,12 +120,8 @@ _fonts() {
     cd ..
     rm -rf fonts
 
-    git clone --filter=blob:none --sparse https://github.com/ryanoasis/nerd-fonts
-    cd nerd-fonts
-    git sparse-checkout add patched-fonts/Meslo
-    ./install.sh Meslo
-    cd ..
-    rm -rf nerd-fonts
+    # Also install powerlevel10k patched fonts
+    # https://github.com/romkatv/powerlevel10k#fonts
 }
 
 _git() {

@@ -9,7 +9,7 @@ set -euo pipefail
 # pinentry-mac - for GPG
 # App Store - Kindle, Slack, The Unarchiver
 BREWS="bat colordiff exa fd fzf git git-delta gpg htop hub neovim pinentry-mac python ripgrep tig tmux wget z"
-CASKS="alacritty alfred dropbox google-cloud-sdk iterm2 jetbrains-toolbox joplin sublime-text visual-studio-code vimr"
+CASKS="alacritty alfred dropbox iterm2 jetbrains-toolbox joplin sublime-text visual-studio-code vimr"
 CASKS_OPT="adobe-creative-cloud expressvpn guitar-pro macdive shearwater-cloud transmission vlc"
 
 # Linux packages:
@@ -84,15 +84,6 @@ setup_linux() {
     wget -nv https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
     sudo dpkg -i google-chrome-stable_current_amd64.deb
     rm google-chrome-stable_current_amd64.deb
-
-    # Add the Cloud SDK distribution URI as a package source
-    echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-
-    # Import the Google Cloud Platform public key
-    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
-
-    # Update the package list and install the Cloud SDK
-    sudo apt-get update && sudo apt-get install google-cloud-sdk
 
     curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
     sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/

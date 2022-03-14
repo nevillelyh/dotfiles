@@ -81,7 +81,7 @@ setup_linux() {
     command -v hub &> /dev/null && return
     msg_box "Setting up Linux specifics"
 
-    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    wget -nv https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
     sudo dpkg -i google-chrome-stable_current_amd64.deb
     rm google-chrome-stable_current_amd64.deb
 

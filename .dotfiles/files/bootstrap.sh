@@ -138,8 +138,19 @@ setup_fonts() {
     cd ..
     rm -rf fonts
 
-    # Also install powerlevel10k patched fonts
-    # https://github.com/romkatv/powerlevel10k#fonts
+    wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
+    wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
+    wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
+    wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
+    case "$UNAME_S" in
+        Darwin)
+            mv MesloLGS*.ttf $HOME/Library/Fonts
+            ;;
+        Linux)
+            mv MesloLGS*.ttf $HOME/.local/share/fonts
+            fc-cache -fv $HOME/.local/share/fonts
+            ;;
+    esac
 }
 
 setup_git() {

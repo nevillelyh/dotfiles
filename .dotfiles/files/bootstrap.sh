@@ -18,6 +18,7 @@ CASKS_OPT="adobe-creative-cloud expressvpn guitar-pro macdive shearwater-cloud t
 # gnome-screensaver xautolock xcalib - for screen locking in awesome
 # Not available or outdated in Ubuntu - bat, git-delta, zoxide
 DEB_PKGS="alacritty awesome colordiff compton exa fd-find fonts-powerline fzf gnome-screensaver htop neovim neovim-qt snapd ripgrep tig tmux ubuntu-restricted-extras xautolock xcalib zsh"
+LINUX_CRATES="bat git-delta zoxide"
 
 # PIP packages:
 PIP_PKGS="flake8 ipython virtualenvwrapper"
@@ -244,6 +245,9 @@ setup_cargo() {
     msg_box "Setting up Rust"
 
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+    [[ "$UNAME_S" != "Linux" ]] && return
+    cargo install -q $LINUX_CRATES
 }
 
 setup_zsh() {

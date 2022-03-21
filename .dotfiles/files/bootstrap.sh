@@ -8,7 +8,7 @@ set -euo pipefail
 # python - leave macOS bundled python alone
 # pinentry-mac - for GPG
 # App Store - Kindle, Slack, The Unarchiver
-BREWS="bat colordiff exa fd fzf git git-delta gpg htop hub neovim pinentry-mac python ripgrep tig tmux wget z"
+BREWS="bat colordiff exa fd fzf git git-delta gpg htop hub neovim pinentry-mac python ripgrep tig tmux wget zoxide"
 CASKS="alacritty alfred dropbox iterm2 jetbrains-toolbox joplin sublime-text visual-studio-code vimr"
 CASKS_OPT="adobe-creative-cloud expressvpn guitar-pro macdive shearwater-cloud transmission vlc"
 
@@ -16,8 +16,7 @@ CASKS_OPT="adobe-creative-cloud expressvpn guitar-pro macdive shearwater-cloud t
 # compton - for alacritty background opacity
 # fonts-powerline - PowerlineSymbols only, no patched fonts
 # gnome-screensaver xautolock xcalib - for screen locking in awesome
-# bat - outdated in Ubuntu, use binary instead
-# git-delta - not available for Ubuntu, use binary instead
+# Not available or outdated in Ubuntu - bat, git-delta, zoxide
 DEB_PKGS="alacritty awesome colordiff compton exa fd-find fonts-powerline fzf gnome-screensaver htop neovim neovim-qt snapd ripgrep tig tmux ubuntu-restricted-extras xautolock xcalib zsh"
 
 # PIP packages:

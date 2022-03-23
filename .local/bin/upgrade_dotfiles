@@ -43,3 +43,18 @@ source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk update
 sdk upgrade
 set -euo pipefail
+
+case "$(uname -s)" in
+    Darwin)
+        msg_box "Upgrading Homebrew"
+        brew update
+        brew upgrade
+        brew cleanup
+        ;;
+    Linux)
+        msg_box "Upgrading Aptitude"
+        sudo aptitude update
+        sudo aptitude upgrade
+        sudo aptitude autoclean
+        ;;
+esac

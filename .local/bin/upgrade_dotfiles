@@ -2,26 +2,44 @@
 
 set -euo pipefail
 
+msg_box() {
+    LINE="##$(echo "$1" | sed 's/./#/g')##"
+    echo "$LINE"
+    echo "# $1 #"
+    echo "$LINE"
+}
+
 cd $HOME
+
+msg_box "Upgrading Git Repository"
 STATUS=$(git status --porcelain --untracked-files=no)
 [ -z "$STATUS" ] || git stash save "tmp-git-update"
 git pull
 git submodule update --init --remote
 [ -z "$STATUS" ] || git stash pop
 
-nvim -u $HOME/.config/nvim/dein.vim --headless '+call dein#update() | qall'
-
+msg_box "Upgrading Oh-My-Zsh"
 set +eu
-
 source "$HOME/.dotfiles/oh-my-zsh/oh-my-zsh.sh"
 omz update
+set -euo pipefail
 
+msg_box "Upgrading NeoVim"
+VS='+let g:dein#install_progress_type = "none" | call dein#update() | echo "\r\n" | qall'
+nvim -u $HOME/.config/nvim/dein.vim --headless $VS
+
+msg_box "Upgrading Python Packages"
+PIP_PKGS=$(grep -Po '(?<=^PIP_PKGS=")[^"]+' $HOME/.dotfiles/files/bootstrap.sh)
+pip install --quiet --upgrade --upgrade-strategy eager ${=PIP_PKGS}
+
+msg_box "Upgrading Rust"
+rustup update
+CRATES=$(grep -Po '(?<=^")[^ ]+' ~/.cargo/.crates.toml)
+cargo install -q ${=CRATES}
+
+msg_box "Upgrading SDKMAN"
+set +eu
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk update
 sdk upgrade
-
 set -euo pipefail
-
-pip install --upgrade flake8 ipython pip virtualenvwrapper
-
-rustup update

@@ -861,6 +861,10 @@ awful.rules.rules = {
     -- { rule = { class = "Firefox" },
     --   properties = { screen = 1, tag = "2" } },
 
+    { rule_any = { class = { "Gcr-prompter" },
+      }, properties = { placement = awful.placement.centered }
+    },
+
     { rule_any = { class = { "Steam" },
       }, properties = { titlebars_enabled = false }
     },

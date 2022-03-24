@@ -29,12 +29,12 @@ VS='+let g:dein#install_progress_type = "none" | call dein#update() | echo "\r\n
 nvim -u $HOME/.config/nvim/dein.vim --headless $VS
 
 msg_box "Upgrading Python Packages"
-PIP_PKGS=$(grep -Po '(?<=^PIP_PKGS=")[^"]+' $HOME/.dotfiles/files/bootstrap.sh)
+PIP_PKGS=$(grep '^PIP_PKGS="' $HOME/.dotfiles/files/bootstrap.sh | sed 's/^PIP_PKGS="\(.*\)"$/\1/')
 pip install --quiet --upgrade --upgrade-strategy eager ${=PIP_PKGS}
 
 msg_box "Upgrading Rust"
 rustup update
-CRATES=$(grep -Po '(?<=^")[^ ]+' ~/.cargo/.crates.toml)
+CRATES=$(grep '^"[^"]*" = \["[^"]*"\]$' $HOME/.cargo/.crates.toml | sed 's/^"\([^ ]*\) .*$/\1/')
 cargo install -q ${=CRATES}
 
 msg_box "Upgrading SDKMAN"

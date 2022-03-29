@@ -7,3 +7,5 @@ if type fdfind >/dev/null 2>&1; then
     FD_COMMAND=fdfind
 fi
 export FD_COMMAND
+
+[[ -d $HOME/.nvman ]] && eval $(nvman env)

@@ -1,0 +1,126 @@
+#!/bin/bash
+
+set -euo pipefail
+
+die() {
+    echo "Error: $1"
+    exit 1
+}
+
+help() {
+    echo "Usage: nvman <command> [args]..."
+    echo
+    echo "  commands:"
+    echo "    env"
+    echo "    install <runfile|tarball>"
+    echo "    list"
+    echo "    help"
+    exit 1
+}
+
+env() {
+    [ $# -ne 0 ] && help
+    CUDA=$HOME/.nvman/cuda-current
+    [ ! -L $CUDA ] && die "CUDA not installed"
+    CUDNN=$HOME/.nvman/cudnn-current
+    [ ! -L $CUDNN ] && die "cuDNN not installed"
+    echo "export PATH=$CUDA/bin${PATH:+:${PATH}}"
+    echo "export LD_LIBRARY_PATH=$CUDA/lib64:$CUDNN/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+}
+
+install_cuda() {
+    CUDA_VERSION=$(echo $1 | grep -Po '(?<=^cuda_)[0-9\.]+')
+    DEST=$HOME/.nvman/cuda-$CUDA_VERSION
+    if [ -d $DEST ]; then
+        die "CUDA $CUDA_VERSION already installed"
+    fi
+    echo "Installing CUDA $CUDA_VERSION in $DEST"
+    mkdir -p $HOME/.nvman
+    bash $1 --silent --installpath=$DEST --toolkit --samples --no-opengl-libs --no-drm
+    LINK=$HOME/.nvman/cuda-current
+    rm -f $LINK
+    ln -rs $DEST $LINK
+}
+
+install_cudnn() {
+    CUDNN_VERSION=$(echo $1 | sed 's/cudnn-[^-]*-[^-]*-\([^-]*\)_cuda.*/\1/')
+    DEST=$HOME/.nvman/cudnn-$CUDNN_VERSION
+    if [ -d $DEST ]; then
+        die "cuDNN $CUDNN_VERSION already installed"
+    fi
+    echo "Installing CUDNN $CUDNN_VERSION in $DEST"
+    mkdir -p $HOME/.nvman
+    tar xJf $1 -C $HOME/.nvman
+    BASE=$(basename $1 .tar.xz)
+    mv $HOME/.nvman/$BASE $DEST
+    LINK=$HOME/.nvman/cudnn-current
+    rm -f $LINK
+    ln -rs $DEST $LINK
+}
+
+install() {
+    if [ $# -ne 1 ]; then
+        echo "No runfile or tarball provided"
+        echo
+        help
+    fi
+    BASE=$(basename "$1")
+    EXT="${BASE##*.}"
+    case "$EXT" in
+        run)
+            install_cuda $1
+            ;;
+        xz)
+            install_cudnn $1
+            ;;
+        *)
+            die "Unsupported file: $1"
+    esac
+}
+
+list() {
+    [ $# -ne 0 ] && help
+    [[ ! -d $HOME/.nvman ]] && die "nvman not installed"
+    set +o pipefail
+    CUDA=$(ls $HOME/.nvman/ | grep '^cuda-' | grep -v '^cuda-current$' | sed 's/^cuda-//' | tr '\n' ' ')
+    set -o pipefail
+    if [ -z "$CUDA" ]; then
+        echo "CUDA not installed"
+    else
+        echo "CUDA: $CUDA"
+    fi
+    set +o pipefail
+    CUDNN=$(ls $HOME/.nvman/ | grep '^cudnn-' | grep -v '^cudnn-current$' | sed 's/^cudnn-//' | tr '\n' ' ')
+    set -o pipefail
+    if [ -z "$CUDNN" ]; then
+        echo "cuDNN not installed"
+    else
+        echo "cuDNN: $CUDNN"
+    fi
+    set -euo pipefail
+}
+
+if [ $# -eq 0 ]; then
+    help
+fi
+
+case "$1" in
+    env)
+        shift
+        env $*
+        ;;
+    install)
+        shift
+        install $*
+        ;;
+    list)
+        shift
+        list $*
+        ;;
+    help)
+        help
+        ;;
+    *)
+        help
+        ;;
+esac

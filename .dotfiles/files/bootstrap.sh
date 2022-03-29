@@ -23,16 +23,16 @@ LINUX_CRATES="bat git-delta gitui zoxide"
 # PIP packages:
 PIP_PKGS="flake8 ipython virtualenvwrapper"
 
-die() {
-    msg_box "Error: $1"
-    exit 1
-}
-
 msg_box() {
     LINE="##$(echo "$1" | sed 's/./#/g')##"
     echo "$LINE"
     echo "# $1 #"
     echo "$LINE"
+}
+
+die() {
+    msg_box "Error: $1"
+    exit 1
 }
 
 setup_ssh() {

@@ -58,8 +58,7 @@ setup_homebrew() {
 
     read -p "Install optional casks (y/N)? " -n 1 -r
     echo # (optional) move to a new line
-    if [[ $REPLY =~ ^[Yy]$ ]]
-    then
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
         brew install --cask $CASKS_OPT
     fi
 }

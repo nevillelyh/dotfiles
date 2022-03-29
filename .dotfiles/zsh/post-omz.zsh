@@ -40,15 +40,6 @@ if type virtualenvwrapper.sh >/dev/null 2>&1; then
     source $(which virtualenvwrapper.sh)
 fi
 
-if [[ -n $CLOUDSDK_HOME ]]; then
-    alias gscat='gsutil cat'
-    alias gsdu='gsutil du'
-    alias gsls='gsutil ls'
-    alias gscp='gsutil -m cp'
-    alias gsmv='gsutil -m mv'
-    alias gsrm='gsutil -m rm'
-fi
-
 source "$HOME/.cargo/env"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!

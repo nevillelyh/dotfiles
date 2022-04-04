@@ -50,11 +50,13 @@ case "$(uname -s)" in
         brew update
         brew upgrade
         brew cleanup
+        brew autoremove
         ;;
     Linux)
         msg_box "Upgrading Aptitude"
         sudo aptitude update
         sudo aptitude upgrade
         sudo aptitude autoclean
+        sudo apt-get autoremove
         ;;
 esac

@@ -29,7 +29,7 @@ local function factory(args)
     args     = args or {}
 
     local fs = {
-        widget = wibox.widget.textbox(),
+        widget = args.widget or wibox.widget.textbox(),
         units = {
             [1] = "KiB", [2] = "MiB", [3] = "GiB",
             [4] = "TiB", [5] = "PiB", [6] = "EiB",
@@ -140,7 +140,7 @@ local function factory(args)
     function fs.update(callback)
         Gio.Async.start(gears.protected_call.call)(function()
             update_synced()
-            if callback then
+            if type(callback) == "function" and callback then
                 callback()
             end
         end)

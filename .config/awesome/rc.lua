@@ -868,6 +868,14 @@ awful.rules.rules = {
     { rule_any = { class = { "Steam" },
       }, properties = { titlebars_enabled = false }
     },
+    { rule_any = {
+        name = {
+            "Aragami",
+            "This War of Mine",
+            "Trine",
+        },
+      }, properties = { floating = true },
+    },
 }
 -- }}}
 

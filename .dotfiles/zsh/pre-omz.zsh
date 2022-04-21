@@ -4,8 +4,7 @@
 [[ -d $HOME/.local/bin ]] && export PATH=$HOME/.local/bin:$PATH
 
 # https://docs.brew.sh/Shell-Completion
-if type brew &>/dev/null
-then
+if type brew &>/dev/null; then
   FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 
   autoload -Uz compinit

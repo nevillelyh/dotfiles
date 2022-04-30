@@ -37,7 +37,7 @@ die() {
 }
 
 setup_ssh() {
-    [[ -z "$SSH_TTY" ]] || return #  remote host
+    [[ -z "$SSH_TTY" ]] || return 0 #  remote host
     [[ -f $HOME/.ssh/private/id_rsa ]] || die 'SSH private key not found'
     killall -q ssh-agent || true
     eval $(ssh-agent)
@@ -45,8 +45,8 @@ setup_ssh() {
 }
 
 setup_homebrew() {
-    [[ "$UNAME_S" != "Darwin" ]] && return
-    command -v brew &> /dev/null && return
+    [[ "$UNAME_S" != "Darwin" ]] && return 0
+    command -v brew &> /dev/null && return 0
     msg_box "Setting up Homebrew"
 
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -62,8 +62,8 @@ setup_homebrew() {
 }
 
 setup_aptitude() {
-    [[ "$UNAME_S" != "Linux" ]] && return
-    command -v htop &> /dev/null && return
+    [[ "$UNAME_S" != "Linux" ]] && return 0
+    command -v htop &> /dev/null && return 0
     msg_box "Setting up Aptitude"
 
     sudo add-apt-repository ppa:neovim-ppa/stable
@@ -77,14 +77,14 @@ setup_aptitude() {
 }
 
 setup_linux() {
-    [[ "$UNAME_S" != "Linux" ]] && return
-    command -v hub &> /dev/null && return
+    [[ "$UNAME_S" != "Linux" ]] && return 0
+    command -v hub &> /dev/null && return 0
     msg_box "Setting up Linux specifics"
 
     sudo snap install hub --classic
 
     XORG=$(dpkg-query -l | grep xorg)
-    [[ -z "$XORG" ]] && return
+    [[ -z "$XORG" ]] && return 0
 
     sudo snap install spotify
 
@@ -123,7 +123,7 @@ setup_linux() {
 }
 
 setup_mac() {
-    [[ "$UNAME_S" != "Darwin" ]] && return
+    [[ "$UNAME_S" != "Darwin" ]] && return 0
     msg_box "Setting up Mac specifics"
 
     read -p "Enter hostname: "
@@ -135,7 +135,7 @@ setup_mac() {
 
 setup_fonts() {
     XORG=$(dpkg-query -l | grep xorg)
-    [[ -z "$XORG" ]] && return
+    [[ -z "$XORG" ]] && return 0
     msg_box "Setting up fonts"
 
     git clone https://github.com/powerline/fonts
@@ -160,7 +160,7 @@ setup_fonts() {
 }
 
 setup_git() {
-    [[ -d ${HOME}/.dotfiles/oh-my-zsh ]] && return
+    [[ -d ${HOME}/.dotfiles/oh-my-zsh ]] && return 0
     msg_box "Setting up Git"
 
     cd $HOME
@@ -174,8 +174,8 @@ setup_git() {
 }
 
 setup_gnupg() {
-    [[ -d ${HOME}/.gnupg ]] && return
-    [[ "$UNAME_S" != "Darwin" ]] && return
+    [[ -d ${HOME}/.gnupg ]] && return 0
+    [[ "$UNAME_S" != "Darwin" ]] && return 0
     msg_box "Setting up GnuPG"
 
     mkdir -p ${HOME}/.gnupg
@@ -188,7 +188,7 @@ setup_gnupg() {
 
 setup_neovim() {
     DIR=$HOME/.local/share/dein/repos/github.com/Shougo
-    [[ -d $DIR ]] && return
+    [[ -d $DIR ]] && return 0
     msg_box "Setting up NeoVim"
 
     mkdir -p $DIR
@@ -197,7 +197,7 @@ setup_neovim() {
 }
 
 setup_pip() {
-    command -v ipython &> /dev/null && return
+    command -v ipython &> /dev/null && return 0
     msg_box "Setting up Python"
 
     DIR=/usr/local/lib
@@ -225,7 +225,7 @@ setup_jdk() {
 }
 
 setup_sdkman() {
-    command -v sbt &> /dev/null && return
+    command -v sbt &> /dev/null && return 0
     msg_box "Setting up SDKMAN"
 
     curl -s "https://get.sdkman.io" | bash
@@ -256,17 +256,17 @@ setup_sdkman() {
 }
 
 setup_cargo() {
-    command -v cargo &> /dev/null && return
+    command -v cargo &> /dev/null && return 0
     msg_box "Setting up Rust"
 
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
-    [[ "$UNAME_S" != "Linux" ]] && return
+    [[ "$UNAME_S" != "Linux" ]] && return 0
     cargo install -q $LINUX_CRATES
 }
 
 setup_zsh() {
-    [[ "$SHELL" == "/bin/zsh" ]] && return
+    [[ "$SHELL" == "/bin/zsh" ]] && return 0
     msg_box "Setting up zsh"
     chsh -s /bin/zsh
 }

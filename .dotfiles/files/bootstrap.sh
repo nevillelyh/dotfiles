@@ -66,7 +66,6 @@ setup_aptitude() {
     command -v nvim &> /dev/null && return 0
     msg_box "Setting up Aptitude"
 
-    sudo add-apt-repository ppa:neovim-ppa/stable
     sudo apt-get install aptitude
     sudo aptitude update
     sudo aptitude upgrade

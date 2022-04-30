@@ -163,13 +163,13 @@ setup_git() {
     msg_box "Setting up Git"
 
     cd $HOME
-    git init
-    git config branch.master.rebase true
+    git init --initial-branch=main
+    git config branch.main.rebase true
     git remote add origin git@github.com:nevillelyh/dotfiles.git
     git fetch
-    git reset --hard origin/master
+    git reset --hard origin/main
     git submodule update --init --recursive
-    git branch --set-upstream-to=origin/master
+    git branch --set-upstream-to=origin/main
 }
 
 setup_gnupg() {

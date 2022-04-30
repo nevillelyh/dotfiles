@@ -63,7 +63,7 @@ setup_homebrew() {
 
 setup_aptitude() {
     [[ "$UNAME_S" != "Linux" ]] && return 0
-    command -v htop &> /dev/null && return 0
+    command -v nvim &> /dev/null && return 0
     msg_box "Setting up Aptitude"
 
     sudo add-apt-repository ppa:neovim-ppa/stable

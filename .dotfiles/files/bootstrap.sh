@@ -278,7 +278,6 @@ if [ $# -eq 1 ]; then
     setup_$1
     exit
 fi
-exit
 
 setup_ssh
 

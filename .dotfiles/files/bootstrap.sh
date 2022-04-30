@@ -66,7 +66,7 @@ setup_aptitude() {
     command -v nvim &> /dev/null && return 0
     msg_box "Setting up Aptitude"
 
-    sudo apt-get install aptitude
+    sudo apt-get install apt-transport-https aptitude
     sudo aptitude update
     sudo aptitude upgrade
     sudo aptitude install $DEB_PKGS

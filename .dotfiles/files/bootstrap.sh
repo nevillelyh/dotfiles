@@ -132,6 +132,8 @@ setup_mac() {
 }
 
 setup_fonts() {
+    XORG=$(dpkg-query -l | grep xorg)
+    [[ -z "$XORG" ]] && return
     msg_box "Setting up fonts"
 
     git clone https://github.com/powerline/fonts
@@ -296,3 +298,4 @@ setup_pip
 setup_sdkman
 setup_cargo
 setup_zsh
+setup_fonts

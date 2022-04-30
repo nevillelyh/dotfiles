@@ -11,6 +11,22 @@ msg_box() {
 
 cd $HOME
 
+msg_box "Upgrading system packages"
+case "$(uname -s)" in
+    Darwin)
+        brew update
+        brew upgrade
+        brew cleanup
+        brew autoremove
+        ;;
+    Linux)
+        sudo aptitude update
+        sudo aptitude upgrade
+        sudo aptitude autoclean
+        sudo apt-get autoremove
+        ;;
+esac
+
 msg_box "Upgrading Git Repository"
 STATUS=$(git status --porcelain --untracked-files=no)
 [ -z "$STATUS" ] || git stash save "tmp-git-update"
@@ -43,20 +59,3 @@ source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk update
 sdk upgrade
 set -euo pipefail
-
-case "$(uname -s)" in
-    Darwin)
-        msg_box "Upgrading Homebrew"
-        brew update
-        brew upgrade
-        brew cleanup
-        brew autoremove
-        ;;
-    Linux)
-        msg_box "Upgrading Aptitude"
-        sudo aptitude update
-        sudo aptitude upgrade
-        sudo aptitude autoclean
-        sudo apt-get autoremove
-        ;;
-esac

@@ -80,6 +80,12 @@ setup_linux() {
     command -v hub &> /dev/null && return
     msg_box "Setting up Linux specifics"
 
+    sudo snap install spotify
+    sudo snap install hub --classic
+
+    XORG=$(dpkg-query -l | grep xorg)
+    [[ -z "$XORG" ]] && return
+
     wget -nv https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
     sudo dpkg -i google-chrome-stable_current_amd64.deb
     rm google-chrome-stable_current_amd64.deb
@@ -93,9 +99,6 @@ setup_linux() {
 
     sudo aptitude update
     sudo aptitude install code sublime-text # or code-insiders
-
-    sudo snap install spotify
-    sudo snap install hub --classic
 
     git clone https://github.com/dracula/gnome-terminal
     ./gnome-terminal/install.sh

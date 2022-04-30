@@ -208,7 +208,7 @@ setup_pip() {
     else
         SUDO="sudo"
     fi
-    curl https://bootstrap.pypa.io/get-pip.py | ${SUDO} python3
+    curl -s https://bootstrap.pypa.io/get-pip.py | ${SUDO} python3
     pip3 install ${PIP_PKGS}
 }
 

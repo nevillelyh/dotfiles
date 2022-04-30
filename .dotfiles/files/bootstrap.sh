@@ -17,7 +17,8 @@ CASKS_OPT="adobe-creative-cloud anki expressvpn firefox google-chrome guitar-pro
 # fonts-powerline - PowerlineSymbols only, no patched fonts
 # gnome-screensaver xautolock xcalib - for screen locking in awesome
 # Not available or outdated in Ubuntu - bat, git-delta, zoxide
-DEB_PKGS="alacritty awesome colordiff compton exa fd-find fonts-powerline fzf gnome-screensaver htop neovim neovim-qt snapd ripgrep tmux ubuntu-restricted-extras xautolock xcalib zsh"
+DEB_PKGS="colordiff exa fd-find fzf htop neovim ripgrep snapd tmux ubuntu-restricted-extras zsh"
+DEB_GUI_PKGS="alacritty awesome compton fonts-powerline gnome-screensaver neovim-qt xautolock xcalib"
 LINUX_CRATES="bat git-delta gitui zoxide"
 
 # PIP packages:
@@ -69,6 +70,9 @@ setup_aptitude() {
     sudo aptitude update
     sudo aptitude upgrade
     sudo aptitude install $DEB_PKGS
+
+    XORG=$(dpkg-query -l | grep xorg)
+    [[ -z "$XORG" ]] || sudo aptitude install $DEB_GUI_PKGS
 }
 
 setup_linux() {

@@ -102,9 +102,17 @@ setup_linux() {
     rm -rf gnome-terminal
 
     # Dropbox has its own repository
-    # sudo dpkg -i dropbox_*_amd64.deb
+    URL="https://linux.dropbox.com/packages/ubuntu/"
+    PKG=$(wget -qO - $URL | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^dropbox_\d{4}\.\d{2}\.\d{2}_amd64.deb$' | sort | tail -n 1)
+    wget -nv "$URL/$PKG"
+    sudo dpkg -i dropbox_*_amd64.deb
+    rm -f dropbox_*_amd64.deb
+
     # Slack from Snap is broken
-    # sudo dpkg -i slack-desktop-*-amd64.deb
+    URL=$(wget -qO - "https://slack.com/downloads/instructions/ubuntu" | grep -oP '(?<=href=")[^"]+(?=")' | grep 'slack-desktop-.\+-amd64.deb')
+    wget -nv $URL
+    sudo dpkg -i slack-desktop-*-amd64.deb
+    rm -f slack-desktop-*-amd64.deb
     # Edit /usr/share/applications/slack.desktop to use wrapper
     # for icon and _NET_WM_WINDOW_TYPE fixes
 }

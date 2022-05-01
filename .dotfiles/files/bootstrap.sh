@@ -84,9 +84,6 @@ setup_linux() {
     # The following are GUI apps
     dpkg-query -l xorg &> /dev/null || return 0
 
-    sudo aptitude install -y snapd
-    sudo snap install spotify
-
     wget -nv https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
     sudo dpkg -i google-chrome-stable_current_amd64.deb
     rm google-chrome-stable_current_amd64.deb
@@ -112,13 +109,12 @@ setup_linux() {
     sudo dpkg -i dropbox_*_amd64.deb
     rm -f dropbox_*_amd64.deb
 
-    # Slack from Snap is broken
-    URL=$(wget -qO - "https://slack.com/downloads/instructions/ubuntu" | grep -oP '(?<=href=")[^"]+(?=")' | grep 'slack-desktop-.\+-amd64.deb')
-    wget -nv $URL
-    sudo dpkg -i slack-desktop-*-amd64.deb
-    rm -f slack-desktop-*-amd64.deb
-    # Edit /usr/share/applications/slack.desktop to use wrapper
-    # for icon and _NET_WM_WINDOW_TYPE fixes
+    setup_snap
+}
+
+setup_snap() {
+    sudo aptitude install -y snapd
+    sudo snap install slack spotify xseticon
 }
 
 setup_mac() {

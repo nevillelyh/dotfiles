@@ -67,12 +67,12 @@ setup_aptitude() {
     command -v nvim &> /dev/null && return 0
     msg_box "Setting up Aptitude"
 
-    sudo apt-get install apt-transport-https aptitude
+    sudo apt-get install -y apt-transport-https aptitude
     sudo aptitude update
-    sudo aptitude upgrade
-    sudo aptitude install $DEB_PKGS
+    sudo aptitude upgrade -y
+    sudo aptitude install -y $DEB_PKGS
 
-    dpkg-query -l xorg &> /dev/null && sudo aptitude install $DEB_GUI_PKGS
+    dpkg-query -l xorg &> /dev/null && sudo aptitude install -y $DEB_GUI_PKGS
 }
 
 setup_linux() {
@@ -99,7 +99,7 @@ setup_linux() {
     rm -f *.gpg
 
     sudo aptitude update
-    sudo aptitude install code sublime-text # or code-insiders
+    sudo aptitude install -y code sublime-text # or code-insiders
 
     git clone https://github.com/dracula/gnome-terminal
     ./gnome-terminal/install.sh

@@ -125,7 +125,6 @@ setup_mac() {
     sudo scutil --set ComputerName $REPLY
     sudo scutil --set HostName $REPLY
     sudo scutil --set LocalHostName $REPLY
-
 }
 
 setup_fonts() {

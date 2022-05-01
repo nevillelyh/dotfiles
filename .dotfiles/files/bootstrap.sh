@@ -72,8 +72,7 @@ setup_aptitude() {
     sudo aptitude upgrade
     sudo aptitude install $DEB_PKGS
 
-    XORG=$(dpkg-query -l | grep xorg)
-    [[ -z "$XORG" ]] || sudo aptitude install $DEB_GUI_PKGS
+    dpkg-query -l xorg &> /dev/null && sudo aptitude install $DEB_GUI_PKGS
 }
 
 setup_linux() {
@@ -84,8 +83,7 @@ setup_linux() {
     sudo snap install hub --classic
 
     # The following are GUI apps
-    XORG=$(dpkg-query -l | grep xorg)
-    [[ -z "$XORG" ]] && return 0
+    dpkg-query -l xorg &> /dev/null || return 0
 
     sudo snap install spotify
 
@@ -137,8 +135,7 @@ setup_mac() {
 }
 
 setup_fonts() {
-    XORG=$(dpkg-query -l | grep xorg)
-    [[ -z "$XORG" ]] && return 0
+    dpkg-query -l xorg &> /dev/null || return 0
     msg_box "Setting up fonts"
 
     git clone https://github.com/powerline/fonts

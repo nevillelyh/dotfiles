@@ -219,7 +219,7 @@ setup_jdk() {
     VERSION="$1"
     SUFFIX="$2"
 
-    local JDK_VERSION=$(sdk list java | grep -o "$VERSION\.[^ ]*$SUFFIX" | head -n 1)
+    local JDK_VERSION=$(sdk list java | grep -o "\<$VERSION\.[^ ]*$SUFFIX" | head -n 1)
     [[ -z "$JDK_VERSION" ]] && die 'No Java $VERSION SDK available'
     sdk install java $JDK_VERSION
 }

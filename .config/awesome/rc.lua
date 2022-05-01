@@ -900,6 +900,16 @@ client.connect_signal("manage", function (c)
     end
 end)
 
+-- Spotify client has empty name on launch, catch name change signal instead
+client.connect_signal("property::name", function(c)
+    if c.name == "Slack" then
+        awful.spawn(awesome_path .. "snap_icon.sh slack")
+    end
+    if c.name == "Spotify" then
+        awful.spawn(awesome_path .. "snap_icon.sh spotify")
+    end
+end)
+
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
 client.connect_signal("request::titlebars", function(c)
     -- buttons for the titlebar

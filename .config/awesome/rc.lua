@@ -186,7 +186,7 @@ my_keys = {
     next_layout = function()
         my_keys.current = my_keys.current % #(my_keys.layout) + 1
         local t = my_keys.layout[my_keys.current]
-        os.execute(my_keys.cmd .. " " .. t[1] .. " " .. t[2])
+        awful.spawn(my_keys.cmd .. " " .. t[1] .. " " .. t[2])
         my_keys.widget:set_text(" " .. t[3] .. " ")
     end
 }

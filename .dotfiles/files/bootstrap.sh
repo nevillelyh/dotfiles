@@ -8,7 +8,7 @@ set -euo pipefail
 # python - leave macOS bundled python alone
 # pinentry-mac - for GPG
 # App Store - AdGuard for Safari, Instapaper, Kindle, Messenger, Slack, The Unarchiver, WhatsApp
-BREWS="bat cmake colordiff exa fd fzf git git-delta gitui gpg htop hub neovim pinentry-mac python ripgrep tmux wget zoxide"
+BREWS="bat cmake colordiff exa fd fzf git git-delta gitui gpg htop hub neovim ninja pinentry-mac python ripgrep tmux wget zoxide"
 CASKS="alacritty alfred dropbox iterm2 jetbrains-toolbox joplin lastpass sublime-text visual-studio-code vimr"
 CASKS_OPT="adobe-creative-cloud anki expressvpn firefox google-chrome guitar-pro macdive microsoft-edge shearwater-cloud spotify transmission vlc"
 
@@ -18,7 +18,7 @@ CASKS_OPT="adobe-creative-cloud anki expressvpn firefox google-chrome guitar-pro
 # gnome-screensaver xautolock xcalib - for screen locking in awesome
 # unzip, zip - for SDKMAN
 # Not available or outdated in Ubuntu - bat, git-delta, zoxide
-DEB_PKGS="build-essential cmake colordiff exa fd-find fzf htop neovim ripgrep snapd tmux unzip zip zsh"
+DEB_PKGS="build-essential cmake colordiff exa fd-find fzf htop neovim ninja-build ripgrep snapd tmux unzip zip zsh"
 DEB_GUI_PKGS="alacritty awesome compton fonts-powerline gnome-screensaver neovim-qt ubuntu-restricted-extras xautolock xcalib"
 LINUX_CRATES="bat git-delta gitui zoxide"
 

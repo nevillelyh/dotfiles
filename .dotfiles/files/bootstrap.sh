@@ -38,7 +38,7 @@ die() {
 }
 
 setup_ssh() {
-    [[ -z "$SSH_TTY" ]] || return 0 #  remote host
+    [[ -n "$SSH_TTY" ]] && return 0 # remote host
     [[ -f $HOME/.ssh/private/id_rsa ]] || die 'SSH private key not found'
     killall -q ssh-agent || true
     eval $(ssh-agent)
@@ -83,6 +83,7 @@ setup_linux() {
 
     sudo snap install hub --classic
 
+    # The following are GUI apps
     XORG=$(dpkg-query -l | grep xorg)
     [[ -z "$XORG" ]] && return 0
 
@@ -259,8 +260,7 @@ setup_cargo() {
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
     source $HOME/.cargo/env
-    [[ "$UNAME_S" != "Linux" ]] && return 0
-    cargo install -q $LINUX_CRATES
+    [[ "$UNAME_S" == "Linux" ]] && cargo install -q $LINUX_CRATES
 }
 
 setup_zsh() {
@@ -298,3 +298,5 @@ setup_sdkman
 setup_cargo
 setup_zsh
 setup_fonts
+
+msg_box "Bootstrap complete"

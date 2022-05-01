@@ -244,14 +244,11 @@ setup_sdkman() {
         setup_jdk 17 "-tem"
     fi
 
+    sdk install gradle
+    sdk install kotlin
     sdk install maven
-    sdk default maven
-
     sdk install scala
-    sdk default scala
-
     sdk install sbt
-    sdk default sbt
     set -u
 }
 

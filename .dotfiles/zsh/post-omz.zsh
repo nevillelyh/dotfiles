@@ -29,7 +29,7 @@ export EDITOR=nvim
 if [ -z "$SSH_CONNECTION" ]; then
     AGENT=/tmp/ssh-agent-tmux-$USER
     if [[ -z $(pidof ssh-agent) ]]; then
-        eval $(ssh-agent) > /dev/null 2>&1
+        eval $(ssh-agent) &> /dev/null
         ssh-add -q $(find $HOME/.ssh -name id_dsa -or -name id_rsa)
         [[ "$SSH_AUTH_SOCK" != "$AGENT" ]] && ln -sf "$SSH_AUTH_SOCK" "$AGENT"
     fi
@@ -41,7 +41,7 @@ export FZF_DEFAULT_COMMAND="$FD_COMMAND --type f"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 unset FD_COMMAND
 
-if type virtualenvwrapper.sh >/dev/null 2>&1; then
+if type virtualenvwrapper.sh &> /dev/null; then
     export VIRTUALENVWRAPPER_PYTHON=$(which python3)
     export WORKON_HOME=$HOME/.virtualenvs
     export PROJECT_HOME=$HOME/src/python

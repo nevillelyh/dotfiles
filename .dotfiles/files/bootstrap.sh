@@ -18,7 +18,7 @@ CASKS_OPT="adobe-creative-cloud anki expressvpn firefox google-chrome guitar-pro
 # gnome-screensaver xautolock xcalib - for screen locking in awesome
 # unzip, zip - for SDKMAN
 # Not available or outdated in Ubuntu - bat, git-delta, zoxide
-DEB_PKGS="build-essential colordiff exa fd-find fzf htop neovim ripgrep snapd tmux unzip zip zsh"
+DEB_PKGS="build-essential cmake colordiff exa fd-find fzf htop neovim ripgrep snapd tmux unzip zip zsh"
 DEB_GUI_PKGS="alacritty awesome compton fonts-powerline gnome-screensaver neovim-qt ubuntu-restricted-extras xautolock xcalib"
 LINUX_CRATES="bat git-delta gitui zoxide"
 
@@ -81,14 +81,6 @@ setup_linux() {
     msg_box "Setting up Linux specifics"
 
     sudo snap install hub --classic
-
-    wget -qO - https://apt.kitware.com/keys/kitware-archive-latest.asc | gpg --dearmor > kitware-archive-keyring.gpg
-    sudo install -o root -g root -m 644 *.gpg /etc/apt/trusted.gpg.d/
-    sudo sh -c 'echo "deb [signed-by=/etc/apt/trusted.gpg.d/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ focal main" > /etc/apt/sources.list.d/kitware.list'
-    rm -f *.gpg
-
-    sudo aptitude update
-    sudo aptitude install kitware-archive-keyring cmake
 
     # The following are GUI apps
     dpkg-query -l xorg &> /dev/null || return 0

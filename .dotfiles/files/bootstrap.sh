@@ -8,7 +8,7 @@ set -euo pipefail
 # python - leave macOS bundled python alone
 # pinentry-mac - for GPG
 # App Store - AdGuard for Safari, Instapaper, Kindle, Messenger, Slack, The Unarchiver, WhatsApp
-BREWS="bat colordiff exa fd fzf git git-delta gitui gpg htop hub neovim pinentry-mac python ripgrep tmux wget zoxide"
+BREWS="bat cmake colordiff exa fd fzf git git-delta gitui gpg htop hub neovim pinentry-mac python ripgrep tmux wget zoxide"
 CASKS="alacritty alfred dropbox iterm2 jetbrains-toolbox joplin lastpass sublime-text visual-studio-code vimr"
 CASKS_OPT="adobe-creative-cloud anki expressvpn firefox google-chrome guitar-pro macdive microsoft-edge shearwater-cloud spotify transmission vlc"
 

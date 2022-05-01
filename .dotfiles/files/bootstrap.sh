@@ -16,8 +16,9 @@ CASKS_OPT="adobe-creative-cloud anki expressvpn firefox google-chrome guitar-pro
 # compton - for alacritty background opacity
 # fonts-powerline - PowerlineSymbols only, no patched fonts
 # gnome-screensaver xautolock xcalib - for screen locking in awesome
+# unzip, zip - for SDKMAN
 # Not available or outdated in Ubuntu - bat, git-delta, zoxide
-DEB_PKGS="colordiff exa fd-find fzf htop neovim ripgrep snapd tmux zsh"
+DEB_PKGS="colordiff exa fd-find fzf htop neovim ripgrep snapd tmux unzip zip zsh"
 DEB_GUI_PKGS="alacritty awesome compton fonts-powerline gnome-screensaver neovim-qt ubuntu-restricted-extras xautolock xcalib"
 LINUX_CRATES="bat git-delta gitui zoxide"
 

@@ -18,7 +18,7 @@ CASKS_OPT="adobe-creative-cloud anki expressvpn firefox google-chrome guitar-pro
 # gnome-screensaver xautolock xcalib - for screen locking in awesome
 # unzip, zip - for SDKMAN
 # Not available or outdated in Ubuntu - bat, git-delta, zoxide
-DEB_PKGS="build-essential cmake colordiff exa fd-find fzf htop neovim ninja-build ripgrep snapd tmux unzip zip zsh"
+DEB_PKGS="build-essential cmake colordiff exa fd-find fzf htop hub neovim ninja-build ripgrep snapd tmux unzip zip zsh"
 DEB_GUI_PKGS="alacritty awesome compton fonts-powerline gnome-screensaver neovim-qt ubuntu-restricted-extras xautolock xcalib"
 LINUX_CRATES="bat git-delta gitui zoxide"
 
@@ -79,8 +79,6 @@ setup_linux() {
     [[ "$UNAME_S" != "Linux" ]] && return 0
     command -v hub &> /dev/null && return 0
     msg_box "Setting up Linux specifics"
-
-    sudo snap install hub --classic
 
     # The following are GUI apps
     dpkg-query -l xorg &> /dev/null || return 0

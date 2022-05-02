@@ -17,7 +17,7 @@ fi
 echo "Sending public key to $HOST"
 gpg --export $(grep signingkey $HOME/.gitconfig | grep -o '[0-9A-F]\+') | ssh $HOST gpg --import
 
-DST=$(gpgconf --list-dir agent-socket)
+DST=$(ssh $HOST gpgconf --list-dir agent-socket)
 SRC=$(gpgconf --list-dir agent-extra-socket)
 
 echo "Adding $HOST to ~/.ssh/config"

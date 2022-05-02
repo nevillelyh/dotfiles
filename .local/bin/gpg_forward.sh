@@ -9,7 +9,7 @@ fi
 
 HOST=$1
 
-if grep -q "Host $HOST" .ssh/config; then
+if grep -q "Host $HOST" .ssh/config 2> /dev/null; then
     echo "Host $HOST already set up"
     exit
 fi

@@ -202,7 +202,7 @@ setup_pip() {
     else
         SUDO="sudo"
     fi
-    curl -s https://bootstrap.pypa.io/get-pip.py | ${SUDO} python3
+    curl -fsSL https://bootstrap.pypa.io/get-pip.py | ${SUDO} python3
     pip3 install ${PIP_PKGS}
 }
 
@@ -221,7 +221,7 @@ setup_sdkman() {
     command -v sbt &> /dev/null && return 0
     msg_box "Setting up SDKMAN"
 
-    curl -s "https://get.sdkman.io" | bash
+    curl -fsSL "https://get.sdkman.io" | bash
     sed -i 's/sdkman_rosetta2_compatible=true/sdkman_rosetta2_compatible=false/g' $HOME/.sdkman/etc/config
 
     set +u

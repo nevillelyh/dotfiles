@@ -163,15 +163,22 @@ setup_git() {
 
 setup_gnupg() {
     [[ -d ${HOME}/.gnupg ]] && return 0
-    [[ "$UNAME_S" != "Darwin" ]] && return 0
     msg_box "Setting up GnuPG"
 
     mkdir -p ${HOME}/.gnupg
     chmod 700 ${HOME}/.gnupg
-    cp ${HOME}/.dotfiles/files/gpg-agent.conf ${HOME}/.gnupg
 
-    # https://gpgtools.tenderapp.com/kb/gpg-mail-faq/gpg-mail-hidden-settings#disable-option-to-store-password-in-macos-keychain
-    defaults write org.gpgtools.common DisableKeychain -bool yes
+    case "$UNAME_S" in
+        Darwin)
+            echo "pinentry-program /opt/homebrew/bin/pinentry-mac" > $HOME/.gnupg/gpg-agent.conf
+            # Disable Pinentry "Save in Keychain"
+            # https://gpgtools.tenderapp.com/kb/gpg-mail-faq/gpg-mail-hidden-settings#disable-option-to-store-password-in-macos-keychain
+            defaults write org.gpgtools.common DisableKeychain -bool yes
+            ;;
+        Linux)
+            echo "no-allow-external-cache" > $HOME/.gnupg/gpg-agent.conf
+            ;;
+    esac
 }
 
 setup_neovim() {

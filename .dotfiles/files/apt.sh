@@ -6,7 +6,7 @@ setup_gpg() {
     URL="$1"
     GPG="$2"
     echo "Setting up GPG key $GPG"
-    wget -qO - "$URL" | gpg --dearmor > $GPG
+    curl -sSL "$URL" | gpg --dearmor > $GPG
     sudo install -o root -g root -m 644 $GPG /etc/apt/trusted.gpg.d/
     rm $GPG
 }
@@ -56,7 +56,7 @@ install_docker() {
 install_nvidia() {
     URL="https://nvidia.github.io/libnvidia-container/gpgkey"
     DIST="ubuntu$(lsb_release -rs)"
-    REPO=$(wget -qO - "https://nvidia.github.io/libnvidia-container/$DIST/libnvidia-container.list" | sed 's#deb https://#deb [signed-by=/etc/apt/trusted.gpg.d/nvidia-container-toolkit-keyring.gpg] https://#g')
+    REPO=$(curl -sSL "https://nvidia.github.io/libnvidia-container/$DIST/libnvidia-container.list" | sed 's#deb https://#deb [signed-by=/etc/apt/trusted.gpg.d/nvidia-container-toolkit-keyring.gpg] https://#g')
 
     setup_gpg "$URL" nvidia-container-toolkit-keyring.gpg
     setup_apt "$REPO" nvidia-container-toolkit.list
@@ -79,7 +79,7 @@ install_signal() {
 # https://packagecloud.io/app/slacktechnologies/slack/gpg#gpg-apt
 install_slack() {
     URL="https://packagecloud.io/slacktechnologies/slack/gpgkey"
-    REPO=$(wget -qO - "https://packagecloud.io/install/repositories/slacktechnologies/slack/config_file.list?os=debian&dist=jessie&source=script")
+    REPO=$(curl -sSL "https://packagecloud.io/install/repositories/slacktechnologies/slack/config_file.list?os=debian&dist=jessie&source=script")
 
     setup_gpg "$URL" slacktechnologies_slack.gpg
     setup_apt "$REPO" slacktechnologies_slack.list

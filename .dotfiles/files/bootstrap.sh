@@ -98,7 +98,7 @@ setup_linux() {
 
     # Dropbox has its own repository
     URL="https://linux.dropbox.com/packages/ubuntu/"
-    PKG=$(wget -qO - $URL | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^dropbox_\d{4}\.\d{2}\.\d{2}_amd64.deb$' | sort | tail -n 1)
+    PKG=$(curl -fsSL $URL | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^dropbox_\d{4}\.\d{2}\.\d{2}_amd64.deb$' | sort | tail -n 1)
     wget -nv "$URL/$PKG"
     sudo dpkg -i dropbox_*_amd64.deb
     rm -f dropbox_*_amd64.deb

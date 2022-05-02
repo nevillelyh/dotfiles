@@ -91,6 +91,7 @@ setup_linux() {
 
     curl -fsSL "$APT_SH" | bash -s -- code
     curl -fsSL "$APT_SH" | bash -s -- sublime
+    curl -fsSL https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh | bash
 
     git clone https://github.com/dracula/gnome-terminal
     ./gnome-terminal/install.sh

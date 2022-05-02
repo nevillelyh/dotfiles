@@ -25,7 +25,7 @@ DEB_GUI_PKGS="alacritty awesome compton fonts-powerline gnome-screensaver neovim
 LINUX_CRATES="bat git-delta gitui zoxide"
 
 # PIP packages:
-PIP_PKGS="flake8 ipython virtualenvwrapper"
+PIP_PKGS="flake8 ipython virtualenv virtualenvwrapper"
 
 msg_box() {
     LINE="##$(echo "$1" | sed 's/./#/g')##"
@@ -195,16 +195,10 @@ setup_pip() {
     command -v ipython &> /dev/null && return 0
     msg_box "Setting up Python"
 
-    DIR=/usr/local/lib
-    [[ -d /opt/homebrew ]] && DIR=/opt/homebrew/lib
-
-    owner=$(ls -l $DIR | grep '\<python.*$' | awk '{print $3}')
-    if [[ "${owner}" == "$(whoami)" ]]; then
-        SUDO=""
-    else
-        SUDO="sudo"
+    # Homebrew python includes pip
+    if [[ "$UNAME_S" == "Linux" ]]; then
+        curl -fsSL https://bootstrap.pypa.io/get-pip.py | sudo python3
     fi
-    curl -fsSL https://bootstrap.pypa.io/get-pip.py | ${SUDO} python3
     pip3 install ${PIP_PKGS}
 }
 

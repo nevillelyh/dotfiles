@@ -2,6 +2,11 @@
 
 set -euo pipefail
 
+if ! type docker &> /dev/null; then
+    echo "Docker not installed"
+    exit 1
+fi
+
 docker pull -q nevillelyh/joplin-cli > /dev/null
 docker volume inspect joplin-cli &> /dev/null || docker volume create joplin-cli
 

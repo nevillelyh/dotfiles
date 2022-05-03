@@ -43,7 +43,7 @@ nvim -u $HOME/.config/nvim/dein.vim --headless $VS
 
 msg_box "Upgrading Python Packages"
 PIP_PKGS=$(grep '^PIP_PKGS="' $HOME/.dotfiles/files/bootstrap.sh | sed 's/^PIP_PKGS="\(.*\)"$/\1/')
-pip install --quiet --upgrade --upgrade-strategy eager ${=PIP_PKGS}
+pip3 install --quiet --upgrade --upgrade-strategy eager ${=PIP_PKGS}
 
 msg_box "Upgrading Rust"
 rustup update

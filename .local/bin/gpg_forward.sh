@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-if [ $# -ne 1 ]; then
+if [[ $# -ne 1 ]]; then
     echo "Usage: gpg_forward.sh <host>"
     exit
 fi

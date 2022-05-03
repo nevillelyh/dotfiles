@@ -260,7 +260,7 @@ setup_zsh() {
 UNAME_S=$(uname -s)
 UNAME_M=$(uname -m)
 
-if [ $# -eq 1 ]; then
+if [[ $# -eq 1 ]]; then
     msg_box "Setting up single step $1"
     setup_$1
     exit

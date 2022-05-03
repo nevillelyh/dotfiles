@@ -28,11 +28,8 @@ case "$(uname -s)" in
 esac
 
 msg_box "Upgrading Git Repository"
-STATUS=$(git status --porcelain --untracked-files=no)
-[[ -z "$STATUS" ]] || git stash save "tmp-git-update"
-git pull
+git pull --rebase --autostash
 git submodule update --init --remote
-[[ -z "$STATUS" ]] || git stash pop
 
 msg_box "Upgrading Oh-My-Zsh"
 set +eu

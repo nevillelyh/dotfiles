@@ -10,11 +10,13 @@
 	autoSquash = true
 
 [alias]
-	l1 = log --format='%C(blue)%h%C(reset) -%C(yellow bold)%d%C(reset) %s %C(yellow)(%cr) %C(green)<%an>%C(reset)'
-	l2 = log --format='%C(blue)Commit: %H%C(reset)%C(yellow bold)%d%C(reset)%n%C(green)Author: %an <%ae>%C(reset)%n%C(yellow)Date:   %cd%C(reset)%n%n%w(,4,4)%s' --date=local
-	l3 = log --format='%C(blue)Commit: %H%C(reset)%C(yellow bold)%d%C(reset)%n%C(green)Author: %an <%ae>%C(reset)%n%C(yellow)Date:   %cd%C(reset)%n%n%w(,4,4)%B' --date=local
-	lg = log --format='%C(blue)%h%C(reset) -%C(yellow bold)%d%C(reset) %s %C(yellow)(%cr) %C(green)<%an>%C(reset)' --graph
-	lm = log --format='%C(blue)%h%C(reset) -%C(yellow bold)%d%C(reset) %s %C(yellow)(%cr)%C(reset)' --author=neville
+	# See `man git-log` tformat: "terminator" vs format: "separator"
+	# https://stackoverflow.com/questions/58016135/format-string-for-consistent-separation-between-entries-output-by-git-log-pre
+	l1 = log --pretty='format:%C(red)%h%C(reset) -%C(auto)%d%C(reset) %s %C(green)(%ar) %C(bold blue)<%an>%C(reset)'
+	l2 = log --pretty='format:%C(red)commit %H%C(reset)%C(auto)%d%C(reset)%n%C(bold blue)Author: %an <%ae>%C(reset)%n%C(green)Date:   %ad%C(reset)%n%w(0,0,4)%+s%-C()%n' --date=local
+	l3 = log --pretty='format:%C(red)commit %H%C(reset)%C(auto)%d%C(reset)%n%C(bold blue)Author: %an <%ae>%C(reset)%n%C(green)Date:   %ad%C(reset)%n%C(bold blue)Commit: %cn <%ce>%C(reset)%n%C(green)Date:   %cd%C(reset)%n%w(0,0,4)%+s%w(0,0,0)%n%w(0,0,4)%+b%-C()%n' --date=local
+	lg = log --pretty='format:%C(red)%h%C(reset) -%C(auto)%d%C(reset) %s %C(green)(%ar) %C(bold blue)<%an>%C(reset)' --graph
+	lm = log --pretty='%C(red)%h%C(reset) -%C(auto)%d%C(reset) %s %C(green)(%ar) %C(bold blue)<%an>%C(reset)' --author=neville
 
 # GPG
 [merge]

@@ -19,6 +19,8 @@ if dein#load_state($HOME.'/.local/share/dein')
   "call dein#add('Shougo/neosnippet-snippets')
   call dein#add('dracula/vim', {'merged': 0})
   call dein#add('vim-airline/vim-airline', {'merged': 0})
+  call dein#add('ntpeters/vim-better-whitespace', {'merged': 0})
+  call dein#add('kamykn/spelunker.vim', {'merged': 0})
 
   " Required:
   call dein#end()

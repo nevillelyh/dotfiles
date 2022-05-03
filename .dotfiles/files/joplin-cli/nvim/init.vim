@@ -11,7 +11,8 @@ let g:airline#extensions#tmuxline#enabled = 0
 
 " Tabs and spaces
 set shiftwidth=4
-set expandtab
+set tabstop=4
+set noexpandtab
 
 " Indentation
 set smartindent

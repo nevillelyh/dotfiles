@@ -28,10 +28,10 @@ LINUX_CRATES="bat git-delta gitui zoxide"
 PIP_PKGS="flake8 ipython virtualenv virtualenvwrapper"
 
 msg_box() {
-    LINE="##$(echo "$1" | sed 's/./#/g')##"
-    echo "$LINE"
+    line="##$(echo "$1" | sed 's/./#/g')##"
+    echo "$line"
     echo "# $1 #"
-    echo "$LINE"
+    echo "$line"
 }
 
 die() {
@@ -48,7 +48,7 @@ setup_ssh() {
 }
 
 setup_homebrew() {
-    [[ "$UNAME_S" != "Darwin" ]] && return 0
+    [[ "$uname_s" != "Darwin" ]] && return 0
     command -v brew &> /dev/null && return 0
     msg_box "Setting up Homebrew"
 
@@ -65,7 +65,7 @@ setup_homebrew() {
 }
 
 setup_aptitude() {
-    [[ "$UNAME_S" != "Linux" ]] && return 0
+    [[ "$uname_s" != "Linux" ]] && return 0
     command -v nvim &> /dev/null && return 0
     msg_box "Setting up Aptitude"
 
@@ -78,7 +78,7 @@ setup_aptitude() {
 }
 
 setup_linux() {
-    [[ "$UNAME_S" != "Linux" ]] && return 0
+    [[ "$uname_s" != "Linux" ]] && return 0
     command -v hub &> /dev/null && return 0
     msg_box "Setting up Linux specifics"
 
@@ -98,9 +98,9 @@ setup_linux() {
     rm -rf gnome-terminal
 
     # Dropbox has its own repository
-    URL="https://linux.dropbox.com/packages/ubuntu/"
-    PKG=$(curl -fsSL $URL | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^dropbox_\d{4}\.\d{2}\.\d{2}_amd64.deb$' | sort | tail -n 1)
-    wget -nv "$URL/$PKG"
+    url="https://linux.dropbox.com/packages/ubuntu/"
+    pkg=$(curl -fsSL $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^dropbox_\d{4}\.\d{2}\.\d{2}_amd64.deb$' | sort | tail -n 1)
+    wget -nv "$url/$pkg"
     sudo dpkg -i dropbox_*_amd64.deb
     rm -f dropbox_*_amd64.deb
 
@@ -113,7 +113,7 @@ setup_snap() {
 }
 
 setup_mac() {
-    [[ "$UNAME_S" != "Darwin" ]] && return 0
+    [[ "$uname_s" != "Darwin" ]] && return 0
     msg_box "Setting up Mac specifics"
 
     read -p "Enter hostname: "
@@ -136,7 +136,7 @@ setup_fonts() {
     wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
     wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
     wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
-    case "$UNAME_S" in
+    case "$uname_s" in
         Darwin)
             mv MesloLGS*.ttf $HOME/Library/Fonts
             ;;
@@ -168,7 +168,7 @@ setup_gnupg() {
     mkdir -p ${HOME}/.gnupg
     chmod 700 ${HOME}/.gnupg
 
-    case "$UNAME_S" in
+    case "$uname_s" in
         Darwin)
             echo "pinentry-program /opt/homebrew/bin/pinentry-mac" > $HOME/.gnupg/gpg-agent.conf
             # Disable Pinentry "Save in Keychain"
@@ -182,12 +182,12 @@ setup_gnupg() {
 }
 
 setup_neovim() {
-    DIR=$HOME/.local/share/dein/repos/github.com/Shougo
-    [[ -d $DIR ]] && return 0
+    dir=$HOME/.local/share/dein/repos/github.com/Shougo
+    [[ -d $dir ]] && return 0
     msg_box "Setting up NeoVim"
 
-    mkdir -p $DIR
-    git clone git@github.com:Shougo/dein.vim.git $DIR/dein.vim
+    mkdir -p $dir
+    git clone git@github.com:Shougo/dein.vim.git $dir/dein.vim
     nvim -u $HOME/.config/nvim/dein.vim --headless '+call dein#install() | qall'
 }
 
@@ -196,7 +196,7 @@ setup_pip() {
     msg_box "Setting up Python"
 
     # Homebrew python includes pip
-    if [[ "$UNAME_S" == "Linux" ]]; then
+    if [[ "$uname_s" == "Linux" ]]; then
         curl -fsSL https://bootstrap.pypa.io/get-pip.py | sudo python3
     fi
     pip3 install ${PIP_PKGS}
@@ -205,12 +205,12 @@ setup_pip() {
 setup_jdk() {
     set +u
     source "$HOME/.sdkman/bin/sdkman-init.sh"
-    VERSION="$1"
-    SUFFIX="$2"
+    version="$1"
+    suffix="$2"
 
-    local JDK_VERSION=$(sdk list java | grep -o "\<$VERSION\.[^ ]*$SUFFIX" | head -n 1)
-    [[ -z "$JDK_VERSION" ]] && die 'No Java $VERSION SDK available'
-    sdk install java $JDK_VERSION
+    local jdk_version=$(sdk list java | grep -o "\<$version\.[^ ]*$suffix" | head -n 1)
+    [[ -z "$jdk_version" ]] && die 'No Java $version SDK available'
+    sdk install java $jdk_version
 }
 
 setup_sdkman() {
@@ -223,7 +223,7 @@ setup_sdkman() {
     set +u
     source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-    if [[ "$UNAME_S" == "Darwin" ]] && [[ "$UNAME_M" == "arm64" ]]; then
+    if [[ "$uname_s" == "Darwin" ]] && [[ "$uname_m" == "arm64" ]]; then
         setup_jdk 8 "-zulu"
         setup_jdk 11 "-zulu"
         setup_jdk 17 "-tem"
@@ -248,7 +248,7 @@ setup_cargo() {
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
     source $HOME/.cargo/env
-    [[ "$UNAME_S" == "Linux" ]] && cargo install -q $LINUX_CRATES
+    [[ "$uname_s" == "Linux" ]] && cargo install -q $LINUX_CRATES
 }
 
 setup_zsh() {
@@ -257,8 +257,8 @@ setup_zsh() {
     chsh -s /bin/zsh
 }
 
-UNAME_S=$(uname -s)
-UNAME_M=$(uname -m)
+uname_s=$(uname -s)
+uname_m=$(uname -m)
 
 if [[ $# -eq 1 ]]; then
     msg_box "Setting up single step $1"
@@ -268,7 +268,7 @@ fi
 
 setup_ssh
 
-case "$UNAME_S" in
+case "$uname_s" in
     Darwin)
         setup_homebrew
         setup_mac

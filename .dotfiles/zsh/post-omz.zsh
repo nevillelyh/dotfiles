@@ -26,15 +26,15 @@ function zt() {
 export EDITOR=nvim
 
 # reuse a single SSH agent
-if [ -z "$SSH_CONNECTION" ]; then
-    AGENT=/tmp/ssh-agent-tmux-$USER
+if [[ -z "$SSH_CONNECTION" ]]; then
+    agent=/tmp/ssh-agent-tmux-$USER
     if [[ -z $(pidof ssh-agent) ]]; then
         eval $(ssh-agent) &> /dev/null
         ssh-add -q $(find $HOME/.ssh -name id_dsa -or -name id_rsa)
-        [[ "$SSH_AUTH_SOCK" != "$AGENT" ]] && ln -sf "$SSH_AUTH_SOCK" "$AGENT"
+        [[ "$SSH_AUTH_SOCK" != "$agent" ]] && ln -sf "$SSH_AUTH_SOCK" "$agent"
     fi
-    export SSH_AUTH_SOCK="$AGENT"
-    unset AGENT
+    export SSH_AUTH_SOCK="$agent"
+    unset agent
 fi
 
 export FZF_DEFAULT_COMMAND="$FD_COMMAND --type f"

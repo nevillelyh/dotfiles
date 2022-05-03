@@ -7,24 +7,24 @@ if [[ $# -ne 1 ]]; then
     exit
 fi
 
-HOST=$1
+host=$1
 
-if grep -q "Host $HOST" .ssh/config 2> /dev/null; then
-    echo "Host $HOST already set up"
+if grep -q "Host $host" .ssh/config 2> /dev/null; then
+    echo "Host $host already set up"
     exit
 fi
 
-echo "Sending public key to $HOST"
-gpg --export $(grep signingkey $HOME/.gitconfig | grep -o '[0-9A-F]\+') | ssh $HOST gpg --import
+echo "Sending public key to $host"
+gpg --export $(grep signingkey $HOME/.gitconfig | grep -o '[0-9A-F]\+') | ssh $host gpg --import
 
-DST=$(ssh $HOST gpgconf --list-dir agent-socket)
-SRC=$(gpgconf --list-dir agent-extra-socket)
+dst=$(ssh $host gpgconf --list-dir agent-socket)
+src=$(gpgconf --list-dir agent-extra-socket)
 
-echo "Adding $HOST to ~/.ssh/config"
+echo "Adding $host to ~/.ssh/config"
 cat << EOF >> ~/.ssh/config
-Host $HOST
+Host $host
     ForwardAgent yes
-    RemoteForward $DST $SRC
+    RemoteForward $dst $src
 EOF
 
 cat << EOF

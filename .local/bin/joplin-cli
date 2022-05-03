@@ -10,9 +10,9 @@ fi
 docker pull -q nevillelyh/joplin-cli > /dev/null
 docker volume inspect joplin-cli &> /dev/null || docker volume create joplin-cli
 
-CMD='docker run -it -v joplin-cli:/root/.config/joplin --rm nevillelyh/joplin-cli:latest'
+cmd='docker run -it -v joplin-cli:/root/.config/joplin --rm nevillelyh/joplin-cli:latest'
 if tty &> /dev/null; then
-    $CMD
+    $cmd
 else
-    alacritty -e $CMD
+    alacritty -e $cmd
 fi

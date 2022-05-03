@@ -17,6 +17,7 @@ alias ls='exa' # 'ls -G'
 alias lsa='exa -la' # 'ls -lah'
 alias lsg='exa -l --git'
 alias lst='exa -l -r -s modified'
+alias gpbr='hub pull-request -p -b $(git_main_branch)'
 
 function zt() {
     z $1

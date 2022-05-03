@@ -6,9 +6,9 @@
 	defaultBranch = main
 [branch]
 	autoSetupRebase = always
+[rebase]
+	autoSquash = true
 
-[color]
-	ui = auto
 [alias]
 	ci = commit
 	co = checkout

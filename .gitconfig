@@ -15,7 +15,6 @@
 	l3 = log --format='%C(blue)Commit: %H%C(reset)%C(yellow bold)%d%C(reset)%n%C(green)Author: %an <%ae>%C(reset)%n%C(yellow)Date:   %cd%C(reset)%n%n%w(,4,4)%B' --date=local
 	lg = log --format='%C(blue)%h%C(reset) -%C(yellow bold)%d%C(reset) %s %C(yellow)(%cr) %C(green)<%an>%C(reset)' --graph
 	lm = log --format='%C(blue)%h%C(reset) -%C(yellow bold)%d%C(reset) %s %C(yellow)(%cr)%C(reset)' --author=neville
-	st = status
 
 # GPG
 [merge]

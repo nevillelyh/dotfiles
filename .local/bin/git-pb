@@ -5,7 +5,7 @@ set -euo pipefail
 # push branch
 
 dest=origin
-if [ $# -eq 1 ]; then
+if [[ $# -eq 1 ]]; then
     dest=$1
 fi
 

@@ -5,11 +5,11 @@ set -euo pipefail
 # push branch and create pull-request
 
 dest=origin
-if [ $# -ge 1 ]; then
+if [[ $# -ge 1 ]]; then
     dest=$1
 fi
 base=$(git remote show origin | grep "HEAD branch" | awk '{print $3}')
-if [ $# -eq 2 ]; then
+if [[ $# -eq 2 ]]; then
     base=$2
 fi
 

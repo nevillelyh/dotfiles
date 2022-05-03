@@ -5,7 +5,7 @@ set -euo pipefail
 # prune branches
 
 remote=origin
-if [ $# -eq 1 ]; then
+if [[ $# -eq 1 ]]; then
     remote=$1
 fi
 

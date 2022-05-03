@@ -4,13 +4,13 @@ set -euo pipefail
 
 # delete a branch both locally and remotely
 
-if [ $# -lt 1 ]; then
+if [[ $# -lt 1 ]]; then
     echo "Usage: $(basename $0) branch [remote]"
     exit 1
 fi
 
 remote="origin"
-if [ $# -eq 2 ]; then
+if [[ $# -eq 2 ]]; then
     remote=$2
 fi
 

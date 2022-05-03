@@ -22,7 +22,7 @@ alias gpbr='hub pull-request -p -b $(git_main_branch)'
 
 function zt() {
     z $1
-    ts $1
+    tmux new-session -s $1
 }
 
 export EDITOR=nvim

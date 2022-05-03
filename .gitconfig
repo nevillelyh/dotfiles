@@ -10,7 +10,6 @@
 	autoSquash = true
 
 [alias]
-	cp = cherry-pick
 	dc = diff --cached
 	l1 = log --format='%C(blue)%h%C(reset) -%C(yellow bold)%d%C(reset) %s %C(yellow)(%cr) %C(green)<%an>%C(reset)'
 	l2 = log --format='%C(blue)Commit: %H%C(reset)%C(yellow bold)%d%C(reset)%n%C(green)Author: %an <%ae>%C(reset)%n%C(yellow)Date:   %cd%C(reset)%n%n%w(,4,4)%s' --date=local

@@ -56,3 +56,5 @@ source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk update
 sdk upgrade
 set -euo pipefail
+
+msg_box "Upgrade complete"

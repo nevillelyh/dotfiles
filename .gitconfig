@@ -10,8 +10,6 @@
 	autoSquash = true
 
 [alias]
-	ci = commit
-	co = checkout
 	cp = cherry-pick
 	dc = diff --cached
 	l1 = log --format='%C(blue)%h%C(reset) -%C(yellow bold)%d%C(reset) %s %C(yellow)(%cr) %C(green)<%an>%C(reset)'

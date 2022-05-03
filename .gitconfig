@@ -1,20 +1,14 @@
 [user]
 	name = Neville Li
 	email = neville.lyh@gmail.com
-	signingkey = F91A03ED31E1842B
-[core]
-	pager = delta
-[interactive]
-	diffFilter = delta --color-only
-[delta]
-	navigate = true
-	syntax-theme = Dracula
-[diff]
-	colorMoved = default
-[color]
-	ui = auto
+
+[init]
+	defaultBranch = main
 [branch]
 	autoSetupRebase = always
+
+[color]
+	ui = auto
 [alias]
 	ci = commit
 	co = checkout
@@ -27,15 +21,30 @@
 	lm = log --format='%C(blue)%h%C(reset) -%C(yellow bold)%d%C(reset) %s %C(yellow)(%cr)%C(reset)' --author=neville
 	rb = rebase
 	st = status
+
+# GPG
 [merge]
 	tool = vimdiff
-	conflictstyle = diff3
+	signingKey = F91A03ED31E1842B
 [commit]
-	gpgsign = true
+	gpgSign = true
 [tag]
-	gpgsign = true
-[init]
-	defaultBranch = main
+	gpgSign = true
+
+# https://github.com/dandavison/delta#get-started
+[core]
+	pager = delta
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	syntax-theme = Dracula
+[merge]
+	conflictstyle = diff3
+[diff]
+	colorMoved = default
+
+# GitHub Desktop
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f

@@ -41,7 +41,7 @@ die() {
 
 setup_ssh() {
     [[ -n "$SSH_CONNECTION" ]] && return 0 # remote host
-    [[ -f $HOME/.ssh/private/id_rsa ]] || die 'SSH private key not found'
+    [[ -s $HOME/.ssh/private/id_rsa ]] || die 'SSH private key not found'
     killall -q ssh-agent || true
     eval $(ssh-agent)
     ssh-add $HOME/.ssh/private/id_rsa

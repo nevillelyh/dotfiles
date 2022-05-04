@@ -8,11 +8,11 @@ die() {
 }
 
 help() {
-    echo "Usage: nvman <command> [args]..."
+    echo "Usage: $(basename $0) <COMMAND> [ARG]..."
     echo
     echo "  commands:"
     echo "    env"
-    echo "    install <runfile|tarball>"
+    echo "    install <RUNFILE|TARBALL>"
     echo "    list"
     echo "    help"
     exit 1

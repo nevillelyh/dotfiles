@@ -4,6 +4,11 @@ set -euo pipefail
 
 # prune branches
 
+if [[ $# -gt 1 ]]; then
+    echo "Usage: $(basename $0) [REMOTE]"
+    exit 1
+fi
+
 remote=origin
 if [[ $# -eq 1 ]]; then
     remote=$1

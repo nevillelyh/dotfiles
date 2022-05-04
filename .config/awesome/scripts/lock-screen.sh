@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Changing background in gnome-control-center sets the following 2 settings
+# - org.gnome.desktop.background picture-uri-dark
+# - org.gnome.desktop.screensaver picture-uri
+# While gnome-screensaver reads the following setting instead
+# - org.gnome.desktop.background picture-uri
+uri=$(gsettings get org.gnome.desktop.screensaver picture-uri)
+gsettings set org.gnome.desktop.background picture-uri $uri
+
 # Kill existing xautolock
 xautolock -exit
 

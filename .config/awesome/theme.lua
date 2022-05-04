@@ -9,11 +9,6 @@ local dpi = require("beautiful.xresources").apply_dpi
 
 -- {{{ Main
 local theme = {}
-local cmd = "gsettings get org.gnome.desktop.background picture-uri-dark"
-local w = io.popen(cmd):read("*all")
-w = w:gsub("^'file://", "")
-w = w:gsub("'%s*$", "")
-theme.wallpaper = w
 -- }}}
 
 -- {{{ Styles

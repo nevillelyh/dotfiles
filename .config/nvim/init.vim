@@ -4,6 +4,7 @@ source $HOME/.config/nvim/dein.vim
 behave xterm
 set termguicolors
 set mouse=a
+let g:dracula_colorterm = 0
 colorscheme dracula
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1

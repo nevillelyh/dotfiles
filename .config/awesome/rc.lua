@@ -223,7 +223,7 @@ local my_sysload = wibox.widget {
     layout = wibox.layout.fixed.horizontal,
 }
 my_sysload.children[2].align = "right"
-my_sysload.children[2].forced_width = 100
+my_sysload.children[2].forced_width = 105
 
 local temp = require("temp")
 local my_temp = wibox.widget {

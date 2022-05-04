@@ -1,7 +1,9 @@
 #!/bin/bash
 
-if [ $# -ne 1 ]; then
-    echo "Usage: snap.sh <app>"
+set -euo pipefail
+
+if [[ $# -ne 1 ]]; then
+    echo "Usage: $(basename $0) <APP>"
     exit 1
 fi
 

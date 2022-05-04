@@ -30,8 +30,8 @@ local spotify = require("awesome-wm-widgets.spotify-widget.spotify")
 
 awful.util.spawn("compton -b")
 awful.util.spawn("gnome-screensaver")
-awful.util.spawn(awesome_path .. "audio.sh")
-awful.util.spawn(awesome_path .. "xautolock.sh")
+awful.util.spawn(awesome_path .. "scripts/audio-defaults.sh")
+awful.util.spawn(awesome_path .. "scripts/lock-screen.sh")
 awful.util.spawn("dropbox start")
 awful.util.spawn(os.getenv("HOME") .. "/.local/share/JetBrains/Toolbox/bin/jetbrains-toolbox")
 
@@ -924,10 +924,10 @@ end)
 -- Spotify client has empty name on launch, catch name change signal instead
 client.connect_signal("property::name", function(c)
     if c.name == "Slack" then
-        awful.spawn(awesome_path .. "snap_icon.sh slack")
+        awful.spawn(awesome_path .. "scripts/fix-icon.sh slack")
     end
     if c.name == "Spotify" then
-        awful.spawn(awesome_path .. "snap_icon.sh spotify")
+        awful.spawn(awesome_path .. "scripts/fix-icon.sh spotify")
     end
 end)
 

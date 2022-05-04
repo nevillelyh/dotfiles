@@ -40,7 +40,9 @@ die() {
 }
 
 setup_ssh() {
+    set +u
     [[ -n "$SSH_CONNECTION" ]] && return 0 # remote host
+    set -u
     [[ -s $HOME/.ssh/private/id_rsa ]] || die 'SSH private key not found'
     killall -q ssh-agent || true
     eval $(ssh-agent)
@@ -203,7 +205,6 @@ setup_pip() {
 }
 
 setup_jdk() {
-    set +u
     source "$HOME/.sdkman/bin/sdkman-init.sh"
     version="$1"
     suffix="$2"
@@ -263,7 +264,7 @@ uname_m=$(uname -m)
 if [[ $# -eq 1 ]]; then
     msg_box "Setting up single step $1"
     setup_$1
-    exit
+    exit 0
 fi
 
 setup_ssh
@@ -278,6 +279,7 @@ case "$uname_s" in
         setup_linux
         ;;
 esac
+
 setup_git
 setup_gnupg
 setup_neovim

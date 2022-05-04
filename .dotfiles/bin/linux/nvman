@@ -15,11 +15,17 @@ help() {
     echo "    install <RUNFILE|TARBALL>"
     echo "    list"
     echo "    help"
+}
+
+help_and_die() {
+    echo "$1"
+    echo
+    help
     exit 1
 }
 
 env() {
-    [[ $# -ne 0 ]] && help
+    [[ $# -ne 0 ]] && help_and_die "Invalid argument: $*"
     cuda=$HOME/.nvman/cuda-current
     [[ ! -L $cuda ]] && die "CUDA not installed"
     cudnn=$HOME/.nvman/cudnn-current
@@ -59,11 +65,8 @@ install_cudnn() {
 }
 
 install() {
-    if [[ $# -ne 1 ]]; then
-        echo "No runfile or tarball provided"
-        echo
-        help
-    fi
+    [[ $# -lt 1 ]] && help_and_die "Missing RUNFILE or TARBALL"
+    [[ $# -gt 1 ]] && help_and_die "Invalid argument: $*"
     base=$(basename "$1")
     ext="${base##*.}"
     case "$ext" in
@@ -79,7 +82,7 @@ install() {
 }
 
 list() {
-    [[ $# -ne 0 ]] && help
+    [[ $# -ne 0 ]] && help_and_die "Invalid argument: $*"
     [[ ! -d $HOME/.nvman ]] && die "nvman not installed"
     set +o pipefail
     cuda=$(ls $HOME/.nvman/ | grep '^cuda-' | grep -v '^cuda-current$' | sed 's/^cuda-//' | tr '\n' ' ')
@@ -97,7 +100,6 @@ list() {
     else
         echo "cuDNN: $cudnn"
     fi
-    set -euo pipefail
 }
 
 set +o pipefail
@@ -106,6 +108,7 @@ set -o pipefail
 
 if [[ $# -eq 0 ]]; then
     help
+    exit 1
 fi
 
 case "$1" in
@@ -125,6 +128,6 @@ case "$1" in
         help
         ;;
     *)
-        help
+        help_and_die "Invalid command: $1"
         ;;
 esac

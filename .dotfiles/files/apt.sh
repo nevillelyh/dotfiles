@@ -123,9 +123,9 @@ install_sublime() {
     sudo aptitude install -y sublime-text
 }
 
-if [ $#  -ne 1 ]; then
-    echo "Usage: apt.sh <package>"
-    exit
+if [[ $#  -ne 1 ]]; then
+    echo "Usage: $(basename $0) <PACKAGE>"
+    exit 1
 fi
 
 install_$1

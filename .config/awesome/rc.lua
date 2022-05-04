@@ -280,28 +280,31 @@ my_mem:connect_signal("button::press", function(_,_,_,button)
     if (button == 1) then awful.spawn("gnome-system-monitor -r") end
 end)
 
-local notification_preset = {
-    font = "Fira Mono 9",
-    fg = "#BFBFBF",
-    bg = "#282A36",
-}
-
 local gpu = require("gpu")
+local my_gpu_widget = gpu({
+    settings = function()
+        local text = ""
+        for i, g in ipairs(gpu_now) do
+            if i > 1 then text = text .. " | " end
+            text = text .. tostring(g.gpu_util) .. "%"
+        end
+        widget:set_markup(text)
+    end,
+}).widget
 local my_gpu = wibox.widget {
     wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-gpu.svg"),
-    gpu({
-        notification_preset = notification_preset,
-        settings = function()
-            local text = ""
-            for i, g in ipairs(gpu_now) do
-                if i > 1 then text = text .. " | " end
-                text = text .. tostring(g.gpu_util) .. "%"
-            end
-            widget:set_markup(text)
-        end,
-    }).widget,
+    my_gpu_widget,
     layout = wibox.layout.fixed.horizontal,
 }
+local my_gpu_tooltip = awful.tooltip {
+    font = "Fira Mono 9",
+    mode = "outside",
+    objects = { my_gpu },
+    preferred_positions = { "bottom" },
+}
+my_gpu:connect_signal("mouse::enter", function()
+    my_gpu_tooltip.markup = my_gpu_widget.stats
+end)
 my_gpu.children[2].align = "right"
 my_gpu.children[2].forced_width = 27
 my_gpu:connect_signal("button::press", function(_,_,_,button)
@@ -309,14 +312,23 @@ my_gpu:connect_signal("button::press", function(_,_,_,button)
 end)
 
 local fs = require("fs")
+local my_hdd_widget = fs({
+    settings = function() widget:set_markup(fs_now["/"].percentage .. "%") end
+}).widget
 local my_hdd = wibox.widget {
     wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-disk.svg"),
-    fs({
-        notification_preset = notification_preset,
-        settings = function() widget:set_markup(fs_now["/"].percentage .. "%") end,
-    }).widget,
+    my_hdd_widget,
     layout = wibox.layout.fixed.horizontal,
 }
+local my_hdd_tooltip = awful.tooltip {
+    font = "Fira Mono 9",
+    mode = "outside",
+    objects = { my_hdd },
+    preferred_positions = { "bottom" },
+}
+my_hdd:connect_signal("mouse::enter", function()
+    my_hdd_tooltip.markup = my_hdd_widget.stats
+end)
 my_hdd.children[2].align = "right"
 my_hdd.children[2].forced_width = 27
 my_hdd:connect_signal("button::press", function(_,_,_,button)
@@ -362,39 +374,26 @@ end)
 my_wired_icon:connect_signal("button::press", function(_,_,_,button)
     if (button == 1) then awful.spawn("gnome-control-center network") end
 end)
+
+local my_wifi_tooltip = awful.tooltip {
+    mode = "outside",
+    objects = { my_wifi_icon },
+    preferred_positions = { "bottom" },
+}
 my_wifi_icon:connect_signal("mouse::enter", function()
     awful.spawn.easy_async("iwgetid -r", function(stdout, stderr, exitreason, exitcode)
         local ssid = stdout:gsub('%s+', '')
         local msg = string.format("SSID: %s\nSignal: %sdBm\n%s", ssid, my_wifi_icon.signal, my_wifi_icon.stats)
-        my_wifi_icon.notification = naughty.notify({
-            title = "Wireless",
-            text = msg,
-            icon = my_wifi_icon.icon,
-            icon_size = beautiful.xresources.apply_dpi(16),
-            position = my_wifi_icon.position,
-            timeout = keep and 0 or 2, hover_timeout = 0.5,
-            width = 200,
-            screen = mouse.screen,
-        })
+        my_wifi_tooltip.markup = msg
     end)
 end)
-my_wifi_icon:connect_signal("mouse::leave", function()
-    naughty.destroy(my_wifi_icon.notification)
-end)
+local my_wired_tooltip = awful.tooltip {
+    mode = "outside",
+    objects = { my_wired_icon },
+    preferred_positions = { "bottom" },
+}
 my_wired_icon:connect_signal("mouse::enter", function()
-    my_wired_icon.notification = naughty.notify({
-        title = "Wired",
-        text = my_wired_icon.stats,
-        icon = my_wired_icon.icon,
-        icon_size = beautiful.xresources.apply_dpi(16),
-        position = my_wired_icon.position,
-        timeout = keep and 0 or 2, hover_timeout = 0.5,
-        width = 200,
-        screen = mouse.screen,
-    })
-end)
-my_wired_icon:connect_signal("mouse::leave", function()
-    naughty.destroy(my_wired_icon.notification)
+    my_wired_tooltip.markup = my_wired_icon.stats
 end)
 
 local my_weather = weather({

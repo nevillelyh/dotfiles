@@ -9,8 +9,11 @@ local dpi = require("beautiful.xresources").apply_dpi
 
 -- {{{ Main
 local theme = {}
--- https://github.com/4ban/awesome-pro/blob/master/themes/pro-dark/wallpapers/pro-dark.png
-theme.wallpaper = awesome_path .. "wallpapers/pro-dark.png"
+local cmd = "gsettings get org.gnome.desktop.background picture-uri-dark"
+local w = io.popen(cmd):read("*all")
+w = w:gsub("^'file://", "")
+w = w:gsub("'%s*$", "")
+theme.wallpaper = w
 -- }}}
 
 -- {{{ Styles

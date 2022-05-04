@@ -3,15 +3,15 @@
 set -euo pipefail
 
 if [[ $# -ne 1 ]]; then
-    echo "Usage: gpg_forward.sh <host>"
-    exit
+    echo "Usage: gpg_forward.sh <HOST>"
+    exit 1
 fi
 
 host=$1
 
 if grep -q "Host $host" .ssh/config 2> /dev/null; then
     echo "Host $host already set up"
-    exit
+    exit 1
 fi
 
 echo "Sending public key to $host"

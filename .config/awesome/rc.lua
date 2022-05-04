@@ -332,7 +332,7 @@ end)
 my_hdd.children[2].align = "right"
 my_hdd.children[2].forced_width = 27
 my_hdd:connect_signal("button::press", function(_,_,_,button)
-    if (button == 1) then awful.spawn("gnome-disks") end
+    if (button == 1) then awful.spawn("gnome-system-monitor -f") end
 end)
 
 local my_wifi_icon = wibox.widget.imagebox()

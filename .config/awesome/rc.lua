@@ -206,6 +206,15 @@ end)
 
 local epapirus_dir = icons_dir .. "ePapirus/"
 
+local my_spotify = spotify({
+    -- https://github.com/PapirusDevelopmentTeam/papirus-icon-theme/blob/master/ePapirus/24x24/panel/spotify-indicator.svg
+    play_icon = icons_dir .. "spotify-indicator.svg",
+    pause_icon = icons_dir .. "spotify-indicator-patched.svg",
+    font = "Fira Sans Bold 9",
+    max_length = 100,
+})
+my_spotify.children[3]:set_max_size(200)
+
 local my_sysload = wibox.widget {
     wibox.widget.imagebox(epapirus_dir .. "gpm-monitor.svg"),
     lain.widget.sysload({
@@ -486,12 +495,7 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            spotify({
-                -- https://github.com/PapirusDevelopmentTeam/papirus-icon-theme/blob/master/ePapirus/24x24/panel/spotify-indicator.svg
-                play_icon = icons_dir .. "spotify-indicator.svg",
-                pause_icon = icons_dir .. "spotify-indicator-patched.svg",
-                font = "Fira Sans Bold 9",
-            }),
+            my_spotify,
             my_separator,
             wibox.widget.systray(),
             my_sysload,

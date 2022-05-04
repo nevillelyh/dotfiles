@@ -13,15 +13,20 @@ local tonumber = tonumber
 -- lain.widget.temp
 
 local function factory(args)
-    args           = args or {}
+    args = args or {}
 
-    local temp     = { widget = args.widget or wibox.widget.textbox() }
-    local timeout  = args.timeout or 30
+    local temp = { widget = args.widget or wibox.widget.textbox() }
+    local timeout = args.timeout or 30
     local settings = args.settings or function() end
 
     function temp.update()
         -- temp1 is CPU, temp2..tempN are individual cores
-        helpers.async({"find", "/sys/devices/platform", "-type", "f", "-path", "*/coretemp.*/hwmon/hwmon*/temp1_input"}, function(f)
+        local cmd = {
+            "find", "/sys/devices/platform",
+            "-type", "f",
+            "-path", "*/coretemp.*/hwmon/hwmon*/temp1_input"
+        }
+        helpers.async(cmd, function(f)
             local naughty = require("naughty")
             coretemp_now = {}
             local temp_fl, temp_value

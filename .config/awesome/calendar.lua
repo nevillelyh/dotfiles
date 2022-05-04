@@ -17,7 +17,6 @@ local naughty = require("naughty")
 local calendar_widget = {}
 
 local function worker(user_args)
-
     local calendar_themes = {
         dracula = {
             bg = '#282A36',
@@ -89,16 +88,16 @@ local function worker(user_args)
             header_fg = beautiful.fg,
             border = beautiful.border_normal
         }
-
     }
 
     local args = user_args or {}
 
     if args.theme ~= nil and calendar_themes[args.theme] == nil then
-        naughty.notify({
+        naughty.notify {
             preset = naughty.config.presets.critical,
             title = 'Calendar Widget',
-            text = 'Theme "' .. args.theme .. '" not found, fallback to default'})
+            text = 'Theme "' .. args.theme .. '" not found, fallback to default'
+        }
         args.theme = 'naughty'
     end
 
@@ -210,26 +209,25 @@ local function worker(user_args)
     }
 
     popup:buttons(
-            awful.util.table.join(
-                    awful.button({}, next_month_button, function()
-                        local a = cal:get_date()
-                        a.month = a.month + 1
-                        cal:set_date(nil)
-                        cal:set_date(a)
-                        popup:set_widget(cal)
-                    end),
-                    awful.button({}, previous_month_button, function()
-                        local a = cal:get_date()
-                        a.month = a.month - 1
-                        cal:set_date(nil)
-                        cal:set_date(a)
-                        popup:set_widget(cal)
-                    end)
-            )
+        awful.util.table.join(
+            awful.button({}, next_month_button, function()
+                local a = cal:get_date()
+                a.month = a.month + 1
+                cal:set_date(nil)
+                cal:set_date(a)
+                popup:set_widget(cal)
+            end),
+            awful.button({}, previous_month_button, function()
+                local a = cal:get_date()
+                a.month = a.month - 1
+                cal:set_date(nil)
+                cal:set_date(a)
+                popup:set_widget(cal)
+            end)
+        )
     )
 
     function calendar_widget.toggle()
-
         if popup.visible then
             -- to faster render the calendar refresh it and just hide
             cal:set_date(nil) -- the new date is not set without removing the old one
@@ -255,7 +253,6 @@ local function worker(user_args)
     end
 
     return calendar_widget
-
 end
 
 return setmetatable(calendar_widget, { __call = function(_, ...)

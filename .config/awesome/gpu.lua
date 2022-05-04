@@ -5,11 +5,11 @@ local wibox   = require("wibox")
 local naughty = require("naughty")
 
 local function factory(args)
+    args = args or {}
     local gpu = { widget = wibox.widget.textbox() }
 
-    local args      = args or {}
-    local timeout   = args.timeout or 2
-    local settings  = args.settings or function() end
+    local timeout = args.timeout or 2
+    local settings =  args.settings or function() end
 
     function gpu.update()
         local fields = {
@@ -22,7 +22,7 @@ local function factory(args)
             "memory.total",
         }
         local cmd = "nvidia-smi --query-gpu=" .. table.concat(fields, ",") .. " --format=csv,noheader,nounits"
-        helpers.async(cmd, function(stdout, exit_code)
+        helpers.async(cmd, function(stdout, _)
             gpu_now = {}
 
             local namelen = 0

@@ -12,28 +12,32 @@ local wibox = require("wibox")
 local awful = require("awful")
 local naughty = require("naughty")
 local gfs = require("gears.filesystem")
-local dpi = require('beautiful').xresources.apply_dpi
+local dpi = require("beautiful").xresources.apply_dpi
 
 local PATH_TO_ICONS = os.getenv("HOME") .. "/.config/awesome/icons/ePapirus/"
 local volume_icon_name="audio-volume-muted"
-local GET_VOLUME_CMD = 'amixer sget Master'
+local GET_VOLUME_CMD = "amixer sget Master"
 
 local volume = {
-    device = '',
+    device = "",
     display_notification = false,
     notification = nil,
     delta = 5
 }
 
+local function cmd(d, c)
+    return "amixer " .. d .. " sset Master " .. c
+end
+
 function volume:toggle()
-    volume:_cmd('amixer ' .. volume.device .. ' sset Master toggle')
+    volume:_cmd(cmd(volume.device, "toggle"))
 end
 
 function volume:raise()
-    volume:_cmd('amixer ' .. volume.device .. ' sset Master ' .. tostring(volume.delta) .. '%+')
+    volume:_cmd(cmd(volume.device, tostring(volume.delta) .. "%+"))
 end
 function volume:lower()
-    volume:_cmd('amixer ' .. volume.device .. ' sset Master ' .. tostring(volume.delta) .. '%-')
+    volume:_cmd(cmd(volume.device, tostring(volume.delta) .. "%-"))
 end
 
 --{{{ Icon and notification update
@@ -46,7 +50,7 @@ local function parse_output(stdout)
     local level = string.match(stdout, "(%d?%d?%d)%%")
     if stdout:find("%[off%]") then
         volume_icon_name="audio-volume-muted-blocking"
-        return level.."% <span color=\"red\"><b>Mute</b></span>"
+        return level .. "% <span color=\"red\"><b>Mute</b></span>"
     end
     level = tonumber(string.format("% 3d", level))
 
@@ -59,7 +63,7 @@ local function parse_output(stdout)
     else
         volume_icon_name="audio-volume-high"
     end
-    return level.."%"
+    return level .. "%"
 end
 
 --------------------------------------------------
@@ -92,14 +96,14 @@ local function worker(user_args)
 --{{{ Args
     local args = user_args or {}
 
-    local volume_audio_controller = args.volume_audio_controller or 'pulse'
+    local volume_audio_controller = args.volume_audio_controller or "pulse"
     volume.display_notification = args.display_notification or false
     volume.position = args.notification_position or "top_right"
-    if volume_audio_controller == 'pulse' then
-        volume.device = '-D pulse'
+    if volume_audio_controller == "pulse" then
+        volume.device = "-D pulse"
     end
     volume.delta = args.delta or 5
-    GET_VOLUME_CMD = 'amixer ' .. volume.device.. ' sget Master'
+    GET_VOLUME_CMD = "amixer " .. volume.device .. " sget Master"
 --}}}
 --{{{ Check for icon path
     if not gfs.dir_readable(PATH_TO_ICONS) then
@@ -119,7 +123,7 @@ local function worker(user_args)
             resize = false,
             widget = wibox.widget.imagebox,
         },
-        layout = wibox.container.margin(_, _, _, 1),
+        layout = wibox.container.margin(_,_,_,1),
         set_image = function(self, path)
             self.icon.image = path
         end
@@ -127,13 +131,13 @@ local function worker(user_args)
 --}}}
 --{{{ Spawn functions
     function volume:_cmd(cmd)
-        awful.spawn.easy_async(cmd, function(stdout, _, _, _)
+        awful.spawn.easy_async(cmd, function(stdout,_,_,_)
             update_graphic(volume.widget, stdout)
         end)
     end
 
     local function show()
-        awful.spawn.easy_async(GET_VOLUME_CMD, function(stdout, _, _, _)
+        awful.spawn.easy_async(GET_VOLUME_CMD, function(stdout,_,_,_)
             update_graphic(volume.widget, stdout)
         end)
     end

@@ -381,8 +381,8 @@ local my_wifi_tooltip = awful.tooltip {
     preferred_positions = { "bottom" },
 }
 my_wifi_icon:connect_signal("mouse::enter", function()
-    awful.spawn.easy_async("iwgetid -r", function(stdout, stderr, exitreason, exitcode)
-        local ssid = stdout:gsub('%s+', '')
+    awful.spawn.easy_async("iwgetid -r", function(stdout,_,_,_)
+        local ssid = stdout:gsub("%s+", "")
         local msg = string.format("SSID: %s\nSignal: %sdBm\n%s", ssid, my_wifi_icon.signal, my_wifi_icon.stats)
         my_wifi_tooltip.markup = msg
     end)

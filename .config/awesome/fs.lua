@@ -21,8 +21,7 @@ local query      = query_size .. "," .. query_free .. "," .. query_used
 -- lain.widget.fs
 
 local function factory(args)
-    args     = args or {}
-
+    args = args or {}
     local fs = {
         widget = args.widget or wibox.widget.textbox(),
         units = {
@@ -32,10 +31,10 @@ local function factory(args)
         },
     }
 
-    local timeout   = args.timeout or 600
+    local timeout = args.timeout or 600
     local partition = args.partition
     local threshold = args.threshold or 99
-    local settings  = args.settings or function() end
+    local settings = args.settings or function() end
 
     local function update_synced()
         local pathlen = 10
@@ -105,7 +104,6 @@ local function factory(args)
     function fs.update()
         Gio.Async.start(gears.protected_call.call)(function() update_synced() end)
     end
-
     helpers.newtimer(partition or "fs", timeout, fs.update)
 
     return fs

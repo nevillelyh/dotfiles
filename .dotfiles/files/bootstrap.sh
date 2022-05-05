@@ -21,7 +21,7 @@ CASKS_OPT="adobe-creative-cloud anki expressvpn firefox google-chrome guitar-pro
 # unzip, zip - for SDKMAN
 # Not available or outdated in Ubuntu - bat, git-delta, zoxide
 DEB_PKGS="build-essential cmake colordiff exa fd-find fzf htop hub neovim ninja-build ripgrep tmux unzip zip zsh"
-DEB_GUI_PKGS="alacritty awesome compton fonts-powerline gnome-screensaver neovim-qt ubuntu-restricted-extras wmctrl xautolock xcalib"
+DEB_GUI_PKGS="alacritty awesome compton fonts-powerline gnome-screensaver gnome-screenshot neovim-qt ubuntu-restricted-extras wmctrl xautolock xcalib"
 LINUX_CRATES="bat git-delta gitui zoxide"
 
 # PIP packages:

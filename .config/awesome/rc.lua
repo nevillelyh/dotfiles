@@ -222,8 +222,6 @@ local my_sysload = wibox.widget {
     }).widget,
     layout = wibox.layout.fixed.horizontal,
 }
-my_sysload.children[2].align = "right"
-my_sysload.children[2].forced_width = 105
 
 local temp = require("temp")
 local my_temp = wibox.widget {
@@ -232,18 +230,11 @@ local my_temp = wibox.widget {
         settings = function()
             local text = ""
             local i = 0
-            local w = 0
             for _, t in pairs(coretemp_now) do
-                w = w + 40
-                if i > 0 then
-                    text = text .. " | "
-                    w = w + 15
-                end
+                if i > 0 then text = text .. " | " end
                 text = text .. tostring(t) .. "°C"
                 i = i + 1
             end
-            widget.align = "right"
-            widget.forced_width = w
             widget:set_markup(text)
         end,
     }),
@@ -257,8 +248,6 @@ local my_cpu = wibox.widget {
     }).widget,
     layout = wibox.layout.fixed.horizontal,
 }
-my_cpu.children[2].align = "right"
-my_cpu.children[2].forced_width = 27
 
 local my_mem = wibox.widget {
     wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-memory.svg"),
@@ -267,8 +256,6 @@ local my_mem = wibox.widget {
     }).widget,
     layout = wibox.layout.fixed.horizontal,
 }
-my_mem.children[2].align = "right"
-my_mem.children[2].forced_width = 27
 
 my_sysload:connect_signal("button::press", function(_,_,_,button)
     if (button == 1) then awful.spawn("gnome-system-monitor -p") end
@@ -305,8 +292,6 @@ local my_gpu_tooltip = awful.tooltip {
 my_gpu:connect_signal("mouse::enter", function()
     my_gpu_tooltip.markup = my_gpu_widget.stats
 end)
-my_gpu.children[2].align = "right"
-my_gpu.children[2].forced_width = 27
 my_gpu:connect_signal("button::press", function(_,_,_,button)
     if (button == 1) then awful.spawn("nvidia-settings") end
 end)
@@ -329,8 +314,6 @@ local my_hdd_tooltip = awful.tooltip {
 my_hdd:connect_signal("mouse::enter", function()
     my_hdd_tooltip.markup = my_hdd_widget.stats
 end)
-my_hdd.children[2].align = "right"
-my_hdd.children[2].forced_width = 27
 my_hdd:connect_signal("button::press", function(_,_,_,button)
     if (button == 1) then awful.spawn("gnome-system-monitor -f") end
 end)

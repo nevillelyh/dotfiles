@@ -68,10 +68,8 @@ install_cudnn() {
 install() {
     [[ $# -lt 1 ]] && help_and_die "Missing RUNFILE or TARBALL"
     [[ $# -gt 1 ]] && help_and_die "Invalid argument: $*"
-    set +o pipefail
     type lspci &> /dev/null || die "GPU not found"
-    lspci | grep -iq nvidia || die "GPU not found"
-    set -o pipefail
+    lspci | grep -i nvidia &> /dev/null || die "GPU not found"
 
     base=$(basename "$1")
     ext="${base##*.}"

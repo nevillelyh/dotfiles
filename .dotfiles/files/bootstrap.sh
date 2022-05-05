@@ -76,7 +76,7 @@ setup_aptitude() {
     sudo aptitude upgrade -y
     sudo aptitude install -y $DEB_PKGS
 
-    dpkg-query -l xorg &> /dev/null && sudo aptitude install -y $DEB_GUI_PKGS
+    dpkg-query --show xorg &> /dev/null && sudo aptitude install -y $DEB_GUI_PKGS
 }
 
 setup_linux() {
@@ -85,7 +85,7 @@ setup_linux() {
     msg_box "Setting up Linux specifics"
 
     # The following are GUI apps
-    dpkg-query -l xorg &> /dev/null || return 0
+    dpkg-query --show xorg &> /dev/null || return 0
 
     wget -nv https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
     sudo dpkg -i google-chrome-stable_current_amd64.deb
@@ -125,7 +125,7 @@ setup_mac() {
 }
 
 setup_fonts() {
-    dpkg-query -l xorg &> /dev/null || return 0
+    dpkg-query --show xorg &> /dev/null || return 0
     msg_box "Setting up fonts"
 
     git clone https://github.com/powerline/fonts

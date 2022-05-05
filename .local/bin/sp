@@ -93,6 +93,7 @@ function sp-dbus {
 }
 
 function sp-open {
+  sp-dbus Stop
   # Opens the given spotify: URI in Spotify.
   sp-dbus OpenUri string:$1
 }

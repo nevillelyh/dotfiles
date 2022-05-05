@@ -890,10 +890,15 @@ awful.rules.rules = {
     -- { rule = { class = "Firefox" },
     --   properties = { screen = 1, tag = "2" } },
 
-    { rule_any = { class = { "Gcr-prompter" },
+    -- wmctrl -l to list clients
+    -- xprop -id $ID to inspect a client
+    { rule_any = { instance = { "gcr-prompter" },
       }, properties = { placement = awful.placement.centered }
     },
-
+    -- For some reason class or instance won't match
+    { rule_any = { name = { "JetBrains Toolbox" },
+        }, properties = { placement = awful.placement.top_right }
+    },
     { rule_any = { class = { "Steam" },
       }, properties = { titlebars_enabled = false }
     },

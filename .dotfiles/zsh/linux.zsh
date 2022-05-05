@@ -7,6 +7,3 @@ if type fdfind &> /dev/null; then
     FD_COMMAND=fdfind
 fi
 export FD_COMMAND
-
-export PATH=$HOME/.dotfiles/bin/linux:$PATH
-[[ -d $HOME/.nvman ]] && eval $(nvman env)

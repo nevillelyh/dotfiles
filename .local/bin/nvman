@@ -26,6 +26,7 @@ help_and_die() {
 
 env() {
     [[ $# -ne 0 ]] && help_and_die "Invalid argument: $*"
+    [[ ! -d $HOME/.nvman ]] && exit 0
     cuda=$HOME/.nvman/cuda-current
     [[ ! -L $cuda ]] && die "CUDA not installed"
     cudnn=$HOME/.nvman/cudnn-current
@@ -67,6 +68,11 @@ install_cudnn() {
 install() {
     [[ $# -lt 1 ]] && help_and_die "Missing RUNFILE or TARBALL"
     [[ $# -gt 1 ]] && help_and_die "Invalid argument: $*"
+    set +o pipefail
+    type lspci &> /dev/null || die "GPU not found"
+    lspci | grep -iq nvidia || die "GPU not found"
+    set -o pipefail
+
     base=$(basename "$1")
     ext="${base##*.}"
     case "$ext" in
@@ -101,10 +107,6 @@ list() {
         echo "cuDNN: $cudnn"
     fi
 }
-
-set +o pipefail
-lspci | grep -iq nvidia || die "GPU not found"
-set -o pipefail
 
 if [[ $# -eq 0 ]]; then
     help

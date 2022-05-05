@@ -252,6 +252,23 @@ setup_cargo() {
     [[ "$uname_s" == "Linux" ]] && cargo install -q $LINUX_CRATES
 }
 
+setup_code() {
+    code --list-extensions | grep dracula-theme.theme-dracula &> /dev/null && return 0
+    msg_box "Setting up Visual Studio Code"
+
+    code --install-extension \
+        asvetliakov.vscode-neovim \
+        dracula-theme.theme-dracula \
+        GitHub.vscode-pull-request-github \
+        ms-vscode.cpptools-extension-pack \
+        rust-lang.rust \
+        vadimcn.vscode-lldb
+    if [[ "$uname_s" == "Darwin" ]]; then
+        code --install-extension sswg.swift-lang
+        defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+    fi
+}
+
 setup_zsh() {
     [[ "$SHELL" == "/bin/zsh" ]] && return 0
     msg_box "Setting up zsh"
@@ -286,6 +303,7 @@ setup_neovim
 setup_pip
 setup_sdkman
 setup_cargo
+setup_code
 setup_zsh
 setup_fonts
 

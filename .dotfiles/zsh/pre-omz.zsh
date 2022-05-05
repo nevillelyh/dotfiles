@@ -11,7 +11,7 @@ export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 # https://docs.brew.sh/Shell-Completion
-if type brew &>/dev/null; then
+if type brew &> /dev/null; then
     FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 
     autoload -Uz compinit

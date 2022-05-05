@@ -51,7 +51,7 @@ setup_ssh() {
 
 setup_homebrew() {
     [[ "$uname_s" != "Darwin" ]] && return 0
-    command -v brew &> /dev/null && return 0
+    type brew &> /dev/null && return 0
     msg_box "Setting up Homebrew"
 
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -68,7 +68,7 @@ setup_homebrew() {
 
 setup_aptitude() {
     [[ "$uname_s" != "Linux" ]] && return 0
-    command -v nvim &> /dev/null && return 0
+    type nvim &> /dev/null && return 0
     msg_box "Setting up Aptitude"
 
     sudo apt-get install -y apt-transport-https aptitude
@@ -81,7 +81,7 @@ setup_aptitude() {
 
 setup_linux() {
     [[ "$uname_s" != "Linux" ]] && return 0
-    command -v hub &> /dev/null && return 0
+    type hub &> /dev/null && return 0
     msg_box "Setting up Linux specifics"
 
     # The following are GUI apps
@@ -194,7 +194,7 @@ setup_neovim() {
 }
 
 setup_pip() {
-    command -v ipython &> /dev/null && return 0
+    type ipython &> /dev/null && return 0
     msg_box "Setting up Python"
 
     # Homebrew python includes pip
@@ -215,7 +215,7 @@ setup_jdk() {
 }
 
 setup_sdkman() {
-    command -v sbt &> /dev/null && return 0
+    type sbt &> /dev/null && return 0
     msg_box "Setting up SDKMAN"
 
     curl -fsSL "https://get.sdkman.io" | bash
@@ -243,7 +243,7 @@ setup_sdkman() {
 }
 
 setup_cargo() {
-    command -v cargo &> /dev/null && return 0
+    type cargo &> /dev/null && return 0
     msg_box "Setting up Rust"
 
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y

@@ -351,7 +351,7 @@ my_wifi_tooltip:add_to_object(my_wifi_icon)
 my_wifi_icon:connect_signal("mouse::enter", function()
     awful.spawn.easy_async("iwgetid -r", function(stdout,_,_,_)
         local ssid = stdout:gsub('^%s*(.-)%s*$', '%1')
-        local msg = string.format("SSID: %s\nSignal: %sdBm\n%s", ssid, my_wifi_icon.signal, my_wifi_icon.stats)
+        local msg = string.format("<b>SSID: %s</b>\nSignal: %sdBm\n%s", ssid, my_wifi_icon.signal, my_wifi_icon.stats)
         my_wifi_tooltip.markup = msg
     end)
 end)

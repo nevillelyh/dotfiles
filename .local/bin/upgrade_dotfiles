@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+# Upgrade .dotfiles and related packages
+
 set -euo pipefail
 
 msg_box() {

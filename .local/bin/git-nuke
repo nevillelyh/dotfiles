@@ -1,8 +1,8 @@
 #!/bin/bash
 
-set -euo pipefail
+# Delete a branch both locally and remotely
 
-# delete a branch both locally and remotely
+set -euo pipefail
 
 if [[ $# -lt 1 ]] || [[ $# -gt 2 ]]; then
     echo "Usage: $(basename $0) BRANCH [REMOTE]"

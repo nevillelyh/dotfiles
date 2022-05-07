@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Set up a host for GPG agent forwarding
+
 set -euo pipefail
 
 if [[ $# -ne 1 ]]; then

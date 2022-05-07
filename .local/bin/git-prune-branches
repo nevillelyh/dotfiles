@@ -1,8 +1,8 @@
 #!/bin/bash
 
-set -euo pipefail
+# Prune branches deleted on remote
 
-# prune branches
+set -euo pipefail
 
 if [[ $# -gt 1 ]]; then
     echo "Usage: $(basename $0) [REMOTE]"

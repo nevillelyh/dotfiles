@@ -1,7 +1,8 @@
 #!/bin/bash
 
+# Bootstrap a new environment
+
 # bash -c "$(curl -fsSL https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/bootstrap.sh)"
-APT_SH="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/apt.sh"
 
 set -euo pipefail
 
@@ -91,8 +92,9 @@ setup_linux() {
     sudo dpkg -i google-chrome-stable_current_amd64.deb
     rm google-chrome-stable_current_amd64.deb
 
-    curl -fsSL "$APT_SH" | bash -s -- code
-    curl -fsSL "$APT_SH" | bash -s -- sublime
+    apt_sh="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/apt.sh"
+    curl -fsSL "$apt_sh" | bash -s -- code
+    curl -fsSL "$apt_sh" | bash -s -- sublime
     curl -fsSL https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh | bash
 
     git clone https://github.com/dracula/gnome-terminal

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Build and publish joplin-cli Docker image
+
 set -euo pipefail
 
 image=nevillelyh/joplin-cli

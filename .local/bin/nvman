@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# NVIDIA CUDA and cnDNN Manager
+
 set -euo pipefail
 
 die() {

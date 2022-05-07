@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Launch joplin-cli
+# See Docker files in .dotfiles/files/joplin-cli
+
 set -euo pipefail
 
 if ! type docker &> /dev/null; then

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Install from third-party APT repositories
+
 set -euo pipefail
 
 setup_gpg() {

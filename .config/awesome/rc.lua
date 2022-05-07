@@ -350,7 +350,16 @@ local my_hdd = wibox.widget {
 }
 local my_hdd_tooltip = awful.tooltip(tooltip_preset)
 my_hdd_tooltip:add_to_object(my_hdd)
-my_hdd:connect_signal("mouse::enter", function() my_hdd_tooltip.markup = my_hdd_widget.stats end)
+my_hdd:connect_signal("mouse::enter", function()
+    awful.spawn.easy_async("df -h", function(stdout,_,_,_)
+        local lines = {}
+        for line in stdout:gmatch("[^\r\n]+") do
+            if #lines == 0 then line = string.format("<b>%s</b>", line) end
+            lines[#lines+1] = line
+        end
+        my_hdd_tooltip:set_markup(table.concat(lines, "\n"))
+    end)
+end)
 my_hdd:connect_signal("button::press", function(_,_,_,button)
     if (button == 1) then awful.spawn("gnome-system-monitor -f") end
 end)

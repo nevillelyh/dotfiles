@@ -87,17 +87,7 @@ local function factory(args)
             end
         end
 
-        local fmt = "<b>%-" .. tostring(pathlen) .. "s %4s\t%6s\t%6s\t%6s</b>"
-        local stats = { [1] = string.format(fmt, "Path", "Use%", "Used", "Free", "Total") }
-        fmt = "%-" .. tostring(pathlen) .. "s %3s%%\t%6.2f\t%6.2f\t%6.2f %s"
-        for _, path in ipairs(paths) do
-            local f = fs_now[path]
-            stats[#stats+1] =
-                string.format(fmt, path, f.percentage, f.used, f.free, f.size, f.units)
-        end
-
         widget = fs.widget
-        widget.stats = table.concat(stats, "\n")
         settings()
     end
 

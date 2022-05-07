@@ -85,6 +85,8 @@ setup_linux() {
     type hub &> /dev/null && return 0
     msg_box "Setting up Linux specifics"
 
+    type nvidia-smi &> /dev/null && sudo aptitude install -y nvtop
+
     # The following are GUI apps
     dpkg-query --show xorg &> /dev/null || return 0
 

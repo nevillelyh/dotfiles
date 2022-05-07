@@ -224,6 +224,13 @@ local my_sysload = wibox.widget {
         settings = function() widget:set_markup(load_1 .. " | " .. load_5 .. " | " .. load_15) end,
     }.widget,
 }
+local my_sysload_tooltip = awful.tooltip(tooltip_preset)
+my_sysload_tooltip:add_to_object(my_sysload)
+my_sysload:connect_signal("mouse::enter", function()
+    awful.spawn.easy_async("uptime", function(stdout,_,_,_)
+        my_sysload_tooltip:set_markup(stdout:gsub('^%s*(.-)%s*$', '%1'))
+    end)
+end)
 
 local temp = require("temp")
 local my_temp = wibox.widget {
@@ -240,6 +247,23 @@ local my_temp = wibox.widget {
         end,
     },
 }
+local my_temp_tooltip = awful.tooltip(tooltip_preset)
+my_temp_tooltip:add_to_object(my_temp)
+my_temp:connect_signal("mouse::enter", function()
+    local cmd = "sensors --no-adapter $(sensors -j | jq --raw-output 'keys[]' | sort)"
+    awful.spawn.easy_async_with_shell(cmd, function(stdout,_,_,_)
+        stdout = stdout:gsub("%s*$", "")
+        local lines = {}
+        for line in stdout:gmatch("[^\r\n]+") do
+            if not line:find(":") then
+                line = string.format("<b>Sensor: %s</b>", line)
+                if #lines > 0 then line = "\n" .. line end
+            end
+            lines[#lines+1] = line
+        end
+        my_temp_tooltip:set_markup(table.concat(lines, "\n"))
+    end)
+end)
 
 local my_cpu = wibox.widget {
     layout = wibox.layout.fixed.horizontal,
@@ -248,6 +272,19 @@ local my_cpu = wibox.widget {
         settings = function() widget:set_markup(cpu_now.usage .. "%") end,
     }.widget,
 }
+local my_cpu_tooltip = awful.tooltip(tooltip_preset)
+my_cpu_tooltip:add_to_object(my_cpu)
+my_cpu:connect_signal("mouse::enter", function()
+    local cmd = "ps -eo user,pid,pcpu,pmem,vsz:10,rss:6,tty,stat,start_time,time,exe --sort -pcpu | head"
+    awful.spawn.easy_async_with_shell(cmd, function(stdout,_,_,_)
+        local lines = {}
+        for line in stdout:gmatch("[^\r\n]+") do
+            if #lines == 0 then line = string.format("<b>%s</b>", line) end
+            lines[#lines+1] = line
+        end
+        my_cpu_tooltip:set_markup(table.concat(lines, "\n"))
+    end)
+end)
 
 local my_mem = wibox.widget {
     layout = wibox.layout.fixed.horizontal,
@@ -256,6 +293,18 @@ local my_mem = wibox.widget {
         settings = function() widget:set_markup(mem_now.perc .. "%") end,
     }.widget,
 }
+local my_mem_tooltip = awful.tooltip(tooltip_preset)
+my_mem_tooltip:add_to_object(my_mem)
+my_mem:connect_signal("mouse::enter", function()
+    awful.spawn.easy_async("free -h", function(stdout,_,_,_)
+        local lines = {}
+        for line in stdout:gmatch("[^\r\n]+") do
+            if #lines == 0 then line = string.format("<b>%s</b>", line) end
+            lines[#lines+1] = line
+        end
+        my_mem_tooltip:set_markup(table.concat(lines, "\n"))
+    end)
+end)
 
 my_sysload:connect_signal("button::press", function(_,_,_,button)
     if (button == 1) then awful.spawn("gnome-system-monitor -p") end

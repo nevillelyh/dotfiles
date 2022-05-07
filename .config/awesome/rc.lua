@@ -25,8 +25,6 @@ local has_fdo, freedesktop = pcall(require, "freedesktop")
 local awesome_path = os.getenv("HOME") .. "/.config/awesome/"
 local lain = require("lain")
 local volume = require("volume")
-local weather = require("awesome-wm-widgets.weather-widget.weather")
-local spotify = require("awesome-wm-widgets.spotify-widget.spotify")
 
 awful.util.spawn("compton -b")
 awful.util.spawn("gnome-screensaver")
@@ -197,63 +195,60 @@ my_keys.widget:set_text(my_keys.map[my_keys.current].symbol)
 -- {{{ Wibar
 -- Create a textclock widget
 local calendar = require("calendar")
-local my_cal = calendar({ theme = 'dracula', placement = 'top_right' })
+local my_cal = calendar { theme = 'dracula', placement = 'top_right' }
 mytextclock = wibox.widget.textclock("%a %I:%M %p")
 mytextclock:connect_signal("button::press", function(_, _, _, button)
     if button == 1 then my_cal.toggle() end
 end)
 
-local epapirus_dir = icons_dir .. "ePapirus/"
-
-local my_spotify = spotify({
+local spotify = require("awesome-wm-widgets.spotify-widget.spotify")
+local my_spotify = spotify {
     -- https://github.com/PapirusDevelopmentTeam/papirus-icon-theme/blob/master/ePapirus/24x24/panel/spotify-indicator.svg
     play_icon = icons_dir .. "spotify-indicator.svg",
     pause_icon = icons_dir .. "spotify-indicator-patched.svg",
     font = "Fira Sans Bold 9",
     max_length = 100,
-})
+}
 my_spotify.children[3]:set_max_size(200)
 
 local my_sysload = wibox.widget {
-    wibox.widget.imagebox(epapirus_dir .. "gpm-monitor.svg"),
-    lain.widget.sysload({
-        settings = function() widget:set_markup(load_1 .. " | " .. load_5 .. " | " .. load_15) end,
-    }).widget,
     layout = wibox.layout.fixed.horizontal,
+    wibox.widget.imagebox(icons_dir .. "ePapirus/gpm-monitor.svg"),
+    lain.widget.sysload {
+        settings = function() widget:set_markup(load_1 .. " | " .. load_5 .. " | " .. load_15) end,
+    }.widget,
 }
 
 local temp = require("temp")
 local my_temp = wibox.widget {
-    wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-fan.svg"),
-    temp({
+    layout = wibox.layout.fixed.horizontal,
+    wibox.widget.imagebox(icons_dir .. "ePapirus/indicator-sensors-fan.svg"),
+    temp {
         settings = function()
             local text = ""
-            local i = 0
-            for _, t in pairs(coretemp_now) do
-                if i > 0 then text = text .. " | " end
+            for i, t in ipairs(coretemp_now) do
+                if i > 1 then text = text .. " | " end
                 text = text .. tostring(t) .. "°C"
-                i = i + 1
             end
             widget:set_markup(text)
         end,
-    }),
-    layout = wibox.layout.fixed.horizontal,
+    },
 }
 
 local my_cpu = wibox.widget {
-    wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-cpu.svg"),
-    lain.widget.cpu({
-        settings = function() widget:set_markup(cpu_now.usage .. "%") end,
-    }).widget,
     layout = wibox.layout.fixed.horizontal,
+    wibox.widget.imagebox(icons_dir .. "ePapirus/indicator-sensors-cpu.svg"),
+    lain.widget.cpu {
+        settings = function() widget:set_markup(cpu_now.usage .. "%") end,
+    }.widget,
 }
 
 local my_mem = wibox.widget {
-    wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-memory.svg"),
-    lain.widget.mem({
-        settings = function() widget:set_markup(mem_now.perc .. "%") end,
-    }).widget,
     layout = wibox.layout.fixed.horizontal,
+    wibox.widget.imagebox(icons_dir .. "ePapirus/indicator-sensors-memory.svg"),
+    lain.widget.mem {
+        settings = function() widget:set_markup(mem_now.perc .. "%") end,
+    }.widget,
 }
 
 my_sysload:connect_signal("button::press", function(_,_,_,button)
@@ -267,7 +262,7 @@ my_mem:connect_signal("button::press", function(_,_,_,button)
 end)
 
 local gpu = require("gpu")
-local my_gpu_widget = gpu({
+local my_gpu_widget = gpu {
     settings = function()
         local text = ""
         for i, g in ipairs(gpu_now) do
@@ -276,55 +271,51 @@ local my_gpu_widget = gpu({
         end
         widget:set_markup(text)
     end,
-}).widget
+}.widget
 local my_gpu = wibox.widget {
-    wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-gpu.svg"),
-    my_gpu_widget,
     layout = wibox.layout.fixed.horizontal,
+    wibox.widget.imagebox(icons_dir .. "ePapirus/indicator-sensors-gpu.svg"),
+    my_gpu_widget,
 }
 local my_gpu_tooltip = awful.tooltip {
     font = "Fira Mono 9",
     mode = "outside",
-    objects = { my_gpu },
     preferred_positions = { "bottom" },
+    objects = { my_gpu },
 }
-my_gpu:connect_signal("mouse::enter", function()
-    my_gpu_tooltip.markup = my_gpu_widget.stats
-end)
+my_gpu:connect_signal("mouse::enter", function() my_gpu_tooltip.markup = my_gpu_widget.stats end)
 my_gpu:connect_signal("button::press", function(_,_,_,button)
     if (button == 1) then awful.spawn("nvidia-settings") end
 end)
 
 local fs = require("fs")
-local my_hdd_widget = fs({
-    settings = function() widget:set_markup(fs_now["/"].percentage .. "%") end
-}).widget
+local my_hdd_widget = fs {
+    settings = function() widget:set_markup(fs_now["/"].percentage .. "%") end,
+}.widget
 local my_hdd = wibox.widget {
-    wibox.widget.imagebox(epapirus_dir .. "indicator-sensors-disk.svg"),
-    my_hdd_widget,
     layout = wibox.layout.fixed.horizontal,
+    wibox.widget.imagebox(icons_dir .. "ePapirus/indicator-sensors-disk.svg"),
+    my_hdd_widget,
 }
 local my_hdd_tooltip = awful.tooltip {
     font = "Fira Mono 9",
     mode = "outside",
-    objects = { my_hdd },
     preferred_positions = { "bottom" },
+    objects = { my_hdd },
 }
-my_hdd:connect_signal("mouse::enter", function()
-    my_hdd_tooltip.markup = my_hdd_widget.stats
-end)
+my_hdd:connect_signal("mouse::enter", function() my_hdd_tooltip.markup = my_hdd_widget.stats end)
 my_hdd:connect_signal("button::press", function(_,_,_,button)
     if (button == 1) then awful.spawn("gnome-system-monitor -f") end
 end)
 
 local my_wifi_icon = wibox.widget.imagebox()
 local my_wired_icon = wibox.widget.imagebox()
-local my_net = lain.widget.net({ eth_state = "on", wifi_state = "on", settings = function()
+local my_net = lain.widget.net { eth_state = "on", wifi_state = "on", settings = function()
     local wifi_icon = nil
     local wired_icon = nil
     for _, v in pairs(net_now.devices) do
         if v.wifi then
-            wifi_icon = epapirus_dir .. "network-wireless-signal-"
+            wifi_icon = icons_dir .. "ePapirus/network-wireless-signal-"
             if v.signal >= -50 then
                 wifi_icon = wifi_icon .. "excellent.svg"
             elseif v.signal >= -60 then
@@ -341,7 +332,7 @@ local my_net = lain.widget.net({ eth_state = "on", wifi_state = "on", settings =
             my_wifi_icon.stats = string.format("TX: %sKB / RX: %sKB", v.sent, v.received)
         end
         if v.ethernet then
-            wired_icon = epapirus_dir .. "network-wired.svg"
+            wired_icon = icons_dir .. "ePapirus/network-wired.svg"
             my_wired_icon.icon = wired_icon
             my_wired_icon.stats = string.format("TX: %sKB / RX: %sKB", v.sent, v.received)
         end
@@ -349,7 +340,7 @@ local my_net = lain.widget.net({ eth_state = "on", wifi_state = "on", settings =
     my_wifi_icon:set_image(wifi_icon)
     my_wired_icon:set_image(wired_icon)
 end,
-})
+}
 my_wifi_icon:connect_signal("button::press", function(_,_,_,button)
     if (button == 1) then awful.spawn("gnome-control-center wifi") end
 end)
@@ -359,8 +350,8 @@ end)
 
 local my_wifi_tooltip = awful.tooltip {
     mode = "outside",
-    objects = { my_wifi_icon },
     preferred_positions = { "bottom" },
+    objects = { my_wifi_icon },
 }
 my_wifi_icon:connect_signal("mouse::enter", function()
     awful.spawn.easy_async("iwgetid -r", function(stdout,_,_,_)
@@ -371,14 +362,15 @@ my_wifi_icon:connect_signal("mouse::enter", function()
 end)
 local my_wired_tooltip = awful.tooltip {
     mode = "outside",
-    objects = { my_wired_icon },
     preferred_positions = { "bottom" },
+    objects = { my_wired_icon },
 }
 my_wired_icon:connect_signal("mouse::enter", function()
     my_wired_tooltip.markup = my_wired_icon.stats
 end)
 
-local my_weather = weather({
+local weather = require("awesome-wm-widgets.weather-widget.weather")
+local my_weather = weather {
     coordinates = {40.6756953, -73.9650304},
     api_key = "cd9f81ebc51ba66bbc40e0872d4464ef",
     font_name = "Fira Sans Bold",
@@ -386,11 +378,7 @@ local my_weather = weather({
     time_format_12h = true,
     show_hourly_forecast = true,
     show_daily_forecast = true,
-})
-
-local my_layout = wibox.layout.align.horizontal()
-my_layout.forced_width = 3
-local my_separator = wibox.widget { layout = my_layout }
+}
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -503,7 +491,7 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             my_spotify,
-            my_separator,
+            wibox.widget { layout = wibox.layout.fixed.horizontal, forced_width = 5 },
             wibox.widget.systray(),
             my_sysload,
             my_temp,
@@ -513,7 +501,7 @@ awful.screen.connect_for_each_screen(function(s)
             my_hdd,
             my_wifi_icon,
             my_wired_icon,
-            volume({ display_notification = true, delta = 2 }),
+            volume { display_notification = true, delta = 2 },
             my_weather,
             -- mykeyboardlayout,
             my_keys.widget,

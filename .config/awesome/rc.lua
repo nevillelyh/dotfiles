@@ -104,21 +104,14 @@ awful.layout.layouts = {
 
 -- {{{ Menu
 -- Create a launcher widget and a main menu
-local lock_screen = function()
-    awful.spawn("gnome-screensaver-command --lock")
-end
-local screenshot = function ()
-    awful.spawn("gnome-screenshot --interactive")
-end
-
 -- https://github.com/PapirusDevelopmentTeam/papirus-icon-theme/tree/master/ePapirus/24x24/actions
 local icons_dir = awesome_path .. "icons/"
 local hotkeys_icon = icons_dir .. "help-keybord-shortcuts.svg"
-local terminal_icon = icons_dir .. "cm_runterm.svg"
 local help_icon = icons_dir .. "help.svg"
 local editor_icon = icons_dir .. "edit.svg"
 local restart_icon = icons_dir .. "reload.svg"
 local quit_icon = icons_dir .. "gtk-quit.svg"
+local terminal_icon = icons_dir .. "cm_runterm.svg"
 
 myawesomemenu = {
     { "Hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end, hotkeys_icon },
@@ -146,7 +139,6 @@ else
     })
 end
 
-
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
 
@@ -157,18 +149,22 @@ local sleep_icon = icons_dir .. "chronometer-pause.svg"
 local restart_icon = icons_dir .. "system-restart-panel.svg"
 local shutdown_icon = icons_dir .. "system-devices-panel.svg"
 
-mysystemmenu = awful.menu({
-    items = {
-        { "Screenshot", screenshot,                                       screenshot_icon },
-        { "Lock",       lock_screen,                                      lock_icon },
-        { "Log Out",    function() awesome.quit() end,                    logout_icon },
-        { "Suspend",    function() awful.spawn("systemctl suspend") end,  sleep_icon },
-        { "Restart",    function() awful.spawn("systemctl reboot") end,   restart_icon },
-        { "Power Off",  function() awful.spawn("systemctl poweroff") end, shutdown_icon },
-    }
-})
+local screenshot_cmd = "gnome-screenshot --interactive"
+local lock_screen_cmd = "gnome-screensaver-command --lock"
 
-mysystemlauncher = awful.widget.launcher({ image = shutdown_icon, menu = mysystemmenu})
+mysystemlauncher = awful.widget.launcher {
+    image = shutdown_icon,
+    menu = awful.menu {
+        items = {
+            { "Screenshot", function() awful.spawn(screenshot_cmd) end,       screenshot_icon },
+            { "Lock",       function() awful.spawn(lock_screen_cmd) end,      lock_icon },
+            { "Log Out",    function() awesome.quit() end,                    logout_icon },
+            { "Suspend",    function() awful.spawn("systemctl suspend") end,  sleep_icon },
+            { "Restart",    function() awful.spawn("systemctl reboot") end,   restart_icon },
+            { "Power Off",  function() awful.spawn("systemctl poweroff") end, shutdown_icon },
+        }
+    }
+}
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it

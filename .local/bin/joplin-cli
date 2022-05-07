@@ -10,10 +10,21 @@ if ! type docker &> /dev/null; then
     exit 1
 fi
 
-docker pull -q nevillelyh/joplin-cli > /dev/null
+let ttl=60*60*24*7
+
+img="nevillelyh/joplin-cli:latest"
+
+created=$(date +%s --date="$(docker image inspect $img 2> /dev/null | jq --raw-output '.[] | .Created' || echo 0)")
+now=$(date +%s)
+let delta=now-created
+
+if (( delta > ttl )) ; then
+    docker pull -q $img > /dev/null
+fi
+
 docker volume inspect joplin-cli &> /dev/null || docker volume create joplin-cli
 
-cmd='docker run -it -v joplin-cli:/root/.config/joplin --rm nevillelyh/joplin-cli:latest'
+cmd="docker run -it -v joplin-cli:/root/.config/joplin --rm $img"
 if tty &> /dev/null; then
     $cmd
 else

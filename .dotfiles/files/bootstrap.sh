@@ -88,32 +88,32 @@ setup_linux() {
     # The following are GUI apps
     dpkg-query --show xorg &> /dev/null || return 0
 
-    wget -nv https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    sudo dpkg -i google-chrome-stable_current_amd64.deb
-    rm google-chrome-stable_current_amd64.deb
-
-    apt_sh="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/apt.sh"
-    curl -fsSL "$apt_sh" | bash -s -- code
-    curl -fsSL "$apt_sh" | bash -s -- sublime
-    curl -fsSL https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh | bash
-
     git clone https://github.com/dracula/gnome-terminal
     ./gnome-terminal/install.sh
     rm -rf gnome-terminal
 
-    # Dropbox has its own repository
+    # Third-party APT repositories
+    apt_sh="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/apt.sh"
+    curl -fsSL "$apt_sh" | bash -s -- code
+    curl -fsSL "$apt_sh" | bash -s -- sublime
+
+    # Chrome manages its own repository
+    wget -nv https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    sudo dpkg -i google-chrome-stable_current_amd64.deb
+    rm google-chrome-stable_current_amd64.deb
+
+    # Dropbox manages its own repository
     url="https://linux.dropbox.com/packages/ubuntu/"
     pkg=$(curl -fsSL $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^dropbox_\d{4}\.\d{2}\.\d{2}_amd64.deb$' | sort | tail -n 1)
     wget -nv "$url/$pkg"
     sudo dpkg -i dropbox_*_amd64.deb
     rm -f dropbox_*_amd64.deb
 
-    setup_snap
-}
-
-setup_snap() {
     sudo aptitude install -y snapd
     sudo snap install slack spotify xseticon
+
+    # Joplin uses AppImage
+    curl -fsSL https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh | bash
 }
 
 setup_mac() {

@@ -21,12 +21,8 @@ local function factory(args)
 
     function temp.update()
         -- temp1 is CPU, temp2..tempN are individual cores
-        local cmd = {
-            "find", "/sys/devices/platform",
-            "-type", "f",
-            "-path", "*/coretemp.*/hwmon/hwmon*/temp1_input"
-        }
-        helpers.async(cmd, function(f)
+        local cmd = "find /sys/devices/platform/coretemp.* -type f -name temp1_input | sort"
+        helpers.async_with_shell(cmd, function(f)
             local naughty = require("naughty")
             coretemp_now = {}
             local temp_fl, temp_value
@@ -34,7 +30,7 @@ local function factory(args)
                 temp_fl = helpers.first_line(t)
                 if temp_fl then
                     temp_value = tonumber(temp_fl)
-                    coretemp_now[t] = temp_value and temp_value/1e3 or temp_fl
+                    coretemp_now[#coretemp_now+1] = temp_value and temp_value/1e3 or temp_fl
                 end
             end
             widget = temp.widget

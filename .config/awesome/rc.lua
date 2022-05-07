@@ -211,6 +211,12 @@ local my_spotify = spotify {
 }
 my_spotify.children[3]:set_max_size(200)
 
+local tooltip_preset = {
+    font = "Fira Mono 9",
+    mode = "outside",
+    preferred_positions = { "bottom" },
+}
+
 local my_sysload = wibox.widget {
     layout = wibox.layout.fixed.horizontal,
     wibox.widget.imagebox(icons_dir .. "ePapirus/gpm-monitor.svg"),
@@ -277,12 +283,8 @@ local my_gpu = wibox.widget {
     wibox.widget.imagebox(icons_dir .. "ePapirus/indicator-sensors-gpu.svg"),
     my_gpu_widget,
 }
-local my_gpu_tooltip = awful.tooltip {
-    font = "Fira Mono 9",
-    mode = "outside",
-    preferred_positions = { "bottom" },
-    objects = { my_gpu },
-}
+local my_gpu_tooltip = awful.tooltip(tooltip_preset)
+my_gpu_tooltip:add_to_object(my_gpu)
 my_gpu:connect_signal("mouse::enter", function() my_gpu_tooltip.markup = my_gpu_widget.stats end)
 my_gpu:connect_signal("button::press", function(_,_,_,button)
     if (button == 1) then awful.spawn("nvidia-settings") end
@@ -297,12 +299,8 @@ local my_hdd = wibox.widget {
     wibox.widget.imagebox(icons_dir .. "ePapirus/indicator-sensors-disk.svg"),
     my_hdd_widget,
 }
-local my_hdd_tooltip = awful.tooltip {
-    font = "Fira Mono 9",
-    mode = "outside",
-    preferred_positions = { "bottom" },
-    objects = { my_hdd },
-}
+local my_hdd_tooltip = awful.tooltip(tooltip_preset)
+my_hdd_tooltip:add_to_object(my_hdd)
 my_hdd:connect_signal("mouse::enter", function() my_hdd_tooltip.markup = my_hdd_widget.stats end)
 my_hdd:connect_signal("button::press", function(_,_,_,button)
     if (button == 1) then awful.spawn("gnome-system-monitor -f") end
@@ -348,11 +346,8 @@ my_wired_icon:connect_signal("button::press", function(_,_,_,button)
     if (button == 1) then awful.spawn("gnome-control-center network") end
 end)
 
-local my_wifi_tooltip = awful.tooltip {
-    mode = "outside",
-    preferred_positions = { "bottom" },
-    objects = { my_wifi_icon },
-}
+local my_wifi_tooltip = awful.tooltip(tooltip_preset)
+my_wifi_tooltip:add_to_object(my_wifi_icon)
 my_wifi_icon:connect_signal("mouse::enter", function()
     awful.spawn.easy_async("iwgetid -r", function(stdout,_,_,_)
         local ssid = stdout:gsub('^%s*(.-)%s*$', '%1')
@@ -360,11 +355,8 @@ my_wifi_icon:connect_signal("mouse::enter", function()
         my_wifi_tooltip.markup = msg
     end)
 end)
-local my_wired_tooltip = awful.tooltip {
-    mode = "outside",
-    preferred_positions = { "bottom" },
-    objects = { my_wired_icon },
-}
+local my_wired_tooltip = awful.tooltip(tooltip_preset)
+my_wired_tooltip:add_to_object(my_wired_icon)
 my_wired_icon:connect_signal("mouse::enter", function()
     my_wired_tooltip.markup = my_wired_icon.stats
 end)

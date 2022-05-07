@@ -172,28 +172,27 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 
 -- Keyboard map indicator and switcher
 -- mykeyboardlayout = awful.widget.keyboardlayout()
-unicode_us = "🇺🇸"
-unicode_altgr = "🇺🇳"
+local unicode_us = "🇺🇸"
+local unicode_altgr = "🇺🇳"
 my_keys = {
-    cmd = "setxkbmap",
-    layout = {
-        {"us", "", unicode_us},
-        {"us", "altgr-intl", unicode_altgr},
-        {"us", "colemak", "CO"}
+    map = {
+        { layout = "us", variant = "", symbol = unicode_us},
+        { layout = "us", variant = "altgr-intl", symbol = unicode_altgr},
+        { layout = "us", variant = "colemak", symbol = "CO"}
     },
     current = 1,
     widget = wibox.widget.textbox(),
     next_layout = function()
-        my_keys.current = my_keys.current % #(my_keys.layout) + 1
-        local t = my_keys.layout[my_keys.current]
-        awful.spawn(my_keys.cmd .. " " .. t[1] .. " " .. t[2])
-        my_keys.widget:set_text(" " .. t[3] .. " ")
+        my_keys.current = my_keys.current % #(my_keys.map) + 1
+        local t = my_keys.map[my_keys.current]
+        awful.spawn("setxkbmap " .. t.layout .. " " .. t.variant)
+        my_keys.widget:set_text(" " .. t.symbol .. " ")
     end
 }
-my_keys.widget:buttons(awful.util.table.join(
-    awful.button({}, 1, function() my_keys.next_layout() end)
-))
-my_keys.widget:set_text(" " .. my_keys.layout[my_keys.current][3] .. " ")
+my_keys.widget.align = "center"
+my_keys.widget.forced_width = 25
+my_keys.widget:buttons(awful.util.table.join(awful.button({}, 1, my_keys.next_layout)))
+my_keys.widget:set_text(my_keys.map[my_keys.current].symbol)
 
 -- {{{ Wibar
 -- Create a textclock widget

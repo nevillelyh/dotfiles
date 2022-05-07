@@ -355,7 +355,7 @@ local my_wifi_tooltip = awful.tooltip {
 }
 my_wifi_icon:connect_signal("mouse::enter", function()
     awful.spawn.easy_async("iwgetid -r", function(stdout,_,_,_)
-        local ssid = stdout:gsub("%s+", "")
+        local ssid = stdout:gsub('^%s*(.-)%s*$', '%1')
         local msg = string.format("SSID: %s\nSignal: %sdBm\n%s", ssid, my_wifi_icon.signal, my_wifi_icon.stats)
         my_wifi_tooltip.markup = msg
     end)
@@ -432,11 +432,9 @@ local function set_wallpaper(s)
     end
 end
 
-local cmd = "gsettings get org.gnome.desktop.background picture-uri-dark"
-awful.spawn.easy_async(cmd, function(stdout,_,_,_)
-    local w = stdout
-    w = w:gsub("^'file://", "")
-    w = w:gsub("'%s*$", "")
+local wallpaper_cmd = "gsettings get org.gnome.desktop.background picture-uri-dark"
+awful.spawn.easy_async(wallpaper_cmd, function(stdout,_,_,_)
+    local w = stdout:gsub("^'file://(.-)'%s*$", "%1")
     beautiful.wallpaper = w
     awful.screen.connect_for_each_screen(function(s) set_wallpaper(s) end)
 end)

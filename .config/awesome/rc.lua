@@ -32,8 +32,12 @@ awful.util.spawn("compton -b")
 awful.util.spawn("gnome-screensaver")
 awful.util.spawn(awesome_path .. "scripts/audio-defaults.sh")
 awful.util.spawn(awesome_path .. "scripts/lock-screen.sh")
+-- Dropbox messes up other icons in systray
 awful.util.spawn("dropbox start")
-awful.util.spawn(os.getenv("HOME") .. "/.local/share/JetBrains/Toolbox/bin/jetbrains-toolbox")
+gears.timer.start_new(5, function()
+    awful.util.spawn(os.getenv("HOME") .. "/.local/share/JetBrains/Toolbox/bin/jetbrains-toolbox")
+    return false
+end)
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to

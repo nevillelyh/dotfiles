@@ -57,17 +57,8 @@ local function factory(args)
                 gpu_now[#gpu_now+1] = g
             end
 
-            local fmt = "<b>%-" .. tostring(namelen) .. "s %4s %4s %4s %4s %4s %5s</b>"
-            local header = string.format(fmt, "Name", "Temp", "GPU%", "RAM%", "Used", "Free", "Total")
-            local stats = { [1] = header }
-            fmt = "%-" .. tostring(namelen) .. "s %2d°C %3d%% %3d%% %4d %4d %5d MiB"
-            for _, g in ipairs(gpu_now) do
-                local line = string.format(fmt, g.name, g.temp, g.gpu_util, g.mem_util, g.mem_used, g.mem_free, g.mem_total)
-                stats[#stats+1] = line
-            end
-
             widget = gpu.widget
-            widget.stats = table.concat(stats, "\n")
+            widget.stats = ""
             settings()
         end)
     end

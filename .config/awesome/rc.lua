@@ -334,7 +334,18 @@ local my_gpu = wibox.widget {
 }
 local my_gpu_tooltip = awful.tooltip(tooltip_preset)
 my_gpu_tooltip:add_to_object(my_gpu)
-my_gpu:connect_signal("mouse::enter", function() my_gpu_tooltip.markup = my_gpu_widget.stats end)
+my_gpu:connect_signal("mouse::enter", function()
+    awful.spawn.easy_async("nvidia-smi", function(stdout,_,_,_)
+        local i = 0
+        local lines = {}
+        for line in stdout:gmatch("[^\r\n]+") do
+            -- First line is date/time
+            if i > 0 then lines[#lines+1] = line end
+            i = i + 1
+        end
+        my_gpu_tooltip:set_markup(table.concat(lines, "\n"))
+    end)
+end)
 my_gpu:connect_signal("button::press", function(_,_,_,button)
     if (button == 1) then awful.spawn("nvidia-settings") end
 end)

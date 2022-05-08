@@ -380,54 +380,75 @@ local my_wired_icon = wibox.widget.imagebox()
 local my_net = lain.widget.net { eth_state = "on", wifi_state = "on", settings = function()
     local wifi_icon = nil
     local wired_icon = nil
-    for _, v in pairs(net_now.devices) do
-        if v.wifi then
-            wifi_icon = icons_dir .. "ePapirus/network-wireless-signal-"
-            if v.signal >= -50 then
-                wifi_icon = wifi_icon .. "excellent.svg"
-            elseif v.signal >= -60 then
-                wifi_icon = wifi_icon .. "good.svg"
-            elseif v.signal >= -67 then
-                wifi_icon = wifi_icon .. "ok.svg"
-            elseif v.signal >= -70 then
-                wifi_icon = wifi_icon .. "low.svg"
-            else
-                wifi_icon = wifi_icon .. "none.svg"
+    my_wifi_icon.devices = {}
+    my_wired_icon.devices = {}
+    for k, v in pairs(net_now.devices) do
+        if v.state == "up" then
+            if v.wifi then
+                wifi_icon = icons_dir .. "ePapirus/network-wireless-signal-"
+                if v.signal >= -50 then
+                    wifi_icon = wifi_icon .. "excellent.svg"
+                elseif v.signal >= -60 then
+                    wifi_icon = wifi_icon .. "good.svg"
+                elseif v.signal >= -67 then
+                    wifi_icon = wifi_icon .. "ok.svg"
+                elseif v.signal >= -70 then
+                    wifi_icon = wifi_icon .. "low.svg"
+                else
+                    wifi_icon = wifi_icon .. "none.svg"
+                end
+                my_wifi_icon.icon = wifi_icon
+                my_wifi_icon.devices[#my_wifi_icon.devices+1] = k
             end
-            my_wifi_icon.signal = v.signal
-            my_wifi_icon.icon = wifi_icon
-            my_wifi_icon.stats = string.format("TX: %sKB / RX: %sKB", v.sent, v.received)
-        end
-        if v.ethernet then
-            wired_icon = icons_dir .. "ePapirus/network-wired.svg"
-            my_wired_icon.icon = wired_icon
-            my_wired_icon.stats = string.format("TX: %sKB / RX: %sKB", v.sent, v.received)
+            if v.ethernet then
+                wired_icon = icons_dir .. "ePapirus/network-wired.svg"
+                my_wired_icon.icon = wired_icon
+                my_wired_icon.devices[#my_wired_icon.devices+1] = k
+            end
         end
     end
     my_wifi_icon:set_image(wifi_icon)
     my_wired_icon:set_image(wired_icon)
 end,
 }
-my_wifi_icon:connect_signal("button::press", function(_,_,_,button)
-    if (button == 1) then awful.spawn("gnome-control-center wifi") end
-end)
-my_wired_icon:connect_signal("button::press", function(_,_,_,button)
-    if (button == 1) then awful.spawn("gnome-control-center network") end
-end)
-
 local my_wifi_tooltip = awful.tooltip(tooltip_preset)
 my_wifi_tooltip:add_to_object(my_wifi_icon)
 my_wifi_icon:connect_signal("mouse::enter", function()
-    awful.spawn.easy_async("iwgetid -r", function(stdout,_,_,_)
-        local ssid = stdout:gsub('^%s*(.-)%s*$', '%1')
-        local msg = string.format("<b>SSID: %s</b>\nSignal: %sdBm\n%s", ssid, my_wifi_icon.signal, my_wifi_icon.stats)
-        my_wifi_tooltip.markup = msg
+    local cmd = "echo " .. table.concat(my_wifi_icon.devices, " ") .. " | xargs -n 1 iwconfig"
+    awful.spawn.easy_async_with_shell(cmd, function(stdout,_,_,_)
+        local lines = {}
+        for line in stdout:gmatch("[^\r\n]+") do
+            if line:find("^[^%s]+") then line = string.format("<b>%s</b>", line) end
+            lines[#lines+1] = line
+        end
+        my_wifi_tooltip:set_markup(table.concat(lines, "\n"))
     end)
 end)
 local my_wired_tooltip = awful.tooltip(tooltip_preset)
 my_wired_tooltip:add_to_object(my_wired_icon)
 my_wired_icon:connect_signal("mouse::enter", function()
-    my_wired_tooltip.markup = my_wired_icon.stats
+    local cmd = "echo " .. table.concat(my_wired_icon.devices, " ") .. " | xargs -n 1 ifconfig"
+    awful.spawn.easy_async_with_shell(cmd, function(stdout,_,_,_)
+        my_wired_tooltip:set_markup(stdout)
+        local lines = {}
+        for line in stdout:gmatch("[^\r\n]+") do
+            line = line:gsub("<", "&lt;")
+            line = line:gsub(">", "&gt;")
+            if line:find("^[^%s]+") then
+                line = string.format("<b>%s</b>", line)
+                if #lines > 0 then line = "\n" .. line end
+            end
+            lines[#lines+1] = line
+        end
+        my_wired_tooltip:set_markup(table.concat(lines, "\n"))
+    end)
+end)
+
+my_wifi_icon:connect_signal("button::press", function(_,_,_,button)
+    if (button == 1) then awful.spawn("gnome-control-center wifi") end
+end)
+my_wired_icon:connect_signal("button::press", function(_,_,_,button)
+    if (button == 1) then awful.spawn("gnome-control-center network") end
 end)
 
 local weather = require("awesome-wm-widgets.weather-widget.weather")

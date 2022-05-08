@@ -22,7 +22,7 @@ local volume = {
     device = "",
     display_notification = false,
     notification = nil,
-    delta = 5
+    delta = 5,
 }
 
 local function cmd(d, c)
@@ -74,7 +74,7 @@ local function update_graphic(widget, stdout)
     widget.image = PATH_TO_ICONS .. volume_icon_name .. ".svg"
     if volume.display_notification then
         if not volume.notification then
-            volume.notification = naughty.notify {
+            volume.notification = naughty.notify({
                 text =  txt,
                 icon=PATH_TO_ICONS .. volume_icon_name .. ".svg",
                 icon_size = dpi(16),
@@ -82,8 +82,8 @@ local function update_graphic(widget, stdout)
                 position = volume.position,
                 timeout = keep and 0 or 2, hover_timeout = 0.5,
                 width = 200,
-                screen = mouse.screen
-            }
+                screen = mouse.screen,
+            })
         end
         volume.notification.iconbox.image = PATH_TO_ICONS .. volume_icon_name .. ".svg"
         naughty.replace_text(volume.notification, "Volume", txt)
@@ -107,16 +107,16 @@ local function worker(user_args)
 --}}}
 --{{{ Check for icon path
     if not gfs.dir_readable(PATH_TO_ICONS) then
-        naughty.notify{
+        naughty.notify({
             title = "Volume Widget",
             text = "Folder with icons doesn't exist: " .. PATH_TO_ICONS,
-            preset = naughty.config.presets.critical
-        }
+            preset = naughty.config.presets.critical,
+        })
         return
     end
 --}}}
 --{{{ Widget creation
-    volume.widget = wibox.widget {
+    volume.widget = wibox.widget({
         {
             id = "icon",
             image = PATH_TO_ICONS .. "audio-volume-muted.svg",
@@ -126,8 +126,8 @@ local function worker(user_args)
         layout = wibox.container.margin(_,_,_,1),
         set_image = function(self, path)
             self.icon.image = path
-        end
-    }
+        end,
+    })
 --}}}
 --{{{ Spawn functions
     function volume:_cmd(cmd)

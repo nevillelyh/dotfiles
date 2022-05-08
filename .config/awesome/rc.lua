@@ -150,9 +150,9 @@ local shutdown_icon = icons_dir .. "system-devices-panel.svg"
 local screenshot_cmd = "gnome-screenshot --interactive"
 local lock_screen_cmd = "gnome-screensaver-command --lock"
 
-mysystemlauncher = awful.widget.launcher {
+mysystemlauncher = awful.widget.launcher({
     image = shutdown_icon,
-    menu = awful.menu {
+    menu = awful.menu({
         items = {
             { "Screenshot", function() awful.spawn(screenshot_cmd) end,       screenshot_icon },
             { "Lock",       function() awful.spawn(lock_screen_cmd) end,      lock_icon },
@@ -161,8 +161,8 @@ mysystemlauncher = awful.widget.launcher {
             { "Restart",    function() awful.spawn("systemctl reboot") end,   restart_icon },
             { "Power Off",  function() awful.spawn("systemctl poweroff") end, shutdown_icon },
         }
-    }
-}
+    })
+})
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
@@ -195,20 +195,20 @@ my_keys.widget:set_text(my_keys.map[my_keys.current].symbol)
 -- {{{ Wibar
 -- Create a textclock widget
 local calendar = require("calendar")
-local my_cal = calendar { theme = 'dracula', placement = 'top_right' }
+local my_cal = calendar({ theme = 'dracula', placement = 'top_right' })
 mytextclock = wibox.widget.textclock("%a %I:%M %p")
 mytextclock:connect_signal("button::press", function(_, _, _, button)
     if button == 1 then my_cal.toggle() end
 end)
 
 local spotify = require("awesome-wm-widgets.spotify-widget.spotify")
-local my_spotify = spotify {
+local my_spotify = spotify({
     -- https://github.com/PapirusDevelopmentTeam/papirus-icon-theme/blob/master/ePapirus/24x24/panel/spotify-indicator.svg
     play_icon = icons_dir .. "spotify-indicator.svg",
     pause_icon = icons_dir .. "spotify-indicator-patched.svg",
     font = "Fira Sans Bold 9",
     max_length = 100,
-}
+})
 my_spotify.children[3]:set_max_size(200)
 
 local tooltip_preset = {
@@ -217,13 +217,13 @@ local tooltip_preset = {
     preferred_positions = { "bottom" },
 }
 
-local my_sysload = wibox.widget {
+local my_sysload = wibox.widget({
     layout = wibox.layout.fixed.horizontal,
     wibox.widget.imagebox(icons_dir .. "ePapirus/gpm-monitor.svg"),
-    lain.widget.sysload {
+    lain.widget.sysload({
         settings = function() widget:set_markup(load_1 .. " | " .. load_5 .. " | " .. load_15) end,
-    }.widget,
-}
+    }).widget,
+})
 local my_sysload_tooltip = awful.tooltip(tooltip_preset)
 my_sysload_tooltip:add_to_object(my_sysload)
 my_sysload:connect_signal("mouse::enter", function()
@@ -233,10 +233,10 @@ my_sysload:connect_signal("mouse::enter", function()
 end)
 
 local temp = require("temp")
-local my_temp = wibox.widget {
+local my_temp = wibox.widget({
     layout = wibox.layout.fixed.horizontal,
     wibox.widget.imagebox(icons_dir .. "ePapirus/indicator-sensors-fan.svg"),
-    temp {
+    temp({
         settings = function()
             local text = ""
             for i, t in ipairs(coretemp_now) do
@@ -245,8 +245,8 @@ local my_temp = wibox.widget {
             end
             widget:set_markup(text)
         end,
-    },
-}
+    }),
+})
 local my_temp_tooltip = awful.tooltip(tooltip_preset)
 my_temp_tooltip:add_to_object(my_temp)
 my_temp:connect_signal("mouse::enter", function()
@@ -265,13 +265,13 @@ my_temp:connect_signal("mouse::enter", function()
     end)
 end)
 
-local my_cpu = wibox.widget {
+local my_cpu = wibox.widget({
     layout = wibox.layout.fixed.horizontal,
     wibox.widget.imagebox(icons_dir .. "ePapirus/indicator-sensors-cpu.svg"),
-    lain.widget.cpu {
+    lain.widget.cpu({
         settings = function() widget:set_markup(cpu_now.usage .. "%") end,
-    }.widget,
-}
+    }).widget,
+})
 local my_cpu_tooltip = awful.tooltip(tooltip_preset)
 my_cpu_tooltip:add_to_object(my_cpu)
 my_cpu:connect_signal("mouse::enter", function()
@@ -286,13 +286,13 @@ my_cpu:connect_signal("mouse::enter", function()
     end)
 end)
 
-local my_mem = wibox.widget {
+local my_mem = wibox.widget({
     layout = wibox.layout.fixed.horizontal,
     wibox.widget.imagebox(icons_dir .. "ePapirus/indicator-sensors-memory.svg"),
-    lain.widget.mem {
+    lain.widget.mem({
         settings = function() widget:set_markup(mem_now.perc .. "%") end,
-    }.widget,
-}
+    }).widget,
+})
 local my_mem_tooltip = awful.tooltip(tooltip_preset)
 my_mem_tooltip:add_to_object(my_mem)
 my_mem:connect_signal("mouse::enter", function()
@@ -307,7 +307,7 @@ my_mem:connect_signal("mouse::enter", function()
 end)
 
 local gpu = require("gpu")
-local my_gpu_widget = gpu {
+local my_gpu_widget = gpu({
     settings = function()
         local text = ""
         for i, g in ipairs(gpu_now) do
@@ -316,12 +316,12 @@ local my_gpu_widget = gpu {
         end
         widget:set_markup(text)
     end,
-}.widget
-local my_gpu = wibox.widget {
+}).widget
+local my_gpu = wibox.widget({
     layout = wibox.layout.fixed.horizontal,
     wibox.widget.imagebox(icons_dir .. "ePapirus/indicator-sensors-gpu.svg"),
     my_gpu_widget,
-}
+})
 local my_gpu_tooltip = awful.tooltip(tooltip_preset)
 my_gpu_tooltip:add_to_object(my_gpu)
 my_gpu:connect_signal("mouse::enter", function()
@@ -337,16 +337,16 @@ my_gpu:connect_signal("mouse::enter", function()
         my_gpu_tooltip:set_markup(table.concat(lines, "\n"))
     end)
 end)
-local my_hdd_widget = lain.widget.fs {
+local my_hdd_widget = lain.widget.fs({
     partition = "/",
     settings = function() widget:set_markup(fs_now["/"].percentage .. "%") end,
     showpopup = "off",
-}.widget
-local my_hdd = wibox.widget {
+}).widget
+local my_hdd = wibox.widget({
     layout = wibox.layout.fixed.horizontal,
     wibox.widget.imagebox(icons_dir .. "ePapirus/indicator-sensors-disk.svg"),
     my_hdd_widget,
-}
+})
 local my_hdd_tooltip = awful.tooltip(tooltip_preset)
 my_hdd_tooltip:add_to_object(my_hdd)
 my_hdd:connect_signal("mouse::enter", function()
@@ -360,13 +360,13 @@ my_hdd:connect_signal("mouse::enter", function()
     end)
 end)
 
-local my_wifi_icon = wibox.widget.imagebox()
-local my_wired_icon = wibox.widget.imagebox()
-local my_net = lain.widget.net { eth_state = "on", wifi_state = "on", settings = function()
+local my_wifi = wibox.widget.imagebox()
+local my_wired = wibox.widget.imagebox()
+local my_net = lain.widget.net({ eth_state = "on", wifi_state = "on", settings = function()
     local wifi_icon = nil
     local wired_icon = nil
-    my_wifi_icon.devices = {}
-    my_wired_icon.devices = {}
+    my_wifi.devices = {}
+    my_wired.devices = {}
     for k, v in pairs(net_now.devices) do
         if v.state == "up" then
             if v.wifi then
@@ -382,24 +382,24 @@ local my_net = lain.widget.net { eth_state = "on", wifi_state = "on", settings =
                 else
                     wifi_icon = wifi_icon .. "none.svg"
                 end
-                my_wifi_icon.icon = wifi_icon
-                my_wifi_icon.devices[#my_wifi_icon.devices+1] = k
+                my_wifi.icon = wifi_icon
+                my_wifi.devices[#my_wifi.devices+1] = k
             end
             if v.ethernet then
                 wired_icon = icons_dir .. "ePapirus/network-wired.svg"
-                my_wired_icon.icon = wired_icon
-                my_wired_icon.devices[#my_wired_icon.devices+1] = k
+                my_wired.icon = wired_icon
+                my_wired.devices[#my_wired.devices+1] = k
             end
         end
     end
-    my_wifi_icon:set_image(wifi_icon)
-    my_wired_icon:set_image(wired_icon)
+    my_wifi:set_image(wifi_icon)
+    my_wired:set_image(wired_icon)
 end,
-}
+})
 local my_wifi_tooltip = awful.tooltip(tooltip_preset)
-my_wifi_tooltip:add_to_object(my_wifi_icon)
-my_wifi_icon:connect_signal("mouse::enter", function()
-    local cmd = "echo " .. table.concat(my_wifi_icon.devices, " ") .. " | xargs -n 1 iwconfig"
+my_wifi_tooltip:add_to_object(my_wifi)
+my_wifi:connect_signal("mouse::enter", function()
+    local cmd = "echo " .. table.concat(my_wifi.devices, " ") .. " | xargs -n 1 iwconfig"
     awful.spawn.easy_async_with_shell(cmd, function(stdout,_,_,_)
         local lines = {}
         for line in stdout:gmatch("[^\r\n]+") do
@@ -410,9 +410,9 @@ my_wifi_icon:connect_signal("mouse::enter", function()
     end)
 end)
 local my_wired_tooltip = awful.tooltip(tooltip_preset)
-my_wired_tooltip:add_to_object(my_wired_icon)
-my_wired_icon:connect_signal("mouse::enter", function()
-    local cmd = "echo " .. table.concat(my_wired_icon.devices, " ") .. " | xargs -n 1 ifconfig"
+my_wired_tooltip:add_to_object(my_wired)
+my_wired:connect_signal("mouse::enter", function()
+    local cmd = "echo " .. table.concat(my_wired.devices, " ") .. " | xargs -n 1 ifconfig"
     awful.spawn.easy_async_with_shell(cmd, function(stdout,_,_,_)
         my_wired_tooltip:set_markup(stdout)
         local lines = {}
@@ -434,16 +434,16 @@ function my_widget_button(widget, cmd)
         if (button == 1) then awful.spawn(cmd) end
     end)
 end
-my_widget_button(my_sysload,    "gnome-system-monitor -p")
-my_widget_button(my_cpu,        "gnome-system-monitor -r")
-my_widget_button(my_mem,        "gnome-system-monitor -r")
-my_widget_button(my_gpu,        "nvidia-settings")
-my_widget_button(my_hdd,        "gnome-system-monitor -f")
-my_widget_button(my_wifi_icon,  "gnome-control-center wifi")
-my_widget_button(my_wired_icon, "gnome-control-center network")
+my_widget_button(my_sysload, "gnome-system-monitor -p")
+my_widget_button(my_cpu,     "gnome-system-monitor -r")
+my_widget_button(my_mem,     "gnome-system-monitor -r")
+my_widget_button(my_gpu,     "nvidia-settings")
+my_widget_button(my_hdd,     "gnome-system-monitor -f")
+my_widget_button(my_wifi,    "gnome-control-center wifi")
+my_widget_button(my_wired,   "gnome-control-center network")
 
 local weather = require("awesome-wm-widgets.weather-widget.weather")
-local my_weather = weather {
+local my_weather = weather({
     coordinates = {40.6756953, -73.9650304},
     api_key = "cd9f81ebc51ba66bbc40e0872d4464ef",
     font_name = "Fira Sans Bold",
@@ -451,7 +451,7 @@ local my_weather = weather {
     time_format_12h = true,
     show_hourly_forecast = true,
     show_daily_forecast = true,
-}
+})
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -562,7 +562,7 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             my_spotify,
-            wibox.widget { layout = wibox.layout.fixed.horizontal, forced_width = 5 },
+            wibox.widget({ layout = wibox.layout.fixed.horizontal, forced_width = 5 }),
             wibox.widget.systray(),
             my_sysload,
             my_temp,
@@ -570,9 +570,9 @@ awful.screen.connect_for_each_screen(function(s)
             my_mem,
             my_gpu,
             my_hdd,
-            my_wifi_icon,
-            my_wired_icon,
-            volume { display_notification = true, delta = 2 },
+            my_wifi,
+            my_wired,
+            volume({ display_notification = true, delta = 2 }),
             my_weather,
             -- mykeyboardlayout,
             my_keys.widget,
@@ -594,69 +594,48 @@ root.buttons(gears.table.join(
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
-    awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
+    awful.key({ modkey, }, "s",      hotkeys_popup.show_help,
               {description="show help", group="awesome"}),
-    awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
+    awful.key({ modkey, }, "Left",   awful.tag.viewprev,
               {description = "view previous", group = "tag"}),
-    awful.key({ modkey,           }, "Right",  awful.tag.viewnext,
+    awful.key({ modkey, }, "Right",  awful.tag.viewnext,
               {description = "view next", group = "tag"}),
-    awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
+    awful.key({ modkey, }, "Escape", awful.tag.history.restore,
               {description = "go back", group = "tag"}),
-    awful.key({ modkey, "Shift"   }, "Left",
+
+    awful.key({ modkey, "Shift" }, "Left",
         function()
             if client.focus then
                 local i = client.focus.first_tag.index - 1
-                if i == 0 then
-                    i = #client.focus.screen.tags
-                end
+                if i == 0 then i = #client.focus.screen.tags end
                 local tag = client.focus.screen.tags[i]
-                if tag then
-                    client.focus:move_to_tag(tag)
-                end
+                if tag then client.focus:move_to_tag(tag) end
             end
         end,
         {description = "move to previous", group = "tag"}),
-    awful.key({ modkey, "Shift"   }, "Right",
+    awful.key({ modkey, "Shift" }, "Right",
         function()
             if client.focus then
                 local i = client.focus.first_tag.index + 1
-                if i == #client.focus.screen.tags + 1 then
-                    i = 1
-                end
+                if i == #client.focus.screen.tags + 1 then i = 1 end
                 local tag = client.focus.screen.tags[i]
-                if tag then
-                    client.focus:move_to_tag(tag)
-                end
+                if tag then client.focus:move_to_tag(tag) end
             end
         end,
         {description = "move to next", group = "tag"}),
 
-    awful.key({ modkey,           }, "j",
-        function ()
-            lain.layout.centerwork.focus.byidx( 1)
-        end,
-        {description = "focus next by index", group = "client"}
-    ),
-    awful.key({ modkey,           }, "k",
-        function ()
-            lain.layout.centerwork.focus.byidx(-1)
-        end,
-        {description = "focus previous by index", group = "client"}
-    ),
+    awful.key({ modkey,           }, "j", function () lain.layout.centerwork.focus.byidx( 1) end,
+              {description = "focus next by index", group = "client"}),
+    awful.key({ modkey,           }, "k", function () lain.layout.centerwork.focus.byidx(-1) end,
+              {description = "focus previous by index", group = "client"}),
     awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
               {description = "show main menu", group = "awesome"}),
 
     -- Layout manipulation
-    awful.key({ modkey, "Shift"   }, "j",
-        function ()
-            lain.layout.centerwork.swap.byidx( 1)
-        end,
-        {description = "swap with next client by index", group = "client"}),
-    awful.key({ modkey, "Shift"   }, "k",
-        function ()
-            lain.layout.centerwork.swap.byidx(-1)
-        end,
-        {description = "swap with previous client by index", group = "client"}),
+    awful.key({ modkey, "Shift"   }, "j", function () lain.layout.centerwork.swap.byidx( 1) end,
+              {description = "swap with next client by index", group = "client"}),
+    awful.key({ modkey, "Shift"   }, "k", function () lain.layout.centerwork.swap.byidx(-1) end,
+              {description = "swap with previous client by index", group = "client"}),
     awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end,
               {description = "focus the next screen", group = "screen"}),
     awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end,
@@ -666,9 +645,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey,           }, "Tab",
         function ()
             awful.client.focus.history.previous()
-            if client.focus then
-                client.focus:raise()
-            end
+            if client.focus then client.focus:raise() end
         end,
         {description = "go back", group = "client"}),
 
@@ -680,21 +657,21 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Control" }, "q", awesome.quit,
               {description = "quit awesome", group = "awesome"}),
 
-    awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)          end,
+    awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05) end,
               {description = "increase master width factor", group = "layout"}),
-    awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)          end,
+    awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05) end,
               {description = "decrease master width factor", group = "layout"}),
     awful.key({ modkey,           }, ",",     function () awful.tag.incnmaster( 1, nil, true) end,
               {description = "increase the number of master clients", group = "layout"}),
     awful.key({ modkey,           }, ".",     function () awful.tag.incnmaster(-1, nil, true) end,
               {description = "decrease the number of master clients", group = "layout"}),
-    awful.key({ modkey, "Shift"   }, ",",     function () awful.tag.incncol( 1, nil, true)    end,
+    awful.key({ modkey, "Shift"   }, ",",     function () awful.tag.incncol( 1, nil, true) end,
               {description = "increase the number of columns", group = "layout"}),
-    awful.key({ modkey, "Shift"   }, ".",     function () awful.tag.incncol(-1, nil, true)    end,
+    awful.key({ modkey, "Shift"   }, ".",     function () awful.tag.incncol(-1, nil, true) end,
               {description = "decrease the number of columns", group = "layout"}),
-    awful.key({ modkey,           }, "space", function () awful.layout.inc( 1)                end,
+    awful.key({ modkey,           }, "space", function () awful.layout.inc( 1) end,
               {description = "select next", group = "layout"}),
-    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
+    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1) end,
               {description = "select previous", group = "layout"}),
     awful.key({ modkey, "Control" }, "space",
         function ()
@@ -706,61 +683,57 @@ globalkeys = gears.table.join(
             end
         end,
         {description = "reset layout", group = "layout"}),
-
     awful.key({ modkey, "Shift"   }, "n",
-              function ()
-                  local c = awful.client.restore()
-                  -- Focus restored client
-                  if c then
-                    c:emit_signal(
-                        "request::activate", "key.unminimize", {raise = true}
-                    )
-                  end
-              end,
-              {description = "restore minimized", group = "client"}),
+        function ()
+            local c = awful.client.restore()
+            -- Focus restored client
+            if c then c:emit_signal("request::activate", "key.unminimize", {raise = true}) end
+        end,
+        {description = "restore minimized", group = "client"}),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
+    awful.key({ modkey }, "r", function () awful.screen.focused().mypromptbox:run() end,
               {description = "run prompt", group = "launcher"}),
-
     awful.key({ modkey }, "x",
-              function ()
-                  awful.prompt.run {
-                    prompt       = "Run Lua code: ",
-                    textbox      = awful.screen.focused().mypromptbox.widget,
-                    exe_callback = awful.util.eval,
-                    history_path = awful.util.get_cache_dir() .. "/history_eval"
-                  }
-              end,
-              {description = "lua execute prompt", group = "awesome"}),
+        function ()
+            awful.prompt.run({
+                prompt       = "Run Lua code: ",
+                textbox      = awful.screen.focused().mypromptbox.widget,
+                exe_callback = awful.util.eval,
+                history_path = awful.util.get_cache_dir() .. "/history_eval",
+            })
+            end,
+        {description = "lua execute prompt", group = "awesome"}),
+
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,
               {description = "show the menubar", group = "launcher"}),
 
     -- Custom bindings
-    awful.key({ modkey, "Shift"   }, "l", lock_screen,
+    awful.key({ modkey, "Shift" }, "l", lock_screen,
               {description = "lock screen", group = "awesome"}),
-    awful.key({ modkey, "Shift"   }, "s", screenshot,
+    awful.key({ modkey, "Shift" }, "s", screenshot,
               {description = "screenshot", group = "awesome"}),
-    awful.key({ modkey,           }, "`", naughty.destroy_all_notifications,
+    awful.key({ modkey,         }, "`", naughty.destroy_all_notifications,
               {description = "dismiss notifications", group = "awesome"}),
-    awful.key({ modkey, "Mod1"    }, "space", my_keys.next_layout,
+    awful.key({ modkey, "Mod1"  }, "space", my_keys.next_layout,
               {description = "next keyboard layout", group = "awesome"}),
 
-    awful.key({ }, "XF86AudioPlay",        function() awful.spawn("sp play") end,
-              {description = "Spotify - play",     group = "media"}),
-    awful.key({ }, "XF86AudioPrev",        function() awful.spawn("sp prev") end,
+    awful.key({ }, "XF86AudioPlay", function() awful.spawn("sp play") end,
+              {description = "Spotify - play", group = "media"}),
+    awful.key({ }, "XF86AudioPrev", function() awful.spawn("sp prev") end,
               {description = "Spotify - previous", group = "media"}),
-    awful.key({ }, "XF86AudioNext",        function() awful.spawn("sp next") end,
-              {description = "Spotify - next",     group = "media"}),
+    awful.key({ }, "XF86AudioNext", function() awful.spawn("sp next") end,
+              {description = "Spotify - next", group = "media"}),
+
     -- pactl set-default-sink [sink]
     -- amixer -D pulse sget Master
     awful.key({ }, "XF86AudioMute",        volume.toggle,
-              {description = "mute volume",        group = "media"}),
+              {description = "mute volume", group = "media"}),
     awful.key({ }, "XF86AudioLowerVolume", volume.lower,
-              {description = "lower volume",       group = "media"}),
+              {description = "lower volume", group = "media"}),
     awful.key({ }, "XF86AudioRaiseVolume", volume.raise,
-              {description = "raise volume",       group = "media"})
+              {description = "raise volume", group = "media"})
 )
 
 clientkeys = gears.table.join(
@@ -770,15 +743,15 @@ clientkeys = gears.table.join(
             c:raise()
         end,
         {description = "toggle fullscreen", group = "client"}),
-    awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end,
+    awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill() end,
               {description = "close", group = "client"}),
-    awful.key({ modkey, "Shift"   }, "f",      awful.client.floating.toggle                     ,
+    awful.key({ modkey, "Shift"   }, "f",      awful.client.floating.toggle,
               {description = "toggle floating", group = "client"}),
     awful.key({ modkey,           }, "Return", function (c) c:swap(awful.client.getmaster()) end,
               {description = "move to master", group = "client"}),
-    awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,
+    awful.key({ modkey,           }, "o",      function (c) c:move_to_screen() end,
               {description = "move to screen", group = "client"}),
-    awful.key({ modkey, "Shift"   }, "t",      function (c) c.ontop = not c.ontop            end,
+    awful.key({ modkey, "Shift"   }, "t",      function (c) c.ontop = not c.ontop end,
               {description = "toggle keep on top", group = "client"}),
     awful.key({ modkey,           }, "n",
         function (c)
@@ -894,8 +867,8 @@ awful.rules.rules = {
     -- Floating clients.
     { rule_any = {
         instance = {
-          "DTA",  -- Firefox addon DownThemAll.
-          "copyq",  -- Includes session name in class.
+          "DTA", -- Firefox addon DownThemAll.
+          "copyq", -- Includes session name in class.
           "pinentry",
         },
         class = {
@@ -903,7 +876,7 @@ awful.rules.rules = {
           "Blueman-manager",
           "Gpick",
           "Kruler",
-          "MessageWin",  -- kalarm.
+          "MessageWin", -- kalarm.
           "Sxiv",
           "Tor Browser", -- Needs a fixed window size to avoid fingerprinting by screen size.
           "Wpa_gui",
@@ -913,12 +886,12 @@ awful.rules.rules = {
         -- Note that the name property shown in xprop might be set slightly after creation of the client
         -- and the name shown there might not match defined rules here.
         name = {
-          "Event Tester",  -- xev.
+          "Event Tester", -- xev.
         },
         role = {
-          "AlarmWindow",  -- Thunderbird's calendar.
-          "ConfigManager",  -- Thunderbird's about:config.
-          "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
+          "AlarmWindow", -- Thunderbird's calendar.
+          "ConfigManager", -- Thunderbird's about:config.
+          "pop-up", -- e.g. Google Chrome's (detached) Developer Tools.
         }
       }, properties = { floating = true }},
 

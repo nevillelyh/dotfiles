@@ -306,16 +306,6 @@ my_mem:connect_signal("mouse::enter", function()
     end)
 end)
 
-my_sysload:connect_signal("button::press", function(_,_,_,button)
-    if (button == 1) then awful.spawn("gnome-system-monitor -p") end
-end)
-my_cpu:connect_signal("button::press", function(_,_,_,button)
-    if (button == 1) then awful.spawn("gnome-system-monitor -r") end
-end)
-my_mem:connect_signal("button::press", function(_,_,_,button)
-    if (button == 1) then awful.spawn("gnome-system-monitor -r") end
-end)
-
 local gpu = require("gpu")
 local my_gpu_widget = gpu {
     settings = function()
@@ -346,10 +336,6 @@ my_gpu:connect_signal("mouse::enter", function()
         my_gpu_tooltip:set_markup(table.concat(lines, "\n"))
     end)
 end)
-my_gpu:connect_signal("button::press", function(_,_,_,button)
-    if (button == 1) then awful.spawn("nvidia-settings") end
-end)
-
 local fs = require("fs")
 local my_hdd_widget = fs {
     settings = function() widget:set_markup(fs_now["/"].percentage .. "%") end,
@@ -370,9 +356,6 @@ my_hdd:connect_signal("mouse::enter", function()
         end
         my_hdd_tooltip:set_markup(table.concat(lines, "\n"))
     end)
-end)
-my_hdd:connect_signal("button::press", function(_,_,_,button)
-    if (button == 1) then awful.spawn("gnome-system-monitor -f") end
 end)
 
 local my_wifi_icon = wibox.widget.imagebox()
@@ -444,12 +427,18 @@ my_wired_icon:connect_signal("mouse::enter", function()
     end)
 end)
 
-my_wifi_icon:connect_signal("button::press", function(_,_,_,button)
-    if (button == 1) then awful.spawn("gnome-control-center wifi") end
-end)
-my_wired_icon:connect_signal("button::press", function(_,_,_,button)
-    if (button == 1) then awful.spawn("gnome-control-center network") end
-end)
+function my_widget_button(widget, cmd)
+    widget:connect_signal("button::press", function(_,_,_,button)
+        if (button == 1) then awful.spawn(cmd) end
+    end)
+end
+my_widget_button(my_sysload,    "gnome-system-monitor -p")
+my_widget_button(my_cpu,        "gnome-system-monitor -r")
+my_widget_button(my_mem,        "gnome-system-monitor -r")
+my_widget_button(my_gpu,        "nvidia-settings")
+my_widget_button(my_hdd,        "gnome-system-monitor -f")
+my_widget_button(my_wifi_icon,  "gnome-control-center wifi")
+my_widget_button(my_wired_icon, "gnome-control-center network")
 
 local weather = require("awesome-wm-widgets.weather-widget.weather")
 local my_weather = weather {

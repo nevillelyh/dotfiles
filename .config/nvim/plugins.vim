@@ -6,6 +6,11 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tmuxline#enabled = 0
 let g:tmuxline_theme = 'nightly_fox'
 let g:tmuxline_preset = 'minimal'
+let g:minimap_auto_start = 1
+let g:minimap_auto_start_win_enter = 1
+let g:minimap_highlight_range = 1
+let g:minimap_highlight_search = 1
+let g:minimap_git_colors = 1
 
 " FZF
 " Alt-O - with FZF_DEFAULT_COMMAND='fd -type f'

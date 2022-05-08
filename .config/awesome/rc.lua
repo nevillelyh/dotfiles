@@ -336,9 +336,10 @@ my_gpu:connect_signal("mouse::enter", function()
         my_gpu_tooltip:set_markup(table.concat(lines, "\n"))
     end)
 end)
-local fs = require("fs")
-local my_hdd_widget = fs {
+local my_hdd_widget = lain.widget.fs {
+    partition = "/",
     settings = function() widget:set_markup(fs_now["/"].percentage .. "%") end,
+    showpopup = "off",
 }.widget
 local my_hdd = wibox.widget {
     layout = wibox.layout.fixed.horizontal,

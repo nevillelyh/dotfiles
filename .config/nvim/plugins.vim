@@ -13,6 +13,9 @@ let g:minimap_auto_start_win_enter = 1
 let g:minimap_highlight_range = 1
 let g:minimap_highlight_search = 1
 let g:minimap_git_colors = 1
+" https://github.com/wfxr/minimap.vim/pull/156
+nnoremap <silent> g* g*:call minimap#vim#UpdateColorSearch(1)<CR>
+nnoremap <silent> g# g#:call minimap#vim#UpdateColorSearch(1)<CR>
 
 " FZF
 let g:fzf_action = { 'ctrl-t': 'tab split', 'ctrl-s': 'split', 'ctrl-v': 'vsplit' }

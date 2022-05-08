@@ -330,6 +330,7 @@ my_gpu:connect_signal("mouse::enter", function()
         local lines = {}
         for line in stdout:gmatch("[^\r\n]+") do
             -- First line is date/time
+            local line = line:gsub("^|(%s*)(NVIDIA[^|]-)(%s*)|$", "|%1<b>%2</b>%3|")
             if i > 0 then lines[#lines+1] = line end
             i = i + 1
         end

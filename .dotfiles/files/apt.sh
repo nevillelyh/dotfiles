@@ -54,6 +54,16 @@ install_docker() {
     sudo aptitude install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 }
 
+# https://github.com/cli/cli/blob/trunk/docs/install_linux.md
+install_github() {
+    url="https://cli.github.com/packages/githubcli-archive-keyring.gpg"
+    repo="deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/trusted.gpg.d/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main"
+
+    setup_gpg "$url" githubcli-archive-keyring.gpg
+    setup_apt "$repo" github-cli.list
+    sudo aptitude update
+    sudo aptitude install -y gh
+}
 # https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
 install_nvidia() {
     url="https://nvidia.github.io/libnvidia-container/gpgkey"

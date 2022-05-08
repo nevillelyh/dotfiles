@@ -16,4 +16,14 @@ if type brew &> /dev/null; then
 
     autoload -Uz compinit
     compinit
+else
+    # Some Linux packages have no bundled completion
+    # https://cli.github.com/manual/gh_completion
+    local sfpath="$HOME/.local/share/zsh/site-functions"
+    FPATH="$sfpath:${FPATH}"
+
+    [[ ! -d "$sfpath" ]] && mkdir -p "$sfpath"
+    [[ ! -s "$sfpath/_gh" ]] && gh completion -s zsh > "$sfpath/_gh"
+    autoload -Uz compinit
+    compinit
 fi

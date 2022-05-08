@@ -10,7 +10,7 @@ set -euo pipefail
 # python - leave macOS bundled python alone
 # pinentry-mac - for GPG
 # App Store - AdGuard for Safari, Instapaper, Kindle, Messenger, Slack, The Unarchiver, WhatsApp
-BREWS="bat code-minimap cmake colordiff exa fd fzf git git-delta gitui gpg htop hub neovim ninja pinentry-mac python ripgrep tmux wget zoxide"
+BREWS="bat code-minimap cmake colordiff exa fd fzf git git-delta gitui gpg htop neovim ninja pinentry-mac python ripgrep tmux wget zoxide"
 CASKS="alacritty alfred dropbox github iterm2 jetbrains-toolbox joplin lastpass sublime-text visual-studio-code vimr"
 CASKS_OPT="adobe-creative-cloud anki expressvpn firefox google-chrome guitar-pro macdive microsoft-edge shearwater-cloud spotify transmission vlc"
 
@@ -21,7 +21,7 @@ CASKS_OPT="adobe-creative-cloud anki expressvpn firefox google-chrome guitar-pro
 # gnome-screensaver xautolock xcalib - for screen locking in awesome
 # unzip, zip - for SDKMAN
 # Not available or outdated in Ubuntu - bat, git-delta, zoxide
-DEB_PKGS="build-essential cmake colordiff exa fd-find fzf htop hub neovim ninja-build ripgrep tmux unzip zip zsh"
+DEB_PKGS="build-essential cmake colordiff exa fd-find fzf htop neovim ninja-build ripgrep tmux unzip zip zsh"
 DEB_GUI_PKGS="alacritty awesome compton fonts-powerline gnome-screensaver gnome-screenshot neovim-qt ubuntu-restricted-extras wmctrl xautolock xcalib"
 LINUX_CRATES="bat code-minimap git-delta gitui zoxide"
 
@@ -82,10 +82,14 @@ setup_aptitude() {
 
 setup_linux() {
     [[ "$uname_s" != "Linux" ]] && return 0
-    type hub &> /dev/null && return 0
+    type gh &> /dev/null &> /dev/null && return 0
     msg_box "Setting up Linux specifics"
 
     type nvidia-smi &> /dev/null && sudo aptitude install -y nvtop
+
+    # Third-party APT repositories
+    apt_sh="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/apt.sh"
+    curl -fsSL "$apt_sh" | bash -s -- github
 
     # The following are GUI apps
     dpkg-query --show xorg &> /dev/null || return 0
@@ -94,8 +98,6 @@ setup_linux() {
     ./gnome-terminal/install.sh
     rm -rf gnome-terminal
 
-    # Third-party APT repositories
-    apt_sh="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/apt.sh"
     curl -fsSL "$apt_sh" | bash -s -- code
     curl -fsSL "$apt_sh" | bash -s -- sublime
 

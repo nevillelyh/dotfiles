@@ -279,6 +279,8 @@ my_cpu:connect_signal("mouse::enter", function()
     awful.spawn.easy_async_with_shell(cmd, function(stdout,_,_,_)
         local lines = {}
         for line in stdout:gmatch("[^\r\n]+") do
+            line = line:gsub("<", "&lt;")
+            line = line:gsub(">", "&gt;")
             if #lines == 0 then line = string.format("<b>%s</b>", line) end
             lines[#lines+1] = line
         end

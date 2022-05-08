@@ -1,5 +1,7 @@
 " Look and feel
-let g:dracula_colorterm = 0
+if !has('gui_running')
+  let g:dracula_colorterm = 0
+endif
 colorscheme dracula
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1

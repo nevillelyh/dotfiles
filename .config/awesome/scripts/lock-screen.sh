@@ -14,5 +14,11 @@ xautolock -exit
 # Wait till the previous session exits
 sleep 3
 
+# Do not lock when mouse cursor is in bottom right corner
 # Lock after 10 minutes with 5 seconds notifier
-xautolock -time 10 -locker "gnome-screensaver-command --lock" -notify 5 -notifier $HOME/.config/awesome/scripts/fade-out.sh
+# Turn off after 10 minutes
+xautolock \
+  -corners 000- \
+  -time 10 -locker "gnome-screensaver-command --lock" \
+  -killtime 10 -killer "xset dpms force standby" \
+  -notify 5 -notifier $HOME/.config/awesome/scripts/fade-out.sh

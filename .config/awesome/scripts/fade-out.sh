@@ -10,3 +10,6 @@ while (( c > 0 )); do
   sleep 0.1
   let c=c-2
 done
+
+# Extra sleep to remove flicker
+sleep 1

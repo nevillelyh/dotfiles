@@ -148,7 +148,7 @@ local restart_icon = icons_dir .. "system-restart-panel.svg"
 local shutdown_icon = icons_dir .. "system-devices-panel.svg"
 
 local screenshot_cmd = "gnome-screenshot --interactive"
-local lock_screen_cmd = "gnome-screensaver-command --lock"
+local lock_screen_cmd = "xautolock -locknow"
 
 mysystemlauncher = awful.widget.launcher({
     image = shutdown_icon,

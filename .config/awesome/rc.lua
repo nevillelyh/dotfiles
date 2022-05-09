@@ -30,6 +30,7 @@ awful.util.spawn("compton -b")
 awful.util.spawn("gnome-screensaver")
 awful.util.spawn(awesome_path .. "scripts/audio-defaults.sh")
 awful.util.spawn(awesome_path .. "scripts/lock-screen.sh")
+awful.util.spawn("xset dpms 900 0 0")
 -- Dropbox messes up other icons in systray
 awful.util.spawn("dropbox start")
 gears.timer.start_new(5, function()

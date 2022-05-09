@@ -712,9 +712,9 @@ globalkeys = gears.table.join(
               {description = "show the menubar", group = "launcher"}),
 
     -- Custom bindings
-    awful.key({ modkey, "Shift" }, "l", lock_screen,
+    awful.key({ modkey, "Shift" }, "l", function() awful.spawn(lock_screen_cmd) end,
               {description = "lock screen", group = "awesome"}),
-    awful.key({ modkey, "Shift" }, "s", screenshot,
+    awful.key({ modkey, "Shift" }, "s", function() awful.spawn(screenshot_cmd) end,
               {description = "screenshot", group = "awesome"}),
     awful.key({ modkey,         }, "`", naughty.destroy_all_notifications,
               {description = "dismiss notifications", group = "awesome"}),

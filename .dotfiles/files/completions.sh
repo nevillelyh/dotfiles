@@ -9,7 +9,7 @@ if [[ $# -ne 1 ]]; then
     exit 1
 fi
 
-out=$1
+out=$(realpath $1)
 tmp=$(mktemp -d)
 mkdir -p "$out"
 

@@ -152,6 +152,15 @@ install_sublime() {
     sudo aptitude install -y sublime-text
 }
 
+install_teams() {
+    url="https://packages.microsoft.com/repos/ms-teams/pool/main/t/teams/"
+    pkg=$(curl -fsSL $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^teams_[\d\.]+_amd64.deb$' | tail -n 1)
+    wget -nv "$url/$pkg"
+    sudo dpkg -i teams_*_amd64.deb
+    sudo aptitude install -y teams # Install missing dependencies
+    rm -f teams_*_amd64.deb
+}
+
 if [[ $#  -ne 1 ]]; then
     echo "Usage: $(basename $0) <PACKAGE>"
     exit 1

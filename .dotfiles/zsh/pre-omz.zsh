@@ -24,6 +24,8 @@ else
 
     [[ ! -d "$sfpath" ]] && mkdir -p "$sfpath"
     [[ ! -s "$sfpath/_gh" ]] && gh completion -s zsh > "$sfpath/_gh"
+    [[ ! -s "$sfpath/_code-minimap" ]] && code-minimap completion zsh > "$sfpath/_code-minimap"
+    [[ ! -s "$sfpath/_zoxide" ]] && zoxide init zsh > "$sfpath/_zoxide"
     autoload -Uz compinit
     compinit
 fi

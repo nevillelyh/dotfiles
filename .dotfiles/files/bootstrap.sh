@@ -91,6 +91,10 @@ setup_linux() {
     apt_sh="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/apt.sh"
     curl -fsSL "$apt_sh" | bash -s -- github
 
+    # Missing ZSH completions for some packages, e.g. those from Cargo
+    completions_sh="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/completions.sh"
+    curl -fsSL "$completions_sh" | bash -s -- "$HOME/.local/share/zsh/site-functions"
+
     # The following are GUI apps
     dpkg-query --show xorg &> /dev/null || return 0
 

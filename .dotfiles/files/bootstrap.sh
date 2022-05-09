@@ -125,7 +125,7 @@ setup_mac() {
 }
 
 setup_fonts() {
-    dpkg-query --show xorg &> /dev/null || return 0
+    [[ "$uname_s" == "Darwin" ]] || dpkg-query --show xorg &> /dev/null || return 0
     msg_box "Setting up fonts"
 
     git clone https://github.com/powerline/fonts

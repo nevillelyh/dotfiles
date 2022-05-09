@@ -11,6 +11,7 @@ esac
 
 alias cat='bat'
 alias diff='colordiff'
+alias ghpr='gh pr create --fill'
 alias l='exa -la' # 'ls -lah'
 alias la='exa -la' # 'ls -lAh'
 alias ll='exa -l' # 'ls -lh'

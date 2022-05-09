@@ -20,6 +20,13 @@ setup_apt() {
     echo "$repo" | sudo tee /etc/apt/sources.list.d/$list > /dev/null
 }
 
+# Chrome manages its own repository
+install_chrome() {
+    wget -nv https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    sudo dpkg -i google-chrome-stable_current_amd64.deb
+    rm google-chrome-stable_current_amd64.deb
+}
+
 # Prefer Ubuntu instead
 # https://apt.kitware.com/
 install_cmake() {
@@ -47,11 +54,19 @@ install_code() {
 install_docker() {
     url="https://download.docker.com/linux/ubuntu/gpg"
     repo="deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/trusted.gpg.d/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-
     setup_gpg "$url" docker-archive-keyring.gpg
     setup_apt "$repo" docker.list
     sudo aptitude update
     sudo aptitude install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+}
+
+# Dropbox manages its own repository
+install_dropbox() {
+    url="https://linux.dropbox.com/packages/ubuntu/"
+    pkg=$(curl -fsSL $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^dropbox_[\d\.]+_amd64.deb$' | tail -n 1)
+    wget -nv "$url/$pkg"
+    sudo dpkg -i dropbox_*_amd64.deb
+    rm -f dropbox_*_amd64.deb
 }
 
 # https://github.com/cli/cli/blob/trunk/docs/install_linux.md

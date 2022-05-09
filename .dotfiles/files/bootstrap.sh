@@ -102,20 +102,10 @@ setup_linux() {
     ./gnome-terminal/install.sh
     rm -rf gnome-terminal
 
+    curl -fsSL "$apt_sh" | bash -s -- chrome
     curl -fsSL "$apt_sh" | bash -s -- code
+    curl -fsSL "$apt_sh" | bash -s -- dropbox
     curl -fsSL "$apt_sh" | bash -s -- sublime
-
-    # Chrome manages its own repository
-    wget -nv https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    sudo dpkg -i google-chrome-stable_current_amd64.deb
-    rm google-chrome-stable_current_amd64.deb
-
-    # Dropbox manages its own repository
-    url="https://linux.dropbox.com/packages/ubuntu/"
-    pkg=$(curl -fsSL $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^dropbox_\d{4}\.\d{2}\.\d{2}_amd64.deb$' | sort | tail -n 1)
-    wget -nv "$url/$pkg"
-    sudo dpkg -i dropbox_*_amd64.deb
-    rm -f dropbox_*_amd64.deb
 
     sudo aptitude install -y snapd
     sudo snap install slack spotify xseticon

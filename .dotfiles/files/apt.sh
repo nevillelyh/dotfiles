@@ -79,6 +79,7 @@ install_github() {
     sudo aptitude update
     sudo aptitude install -y gh
 }
+
 # https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
 install_nvidia() {
     url="https://nvidia.github.io/libnvidia-container/gpgkey"
@@ -139,6 +140,7 @@ install_steam() {
     sudo aptitude update
     sudo aptitude install -y steam-launcher
 }
+
 # https://www.sublimetext.com/docs/linux_repositories.html
 install_sublime() {
     url="https://download.sublimetext.com/sublimehq-pub.gpg"

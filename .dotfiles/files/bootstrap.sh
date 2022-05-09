@@ -128,25 +128,27 @@ setup_fonts() {
     [[ "$uname_s" == "Darwin" ]] || dpkg-query --show xorg &> /dev/null || return 0
     msg_box "Setting up fonts"
 
-    git clone https://github.com/powerline/fonts
-    cd fonts
-    ./install.sh
-    cd ..
-    rm -rf fonts
-
     wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
     wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
     wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
     wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
     case "$uname_s" in
         Darwin)
+            mkdir -p $HOME/Library/Fonts
             mv MesloLGS*.ttf $HOME/Library/Fonts
             ;;
         Linux)
+            mkdir -p $HOME/.local/share/fonts
             mv MesloLGS*.ttf $HOME/.local/share/fonts
             fc-cache -fv $HOME/.local/share/fonts
             ;;
     esac
+
+    git clone https://github.com/powerline/fonts
+    cd fonts
+    ./install.sh
+    cd ..
+    rm -rf fonts
 }
 
 setup_git() {

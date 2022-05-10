@@ -42,7 +42,7 @@ if [[ -z "$SSH_CONNECTION" ]]; then
     agent=/tmp/ssh-agent-tmux-$USER
     if [[ -z $(pidof ssh-agent) ]]; then
         eval $(ssh-agent) &> /dev/null
-        ssh-add -q $(find $HOME/.ssh -name id_dsa -or -name id_rsa)
+        ssh-add -q $(find $HOME/.ssh -name id_dsa -or -name id_rsa -or -name id_ecdsa -or -name id_ed25519)
         [[ "$SSH_AUTH_SOCK" != "$agent" ]] && ln -sf "$SSH_AUTH_SOCK" "$agent"
     fi
     export SSH_AUTH_SOCK="$agent"

@@ -81,9 +81,10 @@ editor_cmd = terminal .. " -e " .. editor
 modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
+local centerwork = require("centerwork")
 awful.layout.layouts = {
     awful.layout.suit.floating,
-    lain.layout.centerwork,
+    centerwork,
     awful.layout.suit.tile,
     awful.layout.suit.tile.left,
     -- awful.layout.suit.tile.bottom,
@@ -555,17 +556,17 @@ globalkeys = gears.table.join(
         end,
         {description = "move to next", group = "tag"}),
 
-    awful.key({ modkey,           }, "j", function () lain.layout.centerwork.focus.byidx( 1) end,
+    awful.key({ modkey,           }, "j", function () centerwork.focus.byidx( 1) end,
               {description = "focus next by index", group = "client"}),
-    awful.key({ modkey,           }, "k", function () lain.layout.centerwork.focus.byidx(-1) end,
+    awful.key({ modkey,           }, "k", function () centerwork.focus.byidx(-1) end,
               {description = "focus previous by index", group = "client"}),
     awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
               {description = "show main menu", group = "awesome"}),
 
     -- Layout manipulation
-    awful.key({ modkey, "Shift"   }, "j", function () lain.layout.centerwork.swap.byidx( 1) end,
+    awful.key({ modkey, "Shift"   }, "j", function () centerwork.swap.byidx( 1) end,
               {description = "swap with next client by index", group = "client"}),
-    awful.key({ modkey, "Shift"   }, "k", function () lain.layout.centerwork.swap.byidx(-1) end,
+    awful.key({ modkey, "Shift"   }, "k", function () centerwork.swap.byidx(-1) end,
               {description = "swap with previous client by index", group = "client"}),
     awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end,
               {description = "focus the next screen", group = "screen"}),

@@ -35,6 +35,7 @@ awful.util.spawn("xset dpms 900 0 0")
 awful.util.spawn("dropbox start")
 gears.timer.start_new(5, function()
     awful.util.spawn(os.getenv("HOME") .. "/.local/share/JetBrains/Toolbox/bin/jetbrains-toolbox")
+    awful.util.spawn("nm-applet")
     return false
 end)
 
@@ -363,75 +364,6 @@ my_hdd:connect_signal("mouse::enter", function()
     end)
 end)
 
-local my_wifi = wibox.widget.imagebox()
-local my_wired = wibox.widget.imagebox()
-local my_net = lain.widget.net({ eth_state = "on", wifi_state = "on", settings = function()
-    local wifi_icon = nil
-    local wired_icon = nil
-    my_wifi.devices = {}
-    my_wired.devices = {}
-    for k, v in pairs(net_now.devices) do
-        if v.state == "up" then
-            if v.wifi then
-                wifi_icon = icons_dir .. "ePapirus/network-wireless-signal-"
-                if v.signal >= -50 then
-                    wifi_icon = wifi_icon .. "excellent.svg"
-                elseif v.signal >= -60 then
-                    wifi_icon = wifi_icon .. "good.svg"
-                elseif v.signal >= -67 then
-                    wifi_icon = wifi_icon .. "ok.svg"
-                elseif v.signal >= -70 then
-                    wifi_icon = wifi_icon .. "low.svg"
-                else
-                    wifi_icon = wifi_icon .. "none.svg"
-                end
-                my_wifi.icon = wifi_icon
-                my_wifi.devices[#my_wifi.devices+1] = k
-            end
-            if v.ethernet then
-                wired_icon = icons_dir .. "ePapirus/network-wired.svg"
-                my_wired.icon = wired_icon
-                my_wired.devices[#my_wired.devices+1] = k
-            end
-        end
-    end
-    my_wifi:set_image(wifi_icon)
-    my_wired:set_image(wired_icon)
-end,
-})
-local my_wifi_tooltip = awful.tooltip(tooltip_preset)
-my_wifi_tooltip:add_to_object(my_wifi)
-my_wifi:connect_signal("mouse::enter", function()
-    local cmd = "echo " .. table.concat(my_wifi.devices, " ") .. " | xargs -n 1 iwconfig"
-    awful.spawn.easy_async_with_shell(cmd, function(stdout,_,_,_)
-        local lines = {}
-        for line in stdout:gmatch("[^\r\n]+") do
-            if line:find("^[^%s]+") then line = string.format("<b>%s</b>", line) end
-            lines[#lines+1] = line
-        end
-        my_wifi_tooltip:set_markup(table.concat(lines, "\n"))
-    end)
-end)
-local my_wired_tooltip = awful.tooltip(tooltip_preset)
-my_wired_tooltip:add_to_object(my_wired)
-my_wired:connect_signal("mouse::enter", function()
-    local cmd = "echo " .. table.concat(my_wired.devices, " ") .. " | xargs -n 1 ifconfig"
-    awful.spawn.easy_async_with_shell(cmd, function(stdout,_,_,_)
-        my_wired_tooltip:set_markup(stdout)
-        local lines = {}
-        for line in stdout:gmatch("[^\r\n]+") do
-            line = line:gsub("<", "&lt;")
-            line = line:gsub(">", "&gt;")
-            if line:find("^[^%s]+") then
-                line = string.format("<b>%s</b>", line)
-                if #lines > 0 then line = "\n" .. line end
-            end
-            lines[#lines+1] = line
-        end
-        my_wired_tooltip:set_markup(table.concat(lines, "\n"))
-    end)
-end)
-
 function my_widget_button(widget, cmd)
     widget:connect_signal("button::press", function(_,_,_,button)
         if (button == 1) then awful.spawn(cmd) end
@@ -442,8 +374,6 @@ my_widget_button(my_cpu,     "gnome-system-monitor -r")
 my_widget_button(my_mem,     "gnome-system-monitor -r")
 my_widget_button(my_gpu,     "nvidia-settings")
 my_widget_button(my_hdd,     "gnome-system-monitor -f")
-my_widget_button(my_wifi,    "gnome-control-center wifi")
-my_widget_button(my_wired,   "gnome-control-center network")
 
 local weather = require("awesome-wm-widgets.weather-widget.weather")
 local my_weather = weather({
@@ -573,8 +503,6 @@ awful.screen.connect_for_each_screen(function(s)
             my_mem,
             my_gpu,
             my_hdd,
-            my_wifi,
-            my_wired,
             volume({ display_notification = true, delta = 2 }),
             my_weather,
             -- mykeyboardlayout,

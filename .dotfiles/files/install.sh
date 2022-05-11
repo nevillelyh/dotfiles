@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Install from third-party APT repositories
+# Install from third-party packages
 
 set -euo pipefail
 

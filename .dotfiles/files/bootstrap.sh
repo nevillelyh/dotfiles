@@ -88,18 +88,18 @@ setup_apt() {
     sudo aptitude install -y $DEB_PKGS
 
     # Third-party APT repositories
-    apt_sh="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/apt.sh"
-    curl -fsSL "$apt_sh" | bash -s -- github
+    install_sh="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/install.sh"
+    curl -fsSL "$install_sh" | bash -s -- github
 
     # The following are GUI apps
     dpkg-query --show xorg &> /dev/null || return 0
 
     sudo aptitude install -y $DEB_GUI_PKGS
 
-    curl -fsSL "$apt_sh" | bash -s -- chrome
-    curl -fsSL "$apt_sh" | bash -s -- code
-    curl -fsSL "$apt_sh" | bash -s -- dropbox
-    curl -fsSL "$apt_sh" | bash -s -- sublime
+    curl -fsSL "$install_sh" | bash -s -- chrome
+    curl -fsSL "$install_sh" | bash -s -- code
+    curl -fsSL "$install_sh" | bash -s -- dropbox
+    curl -fsSL "$install_sh" | bash -s -- sublime
 }
 
 setup_linux() {

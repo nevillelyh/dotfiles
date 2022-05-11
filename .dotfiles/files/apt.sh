@@ -20,6 +20,7 @@ setup_apt() {
     echo "$repo" | sudo tee /etc/apt/sources.list.d/$list > /dev/null
 }
 
+# https://docs.anaconda.com/anaconda/install/linux/
 install_anaconda() {
     # TODO: include this in upgrade_dotfiles
     url="https://www.anaconda.com/products/distribution"

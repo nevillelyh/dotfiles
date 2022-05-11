@@ -5,9 +5,11 @@
 [[ -d $HOME/.local/bin ]] && export PATH=$HOME/.local/bin:$PATH
 [[ -s $HOME/.cargo/env ]] && source "$HOME/.cargo/env"
 
-export GOPATH=$HOME/.go
 [[ -d /usr/local/go/bin ]] && export PATH=/usr/local/go/bin:$PATH
-[[ -d $HOME/.go/bin ]] && export PATH=$HOME/.go/bin:$PATH
+if type go &> /dev/null; then
+    export GOPATH=$HOME/.go
+    export PATH=$HOME/.go/bin:$PATH
+fi
 
 eval $(nvman env)
 

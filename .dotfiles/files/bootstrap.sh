@@ -10,7 +10,7 @@ set -euo pipefail
 # python - leave macOS bundled python alone
 # pinentry-mac - for GPG
 # App Store - AdGuard for Safari, Instapaper, Kindle, Messenger, Slack, The Unarchiver, WhatsApp
-BREWS="bat code-minimap cmake colordiff exa fd fzf gh git git-delta gitui gpg htop jq neovim ninja pinentry-mac python ripgrep tmux wget zoxide"
+BREWS="bat code-minimap cmake colordiff exa fd fzf gh git git-delta gitui golang gpg htop jq neovim ninja pinentry-mac python ripgrep tmux wget zoxide"
 CASKS="alacritty alfred dropbox github iterm2 jetbrains-toolbox joplin lastpass sublime-text visual-studio-code vimr"
 CASKS_OPT="adobe-creative-cloud anki expressvpn firefox google-chrome guitar-pro macdive microsoft-edge shearwater-cloud spotify transmission vlc"
 
@@ -104,7 +104,15 @@ setup_apt() {
 
 setup_linux() {
     [[ "$uname_s" != "Linux" ]] && return 0
+    [[ -d /usr/local/go ]] && return 0
     msg_box "Setting up Linux specifics"
+
+    # Go lang
+    # TODO: include this in upgrade_dotfiles
+    url="https://api.github.com/repos/golang/go/git/refs/tags"
+    header="Accept: application/vnd.github.v3+json"
+    version=$(curl -sSL -H "$header" $url | jq --raw-output '.[].ref' | grep 'refs/tags/go' | cut -d '/' -f 3 | tail -n 1)
+    curl -sSL "https://go.dev/dl/$version.linux-amd64.tar.gz" | sudo tar -C /usr/local -xz
 
     type nvidia-smi &> /dev/null && sudo aptitude install -y nvtop
 

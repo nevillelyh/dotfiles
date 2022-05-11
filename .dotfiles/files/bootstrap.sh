@@ -113,6 +113,7 @@ setup_linux() {
     header="Accept: application/vnd.github.v3+json"
     version=$(curl -sSL -H "$header" $url | jq --raw-output '.[].ref' | grep 'refs/tags/go' | cut -d '/' -f 3 | tail -n 1)
     curl -sSL "https://go.dev/dl/$version.linux-amd64.tar.gz" | sudo tar -C /usr/local -xz
+    export PATH=/usr/local/go/bin:$PATH
 
     type nvidia-smi &> /dev/null && sudo aptitude install -y nvtop
 
@@ -180,6 +181,13 @@ setup_neovim() {
     mkdir -p $dir
     git clone git@github.com:Shougo/dein.vim.git $dir/dein.vim
     nvim -u $HOME/.config/nvim/dein.vim --headless "+call dein#install() | qall"
+}
+
+setup_go() {
+    type gopls &> /dev/null && return 0
+    msg_box "Setting up Go"
+    go install -v golang.org/x/tools/gopls@latest
+    go install -v github.com/go-delve/delve/cmd/dlv@latest
 }
 
 setup_python() {
@@ -253,6 +261,7 @@ setup_code() {
         asvetliakov.vscode-neovim \
         dracula-theme.theme-dracula \
         GitHub.vscode-pull-request-github \
+        golang.go \
         ms-vscode.cpptools-extension-pack \
         rust-lang.rust \
         vadimcn.vscode-lldb
@@ -380,6 +389,7 @@ esac
 setup_git
 setup_gnupg
 setup_neovim
+setup_go
 setup_python
 setup_java
 setup_rust

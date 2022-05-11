@@ -326,14 +326,11 @@ docker_inside() {
 
 ########################################
 
-uname_s=$(uname -s)
-uname_m=$(uname -m)
-
 help() {
     echo "Usage: $(basename $0) [COMMAND]"
     echo "    Commands:"
     echo "        docker"
-    grep -o '^setup_\w\+()' $(realpath $0) | sed 's/setup_\(\w\+\)()/        \1/' | sort
+    grep -o '^setup_\w\+()' $(readlink -f $0) | sed 's/^setup_\(.*\)()$/        \1/' | sort
     exit 0
 }
 
@@ -355,6 +352,9 @@ if [[ $# -eq 1 ]]; then
     esac
     exit 0
 fi
+
+uname_s=$(uname -s)
+uname_m=$(uname -m)
 
 setup_ssh
 

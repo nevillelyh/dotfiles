@@ -190,17 +190,6 @@ setup_go() {
     go install -v github.com/go-delve/delve/cmd/dlv@latest
 }
 
-setup_python() {
-    type ipython &> /dev/null && return 0
-    msg_box "Setting up Python"
-
-    # Homebrew python includes pip
-    if [[ "$uname_s" == "Linux" ]]; then
-        curl -fsSL https://bootstrap.pypa.io/get-pip.py | sudo python3
-    fi
-    pip3 install ${PIP_PKGS}
-}
-
 setup_jdk() {
     source "$HOME/.sdkman/bin/sdkman-init.sh"
     version="$1"
@@ -213,7 +202,7 @@ setup_jdk() {
 
 setup_java() {
     type sbt &> /dev/null && return 0
-    msg_box "Setting up SDKMAN"
+    msg_box "Setting up Java"
 
     curl -fsSL "https://get.sdkman.io" | bash
     sed -i "s/sdkman_rosetta2_compatible=true/sdkman_rosetta2_compatible=false/g" $HOME/.sdkman/etc/config
@@ -240,6 +229,17 @@ setup_java() {
     set -u
 
     sed -i "s/sdkman_auto_answer=true/sdkman_auto_answer=false/g" $HOME/.sdkman/etc/config
+}
+
+setup_python() {
+    type ipython &> /dev/null && return 0
+    msg_box "Setting up Python"
+
+    # Homebrew python includes pip
+    if [[ "$uname_s" == "Linux" ]]; then
+        curl -fsSL https://bootstrap.pypa.io/get-pip.py | sudo python3
+    fi
+    pip3 install ${PIP_PKGS}
 }
 
 setup_rust() {
@@ -390,8 +390,8 @@ setup_git
 setup_gnupg
 setup_neovim
 setup_go
-setup_python
 setup_java
+setup_python
 setup_rust
 setup_code
 setup_fonts

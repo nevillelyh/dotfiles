@@ -186,6 +186,7 @@ setup_neovim() {
 setup_go() {
     type gopls &> /dev/null && return 0
     msg_box "Setting up Go"
+    export GOPATH=$HOME/.go
     go install -v golang.org/x/tools/gopls@latest
     go install -v github.com/go-delve/delve/cmd/dlv@latest
 }

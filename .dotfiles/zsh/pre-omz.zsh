@@ -4,7 +4,10 @@
 [[ -d /opt/homebrew/sbin ]] && export PATH=/opt/homebrew/sbin:$PATH
 [[ -d $HOME/.local/bin ]] && export PATH=$HOME/.local/bin:$PATH
 [[ -s $HOME/.cargo/env ]] && source "$HOME/.cargo/env"
+
+export GOPATH=$HOME/.go
 [[ -d /usr/local/go/bin ]] && export PATH=/usr/local/go/bin:$PATH
+[[ -d $HOME/.go/bin ]] && export PATH=$HOME/.go/bin:$PATH
 
 eval $(nvman env)
 

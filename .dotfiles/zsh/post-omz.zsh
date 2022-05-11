@@ -38,6 +38,9 @@ if type virtualenvwrapper.sh &> /dev/null; then
     source $(which virtualenvwrapper.sh)
 fi
 
+# conda activate base
+[[ -d $HOME/.anaconda3/condabin ]] && eval "$($HOME/.anaconda3/condabin/conda shell.zsh hook)"
+
 # Reuse a single SSH agent
 if [[ -z "$SSH_CONNECTION" ]]; then
     agent=/tmp/ssh-agent-tmux-$USER

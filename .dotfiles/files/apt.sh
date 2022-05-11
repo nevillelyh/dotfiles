@@ -20,6 +20,21 @@ setup_apt() {
     echo "$repo" | sudo tee /etc/apt/sources.list.d/$list > /dev/null
 }
 
+install_anaconda() {
+    # TODO: include this in upgrade_dotfiles
+    url="https://www.anaconda.com/products/distribution"
+    os=$(uname -s)
+    arch=$(uname -m)
+    [[ $os == "Darwin" ]] && os="MacOSX"
+    url=$(curl -sSL $url | grep -o "\<https://repo.anaconda.com/archive/Anaconda3-.*-$os-$arch.sh\>" | uniq | tail -n 1)
+    pkg=$(echo $url | grep -o '\<Anaconda3-.*.sh$')
+    wget -nv $url
+    bash $pkg -b -p $HOME/.anaconda3
+    rm $pkg
+    # Do not activate base automatically
+    $HOME/.anaconda3/bin/conda config --set auto_activate_base false
+}
+
 # Chrome manages its own repository
 install_chrome() {
     wget -nv https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb

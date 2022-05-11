@@ -120,6 +120,14 @@ setup_linux() {
 
     # Joplin uses AppImage
     curl -fsSL https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh | bash
+
+    mkdir -p $HOME/.local/share/backgrounds
+    wget -nv https://raw.githubusercontent.com/dracula/wallpaper/master/awesome.png -P $HOME/.local/share/backgrounds
+    wget -nv https://raw.githubusercontent.com/dracula/wallpaper/master/pop.png -P $HOME/.local/share/backgrounds
+    url="file://$HOME/.local/share/backgrounds/pop.png"
+    gsettings set org.gnome.desktop.background picture-uri "$uri"
+    gsettings set org.gnome.desktop.background picture-uri-dark "$uri"
+    gsettings set org.gnome.desktop.screensaver picture-uri "$uri"
 }
 
 setup_git() {

@@ -831,7 +831,11 @@ awful.rules.rules = {
 
     -- wmctrl -l to list clients
     -- xprop -id $ID to inspect a client
-    { rule_any = { instance = { "gcr-prompter" },
+    { rule_any = {
+        instance = {
+            "gcr-prompter",
+            "nm-openconnect-auth-dialog",
+        },
       }, properties = { placement = awful.placement.centered }
     },
     -- For some reason class or instance won't match

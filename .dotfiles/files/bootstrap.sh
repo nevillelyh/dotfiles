@@ -160,15 +160,18 @@ setup_gnupg() {
     mkdir -p ${HOME}/.gnupg
     chmod 700 ${HOME}/.gnupg
 
+    echo "default-cache-ttl 7200" >> $HOME/.gnupg/gpg-agent.conf
+    echo "max-cache-ttl 86400" >> $HOME/.gnupg/gpg-agent.conf
+
     case "$uname_s" in
         Darwin)
-            echo "pinentry-program /opt/homebrew/bin/pinentry-mac" > $HOME/.gnupg/gpg-agent.conf
+            echo "pinentry-program /opt/homebrew/bin/pinentry-mac" >> $HOME/.gnupg/gpg-agent.conf
             # Disable Pinentry "Save in Keychain"
             # https://gpgtools.tenderapp.com/kb/gpg-mail-faq/gpg-mail-hidden-settings#disable-option-to-store-password-in-macos-keychain
             defaults write org.gpgtools.common DisableKeychain -bool yes
             ;;
         Linux)
-            echo "no-allow-external-cache" > $HOME/.gnupg/gpg-agent.conf
+            echo "no-allow-external-cache" >> $HOME/.gnupg/gpg-agent.conf
             ;;
     esac
 }

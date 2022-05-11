@@ -21,7 +21,7 @@ CASKS_OPT="adobe-creative-cloud anki expressvpn firefox google-chrome guitar-pro
 # gnome-screensaver xautolock xcalib - for screen locking in awesome
 # unzip, zip - for SDKMAN
 # Not available or outdated in Ubuntu - bat, git-delta, zoxide
-DEB_PKGS="build-essential cmake colordiff exa fd-find fzf gh htop jq neovim ninja-build ripgrep tmux unzip zip zsh"
+DEB_PKGS="build-essential cmake colordiff exa fd-find fzf htop jq neovim ninja-build ripgrep tmux unzip zip zsh"
 DEB_GUI_PKGS="alacritty awesome compton fonts-powerline gnome-screensaver gnome-screenshot neovim-qt ubuntu-restricted-extras wmctrl xautolock xcalib"
 LINUX_CRATES="bat code-minimap git-delta gitui zoxide"
 
@@ -44,10 +44,10 @@ setup_ssh() {
     set +u
     [[ -n "$SSH_CONNECTION" ]] && return 0 # remote host
     set -u
-    [[ -s $HOME/.ssh/private/id_rsa ]] || die 'SSH private key not found'
+    [[ -s $HOME/.ssh/private/id_ed25519 ]] || die "SSH private key not found"
     killall -q ssh-agent || true
     eval $(ssh-agent)
-    ssh-add $HOME/.ssh/private/id_rsa
+    ssh-add $HOME/.ssh/private/id_ed25519
 }
 
 setup_homebrew() {
@@ -67,53 +67,6 @@ setup_homebrew() {
     fi
 }
 
-setup_aptitude() {
-    [[ "$uname_s" != "Linux" ]] && return 0
-    type nvim &> /dev/null && return 0
-    msg_box "Setting up Aptitude"
-
-    sudo apt-get install -y apt-transport-https aptitude
-    sudo aptitude update
-    sudo aptitude upgrade -y
-    sudo aptitude install -y $DEB_PKGS
-
-    dpkg-query --show xorg &> /dev/null && sudo aptitude install -y $DEB_GUI_PKGS
-}
-
-setup_linux() {
-    [[ "$uname_s" != "Linux" ]] && return 0
-    type gh &> /dev/null &> /dev/null && return 0
-    msg_box "Setting up Linux specifics"
-
-    type nvidia-smi &> /dev/null && sudo aptitude install -y nvtop
-
-    # Third-party APT repositories
-    apt_sh="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/apt.sh"
-    curl -fsSL "$apt_sh" | bash -s -- github
-
-    # Missing ZSH completions for some packages, e.g. those from Cargo
-    completions_sh="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/completions.sh"
-    curl -fsSL "$completions_sh" | bash -s -- "$HOME/.local/share/zsh/site-functions"
-
-    # The following are GUI apps
-    dpkg-query --show xorg &> /dev/null || return 0
-
-    git clone https://github.com/dracula/gnome-terminal
-    ./gnome-terminal/install.sh
-    rm -rf gnome-terminal
-
-    curl -fsSL "$apt_sh" | bash -s -- chrome
-    curl -fsSL "$apt_sh" | bash -s -- code
-    curl -fsSL "$apt_sh" | bash -s -- dropbox
-    curl -fsSL "$apt_sh" | bash -s -- sublime
-
-    sudo aptitude install -y snapd
-    sudo snap install slack spotify xseticon
-
-    # Joplin uses AppImage
-    curl -fsSL https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh | bash
-}
-
 setup_mac() {
     [[ "$uname_s" != "Darwin" ]] && return 0
     msg_box "Setting up Mac specifics"
@@ -124,31 +77,49 @@ setup_mac() {
     sudo scutil --set LocalHostName $REPLY
 }
 
-setup_fonts() {
-    [[ "$uname_s" == "Darwin" ]] || dpkg-query --show xorg &> /dev/null || return 0
-    msg_box "Setting up fonts"
+setup_apt() {
+    [[ "$uname_s" != "Linux" ]] && return 0
+    type gh &> /dev/null && return 0
+    msg_box "Setting up Aptitude"
 
-    wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
-    wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
-    wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
-    wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
-    case "$uname_s" in
-        Darwin)
-            mkdir -p $HOME/Library/Fonts
-            mv MesloLGS*.ttf $HOME/Library/Fonts
-            ;;
-        Linux)
-            mkdir -p $HOME/.local/share/fonts
-            mv MesloLGS*.ttf $HOME/.local/share/fonts
-            fc-cache -fv $HOME/.local/share/fonts
-            ;;
-    esac
+    sudo apt-get install -y apt-transport-https aptitude
+    sudo aptitude update
+    sudo aptitude upgrade -y
+    sudo aptitude install -y $DEB_PKGS
 
-    git clone https://github.com/powerline/fonts
-    cd fonts
-    ./install.sh
-    cd ..
-    rm -rf fonts
+    # Third-party APT repositories
+    apt_sh="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/apt.sh"
+    curl -fsSL "$apt_sh" | bash -s -- github
+
+    # The following are GUI apps
+    dpkg-query --show xorg &> /dev/null || return 0
+
+    sudo aptitude install -y $DEB_GUI_PKGS
+
+    curl -fsSL "$apt_sh" | bash -s -- chrome
+    curl -fsSL "$apt_sh" | bash -s -- code
+    curl -fsSL "$apt_sh" | bash -s -- dropbox
+    curl -fsSL "$apt_sh" | bash -s -- sublime
+}
+
+setup_linux() {
+    [[ "$uname_s" != "Linux" ]] && return 0
+    msg_box "Setting up Linux specifics"
+
+    type nvidia-smi &> /dev/null && sudo aptitude install -y nvtop
+
+    # The following are GUI apps
+    dpkg-query --show xorg &> /dev/null || return 0
+
+    git clone https://github.com/dracula/gnome-terminal
+    ./gnome-terminal/install.sh
+    rm -rf gnome-terminal
+
+    sudo aptitude install -y snapd
+    sudo snap install slack spotify xseticon
+
+    # Joplin uses AppImage
+    curl -fsSL https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh | bash
 }
 
 setup_git() {
@@ -192,10 +163,10 @@ setup_neovim() {
 
     mkdir -p $dir
     git clone git@github.com:Shougo/dein.vim.git $dir/dein.vim
-    nvim -u $HOME/.config/nvim/dein.vim --headless '+call dein#install() | qall'
+    nvim -u $HOME/.config/nvim/dein.vim --headless "+call dein#install() | qall"
 }
 
-setup_pip() {
+setup_python() {
     type ipython &> /dev/null && return 0
     msg_box "Setting up Python"
 
@@ -212,16 +183,17 @@ setup_jdk() {
     suffix="$2"
 
     local jdk_version=$(sdk list java | grep -o "\<$version\.[^ ]*$suffix" | head -n 1)
-    [[ -z "$jdk_version" ]] && die 'No Java $version SDK available'
+    [[ -z "$jdk_version" ]] && die "No Java $version SDK available"
     sdk install java $jdk_version
 }
 
-setup_sdkman() {
+setup_java() {
     type sbt &> /dev/null && return 0
     msg_box "Setting up SDKMAN"
 
     curl -fsSL "https://get.sdkman.io" | bash
-    sed -i 's/sdkman_rosetta2_compatible=true/sdkman_rosetta2_compatible=false/g' $HOME/.sdkman/etc/config
+    sed -i "s/sdkman_rosetta2_compatible=true/sdkman_rosetta2_compatible=false/g" $HOME/.sdkman/etc/config
+    sed -i "s/sdkman_auto_answer=false/sdkman_auto_answer=true/g" $HOME/.sdkman/etc/config
 
     set +u
     source "$HOME/.sdkman/bin/sdkman-init.sh"
@@ -242,19 +214,22 @@ setup_sdkman() {
     sdk install scala
     sdk install sbt
     set -u
+
+    sed -i "s/sdkman_auto_answer=true/sdkman_auto_answer=false/g" $HOME/.sdkman/etc/config
 }
 
-setup_cargo() {
+setup_rust() {
     type cargo &> /dev/null && return 0
     msg_box "Setting up Rust"
 
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    curl --proto "=https" --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
     source $HOME/.cargo/env
     [[ "$uname_s" == "Linux" ]] && cargo install -q $LINUX_CRATES
 }
 
 setup_code() {
+    type code &> /dev/null || return 0
     code --list-extensions | grep dracula-theme.theme-dracula &> /dev/null && return 0
     msg_box "Setting up Visual Studio Code"
 
@@ -271,18 +246,105 @@ setup_code() {
     fi
 }
 
+setup_fonts() {
+    [[ "$uname_s" == "Darwin" ]] || dpkg-query --show xorg &> /dev/null || return 0
+    msg_box "Setting up fonts"
+
+    wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
+    wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
+    wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
+    wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
+    case "$uname_s" in
+        Darwin)
+            mkdir -p $HOME/Library/Fonts
+            mv MesloLGS*.ttf $HOME/Library/Fonts
+            ;;
+        Linux)
+            mkdir -p $HOME/.local/share/fonts
+            mv MesloLGS*.ttf $HOME/.local/share/fonts
+            fc-cache -fv $HOME/.local/share/fonts
+            ;;
+    esac
+
+    git clone https://github.com/powerline/fonts
+    cd fonts
+    ./install.sh
+    cd ..
+    rm -rf fonts
+}
+
 setup_zsh() {
     [[ "$SHELL" == "/bin/zsh" ]] && return 0
     msg_box "Setting up zsh"
     chsh -s /bin/zsh
+
+    [[ "$uname_s" != "Linux" ]] && return 0
+
+    # Missing ZSH completions for some packages, e.g. those from Cargo
+    completions_sh="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/completions.sh"
+    mkdir -p $HOME/.local/share/zsh/site-functions
+    curl -fsSL "$completions_sh" | bash -s -- "$HOME/.local/share/zsh/site-functions"
 }
+
+########################################
+
+# Bootstrap inside a Docker container
+
+docker_build() {
+    msg_box "Building Docker image"
+    docker run -it -v $HOME/.dotfiles:/dotfiles -v $HOME/.ssh:/ssh --rm ubuntu:jammy /bin/bash /dotfiles/files/bootstrap.sh docker_inside
+}
+
+docker_inside() {
+    msg_box "Setting up Docker container"
+    # Prepare environment
+    apt-get update
+    apt-get install -y curl git openssh-client python3-distutils sudo wget
+    useradd -m -s /bin/bash neville
+    usermod -aG sudo neville
+
+    # No password sudo and chsh
+    echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+    sed -i "s/^\(auth \+\)required\( \+pam_shells.so\)/\1sufficient\2/" /etc/pam.d/chsh
+
+    mkdir -p /home/neville/.ssh/private
+    cp -a /ssh/private/id* /home/neville/.ssh/private
+    echo "Host *" >> /home/neville/.ssh/config
+    echo "    StrictHostKeyChecking no" >> /home/neville/.ssh/config
+    chown -R neville:neville /home/neville/.ssh
+
+    su - neville /dotfiles/files/bootstrap.sh
+}
+
+########################################
 
 uname_s=$(uname -s)
 uname_m=$(uname -m)
 
+help() {
+    echo "Usage: $(basename $0) [COMMAND]"
+    echo "    Commands:"
+    echo "        docker"
+    grep -o '^setup_\w\+()' $(realpath $0) | sed 's/setup_\(\w\+\)()/        \1/' | sort
+    exit 0
+}
+
 if [[ $# -eq 1 ]]; then
-    msg_box "Setting up single step $1"
-    setup_$1
+    case "$1" in
+        docker)
+            docker_build
+            ;;
+        docker_inside)
+            docker_inside
+            ;;
+        help)
+            help
+            ;;
+        *)
+            msg_box "Setting up single step $1"
+            setup_$1
+            ;;
+    esac
     exit 0
 fi
 
@@ -294,7 +356,7 @@ case "$uname_s" in
         setup_mac
         ;;
     Linux)
-        setup_aptitude
+        setup_apt
         setup_linux
         ;;
 esac
@@ -302,11 +364,11 @@ esac
 setup_git
 setup_gnupg
 setup_neovim
-setup_pip
-setup_sdkman
-setup_cargo
+setup_python
+setup_java
+setup_rust
 setup_code
-setup_zsh
 setup_fonts
+setup_zsh
 
 msg_box "Bootstrap complete"

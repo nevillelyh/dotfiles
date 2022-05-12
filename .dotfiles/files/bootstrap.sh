@@ -28,22 +28,8 @@ LINUX_CRATES="bat code-minimap git-delta gitui zoxide"
 # PIP packages:
 PIP_PKGS="flake8 ipython virtualenv virtualenvwrapper"
 
-msg_box() {
-    line="##$(echo "$1" | sed 's/./#/g')##"
-    echo "$line"
-    echo "# $1 #"
-    echo "$line"
-}
-
-die() {
-    msg_box "Error: $1"
-    exit 1
-}
-
 setup_ssh() {
-    set +u
-    [[ -n "$SSH_CONNECTION" ]] && return 0 # remote host
-    set -u
+    [[ -n "${SSH_CONNECTION-}" ]] && return 0 # remote host
     [[ -s $HOME/.ssh/private/id_ed25519 ]] || die "SSH private key not found"
     killall -q ssh-agent || true
     eval $(ssh-agent)
@@ -52,7 +38,7 @@ setup_ssh() {
 
 setup_homebrew() {
     [[ "$uname_s" != "Darwin" ]] && return 0
-    type brew &> /dev/null && return 0
+    [[ -L /opt/homebrew/bin/zoxide ]] && return 0
     msg_box "Setting up Homebrew"
 
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -88,18 +74,17 @@ setup_apt() {
     sudo aptitude install -y $DEB_PKGS
 
     # Third-party APT repositories
-    install_sh="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/install.sh"
-    curl -fsSL "$install_sh" | bash -s -- github
+    install github
 
     # The following are GUI apps
     dpkg-query --show xorg &> /dev/null || return 0
 
     sudo aptitude install -y $DEB_GUI_PKGS
 
-    curl -fsSL "$install_sh" | bash -s -- chrome
-    curl -fsSL "$install_sh" | bash -s -- code
-    curl -fsSL "$install_sh" | bash -s -- dropbox
-    curl -fsSL "$install_sh" | bash -s -- sublime
+    install chrome
+    install code
+    install dropbox
+    install sublime
 }
 
 setup_linux() {
@@ -107,13 +92,7 @@ setup_linux() {
     [[ -d /usr/local/go ]] && return 0
     msg_box "Setting up Linux specifics"
 
-    # Go lang
-    # TODO: include this in upgrade_dotfiles
-    url="https://api.github.com/repos/golang/go/git/refs/tags"
-    header="Accept: application/vnd.github.v3+json"
-    version=$(curl -sSL -H "$header" $url | jq --raw-output '.[].ref' | grep 'refs/tags/go' | cut -d '/' -f 3 | tail -n 1)
-    curl -sSL "https://go.dev/dl/$version.linux-amd64.tar.gz" | sudo tar -C /usr/local -xz
-    export PATH=/usr/local/go/bin:$PATH
+    install go
 
     type nvidia-smi &> /dev/null && sudo aptitude install -y nvtop
 
@@ -154,7 +133,7 @@ setup_git() {
 }
 
 setup_gnupg() {
-    [[ -d ${HOME}/.gnupg ]] && return 0
+    [[ -s ${HOME}/.gnupg/gpg-agent.conf ]] && return 0
     msg_box "Setting up GnuPG"
 
     mkdir -p ${HOME}/.gnupg
@@ -171,6 +150,7 @@ setup_gnupg() {
             defaults write org.gpgtools.common DisableKeychain -bool yes
             ;;
         Linux)
+            # Disable Pinentry "Save in password manager"
             echo "no-allow-external-cache" >> $HOME/.gnupg/gpg-agent.conf
             ;;
     esac
@@ -187,8 +167,9 @@ setup_neovim() {
 }
 
 setup_go() {
-    type gopls &> /dev/null && return 0
+    [[ -d $HOME/.go ]] && return 0
     msg_box "Setting up Go"
+    [[ -d /usr/local/go/bin ]] && export PATH=/usr/local/go/bin:$PATH
     export GOPATH=$HOME/.go
     go install -v golang.org/x/tools/gopls@latest
     go install -v github.com/go-delve/delve/cmd/dlv@latest
@@ -205,7 +186,7 @@ setup_jdk() {
 }
 
 setup_java() {
-    type sbt &> /dev/null && return 0
+    [[ -d $HOME/.sdkman ]] && return 0
     msg_box "Setting up Java"
 
     curl -fsSL "https://get.sdkman.io" | bash
@@ -247,7 +228,7 @@ setup_python() {
 }
 
 setup_rust() {
-    type cargo &> /dev/null && return 0
+    [[ -d $HOME/.cargo ]] && return 0
     msg_box "Setting up Rust"
 
     curl --proto "=https" --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
@@ -321,7 +302,7 @@ setup_zsh() {
 
 docker_build() {
     msg_box "Building Docker image"
-    docker run -it -v $HOME/.dotfiles:/dotfiles -v $HOME/.ssh:/ssh --rm ubuntu:jammy /bin/bash /dotfiles/files/bootstrap.sh docker_inside
+    docker run -it --rm --platform linux/amd64 -v $HOME/.dotfiles:/dotfiles -v $HOME/.ssh:/ssh ubuntu:jammy /bin/bash /dotfiles/files/bootstrap.sh docker_inside
 }
 
 docker_inside() {
@@ -346,6 +327,30 @@ docker_inside() {
 }
 
 ########################################
+# Helper functions
+########################################
+
+INSTALL_SH="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/install.sh"
+
+install() {
+    if [[ -s "$basedir/install.sh" ]]; then
+        bash $basedir/install.sh $1
+    else
+        curl -fsSL "$INSTALL_SH" | bash -s -- $1
+    fi
+}
+
+msg_box() {
+    line="##$(echo "$1" | sed 's/./#/g')##"
+    echo "$line"
+    echo "# $1 #"
+    echo "$line"
+}
+
+die() {
+    msg_box "Error: $1"
+    exit 1
+}
 
 help() {
     echo "Usage: $(basename $0) [COMMAND]"
@@ -354,6 +359,12 @@ help() {
     grep -o '^setup_\w\+()' $(readlink -f $0) | sed 's/^setup_\(.*\)()$/        \1/' | sort
     exit 0
 }
+
+########################################
+# Script starts
+########################################
+
+basedir=$(dirname $(readlink -f $0))
 
 if [[ $# -eq 1 ]]; then
     case "$1" in

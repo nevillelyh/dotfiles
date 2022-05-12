@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Install from third-party packages
+# Install third-party packages
 
 set -euo pipefail
 
@@ -104,6 +104,15 @@ install_github() {
     setup_apt "$repo" github-cli.list
     sudo aptitude update
     sudo aptitude install -y gh
+}
+
+# https://go.dev/doc/install
+install_go() {
+    # TODO: include this in upgrade_dotfiles
+    url="https://api.github.com/repos/golang/go/git/refs/tags"
+    header="Accept: application/vnd.github.v3+json"
+    version=$(curl -sSL -H "$header" $url | jq --raw-output '.[].ref' | grep 'refs/tags/go' | cut -d '/' -f 3 | tail -n 1)
+    curl -sSL "https://go.dev/dl/$version.linux-amd64.tar.gz" | sudo tar -C /usr/local -xz
 }
 
 # https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html

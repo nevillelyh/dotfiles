@@ -418,7 +418,7 @@ case "$uname_s" in
         rm -rf $HOME/.bash_profile $HOME/.bashrc
         ;;
     Linux)
-        cp /etc/skel/.* $HOME/
+        cp /etc/skel/.[^.]* $HOME/
         ;;
 esac
 

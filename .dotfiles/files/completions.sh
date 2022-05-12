@@ -5,11 +5,11 @@
 set -euo pipefail
 
 if [[ $# -ne 1 ]]; then
-    echo "Usage: $(basename $0) <DIR>"
+    echo "Usage: $(basename "$0") <DIR>"
     exit 1
 fi
 
-out=$(realpath $1)
+out=$(realpath "$1")
 tmp=$(mktemp -d)
 mkdir -p "$out"
 

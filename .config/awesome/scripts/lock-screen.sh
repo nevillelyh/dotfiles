@@ -24,4 +24,4 @@ sleep 3
 xautolock \
   -corners 000- \
   -time 10 -locker "gnome-screensaver-command --lock" \
-  -notify 5 -notifier $HOME/.config/awesome/scripts/fade-out.sh
+  -notify 5 -notifier "$HOME/.config/awesome/scripts/fade-out.sh"

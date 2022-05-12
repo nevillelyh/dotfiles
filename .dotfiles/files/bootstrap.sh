@@ -10,9 +10,9 @@ set -euo pipefail
 # python - leave macOS bundled python alone
 # pinentry-mac - for GPG
 # App Store - AdGuard for Safari, Instapaper, Kindle, Messenger, Slack, The Unarchiver, WhatsApp
-BREWS="bat code-minimap cmake colordiff exa fd fzf gh git git-delta gitui golang gpg htop jq neovim ninja pinentry-mac python ripgrep tmux wget zoxide"
-CASKS="alacritty alfred dropbox github iterm2 jetbrains-toolbox joplin lastpass sublime-text visual-studio-code vimr"
-CASKS_OPT="adobe-creative-cloud anki expressvpn firefox google-chrome guitar-pro macdive microsoft-edge shearwater-cloud spotify transmission vlc"
+BREWS=(bat code-minimap cmake colordiff exa fd fzf gh git git-delta gitui golang gpg htop jq neovim ninja pinentry-mac python ripgrep tmux wget zoxide)
+CASKS=(alacritty alfred dropbox github iterm2 jetbrains-toolbox joplin lastpass sublime-text visual-studio-code vimr)
+CASKS_OPT=(adobe-creative-cloud anki expressvpn firefox google-chrome guitar-pro macdive microsoft-edge shearwater-cloud spotify transmission vlc)
 
 # Linux packages:
 # compton - for alacritty background opacity
@@ -21,20 +21,20 @@ CASKS_OPT="adobe-creative-cloud anki expressvpn firefox google-chrome guitar-pro
 # gnome-screensaver xautolock xcalib - for screen locking in awesome
 # unzip, zip - for SDKMAN
 # Not available or outdated in Ubuntu - bat, git-delta, zoxide
-DEB_PKGS="build-essential cmake colordiff exa fd-find fzf htop jq neovim ninja-build ripgrep tmux unzip zip zsh"
-DEB_GUI_PKGS="alacritty awesome compton fonts-powerline gnome-screensaver gnome-screenshot neovim-qt ubuntu-restricted-extras wmctrl xautolock xcalib"
-LINUX_CRATES="bat code-minimap git-delta gitui zoxide"
+DEB_PKGS=(build-essential cmake colordiff exa fd-find fzf htop jq neovim ninja-build ripgrep tmux unzip zip zsh)
+DEB_GUI_PKGS=(alacritty awesome compton fonts-powerline gnome-screensaver gnome-screenshot neovim-qt ubuntu-restricted-extras wmctrl xautolock xcalib)
+LINUX_CRATES=(bat code-minimap git-delta gitui zoxide)
 
 # PIP packages:
-PIP_PKGS="flake8 ipython virtualenv virtualenvwrapper"
+PIP_PKGS=(flake8 ipython virtualenv virtualenvwrapper)
 
 setup_ssh() {
     [[ -n "${SSH_CONNECTION-}" ]] && return 0 # remote host
-    keys=$(find $HOME/.ssh -name id_dsa -or -name id_rsa -or -name id_ecdsa -or -name id_ed25519)
-    [[ $(echo "$keys" | wc -l) -gt 0 ]] || die "SSH private key not found"
+    readarray -t keys < <(find "$HOME/.ssh" -name id_dsa -or -name id_rsa -or -name id_ecdsa -or -name id_ed25519)
+    [[ "${#keys[@]}" -gt 0 ]] || die "SSH private key not found"
     killall -q ssh-agent || true
-    eval $(ssh-agent)
-    ssh-add $keys
+    eval "$(ssh-agent)"
+    ssh-add "${keys[@]}"
 }
 
 setup_homebrew() {
@@ -44,13 +44,16 @@ setup_homebrew() {
 
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     [[ -d /opt/homebrew ]] && export PATH=/opt/homebrew/bin:$PATH
-    brew install $BREWS
-    brew install --cask $CASKS
+    # shellcheck disable=SC2086
+    brew install "${BREWS[@]}"
+    # shellcheck disable=SC2086
+    brew install --cask "${CASKS[@]}"
 
     read -p "Install optional casks (y/N)? " -n 1 -r
     echo # (optional) move to a new line
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-        brew install --cask $CASKS_OPT
+        # shellcheck disable=SC2086
+        brew install --cask "${CASKS_OPT[@]}"
     fi
 }
 
@@ -58,10 +61,10 @@ setup_mac() {
     [[ "$uname_s" != "Darwin" ]] && return 0
     msg_box "Setting up Mac specifics"
 
-    read -p "Enter hostname: "
-    sudo scutil --set ComputerName $REPLY
-    sudo scutil --set HostName $REPLY
-    sudo scutil --set LocalHostName $REPLY
+    read -r -p "Enter hostname: "
+    sudo scutil --set ComputerName "$REPLY"
+    sudo scutil --set HostName "$REPLY"
+    sudo scutil --set LocalHostName "$REPLY"
 }
 
 setup_apt() {
@@ -72,7 +75,7 @@ setup_apt() {
     sudo apt-get install -y apt-transport-https aptitude
     sudo aptitude update
     sudo aptitude upgrade -y
-    sudo aptitude install -y $DEB_PKGS
+    sudo aptitude install -y "${DEB_PKGS[@]}"
 
     # Third-party APT repositories
     install github
@@ -80,7 +83,7 @@ setup_apt() {
     # The following are GUI apps
     dpkg-query --show xorg &> /dev/null || return 0
 
-    sudo aptitude install -y $DEB_GUI_PKGS
+    sudo aptitude install -y "${DEB_GUI_PKGS[@]}"
 
     install chrome
     install code
@@ -110,20 +113,20 @@ setup_linux() {
     # Joplin uses AppImage
     curl -fsSL https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh | bash
 
-    mkdir -p $HOME/.local/share/backgrounds
-    wget -nv https://raw.githubusercontent.com/dracula/wallpaper/master/awesome.png -P $HOME/.local/share/backgrounds
-    wget -nv https://raw.githubusercontent.com/dracula/wallpaper/master/pop.png -P $HOME/.local/share/backgrounds
-    url="file://$HOME/.local/share/backgrounds/pop.png"
+    mkdir -p "$HOME/.local/share/backgrounds"
+    wget -nv https://raw.githubusercontent.com/dracula/wallpaper/master/awesome.png -P "$HOME/.local/share/backgrounds"
+    wget -nv https://raw.githubusercontent.com/dracula/wallpaper/master/pop.png -P "$HOME/.local/share/backgrounds"
+    uri="file://$HOME/.local/share/backgrounds/pop.png"
     gsettings set org.gnome.desktop.background picture-uri "$uri"
     gsettings set org.gnome.desktop.background picture-uri-dark "$uri"
     gsettings set org.gnome.desktop.screensaver picture-uri "$uri"
 }
 
 setup_git() {
-    [[ -d ${HOME}/.dotfiles/oh-my-zsh ]] && return 0
+    [[ -d $HOME/.dotfiles/oh-my-zsh ]] && return 0
     msg_box "Setting up Git"
 
-    cd $HOME
+    cd "$HOME"
     git init --initial-branch=main
     git config branch.main.rebase true
     git remote add origin git@github.com:nevillelyh/dotfiles.git
@@ -134,25 +137,25 @@ setup_git() {
 }
 
 setup_gnupg() {
-    [[ -s ${HOME}/.gnupg/gpg-agent.conf ]] && return 0
+    [[ -s $HOME/.gnupg/gpg-agent.conf ]] && return 0
     msg_box "Setting up GnuPG"
 
-    mkdir -p ${HOME}/.gnupg
-    chmod 700 ${HOME}/.gnupg
+    mkdir -p "$HOME/.gnupg"
+    chmod 700 "$HOME/.gnupg"
 
-    echo "default-cache-ttl 7200" >> $HOME/.gnupg/gpg-agent.conf
-    echo "max-cache-ttl 86400" >> $HOME/.gnupg/gpg-agent.conf
+    echo "default-cache-ttl 7200" >> "$HOME/.gnupg/gpg-agent.conf"
+    echo "max-cache-ttl 86400" >> "$HOME/.gnupg/gpg-agent.conf"
 
     case "$uname_s" in
         Darwin)
-            echo "pinentry-program /opt/homebrew/bin/pinentry-mac" >> $HOME/.gnupg/gpg-agent.conf
+            echo "pinentry-program /opt/homebrew/bin/pinentry-mac" >> "$HOME/.gnupg/gpg-agent.conf"
             # Disable Pinentry "Save in Keychain"
             # https://gpgtools.tenderapp.com/kb/gpg-mail-faq/gpg-mail-hidden-settings#disable-option-to-store-password-in-macos-keychain
             defaults write org.gpgtools.common DisableKeychain -bool yes
             ;;
         Linux)
             # Disable Pinentry "Save in password manager"
-            echo "no-allow-external-cache" >> $HOME/.gnupg/gpg-agent.conf
+            echo "no-allow-external-cache" >> "$HOME/.gnupg/gpg-agent.conf"
             ;;
     esac
 }
@@ -162,9 +165,9 @@ setup_neovim() {
     [[ -d $dir ]] && return 0
     msg_box "Setting up NeoVim"
 
-    mkdir -p $dir
-    git clone git@github.com:Shougo/dein.vim.git $dir/dein.vim
-    nvim -u $HOME/.config/nvim/dein.vim --headless "+call dein#install() | qall"
+    mkdir -p "$dir"
+    git clone git@github.com:Shougo/dein.vim.git "$dir/dein.vim"
+    nvim -u "$HOME/.config/nvim/dein.vim" --headless "+call dein#install() | qall"
 }
 
 setup_go() {
@@ -177,13 +180,12 @@ setup_go() {
 }
 
 setup_jdk() {
-    source "$HOME/.sdkman/bin/sdkman-init.sh"
     version="$1"
     suffix="$2"
 
-    local jdk_version=$(sdk list java | grep -o "\<$version\.[^ ]*$suffix" | head -n 1)
+    jdk_version=$(sdk list java | grep -o "\<$version\.[^ ]*$suffix" | head -n 1)
     [[ -z "$jdk_version" ]] && die "No Java $version SDK available"
-    sdk install java $jdk_version
+    sdk install java "$jdk_version"
 }
 
 setup_jvm() {
@@ -191,10 +193,11 @@ setup_jvm() {
     msg_box "Setting up JVM"
 
     curl -fsSL "https://get.sdkman.io" | bash
-    sed -i "s/sdkman_rosetta2_compatible=true/sdkman_rosetta2_compatible=false/g" $HOME/.sdkman/etc/config
-    sed -i "s/sdkman_auto_answer=false/sdkman_auto_answer=true/g" $HOME/.sdkman/etc/config
+    sed -i "s/sdkman_rosetta2_compatible=true/sdkman_rosetta2_compatible=false/g" "$HOME/.sdkman/etc/config"
+    sed -i "s/sdkman_auto_answer=false/sdkman_auto_answer=true/g" "$HOME/.sdkman/etc/config"
 
     set +u
+    # shellcheck source=/dev/null
     source "$HOME/.sdkman/bin/sdkman-init.sh"
 
     if [[ "$uname_s" == "Darwin" ]] && [[ "$uname_m" == "arm64" ]]; then
@@ -214,7 +217,7 @@ setup_jvm() {
     sdk install sbt
     set -u
 
-    sed -i "s/sdkman_auto_answer=true/sdkman_auto_answer=false/g" $HOME/.sdkman/etc/config
+    sed -i "s/sdkman_auto_answer=true/sdkman_auto_answer=false/g" "$HOME/.sdkman/etc/config"
 }
 
 setup_python() {
@@ -225,7 +228,7 @@ setup_python() {
     if [[ "$uname_s" == "Linux" ]]; then
         curl -fsSL https://bootstrap.pypa.io/get-pip.py | sudo python3
     fi
-    pip3 install ${PIP_PKGS}
+    pip3 install "${PIP_PKGS[@]}"
 }
 
 setup_rust() {
@@ -234,8 +237,9 @@ setup_rust() {
 
     curl --proto "=https" --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
-    source $HOME/.cargo/env
-    [[ "$uname_s" == "Linux" ]] && cargo install -q $LINUX_CRATES
+    # shellcheck source=/dev/null
+    source "$HOME/.cargo/env"
+    [[ "$uname_s" == "Linux" ]] && cargo install -q "${LINUX_CRATES[@]}"
 }
 
 setup_code() {
@@ -259,23 +263,24 @@ setup_code() {
 
 setup_fonts() {
     [[ "$uname_s" == "Darwin" ]] || dpkg-query --show xorg &> /dev/null || return 0
+    case "$uname_s" in
+        Darwin)
+            fonts_dir="$HOME/Library/Fonts"
+            ;;
+        Linux)
+            fonts_dir="$HOME/.local/share/fonts"
+            ;;
+    esac
+    [[ -d "$fonts_dir" ]] && return 0
     msg_box "Setting up fonts"
 
     wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
     wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
     wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
     wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
-    case "$uname_s" in
-        Darwin)
-            mkdir -p $HOME/Library/Fonts
-            mv MesloLGS*.ttf $HOME/Library/Fonts
-            ;;
-        Linux)
-            mkdir -p $HOME/.local/share/fonts
-            mv MesloLGS*.ttf $HOME/.local/share/fonts
-            fc-cache -fv $HOME/.local/share/fonts
-            ;;
-    esac
+    mkdir -p "$fonts_dir"
+    mv MesloLGS*.ttf "$fonts_dir"
+    [[ "$uname_s" == "Linux" ]] && fc-cache -fv "$HOME/.local/share/fonts"
 
     git clone https://github.com/powerline/fonts
     cd fonts
@@ -293,7 +298,7 @@ setup_zsh() {
 
     # Missing ZSH completions for some packages, e.g. those from Cargo
     completions_sh="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/completions.sh"
-    mkdir -p $HOME/.local/share/zsh/site-functions
+    mkdir -p "$HOME/.local/share/zsh/site-functions"
     curl -fsSL "$completions_sh" | bash -s -- "$HOME/.local/share/zsh/site-functions"
 }
 
@@ -303,7 +308,10 @@ setup_zsh() {
 
 docker_build() {
     msg_box "Building Docker image"
-    docker run -it --rm --platform linux/amd64 -v $HOME/.dotfiles:/dotfiles -v $HOME/.ssh:/ssh ubuntu:jammy /bin/bash /dotfiles/files/bootstrap.sh docker_inside
+    docker run -it --rm --platform linux/amd64 \
+        -v "$HOME/.dotfiles:/dotfiles" \
+        -v "$HOME/.ssh:/ssh" \
+        ubuntu:jammy /bin/bash /dotfiles/files/bootstrap.sh docker_inside
 }
 
 docker_inside() {
@@ -335,16 +343,16 @@ INSTALL_SH="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/in
 
 install() {
     if [[ -s "$basedir/install.sh" ]]; then
-        bash $basedir/install.sh $1
+        bash "$basedir/install.sh" "$1"
     else
-        curl -fsSL "$INSTALL_SH" | bash -s -- $1
+        curl -fsSL "$INSTALL_SH" | bash -s -- "$1"
     fi
 }
 
 msg_box() {
-    line="##$(echo "$1" | sed 's/./#/g')##"
+    line="==${1//[[:alnum:][:space:]]/=}=="
     echo "$line"
-    echo "# $1 #"
+    echo "= $1 ="
     echo "$line"
 }
 
@@ -354,10 +362,13 @@ die() {
 }
 
 help() {
-    echo "Usage: $(basename $0) [COMMAND]"
+    echo "Usage: $(basename "$0") [COMMAND]"
     echo "    Commands:"
     echo "        docker"
-    grep -o '^setup_\w\+()' $(readlink -f $0) | sed 's/^setup_\(.*\)()$/        \1/' | sort
+    readarray -t cmds < <(grep -o "^setup_\w\+()" "$(readlink -f "$0")" | sed "s/^setup_\(.*\)()$/\1/")
+    for cmd in "${cmds[@]}"; do
+        echo "        $cmd"
+    done
     exit 0
 }
 
@@ -365,7 +376,7 @@ help() {
 # Script starts
 ########################################
 
-basedir=$(dirname $(readlink -f $0))
+basedir=$(dirname "$(readlink -f "$0")")
 
 if [[ $# -eq 1 ]]; then
     case "$1" in
@@ -380,7 +391,7 @@ if [[ $# -eq 1 ]]; then
             ;;
         *)
             msg_box "Setting up single step $1"
-            setup_$1
+            "setup_$1"
             ;;
     esac
     exit 0
@@ -415,10 +426,10 @@ setup_zsh
 
 case "$uname_s" in
     Darwin)
-        rm -rf $HOME/.bash_profile $HOME/.bashrc
+        rm -rf "$HOME/.bash_profile" "$HOME/.bashrc"
         ;;
     Linux)
-        cp /etc/skel/.[^.]* $HOME/
+        cp /etc/skel/.[^.]* "$HOME"
         ;;
 esac
 

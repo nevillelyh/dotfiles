@@ -1,17 +1,17 @@
-#!/bin/zsh
+#!/bin/bash
 
 # Upgrade .dotfiles and related packages
 
 set -euo pipefail
 
 msg_box() {
-    LINE="##$(echo "$1" | sed 's/./#/g')##"
-    echo "$LINE"
+    line="==${1//[[:alnum:][:space:]]/=}=="
+    echo "$line"
     echo "# $1 #"
-    echo "$LINE"
+    echo "$line"
 }
 
-cd $HOME
+cd "$HOME"
 
 msg_box "Upgrading system packages"
 case "$(uname -s)" in
@@ -34,30 +34,28 @@ git pull --rebase --autostash
 git submodule update --init --remote
 
 msg_box "Upgrading Oh-My-Zsh"
-set +eu
-source "$HOME/.dotfiles/oh-my-zsh/oh-my-zsh.sh"
-omz update
-set -eu
+zsh -i -c "omz update"
 
 msg_box "Upgrading NeoVim"
-VS='+let g:dein#install_progress_type = "none" | call dein#update() | echo "\r\n" | qall'
-nvim -u $HOME/.config/nvim/dein.vim --headless $VS
+nvim -u "$HOME/.config/nvim/dein.vim" --headless \
+    '+let g:dein#install_progress_type = "none" | call dein#update() | echo "\r\n" | qall'
 
 msg_box "Upgrading JVM"
 set +eu
+# shellcheck source=/dev/null
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk update
 sdk upgrade
 set -eu
 
 msg_box "Upgrading Python"
-PIP_PKGS=$(grep '^PIP_PKGS="' $HOME/.dotfiles/files/bootstrap.sh | sed 's/^PIP_PKGS="\(.*\)"$/\1/')
-pip3 install --quiet --upgrade --upgrade-strategy eager ${=PIP_PKGS}
+readarray -d " " -t pip_pkgs < <(grep "^PIP_PKGS=(" "$HOME/.dotfiles/files/bootstrap.sh" | sed "s/^PIP_PKGS=(\(.*\))$/\1/")
+pip3 install --quiet --upgrade --upgrade-strategy eager "${pip_pkgs[@]}"
 
 msg_box "Upgrading Rust"
 rustup update
-CRATES=$(grep '^"[^"]*" = \["[^"]*"\]$' $HOME/.cargo/.crates.toml | sed 's/^"\([^ ]*\) .*$/\1/')
-cargo install -q ${=CRATES}
+readarray -t crates < <(grep '^"[^"]*" = \["[^"]*"\]$' "$HOME/.cargo/.crates.toml" | sed 's/^"\([^ ]*\) .*$/\1/')
+cargo install -q "${crates[@]}"
 
 if type conda &> /dev/null; then
     msg_box "Upgrading Anaconda"

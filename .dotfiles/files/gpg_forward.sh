@@ -5,16 +5,16 @@
 set -euo pipefail
 
 if [[ $# -ne 1 ]]; then
-    echo "Usage: $(basename $0) <HOST>"
+    echo "Usage: $(basename "$0") <HOST>"
     exit 1
 fi
 
 conn=$1
 user=""
 host=$conn
-if echo "$conn" | grep -q '@'; then
-    user=$(echo "$conn" | cut -d '@' -f 1)
-    host=$(echo "$conn" | cut -d '@' -f 2)
+if echo "$conn" | grep -q "@"; then
+    user=$(echo "$conn" | cut -d "@" -f 1)
+    host=$(echo "$conn" | cut -d "@" -f 2)
 fi
 
 if grep -q "Host $host" .ssh/config 2> /dev/null; then
@@ -23,15 +23,15 @@ if grep -q "Host $host" .ssh/config 2> /dev/null; then
 fi
 
 echo "Sending public key to $host"
-gpg --export $(grep signingkey $HOME/.gitconfig | grep -o '[0-9A-F]\+') | ssh $conn gpg --import
+gpg --export "$(grep signingKey "$HOME/.gitconfig" | grep -o "\<[0-9A-F]\+$")" | ssh "$conn" gpg --import
 
-dst=$(ssh $conn gpgconf --list-dir agent-socket)
+dst=$(ssh "$conn" gpgconf --list-dir agent-socket)
 src=$(gpgconf --list-dir agent-extra-socket)
 
 echo "Adding $host to $HOME/.ssh/config"
-echo "Host $host" >> $HOME/.ssh/config
-[[ -z "$user" ]] || echo "    User $user" >> $HOME/.ssh/config
-cat << EOF >> $HOME/.ssh/config
+echo "Host $host" >> "$HOME/.ssh/config"
+[[ -z "$user" ]] || echo "    User $user" >> "$HOME/.ssh/config"
+cat << EOF >> "$HOME/.ssh/config"
     ForwardAgent yes
     RemoteForward $dst $src
 EOF

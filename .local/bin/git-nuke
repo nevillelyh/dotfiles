@@ -5,7 +5,7 @@
 set -euo pipefail
 
 if [[ $# -lt 1 ]] || [[ $# -gt 2 ]]; then
-    echo "Usage: $(basename $0) BRANCH [REMOTE]"
+    echo "Usage: $(basename "$0") BRANCH [REMOTE]"
     exit 1
 fi
 
@@ -14,6 +14,6 @@ if [[ $# -eq 2 ]]; then
     remote=$2
 fi
 
-git branch -D $1
-git branch -D -r $remote/$1
-git push $remote :$1
+git branch -D "$1"
+git branch -D -r "$remote/$1"
+git push "$remote" ":$1"

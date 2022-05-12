@@ -5,19 +5,19 @@
 set -euo pipefail
 
 setup_gpg() {
-    url="$1"
-    gpg="$2"
+    url=$1
+    gpg=$2
     echo "Setting up GPG key $gpg"
-    curl -fsSL "$url" | gpg --dearmor > $gpg
-    sudo install -o root -g root -m 644 $gpg /etc/apt/trusted.gpg.d/
-    rm $gpg
+    curl -fsSL "$url" | gpg --dearmor > "$gpg"
+    sudo install -o root -g root -m 644 "$gpg" /etc/apt/trusted.gpg.d/
+    rm "$gpg"
 }
 
 setup_apt() {
-    repo="$1"
-    list="$2"
+    repo=$1
+    list=$2
     echo "Setting up APT repo $list"
-    echo "$repo" | sudo tee /etc/apt/sources.list.d/$list > /dev/null
+    echo "$repo" | sudo tee "/etc/apt/sources.list.d/$list" > /dev/null
 }
 
 # https://docs.anaconda.com/anaconda/install/linux/
@@ -27,12 +27,12 @@ install_anaconda() {
     arch=$(uname -m)
     [[ $os == "Darwin" ]] && os="MacOSX"
     url=$(curl -fsSL $url | grep -o "\<https://repo.anaconda.com/archive/Anaconda3-.*-$os-$arch.sh\>" | uniq | tail -n 1)
-    pkg=$(echo $url | grep -o '\<Anaconda3-.*.sh$')
-    wget -nv $url
-    bash $pkg -b -p $HOME/.anaconda3
-    rm $pkg
+    pkg=$(echo "$url" | grep -o "\<Anaconda3-.*.sh$")
+    wget -nv "$url"
+    bash "$pkg" -b -p "$HOME/.anaconda3"
+    rm "$pkg"
     # Do not activate base automatically
-    $HOME/.anaconda3/bin/conda config --set auto_activate_base false
+    "$HOME/.anaconda3/bin/conda" config --set auto_activate_base false
 }
 
 # https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
@@ -40,7 +40,7 @@ install_aws() {
     arch=$(uname -m)
     curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-$arch.zip" -o awscliv2.zip
     unzip awscliv2.zip
-    ./aws/install --install-dir $HOME/.aws --bin-dir $HOME/.local/bin
+    ./aws/install --install-dir "$HOME/.aws" --bin-dir "$HOME/.local/bin"
     rm -rf awscliv2.zip aws
 }
 
@@ -97,7 +97,7 @@ install_docker() {
 # Dropbox manages its own repository
 install_dropbox() {
     url="https://linux.dropbox.com/packages/ubuntu/"
-    pkg=$(curl -fsSL $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^dropbox_[\d\.]+_amd64.deb$' | tail -n 1)
+    pkg=$(curl -fsSL $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P "^dropbox_[\d\.]+_amd64.deb$" | tail -n 1)
     wget -nv "$url/$pkg"
     sudo dpkg -i dropbox_*_amd64.deb
     rm -f dropbox_*_amd64.deb
@@ -119,7 +119,7 @@ install_go() {
     # TODO: include this in upgrade_dotfiles
     url="https://api.github.com/repos/golang/go/git/refs/tags"
     header="Accept: application/vnd.github.v3+json"
-    version=$(curl -fsSL -H "$header" $url | jq --raw-output '.[].ref' | grep 'refs/tags/go' | cut -d '/' -f 3 | tail -n 1)
+    version=$(curl -fsSL -H "$header" $url | jq --raw-output ".[].ref" | grep "refs/tags/go" | cut -d "/" -f 3 | tail -n 1)
     os=$(uname -s | tr "[:upper:]" "[:lower:]")
     arch=$(uname -m | sed "s/^x86_64$/amd64/" | sed "s/^aarch64$/arm64/")
     curl -fsSL "https://go.dev/dl/$version.$os-$arch.tar.gz" | sudo tar -C /usr/local -xz
@@ -129,7 +129,7 @@ install_go() {
 install_nvidia() {
     url="https://nvidia.github.io/libnvidia-container/gpgkey"
     dist="ubuntu$(lsb_release -rs)"
-    repo=$(curl -fsSL "https://nvidia.github.io/libnvidia-container/$dist/libnvidia-container.list" | sed 's#deb https://#deb [signed-by=/etc/apt/trusted.gpg.d/nvidia-container-toolkit-keyring.gpg] https://#g')
+    repo=$(curl -fsSL "https://nvidia.github.io/libnvidia-container/$dist/libnvidia-container.list" | sed "s#deb https://#deb [signed-by=/etc/apt/trusted.gpg.d/nvidia-container-toolkit-keyring.gpg] https://#g")
 
     setup_gpg "$url" nvidia-container-toolkit-keyring.gpg
     setup_apt "$repo" nvidia-container-toolkit.list
@@ -199,7 +199,7 @@ install_sublime() {
 
 install_teams() {
     url="https://packages.microsoft.com/repos/ms-teams/pool/main/t/teams/"
-    pkg=$(curl -fsSL $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^teams_[\d\.]+_amd64.deb$' | tail -n 1)
+    pkg=$(curl -fsSL $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P "^teams_[\d\.]+_amd64.deb$" | tail -n 1)
     wget -nv "$url/$pkg"
     sudo dpkg -i teams_*_amd64.deb
     sudo aptitude install -y teams # Install missing dependencies
@@ -207,8 +207,8 @@ install_teams() {
 }
 
 if [[ $#  -ne 1 ]]; then
-    echo "Usage: $(basename $0) <PACKAGE>"
+    echo "Usage: $(basename "$0") <PACKAGE>"
     exit 1
 fi
 
-install_$1
+"install_$1"

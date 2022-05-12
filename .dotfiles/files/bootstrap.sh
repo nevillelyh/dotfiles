@@ -185,9 +185,9 @@ setup_jdk() {
     sdk install java $jdk_version
 }
 
-setup_java() {
+setup_jvm() {
     [[ -d $HOME/.sdkman ]] && return 0
-    msg_box "Setting up Java"
+    msg_box "Setting up JVM"
 
     curl -fsSL "https://get.sdkman.io" | bash
     sed -i "s/sdkman_rosetta2_compatible=true/sdkman_rosetta2_compatible=false/g" $HOME/.sdkman/etc/config
@@ -405,7 +405,7 @@ setup_git
 setup_gnupg
 setup_neovim
 setup_go
-setup_java
+setup_jvm
 setup_python
 setup_rust
 setup_code

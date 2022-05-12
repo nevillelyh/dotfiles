@@ -35,6 +35,15 @@ install_anaconda() {
     $HOME/.anaconda3/bin/conda config --set auto_activate_base false
 }
 
+# https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+install_aws() {
+    arch=$(uname -m)
+    curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-$arch.zip" -o awscliv2.zip
+    unzip awscliv2.zip
+    ./aws/install --install-dir $HOME/.aws --bin-dir $HOME/.local/bin
+    rm -rf awscliv2.zip aws
+}
+
 # https://bazel.build/install/ubuntu
 install_bazel() {
     url="https://bazel.build/bazel-release.pub.gpg"

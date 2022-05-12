@@ -112,7 +112,9 @@ install_go() {
     url="https://api.github.com/repos/golang/go/git/refs/tags"
     header="Accept: application/vnd.github.v3+json"
     version=$(curl -fsSL -H "$header" $url | jq --raw-output '.[].ref' | grep 'refs/tags/go' | cut -d '/' -f 3 | tail -n 1)
-    curl -fsSL "https://go.dev/dl/$version.linux-amd64.tar.gz" | sudo tar -C /usr/local -xz
+    os=$(uname -s | tr "[:upper:]" "[:lower:]")
+    arch=$(uname -m | sed "s/^x86_64$/amd64/")
+    curl -fsSL "https://go.dev/dl/$version.$os-$arch.tar.gz" | sudo tar -C /usr/local -xz
 }
 
 # https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html

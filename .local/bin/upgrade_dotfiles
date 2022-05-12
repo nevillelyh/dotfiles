@@ -43,7 +43,14 @@ msg_box "Upgrading NeoVim"
 VS='+let g:dein#install_progress_type = "none" | call dein#update() | echo "\r\n" | qall'
 nvim -u $HOME/.config/nvim/dein.vim --headless $VS
 
-msg_box "Upgrading Python Packages"
+msg_box "Upgrading JVM"
+set +eu
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+sdk update
+sdk upgrade
+set -eu
+
+msg_box "Upgrading Python"
 PIP_PKGS=$(grep '^PIP_PKGS="' $HOME/.dotfiles/files/bootstrap.sh | sed 's/^PIP_PKGS="\(.*\)"$/\1/')
 pip3 install --quiet --upgrade --upgrade-strategy eager ${=PIP_PKGS}
 
@@ -52,11 +59,9 @@ rustup update
 CRATES=$(grep '^"[^"]*" = \["[^"]*"\]$' $HOME/.cargo/.crates.toml | sed 's/^"\([^ ]*\) .*$/\1/')
 cargo install -q ${=CRATES}
 
-msg_box "Upgrading SDKMAN"
-set +eu
-source "$HOME/.sdkman/bin/sdkman-init.sh"
-sdk update
-sdk upgrade
-set -eu
+if type conda &> /dev/null; then
+    msg_box "Upgrading Anaconda"
+    conda update --all --name base --yes
+fi
 
 msg_box "Upgrade complete"

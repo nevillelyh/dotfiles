@@ -22,7 +22,6 @@ setup_apt() {
 
 # https://docs.anaconda.com/anaconda/install/linux/
 install_anaconda() {
-    # TODO: include this in upgrade_dotfiles
     url="https://www.anaconda.com/products/distribution"
     os=$(uname -s)
     arch=$(uname -m)

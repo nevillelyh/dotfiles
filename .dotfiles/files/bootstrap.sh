@@ -412,4 +412,13 @@ setup_code
 setup_fonts
 setup_zsh
 
+case "$uname_s" in
+    Darwin)
+        rm -rf $HOME/.bash_profile $HOME/.bashrc
+        ;;
+    Linux)
+        cp /etc/skel/.* $HOME/
+        ;;
+esac
+
 msg_box "Bootstrap complete"

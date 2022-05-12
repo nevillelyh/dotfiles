@@ -30,10 +30,11 @@ PIP_PKGS="flake8 ipython virtualenv virtualenvwrapper"
 
 setup_ssh() {
     [[ -n "${SSH_CONNECTION-}" ]] && return 0 # remote host
-    [[ -s $HOME/.ssh/private/id_ed25519 ]] || die "SSH private key not found"
+    keys=$(find $HOME/.ssh -name id_dsa -or -name id_rsa -or -name id_ecdsa -or -name id_ed25519)
+    [[ $(echo "$keys" | wc -l) -gt 0 ]] || die "SSH private key not found"
     killall -q ssh-agent || true
     eval $(ssh-agent)
-    ssh-add $HOME/.ssh/private/id_ed25519
+    ssh-add $keys
 }
 
 setup_homebrew() {

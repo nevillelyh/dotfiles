@@ -197,7 +197,7 @@ my_keys.widget:set_text(my_keys.map[my_keys.current].symbol)
 -- {{{ Wibar
 -- Create a textclock widget
 local calendar = require("calendar")
-local my_cal = calendar({ theme = 'dracula', placement = 'top_right' })
+local my_cal = calendar({ theme = "dracula", placement = "top_right" })
 mytextclock = wibox.widget.textclock("%a %I:%M %p")
 mytextclock:connect_signal("button::press", function(_, _, _, button)
     if button == 1 then my_cal.toggle() end
@@ -230,7 +230,7 @@ local my_sysload_tooltip = awful.tooltip(tooltip_preset)
 my_sysload_tooltip:add_to_object(my_sysload)
 my_sysload:connect_signal("mouse::enter", function()
     awful.spawn.easy_async("uptime", function(stdout,_,_,_)
-        my_sysload_tooltip:set_markup(stdout:gsub('^%s*(.-)%s*$', '%1'))
+        my_sysload_tooltip:set_markup(stdout:gsub("^%s*(.-)%s*$", "%1"))
     end)
 end)
 

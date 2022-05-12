@@ -79,7 +79,7 @@ ZSH_CUSTOM=$HOME/.dotfiles/zsh/custom
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 # Run `rm ~/.zcompdump*` after changing this
-plugins=(bazel colored-man-pages conda docker fzf git gradle mvn pip ripgrep rust sbt sdk tmux virtualenvwrapper zoxide)
+plugins=(aws bazel colored-man-pages conda docker fzf git gradle mvn pip ripgrep rust sbt sdk tmux virtualenvwrapper zoxide)
 
 source $ZSH/oh-my-zsh.sh
 

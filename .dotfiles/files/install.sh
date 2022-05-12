@@ -8,7 +8,7 @@ setup_gpg() {
     url="$1"
     gpg="$2"
     echo "Setting up GPG key $gpg"
-    curl -sSL "$url" | gpg --dearmor > $gpg
+    curl -fsSL "$url" | gpg --dearmor > $gpg
     sudo install -o root -g root -m 644 $gpg /etc/apt/trusted.gpg.d/
     rm $gpg
 }
@@ -27,7 +27,7 @@ install_anaconda() {
     os=$(uname -s)
     arch=$(uname -m)
     [[ $os == "Darwin" ]] && os="MacOSX"
-    url=$(curl -sSL $url | grep -o "\<https://repo.anaconda.com/archive/Anaconda3-.*-$os-$arch.sh\>" | uniq | tail -n 1)
+    url=$(curl -fsSL $url | grep -o "\<https://repo.anaconda.com/archive/Anaconda3-.*-$os-$arch.sh\>" | uniq | tail -n 1)
     pkg=$(echo $url | grep -o '\<Anaconda3-.*.sh$')
     wget -nv $url
     bash $pkg -b -p $HOME/.anaconda3
@@ -111,15 +111,15 @@ install_go() {
     # TODO: include this in upgrade_dotfiles
     url="https://api.github.com/repos/golang/go/git/refs/tags"
     header="Accept: application/vnd.github.v3+json"
-    version=$(curl -sSL -H "$header" $url | jq --raw-output '.[].ref' | grep 'refs/tags/go' | cut -d '/' -f 3 | tail -n 1)
-    curl -sSL "https://go.dev/dl/$version.linux-amd64.tar.gz" | sudo tar -C /usr/local -xz
+    version=$(curl -fsSL -H "$header" $url | jq --raw-output '.[].ref' | grep 'refs/tags/go' | cut -d '/' -f 3 | tail -n 1)
+    curl -fsSL "https://go.dev/dl/$version.linux-amd64.tar.gz" | sudo tar -C /usr/local -xz
 }
 
 # https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
 install_nvidia() {
     url="https://nvidia.github.io/libnvidia-container/gpgkey"
     dist="ubuntu$(lsb_release -rs)"
-    repo=$(curl -sSL "https://nvidia.github.io/libnvidia-container/$dist/libnvidia-container.list" | sed 's#deb https://#deb [signed-by=/etc/apt/trusted.gpg.d/nvidia-container-toolkit-keyring.gpg] https://#g')
+    repo=$(curl -fsSL "https://nvidia.github.io/libnvidia-container/$dist/libnvidia-container.list" | sed 's#deb https://#deb [signed-by=/etc/apt/trusted.gpg.d/nvidia-container-toolkit-keyring.gpg] https://#g')
 
     setup_gpg "$url" nvidia-container-toolkit-keyring.gpg
     setup_apt "$repo" nvidia-container-toolkit.list
@@ -142,7 +142,7 @@ install_signal() {
 # https://packagecloud.io/app/slacktechnologies/slack/gpg#gpg-apt
 install_slack() {
     url="https://packagecloud.io/slacktechnologies/slack/gpgkey"
-    repo=$(curl -sSL "https://packagecloud.io/install/repositories/slacktechnologies/slack/config_file.list?os=debian&dist=jessie&source=script")
+    repo=$(curl -fsSL "https://packagecloud.io/install/repositories/slacktechnologies/slack/config_file.list?os=debian&dist=jessie&source=script")
 
     setup_gpg "$url" slacktechnologies_slack.gpg
     setup_apt "$repo" slacktechnologies_slack.list

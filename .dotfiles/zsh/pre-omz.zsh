@@ -11,10 +11,10 @@ if type go &> /dev/null; then
     export PATH=$HOME/.go/bin:$PATH
 fi
 
-eval $(nvman env)
-
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+eval $(nvman env)
 
 # https://docs.brew.sh/Shell-Completion
 if type brew &> /dev/null; then

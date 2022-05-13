@@ -83,6 +83,7 @@ local function update_graphic(widget, stdout)
                 timeout = keep and 0 or 2, hover_timeout = 0.5,
                 width = 200,
                 screen = mouse.screen,
+                destroy = function() volume.notification = nil end
             })
         end
         volume.notification.iconbox.image = PATH_TO_ICONS .. volume_icon_name .. ".svg"
@@ -157,7 +158,6 @@ local function worker(user_args)
         volume.widget:connect_signal("mouse::enter", function() show() end)
         volume.widget:connect_signal("mouse::leave", function()
             naughty.destroy(volume.notification)
-            volume.notification = nil
         end)
     end
 --}}}

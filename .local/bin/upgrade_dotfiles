@@ -49,12 +49,16 @@ sdk upgrade
 set -eu
 
 msg_box "Upgrading Python"
-readarray -d " " -t pip_pkgs < <(grep "^PIP_PKGS=(" "$HOME/.dotfiles/files/bootstrap.sh" | sed "s/^PIP_PKGS=(\(.*\))$/\1/")
+# Bash 3 on Mac missing readarray
+# shellcheck disable=SC2207
+pip_pkgs=($(grep "^PIP_PKGS=(" "$HOME/.dotfiles/files/bootstrap.sh" | sed "s/^PIP_PKGS=(\(.*\))$/\1/"))
 pip3 install --quiet --upgrade --upgrade-strategy eager "${pip_pkgs[@]}"
 
 msg_box "Upgrading Rust"
 rustup update
-readarray -t crates < <(grep '^"[^"]*" = \["[^"]*"\]$' "$HOME/.cargo/.crates.toml" | sed 's/^"\([^ ]*\) .*$/\1/')
+# Bash 3 on Mac missing readarray
+# shellcheck disable=SC2207
+crates=($(grep '^"[^"]*" = \["[^"]*"\]$' "$HOME/.cargo/.crates.toml" | sed 's/^"\([^ ]*\) .*$/\1/'))
 cargo install -q "${crates[@]}"
 
 if type conda &> /dev/null; then

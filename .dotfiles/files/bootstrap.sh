@@ -30,7 +30,9 @@ PIP_PKGS=(flake8 ipython virtualenv virtualenvwrapper)
 
 setup_ssh() {
     [[ -n "${SSH_CONNECTION-}" ]] && return 0 # remote host
-    readarray -t keys < <(find "$HOME/.ssh" -name id_dsa -or -name id_rsa -or -name id_ecdsa -or -name id_ed25519)
+    # Bash 3 on Mac missing readarray
+    # shellcheck disable=SC2207
+    keys=($(find "$HOME/.ssh" -name id_dsa -or -name id_rsa -or -name id_ecdsa -or -name id_ed25519))
     [[ "${#keys[@]}" -gt 0 ]] || die "SSH private key not found"
     killall -q ssh-agent || true
     eval "$(ssh-agent)"
@@ -365,7 +367,9 @@ help() {
     echo "Usage: $(basename "$0") [COMMAND]"
     echo "    Commands:"
     echo "        docker"
-    readarray -t cmds < <(grep -o "^setup_\w\+()" "$(readlink -f "$0")" | sed "s/^setup_\(.*\)()$/\1/")
+    # Bash 3 on Mac missing readarray
+    # shellcheck disable=SC2207
+    cmds=($(grep -o "^setup_\w\+()" "$(readlink -f "$0")" | sed "s/^setup_\(.*\)()$/\1/"))
     for cmd in "${cmds[@]}"; do
         echo "        $cmd"
     done

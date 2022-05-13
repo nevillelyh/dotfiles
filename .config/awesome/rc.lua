@@ -365,13 +365,18 @@ end)
 
 local my_wifi = wibox.widget.imagebox()
 local my_wired = wibox.widget.imagebox()
+local my_vpn = wibox.widget.imagebox()
 local my_net = lain.widget.net({ eth_state = "on", wifi_state = "on", settings = function()
     local wifi_icon = nil
     local wired_icon = nil
+    local vpn_icon = nil
     my_wifi.devices = {}
     my_wired.devices = {}
+    my_vpn.devices = {}
     for k, v in pairs(net_now.devices) do
-        if v.state == "up" then
+        is_docker = k:find("^docker[%d]+")
+        is_vpn = k:find("^vpn[%d]+")
+        if v.state == "up" and not is_docker and not is_vpn then
             if v.wifi then
                 wifi_icon = icons_dir .. "ePapirus/network-wireless-signal-"
                 if v.signal >= -50 then
@@ -394,22 +399,47 @@ local my_net = lain.widget.net({ eth_state = "on", wifi_state = "on", settings =
                 my_wired.devices[#my_wired.devices+1] = k
             end
         end
+        if is_vpn then
+            my_vpn.devices[#my_vpn.devices+1] = k
+        end
+    end
+    if #my_vpn.devices > 0 then
+        local cmd = "nmcli -t -f name,type,state connection | grep ':vpn:' | cut -d ':' -f 1,3"
+        awful.spawn.easy_async_with_shell(cmd, function(stdout,_,_,_)
+            stdout = stdout:gsub("%s*$", "")
+            if stdout:find(":activated$") then
+                vpn_icon = icons_dir .. "ePapirus/network-vpn.svg"
+            elseif stdout:find(":activating$") then
+                vpn_icon = icons_dir .. "ePapirus/network-vpn-acquiring.svg"
+            else
+                vpn_icon = icons_dir .. "ePapirus/network-vpn-patched.svg"
+            end
+            my_vpn:set_image(vpn_icon)
+        end)
     end
     my_wifi:set_image(wifi_icon)
     my_wired:set_image(wired_icon)
 end,
 })
+local function fmt_net(stdout)
+    local lines = {}
+    for line in stdout:gmatch("[^\r\n]+") do
+        line = line:gsub("<", "&lt;")
+        line = line:gsub(">", "&gt;")
+        if line:find("^[^%s]+") then
+            line = string.format("<b>%s</b>", line)
+            if #lines > 0 then line = "\n" .. line end
+        end
+        lines[#lines+1] = line
+    end
+    return table.concat(lines, "\n")
+end
 local my_wifi_tooltip = awful.tooltip(tooltip_preset)
 my_wifi_tooltip:add_to_object(my_wifi)
 my_wifi:connect_signal("mouse::enter", function()
     local cmd = "echo " .. table.concat(my_wifi.devices, " ") .. " | xargs -n 1 iwconfig"
     awful.spawn.easy_async_with_shell(cmd, function(stdout,_,_,_)
-        local lines = {}
-        for line in stdout:gmatch("[^\r\n]+") do
-            if line:find("^[^%s]+") then line = string.format("<b>%s</b>", line) end
-            lines[#lines+1] = line
-        end
-        my_wifi_tooltip:set_markup(table.concat(lines, "\n"))
+        my_wifi_tooltip:set_markup(fmt_net(stdout))
     end)
 end)
 local my_wired_tooltip = awful.tooltip(tooltip_preset)
@@ -417,18 +447,15 @@ my_wired_tooltip:add_to_object(my_wired)
 my_wired:connect_signal("mouse::enter", function()
     local cmd = "echo " .. table.concat(my_wired.devices, " ") .. " | xargs -n 1 ifconfig"
     awful.spawn.easy_async_with_shell(cmd, function(stdout,_,_,_)
-        my_wired_tooltip:set_markup(stdout)
-        local lines = {}
-        for line in stdout:gmatch("[^\r\n]+") do
-            line = line:gsub("<", "&lt;")
-            line = line:gsub(">", "&gt;")
-            if line:find("^[^%s]+") then
-                line = string.format("<b>%s</b>", line)
-                if #lines > 0 then line = "\n" .. line end
-            end
-            lines[#lines+1] = line
-        end
-        my_wired_tooltip:set_markup(table.concat(lines, "\n"))
+        my_wired_tooltip:set_markup(fmt_net(stdout))
+    end)
+end)
+local my_vpn_tooltip = awful.tooltip(tooltip_preset)
+my_vpn_tooltip:add_to_object(my_vpn)
+my_vpn:connect_signal("mouse::enter", function()
+    local cmd = "echo " .. table.concat(my_vpn.devices, " ") .. " | xargs -n 1 ifconfig"
+    awful.spawn.easy_async_with_shell(cmd, function(stdout,_,_,_)
+        my_vpn_tooltip:set_markup(fmt_net(stdout))
     end)
 end)
 
@@ -444,6 +471,33 @@ my_widget_button(my_gpu,     "nvidia-settings")
 my_widget_button(my_hdd,     "gnome-system-monitor -f")
 my_widget_button(my_wifi,    "gnome-control-center wifi")
 my_widget_button(my_wired,   "gnome-control-center network")
+my_vpn:connect_signal("button::press", function(_,_,_,button)
+    if (button == 1) then
+        local cmd = "nmcli -t -f name,type,state connection | grep ':vpn:' | cut -d ':' -f 1,3"
+        awful.spawn.easy_async_with_shell(cmd, function(stdout,_,_,_)
+            stdout = stdout:gsub("%s*$", "")
+            local i, _ = stdout:find(":")
+            local id = stdout:sub(1, i - 1)
+            if stdout:find(":activated$") then
+                awful.spawn.easy_async("nmcli connection down id " .. id, function(_,_,_,exit_code)
+                    if exit_code == 0 then
+                        naughty.notify({ title = "Disconnected from VPN: " .. id })
+                    else
+                        naughty.notify({ title = "Failed to disconnect from VPN: " .. id })
+                    end
+                end)
+            elseif stdout:find(":$") then
+                awful.spawn.easy_async(awesome_path .. "scripts/nmcli.sh " .. id, function(_,_,_,exit_code)
+                    if exit_code == 0 then
+                        naughty.notify({ title = "Connected to VPN: " .. id })
+                    else
+                        naughty.notify({ title = "Failed to connect to VPN: " .. id })
+                    end
+                end)
+            end
+        end)
+    end
+end)
 
 local weather = require("awesome-wm-widgets.weather-widget.weather")
 local my_weather = weather({
@@ -568,6 +622,7 @@ awful.screen.connect_for_each_screen(function(s)
             my_hdd,
             my_wifi,
             my_wired,
+            my_vpn,
             volume({ display_notification = true, delta = 2 }),
             my_weather,
             -- mykeyboardlayout,

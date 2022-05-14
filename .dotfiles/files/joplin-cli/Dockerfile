@@ -8,4 +8,5 @@ RUN apt-get update && apt-get install -y neovim nodejs npm && rm -rf /var/lib/ap
 RUN nvim -u $HOME/.config/nvim/dein.vim --headless '+call dein#install() | qall'
 RUN cd /root && npm install -g joplin@2.6.2
 
+ENV EDITOR=nvim
 CMD ["/joplin/bin/joplin"]

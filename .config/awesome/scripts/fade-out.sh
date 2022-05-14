@@ -2,8 +2,6 @@
 
 # Fade out screen for xautolock notifier
 
-set -euo pipefail
-
 # Always clear changes
 trap "xcalib -clear" EXIT
 

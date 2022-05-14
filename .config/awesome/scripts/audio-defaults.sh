@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Set default audio source and sink
+
 set -euo pipefail
 
 preferred_sources=(webcam c3422we)

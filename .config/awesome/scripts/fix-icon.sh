@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Fix icons and window states of some apps
+
 set -euo pipefail
 
 if [[ $# -ne 1 ]]; then

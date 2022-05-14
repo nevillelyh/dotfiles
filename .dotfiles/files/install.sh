@@ -84,8 +84,12 @@ install_code() {
     sudo aptitude install -y code
 }
 
+_install_docker_mac() {
+    brew install colima docker docker-compose
+}
+
 # https://docs.docker.com/engine/install/ubuntu/
-install_docker() {
+_install_docker_linux() {
     url="https://download.docker.com/linux/ubuntu/gpg"
     repo="deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/trusted.gpg.d/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
     setup_gpg "$url" docker-archive-keyring.gpg
@@ -94,6 +98,16 @@ install_docker() {
     sudo aptitude install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 }
 
+install_docker() {
+    case $(uname -s) in
+        Darwin)
+            _install_docker_mac
+            ;;
+        Linux)
+            _install_docker_linux
+            ;;
+    esac
+}
 # Dropbox manages its own repository
 install_dropbox() {
     url="https://linux.dropbox.com/packages/ubuntu/"

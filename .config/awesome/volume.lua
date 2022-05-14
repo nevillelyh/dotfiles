@@ -67,6 +67,105 @@ local function parse_output(stdout)
 end
 
 --------------------------------------------------
+-- Sources and sinks menu
+--------------------------------------------------
+
+local default_source = nil
+local default_sink = nil
+local sources = {}
+local sinks = {}
+local source_icon = PATH_TO_ICONS .. "audio-input-microphone.svg"
+local sink_icon = PATH_TO_ICONS .. "audio-speakers.svg"
+
+local function parse_devices(stdout)
+    local name = nil
+    local desc = nil
+    devices = {}
+    for line in stdout:gmatch("[^\r\n]+") do
+        local n = line:match("^%s*Name:%s*(.*)")
+        local d = line:match("^%s*Description:%s*(.*)")
+        if n then name = n end
+        if d then desc = d:gsub("^Monitor of%s+", "") end
+        if name and desc then
+            devices[#devices+1] = { name = name, desc = desc }
+            name = nil
+            desc = nil
+        end
+    end
+    return devices
+end
+
+function volume:_update_menu()
+    local source_items = {}
+    if default_source and #sources > 0 then
+        for _, s in ipairs(sources) do
+            local desc = s.desc
+            local icon = nil
+            if s.name == default_source then icon = source_icon end
+            local cmd = "pactl set-default-source " .. s.name
+            source_items[#source_items+1] = {
+                desc,
+                function()
+                    default_source = s.name
+                    awful.spawn(cmd)
+                    volume:_init_menu()
+                end,
+                icon,
+                theme = { width = 350 },
+            }
+        end
+    end
+    local sink_items = {}
+    if default_sink and #sinks > 0 then
+        for _, s in ipairs(sinks) do
+            local desc = s.desc
+            local icon = nil
+            if s.name == default_sink then icon = sink_icon end
+            local cmd = "pactl set-default-sink " .. s.name
+            sink_items[#sink_items+1] = {
+                desc,
+                function()
+                    default_sink = s.name
+                    awful.spawn(cmd)
+                    volume:_init_menu()
+                end,
+                icon,
+                theme = { width = 350 },
+            }
+        end
+    end
+    local mute_icon = PATH_TO_ICONS .. "audio-volume-muted-blocking.svg"
+    volume.menu = awful.menu({ items = {
+        { "Mute", function() volume.toggle() end, mute_icon, theme = { width = 100 } },
+        { "Input", source_items, source_icon, theme = { width = 100 } },
+        { "Output", sink_items, sink_icon, theme = { width = 100 } },
+    } })
+end
+
+function volume:_init_menu()
+    local source_cmd = "pactl list sources | grep -v '\\<alsa_output\\.'"
+    local sink_cmd = "pactl list sinks"
+
+    awful.spawn.easy_async("pactl info", function(stdout,_,_,_)
+        for line in stdout:gmatch("[^\r\n]+") do
+            local source = line:match("^Default Source:%s+(.*)$")
+            local sink = line:match("^Default Sink:%s+(.*)")
+            if source then default_source = source end
+            if sink then default_sink = sink end
+        end
+        awful.spawn.easy_async_with_shell(source_cmd, function(stdout,_,_,_)
+            sources = parse_devices(stdout)
+            awful.spawn.easy_async_with_shell(sink_cmd, function(stdout,_,_,_)
+                sinks = parse_devices(stdout)
+                volume:_update_menu()
+            end)
+        end)
+    end)
+
+
+end
+
+--------------------------------------------------
 -- Update the icon and the notification if needed
 --------------------------------------------------
 local function update_graphic(widget, stdout)
@@ -145,11 +244,11 @@ local function worker(user_args)
 --}}}
 --{{{ Mouse event
     --[[ allows control volume level by:
-    - clicking on the widget to launch control center
+    - clicking on the widget to show sources and sinks menu
     - scrolling when cursor is over the widget
     ]]
     volume.widget:connect_signal("button::press", function(_,_,_,button)
-        if (button == 1) then awful.spawn("gnome-control-center sound")
+        if (button == 1) then volume.menu:show()
         elseif (button == 4) then volume.raise()
         elseif (button == 5) then volume.lower()
         end
@@ -168,6 +267,8 @@ local function worker(user_args)
         volume.widget.image = PATH_TO_ICONS .. volume_icon_name .. ".svg"
     end)
 --}}}
+
+    volume:_init_menu()
 
     return volume.widget
 end

@@ -961,6 +961,7 @@ awful.rules.rules = {
         instance = {
             "gcr-prompter",
             "nm-openconnect-auth-dialog",
+            "zenity",
         },
       }, properties = { placement = awful.placement.centered }
     },

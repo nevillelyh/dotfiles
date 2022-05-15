@@ -436,5 +436,7 @@ case "$uname_s" in
         cp /etc/skel/.[^.]* "$HOME"
         ;;
 esac
+# In case install scripts e.g. SDKMAN modify anything by accident
+git reset --hard
 
 msg_box "Bootstrap complete"

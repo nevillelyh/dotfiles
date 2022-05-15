@@ -151,6 +151,16 @@ install_nvidia() {
     sudo aptitude install -y nvidia-docker2
 }
 
+# https://github.com/GloriousEggroll/proton-ge-custom/tree/master#installation
+install_proton() {
+    # TODO: include this in upgrade_dotfiles
+    url="https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases/latest"
+    header="Accept: application/vnd.github.v3+json"
+    version=$(curl -fsSL -H "$header" $url | jq --raw-output ".tag_name")
+    tarball="https://github.com/GloriousEggroll/proton-ge-custom/releases/download/$version/$version.tar.gz"
+    curl -fsSL "$tarball" | tar -C "$HOME/.steam/root/compatibilitytools.d" -xz
+}
+
 # https://signal.org/download/
 install_signal() {
     url="https://updates.signal.org/desktop/apt/keys.asc"

@@ -965,6 +965,9 @@ awful.rules.rules = {
         },
       }, properties = { placement = awful.placement.centered }
     },
+    { rule = { instance = "code", type = "dialog",
+      }, properties = { placement = awful.placement.centered }
+    },
     -- For some reason class or instance won't match
     { rule_any = { name = { "JetBrains Toolbox" },
         }, properties = { placement = awful.placement.top_right }

@@ -142,7 +142,7 @@ function volume:_update_menu()
     } })
 end
 
-function volume:_init_menu()
+function volume:_init_menu(show)
     local source_cmd = "pactl list sources | grep -v '\\<alsa_output\\.'"
     local sink_cmd = "pactl list sinks"
 
@@ -158,6 +158,7 @@ function volume:_init_menu()
             awful.spawn.easy_async_with_shell(sink_cmd, function(stdout,_,_,_)
                 sinks = parse_devices(stdout)
                 volume:_update_menu()
+                if show then volume.menu:show() end
             end)
         end)
     end)
@@ -248,7 +249,7 @@ local function worker(user_args)
     - scrolling when cursor is over the widget
     ]]
     volume.widget:connect_signal("button::press", function(_,_,_,button)
-        if (button == 1) then volume.menu:show()
+        if (button == 1) then volume:_init_menu(true)
         elseif (button == 4) then volume.raise()
         elseif (button == 5) then volume.lower()
         end
@@ -267,8 +268,6 @@ local function worker(user_args)
         volume.widget.image = PATH_TO_ICONS .. volume_icon_name .. ".svg"
     end)
 --}}}
-
-    volume:_init_menu()
 
     return volume.widget
 end

@@ -1,14 +1,18 @@
 # Before oh-my-zsh
 
-[[ -d /opt/homebrew/bin ]] && export PATH=/opt/homebrew/bin:$PATH
-[[ -d /opt/homebrew/sbin ]] && export PATH=/opt/homebrew/sbin:$PATH
-[[ -d $HOME/.local/bin ]] && export PATH=$HOME/.local/bin:$PATH
-[[ -s $HOME/.cargo/env ]] && source "$HOME/.cargo/env"
+# Only rebuild PATH in top level interactive shell or tmux (SHLVL > 1)
+# See .zshenv
+if [[ $SHLVL -eq 1 ]] || [[ -n "$TMUX" ]]; then
+    [[ -d /opt/homebrew/bin ]] && export PATH=/opt/homebrew/bin:$PATH
+    [[ -d /opt/homebrew/sbin ]] && export PATH=/opt/homebrew/sbin:$PATH
+    [[ -d $HOME/.local/bin ]] && export PATH=$HOME/.local/bin:$PATH
+    [[ -s $HOME/.cargo/env ]] && source "$HOME/.cargo/env"
 
-[[ -d /usr/local/go/bin ]] && export PATH=/usr/local/go/bin:$PATH
-if type go &> /dev/null; then
-    export GOPATH=$HOME/.go
-    export PATH=$HOME/.go/bin:$PATH
+    [[ -d /usr/local/go/bin ]] && export PATH=/usr/local/go/bin:$PATH
+    if type go &> /dev/null; then
+        export GOPATH=$HOME/.go
+        export PATH=$HOME/.go/bin:$PATH
+    fi
 fi
 
 export SDKMAN_DIR="$HOME/.sdkman"

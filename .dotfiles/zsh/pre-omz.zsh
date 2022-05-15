@@ -2,7 +2,7 @@
 
 # Only rebuild PATH in top level interactive shell or tmux (SHLVL > 1)
 # See .zshenv
-if [[ $SHLVL -eq 1 ]] || [[ -n "$TMUX" ]]; then
+if [[ $SHLVL -eq 1 ]] || ([[ -n "$TMUX" ]] && [[ -x /usr/libexec/path_helper ]]) ; then
     [[ -d /opt/homebrew/bin ]] && export PATH=/opt/homebrew/bin:$PATH
     [[ -d /opt/homebrew/sbin ]] && export PATH=/opt/homebrew/sbin:$PATH
     [[ -d $HOME/.local/bin ]] && export PATH=$HOME/.local/bin:$PATH

@@ -13,12 +13,13 @@ if [[ $SHLVL -eq 1 ]] || [[ -n "$TMUX" ]]; then
         export GOPATH=$HOME/.go
         export PATH=$HOME/.go/bin:$PATH
     fi
+
+    # CUDA and cuDNN
+    eval $(nvman env)
 fi
 
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-
-eval $(nvman env)
 
 # https://docs.brew.sh/Shell-Completion
 if type brew &> /dev/null; then

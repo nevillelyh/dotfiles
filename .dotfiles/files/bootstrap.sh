@@ -363,9 +363,35 @@ die() {
     exit 1
 }
 
+check() {
+    msg_box "Checking bootstrap"
+
+    ssh git@github.com 2>&1 | grep -q nevillelyh
+    case "$uname_s" in
+        Darwin)
+            brew --version &> /dev/null
+            ;;
+        Linux)
+            aptitude --version &> /dev/null
+            ;;
+    esac
+    git --version &> /dev/null
+    gpg --output - --sign "$HOME/.dotfiles/files/bootstrap.sh" /dev/null
+    nvim --headless "+version | qall" &> /dev/null
+    go version &> /dev/null
+    gopls version &> /dev/null
+    sdk version &> /dev/null
+    java -version &> /dev/null
+    pip3 --version &> /dev/null
+    flake8 --version &> /dev/null
+    rustup --version &> /dev/null
+    cargo --version &> /dev/null
+}
+
 help() {
     echo "Usage: $(basename "$0") [COMMAND]"
     echo "    Commands:"
+    echo "        check"
     echo "        docker"
     # Bash 3 on Mac missing readarray
     # shellcheck disable=SC2207
@@ -389,6 +415,9 @@ if [[ $# -eq 1 ]]; then
             ;;
         docker_inside)
             docker_inside
+            ;;
+        check)
+            check
             ;;
         help)
             help

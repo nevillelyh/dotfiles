@@ -39,7 +39,6 @@ if type virtualenvwrapper.sh &> /dev/null; then
 fi
 
 # conda activate base
-#[[ -d $HOME/.anaconda3/condabin ]] && eval "$($HOME/.anaconda3/condabin/conda shell.zsh hook)"
 if [[ -d $HOME/.anaconda3/condabin ]]; then
     cache=$HOME/.cache/anaconda3.zsh
     [[ -s $cache ]] || $HOME/.anaconda3/condabin/conda shell.zsh hook > $cache

@@ -403,20 +403,25 @@ local my_net = lain.widget.net({ eth_state = "on", wifi_state = "on", settings =
             my_vpn.devices[#my_vpn.devices+1] = k
         end
     end
-    if #my_vpn.devices > 0 then
-        local cmd = "nmcli -t -f name,type,state connection | grep ':vpn:' | cut -d ':' -f 1,3"
-        awful.spawn.easy_async_with_shell(cmd, function(stdout,_,_,_)
-            stdout = stdout:gsub("%s*$", "")
-            if stdout:find(":activated$") then
+
+    local cmd = "nmcli -t -f name,type,state connection | grep ':vpn:' | cut -d ':' -f 1,3"
+    awful.spawn.easy_async_with_shell(cmd, function(stdout,_,_,_)
+        local ids = {}
+        local vpn_icon = icons_dir .. "ePapirus/network-vpn-patched.svg"
+        for line in stdout:gmatch("[^\r\n]+") do
+            local i, _ = line:find(":")
+            local id = line:sub(1, i - 1)
+            if line:find(":activated$") then
                 vpn_icon = icons_dir .. "ePapirus/network-vpn.svg"
-            elseif stdout:find(":activating$") then
+            elseif line:find(":activating$") then
                 vpn_icon = icons_dir .. "ePapirus/network-vpn-acquiring.svg"
-            else
-                vpn_icon = icons_dir .. "ePapirus/network-vpn-patched.svg"
             end
+            ids[#ids+1] = id
+        end
+        if #ids > 0 then
             my_vpn:set_image(vpn_icon)
-        end)
-    end
+        end
+    end)
     my_wifi:set_image(wifi_icon)
     my_wired:set_image(wired_icon)
 end,
@@ -453,9 +458,14 @@ end)
 local my_vpn_tooltip = awful.tooltip(tooltip_preset)
 my_vpn_tooltip:add_to_object(my_vpn)
 my_vpn:connect_signal("mouse::enter", function()
-    local cmd = "echo " .. table.concat(my_vpn.devices, " ") .. " | xargs -n 1 ifconfig"
+    local cmd = "nmcli -t -f device,state device | grep -P '^vpn[\\d]+:connected' | cut -d ':' -f 1 | xargs -r -n 1 ifconfig"
     awful.spawn.easy_async_with_shell(cmd, function(stdout,_,_,_)
-        my_vpn_tooltip:set_markup(fmt_net(stdout))
+        stdout = stdout:gsub("%s*$", "")
+        if stdout ~= "" then
+            my_vpn_tooltip:set_markup(fmt_net(stdout))
+        else
+            my_vpn_tooltip:set_markup("Not connected")
+        end
     end)
 end)
 
@@ -472,6 +482,7 @@ my_widget_button(my_hdd,     "gnome-system-monitor -f")
 my_widget_button(my_wifi,    "gnome-control-center wifi")
 my_widget_button(my_wired,   "gnome-control-center network")
 my_vpn:connect_signal("button::press", function(_,_,_,button)
+    -- TODO: drop-down menu for multiple VPNs
     if (button == 1) then
         local cmd = "nmcli -t -f name,type,state connection | grep ':vpn:' | cut -d ':' -f 1,3"
         awful.spawn.easy_async_with_shell(cmd, function(stdout,_,_,_)

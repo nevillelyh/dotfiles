@@ -442,7 +442,7 @@ end
 local my_wifi_tooltip = awful.tooltip(tooltip_preset)
 my_wifi_tooltip:add_to_object(my_wifi)
 my_wifi:connect_signal("mouse::enter", function()
-    local cmd = "echo " .. table.concat(my_wifi.devices, " ") .. " | xargs -n 1 iwconfig"
+    local cmd = "echo " .. table.concat(my_wifi.devices, " ") .. " | xargs -r -n 1 iwconfig"
     awful.spawn.easy_async_with_shell(cmd, function(stdout,_,_,_)
         my_wifi_tooltip:set_markup(fmt_net(stdout))
     end)
@@ -450,7 +450,7 @@ end)
 local my_wired_tooltip = awful.tooltip(tooltip_preset)
 my_wired_tooltip:add_to_object(my_wired)
 my_wired:connect_signal("mouse::enter", function()
-    local cmd = "echo " .. table.concat(my_wired.devices, " ") .. " | xargs -n 1 ifconfig"
+    local cmd = "echo " .. table.concat(my_wired.devices, " ") .. " | xargs -r -n 1 ifconfig"
     awful.spawn.easy_async_with_shell(cmd, function(stdout,_,_,_)
         my_wired_tooltip:set_markup(fmt_net(stdout))
     end)

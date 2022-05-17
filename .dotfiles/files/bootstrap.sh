@@ -46,17 +46,12 @@ setup_homebrew() {
 
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     [[ -d /opt/homebrew ]] && export PATH=/opt/homebrew/bin:$PATH
-    # shellcheck disable=SC2086
     brew install "${BREWS[@]}"
-    # shellcheck disable=SC2086
     brew install --cask "${CASKS[@]}"
 
     read -p "Install optional casks (y/N)? " -n 1 -r
     echo # (optional) move to a new line
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        # shellcheck disable=SC2086
-        brew install --cask "${CASKS_OPT[@]}"
-    fi
+    [[ $REPLY =~ ^[Yy]$ ]] && brew install --cask "${CASKS_OPT[@]}"
 }
 
 setup_mac() {

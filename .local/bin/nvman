@@ -10,11 +10,11 @@ die() {
 }
 
 help() {
-    echo "Usage: $(basename $0) <COMMAND> [ARG]..."
+    echo "Usage: $(basename "$0") <command> [arg]..."
     echo
     echo "  commands:"
     echo "    env"
-    echo "    install <RUNFILE|TARBALL>"
+    echo "    install <runfile|tarball>"
     echo "    list"
     echo "    help"
 }
@@ -38,33 +38,34 @@ env() {
 }
 
 install_cuda() {
-    cuda_version=$(echo $1 | grep -Po '(?<=^cuda_)[0-9\.]+')
+    cuda_version=$(echo "$1" | grep -Po "(?<=^cuda_)[0-9\.]+")
     dest=$HOME/.nvman/cuda-$cuda_version
     if [[ -d $dest ]]; then
         die "CUDA $cuda_version already installed"
     fi
     echo "Installing CUDA $cuda_version in $dest"
-    mkdir -p $HOME/.nvman
-    bash $1 --silent --installpath=$dest --toolkit --samples --no-opengl-libs --no-drm
+    mkdir -p "$HOME/.nvman"
+    bash "$1" --silent --installpath="$dest" --toolkit --samples --no-opengl-libs --no-drm
     link=$HOME/.nvman/cuda-current
-    rm -f $link
-    ln -rs $dest $link
+    rm -f "$link"
+    ln -rs "$dest" "$link"
 }
 
 install_cudnn() {
-    cudnn_version=$(echo $1 | sed 's/cudnn-[^-]*-[^-]*-\([^-]*\)_cuda.*/\1/')
+    # shellcheck disable=SC2001
+    cudnn_version=$(echo "$1" | sed "s/cudnn-[^-]*-[^-]*-\([^-]*\)_cuda.*/\1/")
     dest=$HOME/.nvman/cudnn-$cudnn_version
     if [[ -d $dest ]]; then
         die "cuDNN $cudnn_version already installed"
     fi
     echo "Installing CUDNN $cudnn_version in $dest"
-    mkdir -p $HOME/.nvman
-    tar xJf $1 -C $HOME/.nvman
-    base=$(basename $1 .tar.xz)
-    mv $HOME/.nvman/$base $dest
+    mkdir -p "$HOME/.nvman"
+    tar xJf "$1" -C "$HOME/.nvman"
+    base=$(basename "$1" .tar.xz)
+    mv "$HOME/.nvman/$base" "$dest"
     link=$HOME/.nvman/cudnn-current
-    rm -f $link
-    ln -rs $dest $link
+    rm -f "$link"
+    ln -rs "$dest" "$link"
 }
 
 install() {
@@ -77,10 +78,10 @@ install() {
     ext="${base##*.}"
     case "$ext" in
         run)
-            install_cuda $1
+            install_cuda "$1"
             ;;
         xz)
-            install_cudnn $1
+            install_cudnn "$1"
             ;;
         *)
             die "Unsupported file: $1"
@@ -90,21 +91,29 @@ install() {
 list() {
     [[ $# -ne 0 ]] && help_and_die "Invalid argument: $*"
     [[ ! -d $HOME/.nvman ]] && die "nvman not installed"
-    set +o pipefail
-    cuda=$(ls $HOME/.nvman/ | grep '^cuda-' | grep -v '^cuda-current$' | sed 's/^cuda-//' | tr '\n' ' ')
-    set -o pipefail
-    if [[ -z "$cuda" ]]; then
+    cuda=()
+    for c in "$HOME"/.nvman/cuda-*; do
+        c="$(basename "$c")"
+        if [[ "$c" != "cuda-current" ]]; then
+            cuda+=("${c//cuda-/}")
+        fi
+    done
+    if [[ "${#cuda[@]}" -eq 0 ]]; then
         echo "CUDA not installed"
     else
-        echo "CUDA: $cuda"
+        echo "CUDA: ${cuda[*]}"
     fi
-    set +o pipefail
-    cudnn=$(ls $HOME/.nvman/ | grep '^cudnn-' | grep -v '^cudnn-current$' | sed 's/^cudnn-//' | tr '\n' ' ')
-    set -o pipefail
-    if [[ -z "$cudnn" ]]; then
+    cudnn=()
+    for c in "$HOME"/.nvman/cudnn-*; do
+        c="$(basename "$c")"
+        if [[ "$c" != "cudnn-current" ]]; then
+            cudnn+=("${c//cudnn-/}")
+        fi
+    done
+    if [[ "${#cudnn[@]}" -eq 0 ]]; then
         echo "cuDNN not installed"
     else
-        echo "cuDNN: $cudnn"
+        echo "cuDNN: ${cudnn[*]}"
     fi
 }
 
@@ -116,15 +125,15 @@ fi
 case "$1" in
     env)
         shift
-        env $*
+        env "$@"
         ;;
     install)
         shift
-        install $*
+        install "$@"
         ;;
     list)
         shift
-        list $*
+        list "$@"
         ;;
     help)
         help

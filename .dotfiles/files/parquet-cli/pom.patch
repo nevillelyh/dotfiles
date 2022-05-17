@@ -1,0 +1,43 @@
+From 51b05c5bae62b8dc0c0c2987e164426ea2a3f0c5 Mon Sep 17 00:00:00 2001
+From: Neville Li <neville.lyh@gmail.com>
+Date: Tue, 17 May 2022 12:08:35 -0400
+Subject: [PATCH] x
+
+---
+ parquet-cli/pom.xml | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
+
+diff --git a/parquet-cli/pom.xml b/parquet-cli/pom.xml
+index 5346f2439..bc6a46a6f 100644
+--- a/parquet-cli/pom.xml
++++ b/parquet-cli/pom.xml
+@@ -156,6 +156,11 @@
+       <version>1.1.3</version>
+       <scope>provided</scope>
+     </dependency>
++    <dependency>
++      <groupId>org.xerial.snappy</groupId>
++      <artifactId>snappy-java</artifactId>
++      <version>1.1.8.4</version>
++    </dependency>
+   </dependencies>
+ 
+   <build>
+@@ -197,14 +202,6 @@
+                   <include>*</include>
+                 </includes>
+               </artifactSet>
+-              <relocations>
+-                <relocation>
+-                   <!-- relocate Avro in the runtime jar to avoid conflicts with
+-                       on-cluster Avro versions. -->
+-                  <pattern>org.apache.avro</pattern>
+-                  <shadedPattern>${shade.prefix}.org.apache.avro</shadedPattern>
+-                </relocation>
+-              </relocations>
+             </configuration>
+           </execution>
+         </executions>
+-- 
+2.34.1
+

@@ -352,9 +352,9 @@ install() {
 }
 
 msg_box() {
-    line="==${1//[[:alnum:][:space:]]/=}=="
+    line="==${1//[[:ascii:]]/=}=="
     echo "$line"
-    echo "= $1 ="
+    echo "| $1 |"
     echo "$line"
 }
 

@@ -1,6 +1,8 @@
 [user]
 	name = Neville Li
 	email = neville.lyh@gmail.com
+[includeIf "gitdir:~/src/nvidia/"]
+	path = .gitconfig-nvidia
 
 [init]
 	defaultBranch = main

@@ -6,6 +6,8 @@
 	defaultBranch = main
 [branch]
 	autoSetupRebase = always
+[merge]
+	tool = vimdiff
 [rebase]
 	autoSquash = true
 
@@ -19,8 +21,7 @@
 	lm = log --pretty='%C(red)%h%C(reset) -%C(auto)%d%C(reset) %s %C(green)(%ar) %C(bold blue)<%an>%C(reset)' --author=neville
 
 # GPG
-[merge]
-	tool = vimdiff
+[user]
 	signingKey = F91A03ED31E1842B
 [commit]
 	gpgSign = true

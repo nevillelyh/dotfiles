@@ -57,9 +57,11 @@ pip3 install --quiet --upgrade --upgrade-strategy eager "${pip_pkgs[@]}"
 msg_box "Upgrading Rust"
 rustup update
 # Bash 3 on Mac missing readarray
-# shellcheck disable=SC2207
-crates=($(grep '^"[^"]*" = \["[^"]*"\]$' "$HOME/.cargo/.crates.toml" | sed 's/^"\([^ ]*\) .*$/\1/'))
-cargo install -q "${crates[@]}"
+if [[ -s "$HOME/.cargo/.crates.toml" ]]; then
+    # shellcheck disable=SC2207
+    crates=($(grep '^"[^"]*" = \["[^"]*"\]$' "$HOME/.cargo/.crates.toml" | sed 's/^"\([^ ]*\) .*$/\1/'))
+    cargo install -q "${crates[@]}"
+fi
 
 if type conda &> /dev/null; then
     msg_box "Upgrading Anaconda"

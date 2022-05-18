@@ -130,7 +130,7 @@ install_github() {
 
 # https://go.dev/doc/install
 install_go() {
-    # TODO: include this in upgrade_dotfiles
+    # TODO: include this in upgrade-dotfiles
     url="https://api.github.com/repos/golang/go/git/refs/tags"
     header="Accept: application/vnd.github.v3+json"
     version=$(curl -fsSL -H "$header" $url | jq --raw-output ".[].ref" | grep "refs/tags/go" | cut -d "/" -f 3 | tail -n 1)
@@ -153,7 +153,7 @@ install_nvidia() {
 
 # https://github.com/GloriousEggroll/proton-ge-custom/tree/master#installation
 install_proton() {
-    # TODO: include this in upgrade_dotfiles
+    # TODO: include this in upgrade-dotfiles
     url="https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases/latest"
     header="Accept: application/vnd.github.v3+json"
     version=$(curl -fsSL -H "$header" $url | jq --raw-output ".tag_name")

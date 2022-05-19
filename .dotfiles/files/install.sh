@@ -135,7 +135,7 @@ install_go() {
     header="Accept: application/vnd.github.v3+json"
     version=$(curl -fsSL -H "$header" $url | jq --raw-output ".[].ref" | grep "refs/tags/go" | cut -d "/" -f 3 | tail -n 1)
     os=$(uname -s | tr "[:upper:]" "[:lower:]")
-    arch=$(uname -m | sed "s/^x86_64$/amd64/" | sed "s/^aarch64$/arm64/")
+    arch=$(dpkg --print-architecture)
     curl -fsSL "https://go.dev/dl/$version.$os-$arch.tar.gz" | sudo tar -C /usr/local -xz
 }
 

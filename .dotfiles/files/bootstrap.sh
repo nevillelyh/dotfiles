@@ -10,7 +10,7 @@ set -euo pipefail
 # python - leave macOS bundled python alone
 # pinentry-mac - for GPG
 # App Store - AdGuard for Safari, Instapaper, Kindle, Messenger, Slack, The Unarchiver, WhatsApp
-BREWS=(bat code-minimap cmake colordiff exa fd fzf gh git git-delta gitui golang gpg htop jq neovim ninja pinentry-mac python ripgrep shellcheck tmux wget zoxide)
+BREWS=(bat bazelisk code-minimap cmake colordiff exa fd fzf gh git git-delta gitui golang gpg htop jq neovim ninja pinentry-mac python ripgrep shellcheck tmux wget zoxide)
 CASKS=(alacritty alfred dropbox github iterm2 jetbrains-toolbox joplin lastpass sublime-text visual-studio-code vimr)
 CASKS_OPT=(adobe-creative-cloud anki expressvpn firefox google-chrome guitar-pro macdive microsoft-edge shearwater-cloud spotify transmission vlc)
 
@@ -174,6 +174,11 @@ setup_go() {
     export GOPATH=$HOME/.go
     go install -v golang.org/x/tools/gopls@latest
     go install -v github.com/go-delve/delve/cmd/dlv@latest
+    if [[ "$uname_s" == "Linux" ]]; then
+        go install github.com/bazelbuild/bazelisk@latest
+        ln -s "$HOME/.go/bin/bazelisk" "$HOME/.go/bin/bazel"
+        "$HOME/.go/bin/bazel" version
+    fi
 }
 
 setup_jdk() {

@@ -44,16 +44,6 @@ install_aws() {
     rm -rf awscliv2.zip aws
 }
 
-# https://bazel.build/install/ubuntu
-install_bazel() {
-    url="https://bazel.build/bazel-release.pub.gpg"
-    repo="deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/bazel-archive-keyring.gpg] https://storage.googleapis.com/bazel-apt stable jdk1.8"
-    setup_gpg "$url" bazel-archive-keyring.gpg
-    setup_apt "$repo" bazel.list
-    sudo aptitude update
-    sudo aptitude install -y bazel
-}
-
 # Chrome manages its own repository
 install_chrome() {
     wget -nv https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb

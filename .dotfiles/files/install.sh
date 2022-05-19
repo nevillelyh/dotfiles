@@ -221,6 +221,7 @@ install_sublime() {
     sudo aptitude install -y sublime-text
 }
 
+# https://aka.ms/get-teams-linux
 install_teams() {
     url="https://packages.microsoft.com/repos/ms-teams/pool/main/t/teams/"
     pkg=$(curl -fsSL $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P "^teams_[\d\.]+_amd64.deb$" | tail -n 1)

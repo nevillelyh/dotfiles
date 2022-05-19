@@ -231,6 +231,17 @@ install_teams() {
     rm -f teams_*_amd64.deb
 }
 
+# https://www.vaultproject.io/downloads
+install_vault() {
+    url="https://apt.releases.hashicorp.com/gpg"
+    repo="deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+
+    setup_gpg "$url" hashicorp.gpg
+    setup_apt "$repo" hashicorp.list
+    sudo aptitude update
+    sudo aptitude install -y vault
+}
+
 if [[ $#  -ne 1 ]]; then
     echo "Usage: $(basename "$0") <PACKAGE>"
     exit 1

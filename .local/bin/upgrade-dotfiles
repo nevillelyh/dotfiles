@@ -41,6 +41,20 @@ nvim -u "$HOME/.config/nvim/dein.vim" --headless \
     '+let g:dein#install_progress_type = "none" | call dein#update() | echo "\r\n" | qall'
 
 msg_box "Upgrading Go"
+if [[ -d /usr/local/go ]]; then
+    url="https://api.github.com/repos/golang/go/git/refs/tags"
+    header="Accept: application/vnd.github.v3+json"
+    latest=$(curl -fsSL -H "$header" $url | jq --raw-output ".[].ref" | grep "refs/tags/go" | cut -d "/" -f 3 | tail -n 1)
+    current=$(go version | awk '{ print $3 }')
+    if [[ "$latest" != "$current" ]]; then
+        read -p "Upgrade from $current to $latest (y/N)? " -n 1 -r
+        echo # (optional) move to a new line
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            sudo rm -rf /usr/local/go
+            bash "$HOME/.dotfiles/files/install.sh" go
+        fi
+    fi
+fi
 for mod in $(go version -m "$HOME/.go/bin" | grep "^\s\+path\s\+" | awk '{print $2}'); do
     go install "$mod@latest"
 done

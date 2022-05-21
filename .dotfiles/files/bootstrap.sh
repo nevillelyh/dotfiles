@@ -176,8 +176,8 @@ setup_go() {
     go install -v github.com/go-delve/delve/cmd/dlv@latest
     if [[ "$uname_s" == "Linux" ]]; then
         go install github.com/bazelbuild/bazelisk@latest
-        ln -rs "$HOME/.go/bin/bazelisk" "$HOME/.go/bin/bazel"
-        "$HOME/.go/bin/bazel" version
+        ln -s "$HOME/.go/bin/bazelisk" "$HOME/.local/bin/bazel"
+        "$HOME/.local/bin/bazel" version
     fi
 }
 

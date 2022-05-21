@@ -12,7 +12,7 @@ if type go &> /dev/null; then
 fi
 
 # CUDA and cuDNN
-eval $(nvman env)
+eval "$(nvman env)"
 
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"

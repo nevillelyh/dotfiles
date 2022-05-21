@@ -2,10 +2,10 @@
 
 case "$(uname -s)" in
     Linux)
-        . $HOME/.dotfiles/zsh/linux.zsh
+        . "$HOME/.dotfiles/zsh/linux.zsh"
         ;;
     Darwin)
-        . $HOME/.dotfiles/zsh/mac.zsh
+        . "$HOME/.dotfiles/zsh/mac.zsh"
         ;;
 esac
 
@@ -21,8 +21,8 @@ alias lsg='exa -l --git'
 alias lst='exa -l -r -s modified'
 
 function zt() {
-    z $1
-    tmux new-session -s $1
+    z "$1"
+    tmux new-session -s "$1"
 }
 
 export EDITOR=nvim
@@ -35,19 +35,19 @@ if type virtualenvwrapper.sh &> /dev/null; then
     export VIRTUALENVWRAPPER_PYTHON=$(which python3)
     export WORKON_HOME=$HOME/.virtualenvs
     export PROJECT_HOME=$HOME/src/python
-    source $(which virtualenvwrapper.sh)
+    source "$(which virtualenvwrapper.sh)"
 fi
 
 # Using system Python by default, base is not activated
 # conda activate base
 # conda config --set auto_activate_base false
-condabin=($HOME/.anaconda3/condabin/conda /opt/homebrew/anaconda3/condabin/conda)
+condabin=("$HOME/.anaconda3/condabin/conda" /opt/homebrew/anaconda3/condabin/conda)
 for cb in "${condabin[@]}"; do
     if [[ -x "$cb" ]]; then
         # Delete cache after conda config
         cache=$HOME/.cache/anaconda3.zsh
-        [[ -s $cache ]] || $cb shell.zsh hook > $cache
-        source $cache
+        [[ -s "$cache" ]] || "$cb" shell.zsh hook > "$cache"
+        source "$cache"
         break
     fi
 done
@@ -56,8 +56,9 @@ done
 if [[ -z "$SSH_CONNECTION" ]]; then
     agent=/tmp/ssh-agent-tmux-$USER
     if [[ -z $(pidof ssh-agent) ]]; then
-        eval $(ssh-agent) &> /dev/null
-        ssh-add -q $(find $HOME/.ssh -name id_dsa -or -name id_rsa -or -name id_ecdsa -or -name id_ed25519)
+        eval "$(ssh-agent)" &> /dev/null
+        find "$HOME/.ssh" \( -name id_dsa -or -name id_rsa -or -name id_ecdsa -or -name id_ed25519 \) \
+            -exec ssh-add -q {} \;
         [[ "$SSH_AUTH_SOCK" != "$agent" ]] && ln -fs "$SSH_AUTH_SOCK" "$agent"
     fi
     export SSH_AUTH_SOCK="$agent"

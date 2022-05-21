@@ -154,7 +154,6 @@ install_nvidia() {
 
 # https://github.com/GloriousEggroll/proton-ge-custom/tree/master#installation
 install_proton() {
-    # TODO: include this in upgrade-dotfiles
     url="https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases/latest"
     header="Accept: application/vnd.github.v3+json"
     version=$(curl -fsSL -H "$header" $url | jq --raw-output ".tag_name")

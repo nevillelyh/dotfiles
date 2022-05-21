@@ -40,6 +40,11 @@ msg_box "Upgrading NeoVim"
 nvim -u "$HOME/.config/nvim/dein.vim" --headless \
     '+let g:dein#install_progress_type = "none" | call dein#update() | echo "\r\n" | qall'
 
+msg_box "Upgrading Go"
+for mod in $(go version -m "$HOME/.go/bin" | grep "^\s\+path\s\+" | awk '{print $2}'); do
+    go install "$mod@latest"
+done
+
 msg_box "Upgrading JVM"
 set +eu
 # shellcheck source=/dev/null

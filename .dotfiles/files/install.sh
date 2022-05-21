@@ -133,7 +133,6 @@ install_github() {
 install_go() {
     brew_install go
 
-    # TODO: include this in upgrade-dotfiles
     url="https://api.github.com/repos/golang/go/git/refs/tags"
     header="Accept: application/vnd.github.v3+json"
     version=$(curl -fsSL -H "$header" $url | jq --raw-output ".[].ref" | grep "refs/tags/go" | cut -d "/" -f 3 | tail -n 1)

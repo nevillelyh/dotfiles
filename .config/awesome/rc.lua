@@ -490,18 +490,20 @@ my_vpn:connect_signal("button::press", function(_,_,_,button)
             local i, _ = stdout:find(":")
             local id = stdout:sub(1, i - 1)
             if stdout:find(":activated$") then
-                awful.spawn.easy_async("nmcli connection down id " .. id, function(_,_,_,exit_code)
+                awful.spawn.easy_async(awesome_path .. "scripts/nmcli.sh down " .. id, function(_,_,_,exit_code)
                     if exit_code == 0 then
                         naughty.notify({ title = "Disconnected from VPN: " .. id })
-                    else
+                    elseif exit_code ~= 130 then
+                        -- Script terminated by Control-C, e.g. cancelled
                         naughty.notify({ title = "Failed to disconnect from VPN: " .. id })
                     end
                 end)
             elseif stdout:find(":$") then
-                awful.spawn.easy_async(awesome_path .. "scripts/nmcli.sh " .. id, function(_,_,_,exit_code)
+                awful.spawn.easy_async(awesome_path .. "scripts/nmcli.sh up " .. id, function(_,_,_,exit_code)
                     if exit_code == 0 then
                         naughty.notify({ title = "Connected to VPN: " .. id })
-                    else
+                    elseif exit_code ~= 130 then
+                        -- Script terminated by Control-C, e.g. cancelled
                         naughty.notify({ title = "Failed to connect to VPN: " .. id })
                     end
                 end)

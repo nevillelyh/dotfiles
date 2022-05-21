@@ -20,22 +20,36 @@ setup_apt() {
     echo "$repo" | sudo tee "/etc/apt/sources.list.d/$list" > /dev/null
 }
 
-# https://docs.anaconda.com/anaconda/install/linux/
-install_anaconda() {
+_install_anaconda_mac() {
+    brew install --cask anaconda
+}
+
+_install_anaconda_linux() {
     url="https://www.anaconda.com/products/distribution"
-    os=$(uname -s)
     arch=$(uname -m)
-    [[ $os == "Darwin" ]] && os="MacOSX"
-    url=$(curl -fsSL $url | grep -o "\<https://repo.anaconda.com/archive/Anaconda3-.*-$os-$arch.sh\>" | uniq | tail -n 1)
+    url=$(curl -fsSL $url | grep -o "\<https://repo.anaconda.com/archive/Anaconda3-.*-Linux-$arch.sh\>" | uniq | tail -n 1)
     pkg=$(echo "$url" | grep -o "\<Anaconda3-.*.sh$")
     wget -nv "$url"
     bash "$pkg" -b -p "$HOME/.anaconda3"
     rm "$pkg"
-    # Do not activate base automatically
-    "$HOME/.anaconda3/bin/conda" config --set auto_activate_base false
 }
 
-# https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+# https://docs.anaconda.com/anaconda/install/linux/
+install_anaconda() {
+    case $(uname -s) in
+        Darwin)
+            _install_anaconda_mac
+            condabin=/opt/homebrew/anaconda3/condabin/conda
+            ;;
+        Linux)
+            _install_anaconda_linux
+            condabin="$HOME/.anaconda3/condabin/conda"
+            ;;
+    esac
+    # Do not activate base automatically
+    "$condabin" config --set auto_activate_base false
+}
+
 install_aws() {
     arch=$(uname -m)
     curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-$arch.zip" -o awscliv2.zip

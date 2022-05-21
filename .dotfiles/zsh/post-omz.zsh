@@ -38,12 +38,19 @@ if type virtualenvwrapper.sh &> /dev/null; then
     source $(which virtualenvwrapper.sh)
 fi
 
+# Using system Python by default, base is not activated
 # conda activate base
-if [[ -d $HOME/.anaconda3/condabin ]]; then
-    cache=$HOME/.cache/anaconda3.zsh
-    [[ -s $cache ]] || $HOME/.anaconda3/condabin/conda shell.zsh hook > $cache
-    source $cache
-fi
+# conda config --set auto_activate_base false
+condabin=($HOME/.anaconda3/condabin/conda /opt/homebrew/anaconda3/condabin/conda)
+for cb in "${condabin[@]}"; do
+    if [[ -x "$cb" ]]; then
+        # Delete cache after conda config
+        cache=$HOME/.cache/anaconda3.zsh
+        [[ -s $cache ]] || $cb shell.zsh hook > $cache
+        source $cache
+        break
+    fi
+done
 
 # Reuse a single SSH agent
 if [[ -z "$SSH_CONNECTION" ]]; then

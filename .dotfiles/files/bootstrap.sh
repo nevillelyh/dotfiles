@@ -308,15 +308,24 @@ setup_zsh() {
 
 # Bootstrap inside a Docker container
 
-docker_build() {
+run_docker() {
+    if [[ -f /.dockerenv ]]; then
+        _run_docker_guest
+    else
+        _run_docker_host
+    fi
+}
+
+_run_docker_host() {
     msg_box "Building Docker image"
     docker run -it --rm --platform linux/amd64 \
         -v "$HOME/.dotfiles:/dotfiles" \
         -v "$HOME/.ssh:/ssh" \
-        ubuntu:jammy /bin/bash /dotfiles/files/bootstrap.sh docker_inside
+        ubuntu:jammy \
+        /bin/bash /dotfiles/files/bootstrap.sh docker
 }
 
-docker_inside() {
+_run_docker_guest() {
     msg_box "Setting up Docker container"
     # Prepare environment
     apt-get update
@@ -363,7 +372,7 @@ die() {
     exit 1
 }
 
-check() {
+run_check() {
     msg_box "Checking bootstrap"
 
     ssh git@github.com 2>&1 | grep -q nevillelyh
@@ -389,7 +398,7 @@ check() {
 }
 
 help() {
-    echo "Usage: $(basename "$0") [COMMAND]"
+    echo "Usage: $(basename "$0") [command]"
     echo "    Commands:"
     echo "        check"
     echo "        docker"
@@ -411,13 +420,10 @@ basedir=$(dirname "$(readlink -f "$0")")
 if [[ $# -eq 1 ]]; then
     case "$1" in
         docker)
-            docker_build
-            ;;
-        docker_inside)
-            docker_inside
+            run_docker
             ;;
         check)
-            check
+            run_check
             ;;
         help)
             help

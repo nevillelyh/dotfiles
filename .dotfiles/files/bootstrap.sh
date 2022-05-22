@@ -397,14 +397,18 @@ run_check() {
     cargo --version &> /dev/null
 }
 
+get_commands() {
+    # Bash 3 on Mac missing readarray
+    # shellcheck disable=SC2207
+    cmds=($(grep -o "^setup_\w\+()" "$(readlink -f "$0")" | sed "s/^setup_\(.*\)()$/\1/"))
+}
+
 help() {
     echo "Usage: $(basename "$0") [command]"
     echo "    Commands:"
     echo "        check"
     echo "        docker"
-    # Bash 3 on Mac missing readarray
-    # shellcheck disable=SC2207
-    cmds=($(grep -o "^setup_\w\+()" "$(readlink -f "$0")" | sed "s/^setup_\(.*\)()$/\1/"))
+    get_commands
     for cmd in "${cmds[@]}"; do
         echo "        $cmd"
     done
@@ -429,8 +433,13 @@ if [[ $# -eq 1 ]]; then
             help
             ;;
         *)
-            msg_box "Setting up single step $1"
-            "setup_$1"
+            get_commands
+            if [[ " ${cmds[*]} " =~ (^|[[:space:]])"$1"($|[[:space:]]) ]]; then
+                msg_box "Setting up single step $1"
+                "setup_$1"
+            else
+                die "Command not found: $1"
+            fi
             ;;
     esac
     exit 0

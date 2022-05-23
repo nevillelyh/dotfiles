@@ -14,8 +14,10 @@ help() {
     echo
     echo "  commands:"
     echo "    env"
-    echo "    install <runfile|tarball>"
+    echo "    install   <runfile|tarball>"
     echo "    list"
+    echo "    set       <cuda|cudnn> <version>"
+    echo "    uninstall <cuda|cudnn> <version>"
     echo "    help"
 }
 
@@ -26,7 +28,7 @@ help_and_die() {
     exit 1
 }
 
-env() {
+run_env() {
     [[ $# -ne 0 ]] && help_and_die "Invalid argument: $*"
     [[ ! -d $HOME/.nvman ]] && exit 0
     cuda=$HOME/.nvman/cuda-current
@@ -68,7 +70,7 @@ install_cudnn() {
     ln -rs "$dest" "$link"
 }
 
-install() {
+run_install() {
     [[ $# -lt 1 ]] && help_and_die "Missing RUNFILE or TARBALL"
     [[ $# -gt 1 ]] && help_and_die "Invalid argument: $*"
     type lspci &> /dev/null || die "GPU not found"
@@ -88,7 +90,7 @@ install() {
     esac
 }
 
-list() {
+run_list() {
     [[ $# -ne 0 ]] && help_and_die "Invalid argument: $*"
     [[ ! -d $HOME/.nvman ]] && die "nvman not installed"
     cuda=()
@@ -123,6 +125,31 @@ list() {
     fi
 }
 
+run_set() {
+    [[ $# -ne 2 ]] && help_and_die "Invalid argument: $*"
+    pkg=$1
+    version=$2
+    if [[ "$pkg" != "cuda" ]] && [[ "$pkg" != "cudnn" ]]; then
+        help_and_die "Invalid argument: $*"
+    fi
+    src="$HOME/.nvman/$pkg-$version"
+    link="$HOME/.nvman/$pkg-current"
+    [[ -d "$src" ]] || die "Not installed: $pkg-$version"
+    [[ -L "$link" ]] && rm -f "$link"
+    ln -rsf "$src" "$link"
+}
+
+run_uninstall() {
+    [[ $# -ne 2 ]] && help_and_die "Invalid argument: $*"
+    pkg=$1
+    version=$2
+    src="$HOME/.nvman/$pkg-$version"
+    [[ -d "$src" ]] || die "Not installed: $pkg-$version"
+    current=$(readlink -f "$HOME/.nvman/$pkg-current")
+    [[ "$src" == "$current" ]] && die "Cannot uninstall current: $pkg-$version"
+    rm -rf "$src"
+}
+
 if [[ $# -eq 0 ]]; then
     help
     exit 1
@@ -131,15 +158,23 @@ fi
 case "$1" in
     env)
         shift
-        env "$@"
+        run_env "$@"
         ;;
     install)
         shift
-        install "$@"
+        run_install "$@"
         ;;
     list)
         shift
-        list "$@"
+        run_list "$@"
+        ;;
+    set)
+        shift
+        run_set "$@"
+        ;;
+    uninstall)
+        shift
+        run_uninstall "$@"
         ;;
     help)
         help

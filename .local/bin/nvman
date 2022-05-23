@@ -92,10 +92,13 @@ list() {
     [[ $# -ne 0 ]] && help_and_die "Invalid argument: $*"
     [[ ! -d $HOME/.nvman ]] && die "nvman not installed"
     cuda=()
+    [[ -L "$HOME/.nvman/cuda-current" ]] && current="$(basename "$(readlink -f "$HOME/.nvman/cuda-current")")" || current="UNKNOWN"
     for c in "$HOME"/.nvman/cuda-*; do
         c="$(basename "$c")"
         if [[ "$c" != "cuda-current" ]]; then
-            cuda+=("${c//cuda-/}")
+            v="${c//cuda-/}"
+            [[ "$c" == "$current" ]] && v="*$v"
+            cuda+=("$v")
         fi
     done
     if [[ "${#cuda[@]}" -eq 0 ]]; then
@@ -104,10 +107,13 @@ list() {
         echo "CUDA: ${cuda[*]}"
     fi
     cudnn=()
+    [[ -L "$HOME/.nvman/cudnn-current" ]] && current="$(basename "$(readlink -f "$HOME/.nvman/cudnn-current")")" || current="UNKNOWN"
     for c in "$HOME"/.nvman/cudnn-*; do
         c="$(basename "$c")"
         if [[ "$c" != "cudnn-current" ]]; then
-            cudnn+=("${c//cudnn-/}")
+            v="${c//cudnn-/}"
+            [[ "$c" == "$current" ]] && v="*$v"
+            cudnn+=("$v")
         fi
     done
     if [[ "${#cudnn[@]}" -eq 0 ]]; then

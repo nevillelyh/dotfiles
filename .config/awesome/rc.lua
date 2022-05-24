@@ -985,10 +985,10 @@ awful.rules.rules = {
     { rule_any = { name = { "JetBrains Toolbox" },
         }, properties = { placement = awful.placement.top_right }
     },
-    { rule_any = { class = { "Microsoft Teams - Preview" },
+    { rule_any = { class = { "Evolution" },
       }, properties = { tag = awful.screen.focused().tags[8] }
     },
-    { rule_any = { class = { "Thunderbird" },
+    { rule_any = { class = { "Microsoft Teams - Preview" },
       }, properties = { tag = awful.screen.focused().tags[8] }
     },
     { rule_any = { class = { "Steam" },

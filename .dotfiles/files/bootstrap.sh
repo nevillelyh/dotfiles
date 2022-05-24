@@ -257,6 +257,9 @@ setup_code() {
         ms-vscode.cpptools-extension-pack \
         rust-lang.rust \
         vadimcn.vscode-lldb
+    if [[ "$uname_s" == "Linux" ]]; then
+        code --install-extension ms-azuretools.vscode-docker
+    fi
     if [[ "$uname_s" == "Darwin" ]]; then
         code --install-extension sswg.swift-lang
         defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false

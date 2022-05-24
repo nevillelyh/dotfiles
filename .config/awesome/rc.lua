@@ -986,7 +986,7 @@ awful.rules.rules = {
         }, properties = { placement = awful.placement.top_right }
     },
     { rule_any = { class = { "Steam" },
-      }, properties = { titlebars_enabled = false }
+      }, properties = { tag = awful.screen.focused().tags[9], titlebars_enabled = false }
     },
     { rule_any = {
         name = {

@@ -1026,6 +1026,7 @@ client.connect_signal("property::name", function(c)
         awful.spawn(awesome_path .. "scripts/fix-icon.sh slack")
     end
     if c.name == "Spotify" then
+        c:move_to_tag(c.screen.tags[9])
         awful.spawn(awesome_path .. "scripts/fix-icon.sh spotify")
     end
 end)

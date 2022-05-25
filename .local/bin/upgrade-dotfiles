@@ -68,7 +68,7 @@ sdk upgrade
 set -eu
 
 msg_box "Upgrading Python"
-pip install --upgrade pip
+pip3 install --upgrade pip
 # Bash 3 on Mac missing readarray
 # shellcheck disable=SC2207
 pip_pkgs=($(grep "^PIP_PKGS=(" "$HOME/.dotfiles/files/bootstrap.sh" | sed "s/^PIP_PKGS=(\(.*\))$/\1/"))

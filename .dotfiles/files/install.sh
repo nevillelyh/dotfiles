@@ -117,6 +117,21 @@ install_dropbox() {
     rm -f dropbox_*_amd64.deb
 }
 
+# https://cloud.google.com/sdk/docs/install#deb
+install_gcloud() {
+    brew_install_cask google-cloud-sdk
+
+    arch=$(uname -m)
+    url="https://packages.cloud.google.com/apt/doc/apt-key.gpg"
+    repo="deb [signed-by=/etc/apt/trusted.gpg.d/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main"
+
+    setup_gpg "$url" cloud.google.gpg
+    setup_apt "$repo" google-cloud-sdk.list
+    sudo aptitude update
+    sudo aptitude install google-cloud-cli
+}
+
+
 # https://github.com/cli/cli/blob/trunk/docs/install_linux.md
 install_github() {
     brew_install gh

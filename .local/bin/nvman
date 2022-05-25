@@ -35,6 +35,7 @@ run_env() {
     [[ ! -L $cuda ]] && die "CUDA not installed"
     cudnn=$HOME/.nvman/cudnn-current
     [[ ! -L $cudnn ]] && die "cuDNN not installed"
+    echo "export CUDA_PATH=$HOME/.nvman/cuda-current"
     echo "export PATH=$cuda/bin${PATH:+:${PATH}}"
     echo "export LD_LIBRARY_PATH=$cuda/lib64:$cudnn/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
 }

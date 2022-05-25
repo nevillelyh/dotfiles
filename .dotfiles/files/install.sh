@@ -104,6 +104,8 @@ install_docker() {
     setup_apt "$repo" docker.list
     sudo aptitude update
     sudo aptitude install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+    # Default is ctrl-p, ctrl-q
+    echo '{"detachKeys": "ctrl-z,z"}' | jq --indent 4 > "$HOME/.docker/config.json"
 }
 
 # Dropbox manages its own repository

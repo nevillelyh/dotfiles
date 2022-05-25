@@ -228,7 +228,8 @@ setup_python() {
 
     # Homebrew python includes pip
     if [[ "$uname_s" == "Linux" ]]; then
-        curl -fsSL https://bootstrap.pypa.io/get-pip.py | sudo python3
+        curl -fsSL https://bootstrap.pypa.io/get-pip.py | python3
+        export PATH=$HOME/.local/bin:$PATH
     fi
     pip3 install "${PIP_PKGS[@]}"
 }

@@ -34,6 +34,14 @@ setup_apt() {
     echo "$repo" | sudo tee "/etc/apt/sources.list.d/$list" > /dev/null
 }
 
+setup_hashicorp() {
+    url="https://apt.releases.hashicorp.com/gpg"
+    repo="deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+    setup_gpg "$url" hashicorp.gpg
+    setup_apt "$repo" hashicorp.list
+    sudo aptitude update
+}
+
 # https://docs.anaconda.com/anaconda/install/linux/
 install_anaconda() {
     # Do not activate base automatically
@@ -253,15 +261,19 @@ install_teams() {
     rm -f teams_*_amd64.deb
 }
 
+# https://learn.hashicorp.com/tutorials/terraform/install-cli
+install_terraform() {
+    brew_install terraform
+
+    setup_hashicorp
+    sudo aptitude install -y terraform
+}
+
 # https://www.vaultproject.io/downloads
 install_vault() {
     brew_install vault
 
-    url="https://apt.releases.hashicorp.com/gpg"
-    repo="deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-    setup_gpg "$url" hashicorp.gpg
-    setup_apt "$repo" hashicorp.list
-    sudo aptitude update
+    setup_hashicorp
     sudo aptitude install -y vault
 }
 

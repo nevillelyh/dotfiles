@@ -66,5 +66,11 @@ if [[ -z "$SSH_CONNECTION" ]]; then
     unset agent
 fi
 
+if [[ -d $HOME/.local/etc/profile.d ]]; then
+    for f in $HOME/.local/etc/profile.d/*.sh; do
+        source $f
+    done
+fi
+
 # Deduplicate $PATH
 typeset -aU path

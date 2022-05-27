@@ -99,7 +99,7 @@ run_list() {
     for c in "$HOME"/.nvman/cuda-*; do
         c="$(basename "$c")"
         if [[ "$c" != "cuda-current" ]]; then
-            v="${c//cuda-/}"
+            v="${c/#cuda-/}"
             [[ "$c" == "$current" ]] && v="*$v"
             cuda+=("$v")
         fi
@@ -114,7 +114,7 @@ run_list() {
     for c in "$HOME"/.nvman/cudnn-*; do
         c="$(basename "$c")"
         if [[ "$c" != "cudnn-current" ]]; then
-            v="${c//cudnn-/}"
+            v="${c/#cudnn-/}"
             [[ "$c" == "$current" ]] && v="*$v"
             cudnn+=("$v")
         fi

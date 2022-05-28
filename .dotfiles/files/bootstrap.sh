@@ -231,7 +231,7 @@ setup_python() {
         curl -fsSL https://bootstrap.pypa.io/get-pip.py | python3
         export PATH=$HOME/.local/bin:$PATH
     fi
-    pip3 install "${PIP_PKGS[@]}"
+    python3 -m pip install "${PIP_PKGS[@]}"
 }
 
 setup_rust() {

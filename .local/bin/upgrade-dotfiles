@@ -68,11 +68,11 @@ sdk upgrade
 set -eu
 
 msg_box "Upgrading Python"
-pip3 install --upgrade pip
+python3 -m pip install --upgrade pip
 # Bash 3 on Mac missing readarray
 # shellcheck disable=SC2207
 pip_pkgs=($(grep "^PIP_PKGS=(" "$HOME/.dotfiles/files/bootstrap.sh" | sed "s/^PIP_PKGS=(\(.*\))$/\1/"))
-pip3 install --quiet --upgrade --upgrade-strategy eager "${pip_pkgs[@]}"
+python3 -m pip install --quiet --upgrade --upgrade-strategy eager "${pip_pkgs[@]}"
 
 msg_box "Upgrading Rust"
 rustup update

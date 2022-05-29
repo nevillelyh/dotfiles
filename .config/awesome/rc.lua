@@ -31,6 +31,7 @@ awful.util.spawn("gnome-screensaver")
 awful.util.spawn(awesome_path .. "scripts/audio-defaults.sh")
 awful.util.spawn(awesome_path .. "scripts/lock-screen.sh")
 awful.util.spawn("xset dpms 900 0 0")
+awful.spawn.with_shell("pkill gsd-rfkill; /usr/libexec/gsd-rfkill")
 -- Dropbox messes up other icons in systray
 awful.util.spawn("dropbox start")
 gears.timer.start_new(5, function()
@@ -366,6 +367,7 @@ end)
 local my_wifi = wibox.widget.imagebox()
 local my_wired = wibox.widget.imagebox()
 local my_vpn = wibox.widget.imagebox()
+local my_bt = wibox.widget.imagebox()
 local my_net = lain.widget.net({ eth_state = "on", wifi_state = "on", settings = function()
     local wifi_icon = nil
     local wired_icon = nil
@@ -424,6 +426,18 @@ local my_net = lain.widget.net({ eth_state = "on", wifi_state = "on", settings =
     end)
     my_wifi:set_image(wifi_icon)
     my_wired:set_image(wired_icon)
+
+    awful.spawn.easy_async_with_shell("lsusb | grep -iq bluetooth", function(_,_,_,exit_code)
+        if exit_code == 0 then
+            awful.spawn.easy_async("bluetoothctl info", function(stdout,_,_,exit_code)
+                if exit_code == 0 then
+                    my_bt:set_image(icons_dir .. "ePapirus/bluetooth-paired.svg")
+                else
+                    my_bt:set_image(icons_dir .. "ePapirus/bluetooth-active-patched.svg")
+                end
+            end)
+        end
+    end)
 end,
 })
 local function fmt_net(stdout)
@@ -468,6 +482,17 @@ my_vpn:connect_signal("mouse::enter", function()
         end
     end)
 end)
+local my_bt_tooltip = awful.tooltip(tooltip_preset)
+my_bt_tooltip:add_to_object(my_bt)
+my_bt:connect_signal("mouse::enter", function()
+    awful.spawn.easy_async_with_shell("bluetoothctl info", function(stdout,_,_,exit_code)
+        if exit_code == 0 then
+            my_bt_tooltip:set_markup(fmt_net(stdout))
+        else
+            my_bt_tooltip:set_markup("No Bluetooth device connected")
+        end
+    end)
+end)
 
 function my_widget_button(widget, cmd)
     widget:connect_signal("button::press", function(_,_,_,button)
@@ -481,6 +506,7 @@ my_widget_button(my_gpu,     "nvidia-settings")
 my_widget_button(my_hdd,     "gnome-system-monitor -f")
 my_widget_button(my_wifi,    "gnome-control-center wifi")
 my_widget_button(my_wired,   "gnome-control-center network")
+my_widget_button(my_bt,      "gnome-control-center bluetooth")
 my_vpn:connect_signal("button::press", function(_,_,_,button)
     -- TODO: drop-down menu for multiple VPNs
     if (button == 1) then
@@ -636,6 +662,7 @@ awful.screen.connect_for_each_screen(function(s)
             my_wifi,
             my_wired,
             my_vpn,
+            my_bt,
             volume({ display_notification = true, delta = 2 }),
             my_weather,
             -- mykeyboardlayout,

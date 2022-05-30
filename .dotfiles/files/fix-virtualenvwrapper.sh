@@ -14,4 +14,4 @@ curl -fsSL https://bootstrap.pypa.io/get-pip.py | python3
 # Bash 3 on Mac missing readarray
 # shellcheck disable=SC2207
 pip_pkgs=($(grep "^PIP_PKGS=(" "$HOME/.dotfiles/files/bootstrap.sh" | sed "s/^PIP_PKGS=(\(.*\))$/\1/"))
-python3 -m pip install --quiet "${pip_pkgs[@]}"
+python3 -m pip install "${pip_pkgs[@]}"

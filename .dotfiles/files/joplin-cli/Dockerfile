@@ -1,12 +1,19 @@
 FROM ubuntu:jammy
-ENV NPM_CONFIG_PREFIX=/joplin
-
-COPY dein.vim /root/.local/share/dein/repos/github.com/Shougo/dein.vim/
-COPY nvim /root/.config/nvim/
 
 RUN apt-get update && apt-get install -y neovim nodejs npm && rm -rf /var/lib/apt/lists/*
+
+RUN useradd -m -s /bin/bash joplin
+COPY --chown=joplin:joplin nvim /home/joplin/.config/nvim/
+COPY --chown=joplin:joplin dein.vim /home/joplin/.local/share/dein/repos/github.com/Shougo/dein.vim/
+RUN chown -R joplin:joplin /home/joplin/.config /home/joplin/.local
+
+USER joplin
+WORKDIR /home/joplin
+
 RUN nvim -u $HOME/.config/nvim/dein.vim --headless '+call dein#install() | qall'
-RUN cd /root && npm install -g joplin@2.6.2
+
+ENV NPM_CONFIG_PREFIX=/home/joplin/.npm
+RUN npm install -g joplin@2.6.2
 
 ENV EDITOR=nvim
-CMD ["/joplin/bin/joplin"]
+CMD .npm/bin/joplin

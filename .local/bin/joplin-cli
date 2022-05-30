@@ -23,7 +23,8 @@ esac
 
 docker pull -q $image:$arch > /dev/null
 
-cmd="docker run -it -v joplin-cli:/root/.config/joplin --rm $image:$arch"
+mkdir -p "$HOME/.cache/joplin-cli"
+cmd="docker run -it -v $HOME/.cache/joplin-cli:/home/joplin/.config/joplin --rm $image:$arch"
 if tty &> /dev/null; then
     $cmd
 else

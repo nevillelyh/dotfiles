@@ -35,7 +35,7 @@ export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,hl:#bd93f9 --color=fg+:#f8f8f2,hl+:#
 if type virtualenvwrapper.sh &> /dev/null; then
     export VIRTUALENVWRAPPER_PYTHON=$(which python3)
     export WORKON_HOME=$HOME/.virtualenvs
-    source "$HOME/.local/bin/virtualenvwrapper.sh"
+    source $(which virtualenvwrapper.sh)
 fi
 
 # Using system Python by default, base is not activated

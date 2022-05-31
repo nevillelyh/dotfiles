@@ -1,4 +1,5 @@
 local awful = require("awful")
+local naughty = require("naughty")
 local wibox = require("wibox")
 local lain = require("lain")
 
@@ -375,6 +376,7 @@ local function net()
     on_button_press(wifi_widget,  "gnome-control-center wifi")
     on_button_press(wired_widget, "gnome-control-center network")
     on_button_press(bt_widget,    "gnome-control-center bluetooth")
+    on_vpn_button_press(vpn_widget)
     return {
         layout = wibox.layout.fixed.horizontal,
         wifi_widget,

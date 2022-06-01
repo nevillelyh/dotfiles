@@ -102,6 +102,19 @@ install_code() {
     sudo aptitude install -y code
 }
 
+# https://dbeaver.io/download/
+install_dbeaver() {
+    brew_install_cask dbeaver-community
+
+    url="https://dbeaver.io/debs/dbeaver.gpg.key"
+    repo="deb [signed-by=/etc/apt/trusted.gpg.d/dbeaver.gpg] https://dbeaver.io/debs/dbeaver-ce /"
+
+    setup_gpg "$url" dbeaver.gpg
+    setup_apt "$repo" dbeaver.list
+    sudo aptitude update
+    sudo aptitude install dbeaver-ce
+}
+
 # https://docs.docker.com/engine/install/ubuntu/
 install_docker() {
     brew_install colima docker docker-compose

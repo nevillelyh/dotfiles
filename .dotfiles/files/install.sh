@@ -122,6 +122,8 @@ install_docker() {
     post_brew() {
         mkdir -p "$HOME/.docker/cli-plugins"
         ln -sfn /opt/homebrew/opt/docker-compose/bin/docker-compose "$HOME/.docker/cli-plugins/docker-compose"
+        # Default is ctrl-p, ctrl-q
+        echo '{"detachKeys": "ctrl-z,z"}' | jq --indent 4 > "$HOME/.docker/config.json"
     }
     brew_install colima docker docker-compose
 

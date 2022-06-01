@@ -77,16 +77,16 @@ local sinks = {}
 local source_icon = PATH_TO_ICONS .. "audio-input-microphone.svg"
 local sink_icon = PATH_TO_ICONS .. "audio-speakers.svg"
 
-local function parse_devices(stdout)
+local function parse_devices(stdout, prefix)
     local name = nil
     local desc = nil
     devices = {}
     for line in stdout:gmatch("[^\r\n]+") do
         local n = line:match("^%s*Name:%s*(.*)")
-        local d = line:match("^%s*Description:%s*(.*)")
+        local d = line:match("^%s*alsa.card_name%s*=%s*\"(.*)\"")
         if n then name = n end
         if d then desc = d:gsub("^Monitor of%s+", "") end
-        if name and desc then
+        if name and desc and name:sub(1, prefix:len()) == prefix then
             devices[#devices+1] = { name = name, desc = desc }
             name = nil
             desc = nil
@@ -111,7 +111,7 @@ function volume:_update_menu()
                     volume:_init_menu()
                 end,
                 icon,
-                theme = { width = 350 },
+                theme = { width = 150 },
             }
         end
     end
@@ -130,7 +130,7 @@ function volume:_update_menu()
                     volume:_init_menu()
                 end,
                 icon,
-                theme = { width = 350 },
+                theme = { width = 150 },
             }
         end
     end
@@ -143,7 +143,7 @@ function volume:_update_menu()
 end
 
 function volume:_init_menu(show)
-    local source_cmd = "pactl list sources | grep -v '\\<alsa_output\\.'"
+    local source_cmd = "pactl list sources"
     local sink_cmd = "pactl list sinks"
 
     awful.spawn.easy_async("pactl info", function(stdout,_,_,_)
@@ -154,9 +154,9 @@ function volume:_init_menu(show)
             if sink then default_sink = sink end
         end
         awful.spawn.easy_async_with_shell(source_cmd, function(stdout,_,_,_)
-            sources = parse_devices(stdout)
+            sources = parse_devices(stdout, "alsa_input.")
             awful.spawn.easy_async_with_shell(sink_cmd, function(stdout,_,_,_)
-                sinks = parse_devices(stdout)
+                sinks = parse_devices(stdout, "alsa_output.")
                 volume:_update_menu()
                 if show then volume.menu:show() end
             end)

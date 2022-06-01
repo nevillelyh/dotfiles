@@ -7,6 +7,7 @@ set -euo pipefail
 brew_install() {
     if [[ "$(uname -s)" == "Darwin" ]]; then
         brew install "$@"
+        [[ $(type -t post_brew) == "function" ]] && post_brew
         exit 0
     fi
 }
@@ -14,6 +15,7 @@ brew_install() {
 brew_install_cask() {
     if [[ "$(uname -s)" == "Darwin" ]]; then
         brew install --cask "$@"
+        [[ $(type -t post_brew) == "function" ]] && post_brew
         exit 0
     fi
 }
@@ -117,6 +119,10 @@ install_dbeaver() {
 
 # https://docs.docker.com/engine/install/ubuntu/
 install_docker() {
+    post_brew() {
+        mkdir -p "$HOME/.docker/cli-plugins"
+        ln -sfn /opt/homebrew/opt/docker-compose/bin/docker-compose "$HOME/.docker/cli-plugins/docker-compose"
+    }
     brew_install colima docker docker-compose
 
     url="https://download.docker.com/linux/ubuntu/gpg"

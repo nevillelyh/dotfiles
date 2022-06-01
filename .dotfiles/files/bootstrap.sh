@@ -10,7 +10,7 @@ set -euo pipefail
 # python - leave macOS bundled python alone
 # pinentry-mac - for GPG
 # App Store - AdGuard for Safari, Instapaper, Kindle, Messenger, Slack, The Unarchiver, WhatsApp
-BREWS=(bat bazelisk code-minimap cmake colordiff exa fd fzf gh git git-delta gitui golang gpg htop jq neovim ninja pinentry-mac python ripgrep shellcheck tmux wget zoxide)
+BREWS=(bat bazelisk code-minimap cmake colordiff dust exa fd fzf gh git git-delta gitui golang gpg htop jq neovim ninja pinentry-mac python ripgrep shellcheck tmux wget zoxide)
 CASKS=(alacritty alfred dropbox github iterm2 jetbrains-toolbox joplin lastpass sublime-text visual-studio-code vimr)
 CASKS_OPT=(adobe-creative-cloud anki expressvpn firefox google-chrome guitar-pro macdive microsoft-edge shearwater-cloud spotify transmission vlc)
 
@@ -23,7 +23,7 @@ CASKS_OPT=(adobe-creative-cloud anki expressvpn firefox google-chrome guitar-pro
 # Not available or outdated in Ubuntu - bat, git-delta, zoxide
 DEB_PKGS=(build-essential cmake colordiff exa fd-find fzf htop jq neovim ninja-build ripgrep shellcheck tmux unzip zip zsh)
 DEB_GUI_PKGS=(alacritty awesome compton fonts-powerline gnome-screensaver gnome-screenshot neovim-qt ubuntu-restricted-extras wmctrl xautolock xcalib xprintidle)
-LINUX_CRATES=(bat code-minimap git-delta gitui zoxide)
+LINUX_CRATES=(bat code-minimap du-dust git-delta gitui zoxide)
 
 # PIP packages:
 PIP_PKGS=(flake8 ipython virtualenv virtualenvwrapper)

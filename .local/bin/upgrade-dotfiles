@@ -42,9 +42,10 @@ nvim -u "$HOME/.config/nvim/dein.vim" --headless \
 
 msg_box "Upgrading Go"
 if [[ -d /usr/local/go ]]; then
-    url="https://api.github.com/repos/golang/go/git/refs/tags"
-    header="Accept: application/vnd.github.v3+json"
-    latest=$(curl -fsSL -H "$header" $url | jq --raw-output ".[].ref" | grep "refs/tags/go" | cut -d "/" -f 3 | tail -n 1)
+    os=$(uname -s | tr "[:upper:]" "[:lower:]")
+    arch=$(dpkg --print-architecture)
+    tarball=$(curl -fsSL "https://go.dev/dl" | grep -oP '(?<=href=")[^"]+(?=")' | grep "/dl/go.*\.$os-$arch\.tar\.gz" | tac | tail -n 1)
+    latest=$(echo "$tarball" | sed "s/^\/dl\/\(go.*\)\.$os-$arch\.tar\.gz$/\1/")
     current=$(go version | awk '{ print $3 }')
     if [[ "$latest" != "$current" ]]; then
         read -p "Upgrade from $current to $latest (y/N)? " -n 1 -r

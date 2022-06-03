@@ -11,82 +11,141 @@ msg_box() {
     echo "$line"
 }
 
-cd "$HOME"
+upgrade_os() {
+    msg_box "Upgrading system packages"
+    case "$(uname -s)" in
+        Darwin)
+            brew update
+            brew upgrade
+            brew cleanup
+            brew autoremove
+            ;;
+        Linux)
+            sudo aptitude update
+            sudo aptitude upgrade
+            sudo aptitude autoclean
+            sudo apt-get autoremove
+            ;;
+    esac
+}
 
-msg_box "Upgrading system packages"
-case "$(uname -s)" in
-    Darwin)
-        brew update
-        brew upgrade
-        brew cleanup
-        brew autoremove
-        ;;
-    Linux)
-        sudo aptitude update
-        sudo aptitude upgrade
-        sudo aptitude autoclean
-        sudo apt-get autoremove
-        ;;
-esac
+upgrade_git() {
+    msg_box "Upgrading Git Repository"
+    git pull --rebase --autostash
+    git submodule update --init --remote
+}
 
-msg_box "Upgrading Git Repository"
-git pull --rebase --autostash
-git submodule update --init --remote
+upgrade_omz() {
+    msg_box "Upgrading Oh-My-Zsh"
+    zsh -i -c "omz update"
+}
 
-msg_box "Upgrading Oh-My-Zsh"
-zsh -i -c "omz update"
+upgrade_neovim() {
+    msg_box "Upgrading NeoVim"
+    nvim -u "$HOME/.config/nvim/dein.vim" --headless \
+        '+let g:dein#install_progress_type = "none" | call dein#update() | echo "\r\n" | qall'
+}
 
-msg_box "Upgrading NeoVim"
-nvim -u "$HOME/.config/nvim/dein.vim" --headless \
-    '+let g:dein#install_progress_type = "none" | call dein#update() | echo "\r\n" | qall'
-
-msg_box "Upgrading Go"
-if [[ -d /usr/local/go ]]; then
-    os=$(uname -s | tr "[:upper:]" "[:lower:]")
-    arch=$(dpkg --print-architecture)
-    tarball=$(curl -fsSL "https://go.dev/dl" | grep -oP '(?<=href=")[^"]+(?=")' | grep "/dl/go.*\.$os-$arch\.tar\.gz" | tac | tail -n 1)
-    latest=$(echo "$tarball" | sed "s/^\/dl\/\(go.*\)\.$os-$arch\.tar\.gz$/\1/")
-    current=$(go version | awk '{ print $3 }')
-    if [[ "$latest" != "$current" ]]; then
-        read -p "Upgrade from $current to $latest (y/N)? " -n 1 -r
-        echo # (optional) move to a new line
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-            sudo rm -rf /usr/local/go
-            bash "$HOME/.dotfiles/files/install.sh" go
+upgrade_go() {
+    msg_box "Upgrading Go"
+    if [[ -d /usr/local/go ]]; then
+        os=$(uname -s | tr "[:upper:]" "[:lower:]")
+        arch=$(dpkg --print-architecture)
+        tarball=$(curl -fsSL "https://go.dev/dl" | grep -oP '(?<=href=")[^"]+(?=")' | grep "/dl/go.*\.$os-$arch\.tar\.gz" | tac | tail -n 1)
+        latest=$(echo "$tarball" | sed "s/^\/dl\/\(go.*\)\.$os-$arch\.tar\.gz$/\1/")
+        current=$(go version | awk '{ print $3 }')
+        if [[ "$latest" != "$current" ]]; then
+            read -p "Upgrade from $current to $latest (y/N)? " -n 1 -r
+            echo # (optional) move to a new line
+            if [[ $REPLY =~ ^[Yy]$ ]]; then
+                sudo rm -rf /usr/local/go
+                bash "$HOME/.dotfiles/files/install.sh" go
+            fi
         fi
     fi
-fi
-for mod in $(go version -m "$HOME/.go/bin" | grep "^\s\+path\s\+" | awk '{print $2}'); do
-    go install "$mod@latest"
-done
+    for mod in $(go version -m "$HOME/.go/bin" | grep "^\s\+path\s\+" | awk '{print $2}'); do
+        go install "$mod@latest"
+    done
+}
 
-msg_box "Upgrading JVM"
-set +eu
-# shellcheck source=/dev/null
-source "$HOME/.sdkman/bin/sdkman-init.sh"
-sdk update
-sdk upgrade
-set -eu
+upgrade_jvm() {
+    msg_box "Upgrading JVM"
+    set +eu
+    # shellcheck source=/dev/null
+    source "$HOME/.sdkman/bin/sdkman-init.sh"
+    sdk update
+    sdk upgrade
+    set -eu
+}
 
-msg_box "Upgrading Python"
-python3 -m pip install --upgrade pip
-# Bash 3 on Mac missing readarray
-# shellcheck disable=SC2207
-pip_pkgs=($(grep "^PIP_PKGS=(" "$HOME/.dotfiles/files/bootstrap.sh" | sed "s/^PIP_PKGS=(\(.*\))$/\1/"))
-python3 -m pip install --upgrade "${pip_pkgs[@]}"
-
-msg_box "Upgrading Rust"
-rustup update
-# Bash 3 on Mac missing readarray
-if [[ -s "$HOME/.cargo/.crates.toml" ]]; then
+upgrade_python() {
+    msg_box "Upgrading Python"
+    python3 -m pip install --upgrade pip
+    # Bash 3 on Mac missing readarray
     # shellcheck disable=SC2207
-    crates=($(grep '^"[^"]*" = \["[^"]*"\]$' "$HOME/.cargo/.crates.toml" | sed 's/^"\([^ ]*\) .*$/\1/'))
-    cargo install -q "${crates[@]}"
-fi
+    pip_pkgs=($(grep "^PIP_PKGS=(" "$HOME/.dotfiles/files/bootstrap.sh" | sed "s/^PIP_PKGS=(\(.*\))$/\1/"))
+    python3 -m pip install --upgrade "${pip_pkgs[@]}"
+}
 
-if type conda &> /dev/null; then
+upgrade_rust() {
+    msg_box "Upgrading Rust"
+    rustup update
+    # Bash 3 on Mac missing readarray
+    if [[ -s "$HOME/.cargo/.crates.toml" ]]; then
+        # shellcheck disable=SC2207
+        crates=($(grep '^"[^"]*" = \["[^"]*"\]$' "$HOME/.cargo/.crates.toml" | sed 's/^"\([^ ]*\) .*$/\1/'))
+        cargo install -q "${crates[@]}"
+    fi
+}
+
+upgrade_anaconda() {
+    type conda &> /dev/null || return 0
     msg_box "Upgrading Anaconda"
     conda update --all --name base --yes
+}
+
+get_commands() {
+    # Bash 3 on Mac missing readarray
+    # shellcheck disable=SC2207
+    cmds=($(grep -o "^upgrade_\w\+()" "$(readlink -f "$0")" | sed "s/^upgrade_\(.*\)()$/\1/"))
+}
+
+help() {
+    echo "Usage: $(basename "$0") [command]"
+    echo "    Commands:"
+    echo "        help"
+    get_commands
+    for cmd in "${cmds[@]}"; do
+        echo "        $cmd"
+    done
+    exit 0
+}
+
+if [[ $# -eq 1 ]]; then
+    case "$1" in
+        help)
+            help
+            ;;
+        *)
+            get_commands
+            if [[ " ${cmds[*]} " =~ (^|[[:space:]])"$1"($|[[:space:]]) ]]; then
+                msg_box "Upgrade single step $1"
+                "upgrade_$1"
+            else
+                die "Command not found: $1"
+            fi
+            ;;
+    esac
+    exit 0
 fi
 
+upgrade_os
+upgrade_git
+upgrade_omz
+upgrade_neovim
+upgrade_go
+upgrade_jvm
+upgrade_python
+upgrade_rust
+upgrade_anaconda
 msg_box "Upgrade complete"

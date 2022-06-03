@@ -13,7 +13,7 @@ WORKDIR /home/joplin
 RUN nvim -u $HOME/.config/nvim/dein.vim --headless '+call dein#install() | qall'
 
 ENV NPM_CONFIG_PREFIX=/home/joplin/.npm
-RUN npm install -g joplin@2.6.2
+RUN npm install -g joplin@2.8.1
 
 ENV EDITOR=nvim
 CMD .npm/bin/joplin

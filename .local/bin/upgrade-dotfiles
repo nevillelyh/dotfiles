@@ -46,6 +46,15 @@ upgrade_neovim() {
         '+let g:dein#install_progress_type = "none" | call dein#update() | echo "\r\n" | qall'
 }
 
+upgrade_docker() {
+    type docker &> /dev/null || return 0
+    msg_box "Upgrading Docker"
+    for image in $(docker images --format "{{.Repository}}:{{.Tag}}"); do
+        digest=$(docker inspect "$image" | jq --raw-output ".[].RepoDigests[]")
+        [[ -n "$digest" ]] && docker pull "$image"
+    done
+}
+
 upgrade_go() {
     msg_box "Upgrading Go"
     if [[ -d /usr/local/go ]]; then
@@ -143,6 +152,7 @@ upgrade_os
 upgrade_git
 upgrade_omz
 upgrade_neovim
+upgrade_docker
 upgrade_go
 upgrade_jvm
 upgrade_python

@@ -223,6 +223,11 @@ local function worker(user_args)
                 cal:set_date(nil)
                 cal:set_date(a)
                 popup:set_widget(cal)
+            end),
+            awful.button({}, 3, function()
+                cal:set_date(nil)
+                popup:set_widget(nil)
+                popup.visible = false
             end)
         )
     )

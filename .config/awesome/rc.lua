@@ -182,7 +182,15 @@ my_keys = {
     current = 1,
     widget = wibox.widget.textbox(),
     next_layout = function()
-        my_keys.current = my_keys.current % #(my_keys.map) + 1
+        my_keys.current = my_keys.current + 1
+        if my_keys.current > #my_keys.map then my_keys.current = 1 end
+        local t = my_keys.map[my_keys.current]
+        awful.spawn("setxkbmap " .. t.layout .. " " .. t.variant)
+        my_keys.widget:set_text(" " .. t.symbol .. " ")
+    end,
+    prev_layout = function()
+        my_keys.current = my_keys.current - 1
+        if my_keys.current == 0 then my_keys.current = #my_keys.map end
         local t = my_keys.map[my_keys.current]
         awful.spawn("setxkbmap " .. t.layout .. " " .. t.variant)
         my_keys.widget:set_text(" " .. t.symbol .. " ")
@@ -190,7 +198,12 @@ my_keys = {
 }
 my_keys.widget.align = "center"
 my_keys.widget.forced_width = 25
-my_keys.widget:buttons(awful.util.table.join(awful.button({}, 1, my_keys.next_layout)))
+my_keys.widget:buttons(awful.util.table.join(
+    awful.button({}, 1, my_keys.next_layout),
+    awful.button({}, 5, my_keys.next_layout),
+    awful.button({}, 3, my_keys.prev_layout),
+    awful.button({}, 4, my_keys.prev_layout)
+))
 my_keys.widget:set_text(my_keys.map[my_keys.current].symbol)
 
 -- {{{ Wibar

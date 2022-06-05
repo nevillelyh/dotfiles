@@ -51,7 +51,8 @@ upgrade_docker() {
     msg_box "Upgrading Docker"
     for image in $(docker images --format "{{.Repository}}:{{.Tag}}"); do
         digest=$(docker inspect "$image" | jq --raw-output ".[].RepoDigests[]")
-        [[ -n "$digest" ]] && docker pull "$image"
+        platform=$(docker inspect "$image" | jq --raw-output '.[] | "\(.Os)/\(.Architecture)"')
+        [[ -n "$digest" ]] && docker pull --platform "$platform" "$image"
     done
 }
 

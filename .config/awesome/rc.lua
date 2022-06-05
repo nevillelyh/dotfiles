@@ -122,11 +122,24 @@ myawesomemenu = {
 
 local menu_awesome = { "Awesome", myawesomemenu, beautiful.awesome_icon }
 local menu_terminal = { "Open Terminal", terminal, terminal_icon }
+local menu_work = {
+    "Work",
+    function()
+        awful.util.spawn("alacritty")
+        awful.util.spawn("evolution")
+        awful.util.spawn("google-chrome")
+        awful.util.spawn(os.getenv("HOME") .. "/.joplin/Joplin.AppImage")
+        awful.util.spawn("/snap/bin/slack")
+        awful.util.spawn("/snap/bin/spotify")
+        awful.util.spawn("teams")
+    end,
+    icons_dir .. "prime-nvidia.svg",
+}
 
 if has_fdo then
     mymainmenu = freedesktop.menu.build({
         before = { menu_awesome },
-        after =  { menu_terminal }
+        after =  { menu_terminal, menu_work }
     })
 else
     mymainmenu = awful.menu({

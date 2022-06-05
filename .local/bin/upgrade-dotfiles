@@ -73,9 +73,11 @@ upgrade_go() {
             fi
         fi
     fi
-    for mod in $(go version -m "$HOME/.go/bin" | grep "^\s\+path\s\+" | awk '{print $2}'); do
-        go install "$mod@latest"
-    done
+    if [[ -d "$HOME/.go/bin" ]]; then
+        for mod in $(go version -m "$HOME/.go/bin" | grep "^\s\+path\s\+" | awk '{print $2}'); do
+            go install "$mod@latest"
+        done
+    fi
 }
 
 upgrade_jvm() {

@@ -15,5 +15,5 @@ dirs=(
 )
 
 for d in "${dirs[@]}"; do
-    du -hs "$HOME/$d"
+    [[ -d "$HOME/$d" ]] && du -hs "$HOME/$d"
 done

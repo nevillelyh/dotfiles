@@ -10,6 +10,8 @@ dirs=(
     .keras/datasets
     .m2/repository
     .sdkman/archives
+    Library/Caches/Coursier
+    Library/Caches/Homebrew
 )
 
 for d in "${dirs[@]}"; do

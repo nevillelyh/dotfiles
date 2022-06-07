@@ -9,6 +9,7 @@ dirs=(
     .ivy2/local
     .keras/datasets
     .m2/repository
+    .nvman
     .sdkman/archives
     Library/Caches/Coursier
     Library/Caches/Homebrew

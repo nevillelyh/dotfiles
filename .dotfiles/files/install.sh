@@ -296,6 +296,18 @@ install_vault() {
     sudo aptitude install -y vault
 }
 
+# https://github.com/retorquere/zotero-deb/blob/master/install.sh
+install_zotero() {
+    brew_install_cask zotero
+
+    url="https://raw.githubusercontent.com/retorquere/zotero-deb/master/zotero-archive-keyring.gpg"
+    repo="deb [signed-by=/etc/apt/trusted.gpg.d/zotero-archive-keyring.gpg by-hash=force] https://zotero.retorque.re/file/apt-package-archive ./"
+    setup_gpg "$url" zotero-archive-keyring.gpg
+    setup_apt "$repo" zotero.list
+    sudo aptitude update
+    sudo aptitude install -y zotero
+}
+
 if [[ $#  -ne 1 ]]; then
     echo "Usage: $(basename "$0") <PACKAGE>"
     exit 1

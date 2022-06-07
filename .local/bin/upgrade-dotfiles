@@ -52,7 +52,7 @@ upgrade_docker() {
     for image in $(docker images --format "{{.Repository}}:{{.Tag}}" | grep -v ":<none>"); do
         digest=$(docker inspect "$image" | jq --raw-output ".[].RepoDigests[]")
         platform=$(docker inspect "$image" | jq --raw-output '.[] | "\(.Os)/\(.Architecture)"')
-        [[ -n "$digest" ]] && docker pull --platform "$platform" "$image"
+        [[ -z "$digest" ]] || docker pull --platform "$platform" "$image"
     done
 }
 

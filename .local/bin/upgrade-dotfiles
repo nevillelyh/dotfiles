@@ -49,7 +49,7 @@ upgrade_neovim() {
 upgrade_docker() {
     type docker &> /dev/null || return 0
     msg_box "Upgrading Docker"
-    for image in $(docker images --format "{{.Repository}}:{{.Tag}}" | grep -v "<none>:<none>"); do
+    for image in $(docker images --format "{{.Repository}}:{{.Tag}}" | grep -v ":<none>"); do
         digest=$(docker inspect "$image" | jq --raw-output ".[].RepoDigests[]")
         platform=$(docker inspect "$image" | jq --raw-output '.[] | "\(.Os)/\(.Architecture)"')
         [[ -n "$digest" ]] && docker pull --platform "$platform" "$image"

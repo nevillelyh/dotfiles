@@ -21,7 +21,18 @@ case $arch in
         ;;
 esac
 
-docker pull -q $image:$arch > /dev/null
+file=$HOME/.cache/joplin-cli-update
+(( ttl = 7 * 24 * 60 * 60 ))
+if [[ -f "$file" ]]; then
+    age=$(echo "$(date "+%s")" - "$(date -r "$file" "+%s")" | bc -l)
+    if [[ $age -ge $ttl ]]; then
+        docker pull -q $image:$arch > /dev/null
+        touch "$file"
+    fi
+else
+    docker pull -q $image:$arch
+    touch "$file"
+fi
 
 mkdir -p "$HOME/.cache/joplin-cli"
 cmd="docker run -it -v $HOME/.cache/joplin-cli:/home/joplin/.config/joplin --rm $image:$arch"

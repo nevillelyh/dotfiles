@@ -6,8 +6,8 @@ colorscheme dracula
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tmuxline#enabled = 0
-let g:tmuxline_theme = 'nightly_fox'
-let g:tmuxline_preset = 'minimal'
+let g:tmuxline_theme = 'powerline'
+let g:tmuxline_preset = 'powerline'
 if ! &diff
   let g:minimap_auto_start = 1
   let g:minimap_auto_start_win_enter = 1

@@ -9,5 +9,5 @@ nmap <C-P> gT
 nmap <C-N> gt
 
 " Buffer navigation
-nmap <A-p> :bprevious<CR>
-nmap <A-n> :bnext<CR>
+nmap <silent> <A-p> :bprevious<CR>
+nmap <silent> <A-n> :bnext<CR>

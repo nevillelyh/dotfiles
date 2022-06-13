@@ -40,3 +40,13 @@ nmap <C-N> gt
 " Buffer navigation
 nmap <A-p> :bprevious<CR>
 nmap <A-n> :bnext<CR>
+
+set keymap=
+function! ToggleKeymap()
+  if &keymap == ""
+    set keymap=colemak
+  else
+    set keymap=
+  endif
+endfunction
+nmap <silent> <C-Space> :call ToggleKeymap()<CR>

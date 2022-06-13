@@ -25,6 +25,7 @@ set smartcase
 " Visible characters
 set listchars=tab:»·,eol:↵,trail:⋅,extends:❯,precedes:❮
 set list
+set colorcolumn=80,100
 
 " Window navigation
 nmap <C-H> <C-W>h
@@ -39,5 +40,3 @@ nmap <C-N> gt
 " Buffer navigation
 nmap <A-p> :bprevious<CR>
 nmap <A-n> :bnext<CR>
-
-set colorcolumn=80,100

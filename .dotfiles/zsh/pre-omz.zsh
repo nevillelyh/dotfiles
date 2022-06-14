@@ -30,9 +30,16 @@ else
     FPATH="$sfpath:$FPATH"
 
     [[ ! -d "$sfpath" ]] && mkdir -p "$sfpath"
-    [[ ! -s "$sfpath/_gh" ]] && gh completion -s zsh > "$sfpath/_gh"
-    [[ ! -s "$sfpath/_code-minimap" ]] && code-minimap completion zsh > "$sfpath/_code-minimap"
-    [[ ! -s "$sfpath/_zoxide" ]] && zoxide init zsh > "$sfpath/_zoxide"
+
+    mk_comp() {
+        cmd=$1
+        shift
+        type "$cmd" &> /dev/null && [[ ! -s "$sfpath/_$cmd" ]] && "$cmd" "$@" > "$sfpath/_$cmd"
+    }
+    mk_comp gh completion -s zsh
+    mk_comp code-minimap completion zsh
+    mk_comp zoxide init zsh
+
     autoload -Uz compinit
     compinit
 fi

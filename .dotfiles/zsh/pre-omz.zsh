@@ -38,6 +38,9 @@ else
     }
     mk_comp gh completion -s zsh
     mk_comp code-minimap completion zsh
+    mk_comp helm completion zsh
+    mk_comp kubectl completion zsh
+    mk_comp minikube completion zsh
     mk_comp zoxide init zsh
 
     autoload -Uz compinit

@@ -199,6 +199,34 @@ install_go() {
     curl -fsSL "https://go.dev/$tarball" | sudo tar -C /usr/local -xz
 }
 
+# https://helm.sh/
+install_helm() {
+    brew_install helm
+    sudo snap install helm --classic
+}
+
+# https://kubernetes.io/docs/tasks/tools/
+install_kubectl() {
+    brew_install kubectl
+
+    url="https://packages.cloud.google.com/apt/doc/apt-key.gpg"
+    repo="deb [signed-by=/etc/apt/trusted.gpg.d/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main"
+    setup_gpg "$url" kubernetes-archive-keyring.gpg
+    setup_apt "$repo" kubernetes.list
+    sudo aptitude update
+    sudo aptitude install -y kubectl
+}
+
+# https://minikube.sigs.k8s.io/docs/start/
+install_minikube() {
+    brew_install minikube
+
+    arch=$(dpkg --print-architecture)
+    wget -nv "https://storage.googleapis.com/minikube/releases/latest/minikube_latest_$arch.deb"
+    sudo dpkg -i minikube_latest_*.deb
+    rm minikube_latest_*.deb
+}
+
 # https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
 install_nvidia() {
     url="https://nvidia.github.io/libnvidia-container/gpgkey"

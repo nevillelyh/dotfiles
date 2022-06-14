@@ -29,6 +29,7 @@ if dein#load_state($HOME.'/.local/share/dein')
   call dein#add('vim-syntastic/syntastic', {'merged': 0})
   call dein#add('junegunn/fzf', {'merged': 0})
   call dein#add('kamykn/spelunker.vim', {'merged': 0})
+  call dein#add('jjo/vim-cue', {'merged': 0})
   call dein#add('udalov/kotlin-vim', {'merged': 0})
 
   " Required:

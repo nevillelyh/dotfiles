@@ -174,6 +174,7 @@ setup_go() {
     export GOPATH=$HOME/.go
     go install -v golang.org/x/tools/gopls@latest
     go install -v github.com/go-delve/delve/cmd/dlv@latest
+    go install -v cuelang.org/go/cmd/cue@latest
     if [[ "$uname_s" == "Linux" ]]; then
         go install github.com/bazelbuild/bazelisk@latest
         ln -s "$HOME/.go/bin/bazelisk" "$HOME/.local/bin/bazel"

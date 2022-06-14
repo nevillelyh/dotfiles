@@ -204,7 +204,7 @@ setup_jvm() {
 
     if [[ "$uname_s" == "Darwin" ]] && [[ "$uname_m" == "arm64" ]]; then
         setup_jdk 8 "-zulu"
-        setup_jdk 11 "-zulu"
+        setup_jdk 11 "-tem"
         setup_jdk 17 "-tem"
     else
         setup_jdk 8 "-tem"

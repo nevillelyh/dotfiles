@@ -2,10 +2,10 @@
 
 case "$(uname -s)" in
     Linux)
-        . "$HOME/.dotfiles/zsh/linux.zsh"
+        . "$HOME/.dotfiles/zsh/post-linux.zsh"
         ;;
     Darwin)
-        . "$HOME/.dotfiles/zsh/mac.zsh"
+        . "$HOME/.dotfiles/zsh/post-mac.zsh"
         ;;
 esac
 

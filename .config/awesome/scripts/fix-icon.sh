@@ -29,7 +29,7 @@ readarray -t ws < <(wmctrl -l | grep $regex | cut -f 1 -d " ")
 for w in "${ws[@]}"; do
     # Use "xseticon", a compiled C binary, to change the icon of a running program
     # Use absolute path to work around snap launcher issue
-    /snap/xseticon/current/bin/xseticon -id "$w" $icon
+    /snap/bin/xseticon -id "$w" $icon
 
     # Use "xprop" to set the window state, so that alt+tab works again
     xprop -f _NET_WM_WINDOW_TYPE 32a -set _NET_WM_WINDOW_TYPE _NET_WM_WINDOW_TYPE_NORMAL -id "$w"

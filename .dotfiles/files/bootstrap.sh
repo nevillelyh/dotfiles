@@ -310,48 +310,6 @@ setup_zsh() {
 }
 
 ########################################
-
-# Bootstrap inside a Docker container
-
-run_docker() {
-    if [[ -f /.dockerenv ]]; then
-        _run_docker_guest
-    else
-        _run_docker_host
-    fi
-}
-
-_run_docker_host() {
-    msg_box "Building Docker image"
-    docker run -it --rm --platform linux/amd64 \
-        -v "$HOME/.dotfiles:/dotfiles" \
-        -v "$HOME/.ssh:/ssh" \
-        ubuntu:jammy \
-        /bin/bash /dotfiles/files/bootstrap.sh docker
-}
-
-_run_docker_guest() {
-    msg_box "Setting up Docker container"
-    # Prepare environment
-    apt-get update
-    apt-get install -y curl git openssh-client python3-distutils sudo wget
-    useradd -m -s /bin/bash neville
-    usermod -aG sudo neville
-
-    # No password sudo and chsh
-    echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-    sed -i "s/^\(auth \+\)required\( \+pam_shells.so\)/\1sufficient\2/" /etc/pam.d/chsh
-
-    mkdir -p /home/neville/.ssh/private
-    cp -a /ssh/private/id* /home/neville/.ssh/private
-    echo "Host *" >> /home/neville/.ssh/config
-    echo "    StrictHostKeyChecking no" >> /home/neville/.ssh/config
-    chown -R neville:neville /home/neville/.ssh
-
-    su - neville /dotfiles/files/bootstrap.sh
-}
-
-########################################
 # Helper functions
 ########################################
 
@@ -412,7 +370,6 @@ help() {
     echo "Usage: $(basename "$0") [command]"
     echo "    Commands:"
     echo "        check"
-    echo "        docker"
     get_commands
     for cmd in "${cmds[@]}"; do
         echo "        $cmd"
@@ -428,9 +385,6 @@ basedir=$(dirname "$(readlink -f "$0")")
 
 if [[ $# -eq 1 ]]; then
     case "$1" in
-        docker)
-            run_docker
-            ;;
         check)
             run_check
             ;;

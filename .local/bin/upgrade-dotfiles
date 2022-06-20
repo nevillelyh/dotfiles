@@ -151,6 +151,7 @@ if [[ $# -eq 1 ]]; then
     exit 0
 fi
 
+cd "$HOME"
 upgrade_os
 upgrade_git
 upgrade_omz

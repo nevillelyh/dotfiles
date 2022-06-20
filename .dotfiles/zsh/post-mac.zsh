@@ -1,5 +1,10 @@
+alias ex='nvim -e'
+alias rview='nvim -RZ'
+alias rvim='nvim -Z'
 alias vi='nvim'
+alias view='nvim -R'
 alias vim='nvim'
+alias vimdiff='nvim -d'
 alias gvim='vimr'
 
 pidof() {

@@ -203,15 +203,9 @@ setup_jvm() {
     # shellcheck source=/dev/null
     source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-    if [[ "$uname_s" == "Darwin" ]] && [[ "$uname_m" == "arm64" ]]; then
-        setup_jdk 8 "-zulu"
-        setup_jdk 11 "-tem"
-        setup_jdk 17 "-tem"
-    else
-        setup_jdk 8 "-tem"
-        setup_jdk 11 "-tem"
-        setup_jdk 17 "-tem"
-    fi
+    setup_jdk 8 "-zulu"
+    setup_jdk 11 "-zulu"
+    setup_jdk 17 "-zulu"
 
     sdk install gradle
     sdk install kotlin

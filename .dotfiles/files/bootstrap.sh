@@ -40,7 +40,7 @@ setup_ssh() {
 }
 
 setup_homebrew() {
-    [[ "$uname_s" != "Darwin" ]] && return 0
+    [[ "$os" != "Darwin" ]] && return 0
     [[ -L /opt/homebrew/bin/zoxide ]] && return 0
     msg_box "Setting up Homebrew"
 
@@ -55,7 +55,7 @@ setup_homebrew() {
 }
 
 setup_mac() {
-    [[ "$uname_s" != "Darwin" ]] && return 0
+    [[ "$os" != "Darwin" ]] && return 0
     msg_box "Setting up Mac specifics"
 
     read -r -p "Enter hostname: "
@@ -65,7 +65,7 @@ setup_mac() {
 }
 
 setup_apt() {
-    [[ "$uname_s" != "Linux" ]] && return 0
+    [[ "$os" != "Linux" ]] && return 0
     type gh &> /dev/null && return 0
     msg_box "Setting up Aptitude"
 
@@ -89,7 +89,7 @@ setup_apt() {
 }
 
 setup_linux() {
-    [[ "$uname_s" != "Linux" ]] && return 0
+    [[ "$os" != "Linux" ]] && return 0
     [[ -d /usr/local/go ]] && return 0
     msg_box "Setting up Linux specifics"
 
@@ -143,7 +143,7 @@ setup_gnupg() {
     echo "default-cache-ttl 7200" >> "$HOME/.gnupg/gpg-agent.conf"
     echo "max-cache-ttl 86400" >> "$HOME/.gnupg/gpg-agent.conf"
 
-    case "$uname_s" in
+    case "$os" in
         Darwin)
             echo "pinentry-program /opt/homebrew/bin/pinentry-mac" >> "$HOME/.gnupg/gpg-agent.conf"
             # Disable Pinentry "Save in Keychain"
@@ -175,7 +175,7 @@ setup_go() {
     go install -v golang.org/x/tools/gopls@latest
     go install -v github.com/go-delve/delve/cmd/dlv@latest
     go install -v cuelang.org/go/cmd/cue@latest
-    if [[ "$uname_s" == "Linux" ]]; then
+    if [[ "$os" == "Linux" ]]; then
         go install github.com/bazelbuild/bazelisk@latest
         ln -s "$HOME/.go/bin/bazelisk" "$HOME/.local/bin/bazel"
         "$HOME/.local/bin/bazel" version
@@ -222,7 +222,7 @@ setup_python() {
     msg_box "Setting up Python"
 
     # Homebrew python includes pip
-    if [[ "$uname_s" == "Linux" ]]; then
+    if [[ "$os" == "Linux" ]]; then
         curl -fsSL https://bootstrap.pypa.io/get-pip.py | python3
         export PATH=$HOME/.local/bin:$PATH
     fi
@@ -237,7 +237,7 @@ setup_rust() {
 
     # shellcheck source=/dev/null
     source "$HOME/.cargo/env"
-    [[ "$uname_s" == "Linux" ]] && cargo install -q "${LINUX_CRATES[@]}"
+    [[ "$os" == "Linux" ]] && cargo install -q "${LINUX_CRATES[@]}"
 }
 
 setup_code() {
@@ -253,18 +253,18 @@ setup_code() {
         ms-vscode.cpptools-extension-pack \
         rust-lang.rust \
         vadimcn.vscode-lldb
-    if [[ "$uname_s" == "Linux" ]]; then
+    if [[ "$os" == "Linux" ]]; then
         code --install-extension ms-azuretools.vscode-docker
     fi
-    if [[ "$uname_s" == "Darwin" ]]; then
+    if [[ "$os" == "Darwin" ]]; then
         code --install-extension sswg.swift-lang
         defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
     fi
 }
 
 setup_fonts() {
-    [[ "$uname_s" == "Darwin" ]] || dpkg-query --show xorg &> /dev/null || return 0
-    case "$uname_s" in
+    [[ "$os" == "Darwin" ]] || dpkg-query --show xorg &> /dev/null || return 0
+    case "$os" in
         Darwin)
             fonts_dir="$HOME/Library/Fonts"
             ;;
@@ -281,7 +281,7 @@ setup_fonts() {
     wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
     mkdir -p "$fonts_dir"
     mv MesloLGS*.ttf "$fonts_dir"
-    [[ "$uname_s" == "Linux" ]] && fc-cache -fv "$HOME/.local/share/fonts"
+    [[ "$os" == "Linux" ]] && fc-cache -fv "$HOME/.local/share/fonts"
 
     git clone https://github.com/powerline/fonts
     cd fonts
@@ -295,7 +295,7 @@ setup_zsh() {
     msg_box "Setting up zsh"
     chsh -s /bin/zsh
 
-    [[ "$uname_s" != "Linux" ]] && return 0
+    [[ "$os" != "Linux" ]] && return 0
 
     # Missing ZSH completions for some packages, e.g. those from Cargo
     completions_sh="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/completions.sh"
@@ -333,7 +333,7 @@ run_check() {
     msg_box "Checking bootstrap"
 
     ssh git@github.com 2>&1 | grep -q nevillelyh
-    case "$uname_s" in
+    case "$os" in
         Darwin)
             brew --version &> /dev/null
             ;;
@@ -398,12 +398,11 @@ if [[ $# -eq 1 ]]; then
     exit 0
 fi
 
-uname_s=$(uname -s)
-uname_m=$(uname -m)
+os=$(uname -s)
 
 setup_ssh
 
-case "$uname_s" in
+case "$os" in
     Darwin)
         setup_homebrew
         setup_mac
@@ -425,7 +424,7 @@ setup_code
 setup_fonts
 setup_zsh
 
-case "$uname_s" in
+case "$os" in
     Darwin)
         rm -rf "$HOME/.bash_profile" "$HOME/.bashrc"
         ;;

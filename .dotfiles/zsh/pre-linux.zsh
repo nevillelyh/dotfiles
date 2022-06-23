@@ -1,5 +1,9 @@
 [[ -d /snap/bin ]] && export PATH=/snap/bin:$PATH
 [[ -d /usr/local/go/bin ]] && export PATH=/usr/local/go/bin:$PATH
+if [[ -d "$HOME/.swift" ]]; then
+    export TOOLCHAINS="$HOME/.swift"
+    export PATH="$HOME/.swift/usr/bin:$PATH"
+fi
 
 # CUDA and cuDNN
 eval "$($HOME/.local/bin/nvman env)"

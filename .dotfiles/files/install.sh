@@ -310,6 +310,19 @@ install_sublime() {
     sudo aptitude install -y sublime-text
 }
 
+# https://www.swift.org/download/
+install_swift() {
+    re="ubuntu$(lsb_release -rs)"
+    [[ "$(uname -m)" == "aarch64" ]] && re="$re-aarch64"
+    url="https://www.swift.org/download/"
+
+    url=$(curl -fsSL $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P "$re.tar.gz\$" | tac | tail -n 1)
+    base=$(basename --suffix .tar.gz "$url")
+    curl -fsSL "$url" | tar -C "$HOME" -xz
+    rm -rf "$HOME/.swift"
+    mv "$HOME/$base" "$HOME/.swift"
+}
+
 # https://aka.ms/get-teams-linux
 install_teams() {
     brew_install_cask microsoft-teams

@@ -23,14 +23,10 @@ esac
 
 file=$HOME/.cache/joplin-cli-update
 (( ttl = 7 * 24 * 60 * 60 ))
-if [[ -f "$file" ]]; then
-    age=$(echo "$(date "+%s")" - "$(date -r "$file" "+%s")" | bc -l)
-    if [[ $age -ge $ttl ]]; then
-        docker pull -q $image:$arch > /dev/null
-        touch "$file"
-    fi
-else
-    docker pull -q $image:$arch
+(( age = ttl + 1 ))
+[[ -f "$file" ]] && age=$(echo "$(date "+%s")" - "$(date -r "$file" "+%s")" | bc -l)
+if [[ $age -ge $ttl ]]; then
+    docker pull -q $image:$arch > /dev/null
     touch "$file"
 fi
 

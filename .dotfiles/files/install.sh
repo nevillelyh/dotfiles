@@ -323,6 +323,20 @@ install_swift() {
     mv "$HOME/$base" "$HOME/.swift"
 }
 
+# https://tailscale.com/download/linux/ubuntu-2204
+install_tailscale() {
+    brew_install tailscale
+
+    url="https://pkgs.tailscale.com/stable/ubuntu/jammy.noarmor.gpg"
+    repo="deb [signed-by=/etc/apt/trusted.gpg.d/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/ubuntu jammy main"
+    setup_gpg "$url" tailscale-archive-keyring.gpg
+    setup_apt "$repo" tailscale.list
+    sudo aptitude update
+    sudo aptitude install -y tailscale
+
+    sudo tailscale up
+}
+
 # https://aka.ms/get-teams-linux
 install_teams() {
     brew_install_cask microsoft-teams

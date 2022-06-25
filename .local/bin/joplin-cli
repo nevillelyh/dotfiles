@@ -11,27 +11,18 @@ if ! type docker &> /dev/null; then
 fi
 
 image=nevillelyh/joplin-cli
-arch=$(uname -m)
-case $arch in
-    aarch64)
-        arch=arm64
-        ;;
-    x86_64)
-        arch=amd64
-        ;;
-esac
 
 file=$HOME/.cache/joplin-cli-update
 (( ttl = 7 * 24 * 60 * 60 ))
 (( age = ttl + 1 ))
 [[ -f "$file" ]] && age=$(echo "$(date "+%s")" - "$(date -r "$file" "+%s")" | bc -l)
 if [[ $age -ge $ttl ]]; then
-    docker pull -q $image:$arch > /dev/null
+    docker pull -q "$image:latest" > /dev/null
     touch "$file"
 fi
 
 mkdir -p "$HOME/.cache/joplin-cli"
-cmd="docker run -it -v $HOME/.cache/joplin-cli:/home/joplin/.config/joplin --rm $image:$arch"
+cmd="docker run -it -v $HOME/.cache/joplin-cli:/home/joplin/.config/joplin --rm $image:latest"
 if tty &> /dev/null; then
     $cmd
 else

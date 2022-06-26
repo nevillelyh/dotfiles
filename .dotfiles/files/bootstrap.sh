@@ -184,9 +184,9 @@ setup_go() {
 
 setup_jdk() {
     version="$1"
-    suffix="$2"
+    vendor="$2"
 
-    jdk_version=$(sdk list java | grep -o "\<$version\.[^ ]*$suffix" | head -n 1)
+    jdk_version=$(sdk list java | grep -o "$version\.[0-9.]*-$vendor")
     [[ -z "$jdk_version" ]] && die "No Java $version SDK available"
     sdk install java "$jdk_version"
 }
@@ -203,9 +203,9 @@ setup_jvm() {
     # shellcheck source=/dev/null
     source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-    setup_jdk 8 "-zulu"
-    setup_jdk 11 "-zulu"
-    setup_jdk 17 "-zulu"
+    setup_jdk 8 zulu
+    setup_jdk 11 zulu
+    setup_jdk 17 zulu
 
     sdk install gradle
     sdk install kotlin

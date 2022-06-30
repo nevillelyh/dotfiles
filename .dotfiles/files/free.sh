@@ -13,5 +13,7 @@ case "$(uname -s)" in
         ;;
 esac
 
-docker images --quiet --filter dangling=true | xargs -r docker rmi
-docker volume prune --force
+if type docker &> /dev/null; then
+    docker images --quiet --filter dangling=true | xargs -r docker rmi
+    docker volume prune --force
+fi

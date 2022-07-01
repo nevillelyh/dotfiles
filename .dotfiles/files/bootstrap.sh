@@ -10,9 +10,11 @@ set -euo pipefail
 # python - leave macOS bundled python alone
 # pinentry-mac - for GPG
 # App Store - AdGuard for Safari, Instapaper, Kindle, Messenger, Slack, The Unarchiver, WhatsApp
-BREWS=(bat bazelisk code-minimap cmake colordiff dust exa fd fzf gh git git-delta gitui golang gpg htop jq neovim ninja pinentry-mac python ripgrep shellcheck tmux wget zoxide)
+BREWS=(bat bazelisk code-minimap cmake colordiff dust exa fd fzf gh git git-delta gitui golang gpg htop jq mas neovim ninja pinentry-mac python ripgrep shellcheck tmux wget zoxide)
 CASKS=(alacritty alfred dropbox github iterm2 jetbrains-toolbox joplin lastpass sublime-text visual-studio-code vimr)
 CASKS_OPT=(adobe-creative-cloud anki expressvpn firefox google-chrome guitar-pro macdive microsoft-edge shearwater-cloud spotify transmission vlc)
+# AdGuard Xcode Unarchiver Kindle Messenger Pocket Slack WhatsApp
+MAS=(1440147259 497799835 425424353 405399194 1480068668 1477385213 803453959 1147396723)
 
 # Linux packages:
 # compton - for alacritty background opacity
@@ -48,6 +50,8 @@ setup_homebrew() {
     [[ -d /opt/homebrew ]] && export PATH=/opt/homebrew/bin:$PATH
     brew install "${BREWS[@]}"
     brew install --cask "${CASKS[@]}"
+
+    mas install "${MAS[@]}"
 
     read -p "Install optional casks (y/N)? " -n 1 -r
     echo # (optional) move to a new line

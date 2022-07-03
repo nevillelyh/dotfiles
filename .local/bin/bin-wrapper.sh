@@ -18,6 +18,17 @@ download() {
     fi
 }
 
+run_b2() {
+    latest() {
+        os=$(uname -s | tr "[:upper:]" "[:lower:]")
+        echo "https://github.com/Backblaze/B2_Command_Line_Tool/releases/latest/download/b2-$os"
+    }
+    file="$HOME/.local/libexec/b2"
+    exe=1
+    download
+    "$file" "$@"
+}
+
 run_presto-cli() {
     latest() {
         js_url=https://prestodb.io/static/js/version.js

@@ -25,6 +25,7 @@ upgrade_os() {
             sudo aptitude upgrade
             sudo aptitude autoclean
             sudo apt-get autoremove
+            sudo snap refresh
             ;;
     esac
 }

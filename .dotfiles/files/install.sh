@@ -316,7 +316,7 @@ install_swift() {
     [[ "$(uname -m)" == "aarch64" ]] && re="$re-aarch64"
     url="https://www.swift.org/download/"
 
-    url=$(curl -fsSL $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P "$re.tar.gz\$" | tac | tail -n 1)
+    url=$(curl -fsSL --compressed $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P "$re.tar.gz\$" | tac | tail -n 1)
     base=$(basename --suffix .tar.gz "$url")
     curl -fsSL "$url" | tar -C "$HOME" -xz
     rm -rf "$HOME/.swift"

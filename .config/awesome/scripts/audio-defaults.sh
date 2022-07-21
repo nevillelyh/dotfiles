@@ -9,7 +9,7 @@ for name in "${preferred_sources[@]}"; do
     [[ -n "$source" ]] && pactl set-default-source "$source" && break
 done
 
-preferred_sinks=(focusrite audioengine logitech)
+preferred_sinks=(audioengine focusrite logitech)
 for name in "${preferred_sinks[@]}"; do
     sink=$(pactl list short sinks | grep "\<alsa_output\." | grep -i "$name" | head -n 1 | cut -f 2)
     [[ -n "$sink" ]] && pactl set-default-sink "$sink" && break

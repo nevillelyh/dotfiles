@@ -159,7 +159,7 @@ install_dropbox() {
     pkg=$(curl -fsSL $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P "^dropbox_[\d\.]+_amd64.deb$" | tail -n 1)
     wget -nv "$url/$pkg"
     sudo dpkg -i dropbox_*_amd64.deb
-    rm -f dropbox_*_amd64.deb
+    rm dropbox_*_amd64.deb
 }
 
 # https://cloud.google.com/sdk/docs/install#deb
@@ -346,7 +346,7 @@ install_teams() {
     wget -nv "$url/$pkg"
     sudo dpkg -i teams_*_amd64.deb
     sudo aptitude install -y teams # Install missing dependencies
-    rm -f teams_*_amd64.deb
+    rm teams_*_amd64.deb
 }
 
 # https://learn.hashicorp.com/tutorials/terraform/install-cli

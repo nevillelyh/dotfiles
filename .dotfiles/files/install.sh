@@ -76,6 +76,7 @@ install_chrome() {
 
     wget -nv https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
     sudo dpkg -i google-chrome-stable_current_amd64.deb
+    sudo aptitude install -fy
     rm google-chrome-stable_current_amd64.deb
 }
 
@@ -123,6 +124,7 @@ install_discord() {
     url="https://discordapp.com/api/download/canary?platform=linux&format=deb"
     curl -fsSL "$url" -o discord.deb
     sudo dpkg -i discord.deb
+    sudo aptitude install -fy
     rm discord.deb
 }
 
@@ -168,6 +170,7 @@ install_dropbox() {
     pkg=$(curl -fsSL $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P "^dropbox_[\d\.]+_amd64.deb$" | tail -n 1)
     wget -nv "$url/$pkg"
     sudo dpkg -i dropbox_*_amd64.deb
+    sudo aptitude install -fy
     rm dropbox_*_amd64.deb
 }
 
@@ -233,6 +236,7 @@ install_minikube() {
     arch=$(dpkg --print-architecture)
     wget -nv "https://storage.googleapis.com/minikube/releases/latest/minikube_latest_$arch.deb"
     sudo dpkg -i minikube_latest_*.deb
+    sudo aptitude install -fy
     rm minikube_latest_*.deb
 }
 
@@ -354,7 +358,7 @@ install_teams() {
     pkg=$(curl -fsSL $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P "^teams_[\d\.]+_amd64.deb$" | tail -n 1)
     wget -nv "$url/$pkg"
     sudo dpkg -i teams_*_amd64.deb
-    sudo aptitude install -y teams # Install missing dependencies
+    sudo aptitude install -fy
     rm teams_*_amd64.deb
 }
 

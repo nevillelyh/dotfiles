@@ -117,6 +117,15 @@ install_dbeaver() {
     sudo aptitude install dbeaver-ce
 }
 
+install_discord() {
+    brew_install_cask discord
+
+    url="https://discordapp.com/api/download/canary?platform=linux&format=deb"
+    curl -fsSL "$url" -o discord.deb
+    sudo dpkg -i discord.deb
+    rm discord.deb
+}
+
 # https://docs.docker.com/engine/install/ubuntu/
 install_docker() {
     if [[ "$(uname -s)" == "Darwin" ]]; then

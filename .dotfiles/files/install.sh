@@ -258,19 +258,6 @@ install_signal() {
     sudo aptitude install -y signal-desktop
 }
 
-# Prefer snap instead
-# https://packagecloud.io/app/slacktechnologies/slack/gpg#gpg-apt
-install_slack() {
-    brew_install_cask slack
-
-    url="https://packagecloud.io/slacktechnologies/slack/gpgkey"
-    repo=$(curl -fsSL "https://packagecloud.io/install/repositories/slacktechnologies/slack/config_file.list?os=debian&dist=jessie&source=script")
-    setup_gpg "$url" slacktechnologies_slack.gpg
-    setup_apt "$repo" slacktechnologies_slack.list
-    sudo aptitude update
-    sudo aptitude install -y slack-desktop
-}
-
 # https://repo.steampowered.com/steam/
 install_steam() {
     brew_install_cask steam

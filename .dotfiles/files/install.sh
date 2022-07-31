@@ -80,19 +80,6 @@ install_chrome() {
     rm google-chrome-stable_current_amd64.deb
 }
 
-# Prefer Ubuntu instead
-# https://apt.kitware.com/
-install_cmake() {
-    brew_install cmake
-
-    url="https://apt.kitware.com/keys/kitware-archive-latest.asc"
-    repo="deb [signed-by=/etc/apt/trusted.gpg.d/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ focal main"
-    setup_gpg "$url" kitware-archive-keyring.gpg
-    setup_apt "$repo" kitware.list
-    sudo aptitude update
-    sudo aptitude install -y cmake kitware-archive-keyring
-}
-
 # https://code.visualstudio.com/docs/setup/linux
 install_code() {
     brew_install_cask visual-studio-code

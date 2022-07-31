@@ -390,9 +390,21 @@ install_zotero() {
     sudo aptitude install -y zotero
 }
 
-if [[ $#  -ne 1 ]]; then
-    echo "Usage: $(basename "$0") <PACKAGE>"
+get_packages() {
+    # Bash 3 on Mac missing readarray
+    # shellcheck disable=SC2207
+    pkgs=($(grep -o "^install_\w\+()" "$(readlink -f "$0")" | sed "s/^install_\(.*\)()$/\1/"))
+}
+
+if [[ $#  -eq 0 ]]; then
+    echo "Usage: $(basename "$0") [PACKAGE]..."
+    get_packages
+    for pkg in "${pkgs[@]}"; do
+        echo "        $pkg"
+    done
     exit 1
 fi
 
-"install_$1"
+for pkg in "$@"; do
+    "install_$pkg"
+done

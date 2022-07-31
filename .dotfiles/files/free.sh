@@ -18,4 +18,4 @@ if type docker &> /dev/null; then
     docker volume prune --force
 fi
 
-rm "$HOME"/.sdkman/archives/*.zip
+rm -f "$HOME"/.sdkman/archives/*.zip

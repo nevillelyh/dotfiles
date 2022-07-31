@@ -271,19 +271,6 @@ install_slack() {
     sudo aptitude install -y slack-desktop
 }
 
-# Prefer snap instead
-# https://www.spotify.com/us/download/linux/
-install_spotify() {
-    brew_install_cask spotify
-
-    url="https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg"
-    repo="deb http://repository.spotify.com stable non-free"
-    setup_gpg "$url" spotify.gpg
-    setup_apt "$repo" spotify.list
-    sudo aptitude update
-    sudo aptitude install -y spotify-client
-}
-
 # https://repo.steampowered.com/steam/
 install_steam() {
     brew_install_cask steam

@@ -11,7 +11,7 @@ set -euo pipefail
 # pinentry-mac - for GPG
 # App Store - AdGuard for Safari, Instapaper, Kindle, Messenger, Slack, The Unarchiver, WhatsApp
 BREWS=(bat bazelisk code-minimap cmake colordiff dust exa fd fzf gh git git-delta gitui golang gpg htop jq mas neovim ninja pinentry-mac python ripgrep shellcheck tmux wget zoxide)
-CASKS=(alacritty alfred dropbox github iterm2 jetbrains-toolbox joplin lastpass sublime-text visual-studio-code vimr)
+CASKS=(alacritty alfred discord dropbox github iterm2 jetbrains-toolbox joplin lastpass sublime-text visual-studio-code vimr)
 CASKS_OPT=(adobe-creative-cloud anki expressvpn firefox google-chrome guitar-pro macdive microsoft-edge shearwater-cloud spotify transmission vlc)
 # AdGuard Xcode Unarchiver Kindle Messenger Pocket Slack WhatsApp
 MAS=(1440147259 497799835 425424353 405399194 1480068668 1477385213 803453959 1147396723)
@@ -103,7 +103,7 @@ setup_linux() {
     sudo snap install slack spotify xseticon
 
     # Custom repositories
-    install chrome code dropbox sublime
+    install chrome code discord dropbox sublime
 
     # Joplin uses AppImage
     curl -fsSL https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh | bash

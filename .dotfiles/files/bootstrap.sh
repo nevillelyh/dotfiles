@@ -78,18 +78,11 @@ setup_apt() {
     sudo aptitude upgrade -y
     sudo aptitude install -y "${DEB_PKGS[@]}"
 
-    # Third-party APT repositories
-    install github
-
     # The following are GUI apps
     dpkg-query --show xorg &> /dev/null || return 0
 
     sudo aptitude install -y "${DEB_GUI_PKGS[@]}"
 
-    install chrome
-    install code
-    install dropbox
-    install sublime
 }
 
 setup_linux() {
@@ -97,22 +90,27 @@ setup_linux() {
     [[ -d /usr/local/go ]] && return 0
     msg_box "Setting up Linux specifics"
 
-    install go
-
     type nvidia-smi &> /dev/null && sudo aptitude install -y nvtop
+
+    # Third-party APT repositories
+    install github go
 
     # The following are GUI apps
     dpkg-query --show xorg &> /dev/null || return 0
 
-    git clone https://github.com/dracula/gnome-terminal
-    ./gnome-terminal/install.sh
-    rm -rf gnome-terminal
-
+    # Snap Store
     sudo aptitude install -y snapd
     sudo snap install slack spotify xseticon
 
+    # Custom repositories
+    install chrome code dropbox sublime
+
     # Joplin uses AppImage
     curl -fsSL https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh | bash
+
+    git clone https://github.com/dracula/gnome-terminal
+    ./gnome-terminal/install.sh
+    rm -rf gnome-terminal
 
     mkdir -p "$HOME/.local/share/backgrounds"
     wget -nv https://raw.githubusercontent.com/dracula/wallpaper/master/awesome.png -P "$HOME/.local/share/backgrounds"

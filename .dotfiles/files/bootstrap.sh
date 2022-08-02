@@ -253,7 +253,7 @@ setup_code() {
         GitHub.vscode-pull-request-github \
         golang.go \
         ms-vscode.cpptools-extension-pack \
-        rust-lang.rust \
+        rust-lang.rust-analyzer \
         vadimcn.vscode-lldb
     if [[ "$os" == "Linux" ]]; then
         code --install-extension ms-azuretools.vscode-docker

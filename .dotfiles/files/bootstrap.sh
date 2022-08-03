@@ -248,7 +248,6 @@ setup_code() {
     msg_box "Setting up Visual Studio Code"
 
     code --install-extension \
-        asvetliakov.vscode-neovim \
         dracula-theme.theme-dracula \
         GitHub.vscode-pull-request-github \
         golang.go \

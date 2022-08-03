@@ -19,18 +19,16 @@ set listchars=tab:»·,eol:↵,trail:⋅,extends:❯,precedes:❮
 set list
 set colorcolumn=80,100
 
-if !exists('g:vscode')
-  set keymap=
-  function! ToggleKeymap()
-    if &keymap == ""
-      set keymap=colemak
-    else
-      set keymap=
-    endif
-  endfunction
-  nmap <silent> <C-Space> :call ToggleKeymap()<CR>
+set keymap=
+function! ToggleKeymap()
+  if &keymap == ""
+    set keymap=colemak
+  else
+    set keymap=
+  endif
+endfunction
+nmap <silent> <C-Space> :call ToggleKeymap()<CR>
 
-  source $HOME/.config/nvim/dein.vim
-  source $HOME/.config/nvim/keybindings.vim
-  source $HOME/.config/nvim/plugins.vim
-endif
+source $HOME/.config/nvim/dein.vim
+source $HOME/.config/nvim/keybindings.vim
+source $HOME/.config/nvim/plugins.vim

@@ -1,0 +1,35 @@
+#!/bin/bash
+
+set -euo pipefail
+
+dir="$HOME/.local/libexec/protoc"
+(( ttl = 7 * 24 * 60 * 60 ))
+(( age = ttl + 1 ))
+dir="$HOME/.local/libexec/protoc"
+[[ -d "$dir" ]] && age=$(echo "$(date "+%s")" - "$(date -r "$dir" "+%s")" | bc -l)
+
+if [[ $age -ge $ttl ]]; then
+    url="https://api.github.com/repos/protocolbuffers/protobuf/releases/latest"
+    header="Accept: application/vnd.github.v3+json"
+    version=$(curl -fsSL -H "$header" "$url" | jq --raw-output ".tag_name" | sed 's/^v//g')
+
+    os=$(uname -s | tr "[:upper:]" "[:lower:]")
+    arch=$(uname -m)
+    if [[ "$os" == "darwin" ]]; then
+        os="osx"
+        [[ "$arch" == "arm64" ]] && arch="aarch_64"
+    fi
+
+    prefix="https://github.com/protocolbuffers/protobuf/releases/download"
+    zip="protoc-$version-$os-$arch.zip"
+    url="$prefix/v$version/$zip"
+
+    zip="$HOME/.local/libexec/$zip"
+
+    curl -fsSL "$url" -o "$zip"
+    rm -rf "$dir"
+    unzip "$zip" -d "$dir"
+    rm -rf "$zip"
+fi
+
+"$dir/bin/protoc" "$@"

@@ -12,7 +12,6 @@ download() {
     (( age = ttl + 1 ))
     [[ -f "$file" ]] && age=$(echo "$(date "+%s")" - "$(date -r "$file" "+%s")" | bc -l)
     if [[ $age -ge $ttl ]]; then
-        mkdir -p "$(dirname "$file")"
         curl -fsSL "$(latest)" -o "$file"
         [[ "$exe" -eq 1 ]] && chmod +x "$file"
     fi

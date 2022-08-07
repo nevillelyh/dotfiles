@@ -114,7 +114,7 @@ function volume:_update_menu()
                     volume:_init_menu()
                 end,
                 icon,
-                theme = { width = 150 },
+                theme = { width = 170 },
             }
         end
     end
@@ -133,7 +133,7 @@ function volume:_update_menu()
                     volume:_init_menu()
                 end,
                 icon,
-                theme = { width = 150 },
+                theme = { width = 170 },
             }
         end
     end

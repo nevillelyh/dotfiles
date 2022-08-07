@@ -84,7 +84,10 @@ local function parse_devices(stdout, prefix)
     for line in stdout:gmatch("[^\r\n]+") do
         local n = line:match("^%s*Name:%s*(.*)")
         local d = line:match("^%s*alsa.card_name%s*=%s*\"(.*)\"")
-        if n then name = n end
+        if n then
+            name = n
+            desc = nil
+        end
         if d then desc = d:gsub("^Monitor of%s+", "") end
         if name and desc and name:sub(1, prefix:len()) == prefix then
             devices[#devices+1] = { name = name, desc = desc }

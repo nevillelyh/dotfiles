@@ -12,7 +12,7 @@ esac
 alias cat='bat'
 alias diff='colordiff'
 alias digc='docker images --quiet --filter dangling=true | xargs -r docker rmi'
-alias ghpr='gh pr create --fill'
+alias ghpr='gh pr create'
 alias l='exa -la' # 'ls -lah'
 alias la='exa -la' # 'ls -lAh'
 alias ll='exa -l' # 'ls -lh'

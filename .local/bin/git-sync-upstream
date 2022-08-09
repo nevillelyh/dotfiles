@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Sync main branch with upstream
+
+set -euo pipefail
+
+head=$(git symbolic-ref --quiet HEAD | sed 's/refs\/heads\///')
+git checkout "$head"
+git fetch upstream
+git reset --hard upstream/"$head"
+git push --force

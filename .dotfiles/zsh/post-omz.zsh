@@ -22,8 +22,7 @@ alias lsg='exa -l --git'
 alias lst='exa -l -r -s modified'
 
 function zt() {
-    z "$1"
-    tmux new-session -s "$1"
+    z "$1" && tmux new-session -s "$1"
 }
 
 export EDITOR=nvim

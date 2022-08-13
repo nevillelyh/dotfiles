@@ -2,7 +2,6 @@
 
 set -euo pipefail
 
-dir="$HOME/.local/libexec/protoc"
 (( ttl = 7 * 24 * 60 * 60 ))
 (( age = ttl + 1 ))
 dir="$HOME/.local/libexec/protoc"

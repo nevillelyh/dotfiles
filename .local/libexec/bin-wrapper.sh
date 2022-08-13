@@ -13,7 +13,7 @@ download() {
     [[ -f "$file" ]] && age=$(echo "$(date "+%s")" - "$(date -r "$file" "+%s")" | bc -l)
     if [[ $age -ge $ttl ]]; then
         curl -fsSL "$(latest)" -o "$file"
-        [[ "$exe" -eq 1 ]] && chmod +x "$file"
+        chmod +x "$file"
     fi
 }
 
@@ -23,7 +23,6 @@ run_b2() {
         echo "https://github.com/Backblaze/B2_Command_Line_Tool/releases/latest/download/b2-$os"
     }
     file="$HOME/.local/libexec/b2"
-    exe=1
     download
     "$file" "$@"
 }
@@ -35,7 +34,6 @@ run_presto-cli() {
         echo "https://repo1.maven.org/maven2/com/facebook/presto/presto-cli/$version/presto-cli-$version-executable.jar"
     }
     file="$HOME/.local/libexec/presto-cli"
-    exe=1
     download
     "$file" "$@"
 }
@@ -45,7 +43,6 @@ run_trino-cli() {
         links "https://trino.io/download.html" | grep "trino-cli-[0-9]\+-executable.jar"
     }
     file="$HOME/.local/libexec/trino-cli"
-    exe=1
     download
     "$file" "$@"
 }

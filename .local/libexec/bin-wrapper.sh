@@ -7,44 +7,101 @@ links() {
     curl -fsSL "$url" | grep -o 'href="[^"]\+"' | sed 's/href="\([^"]*\)"/\1/'
 }
 
-download() {
+update() {
     (( ttl = 7 * 24 * 60 * 60 ))
     (( age = ttl + 1 ))
-    [[ -f "$file" ]] && age=$(echo "$(date "+%s")" - "$(date -r "$file" "+%s")" | bc -l)
+    [[ -f "$bin" ]] && age=$(echo "$(date "+%s")" - "$(date -r "$bin" "+%s")" | bc -l)
     if [[ $age -ge $ttl ]]; then
-        curl -fsSL "$(latest)" -o "$file"
-        chmod +x "$file"
+        download
     fi
 }
 
 run_b2() {
-    latest() {
+    download() {
         os=$(uname -s | tr "[:upper:]" "[:lower:]")
-        echo "https://github.com/Backblaze/B2_Command_Line_Tool/releases/latest/download/b2-$os"
+        url="https://github.com/Backblaze/B2_Command_Line_Tool/releases/latest/download/b2-$os"
+        curl -fsSL "$url" -o "$bin"
+        chmod +x "$bin"
     }
-    file="$HOME/.local/libexec/b2"
-    download
-    "$file" "$@"
+    bin="$HOME/.local/libexec/b2"
+    update
+    "$bin" "$@"
+}
+
+run_flatc() {
+    download() {
+        tmp=$(mktemp -d)
+
+        git clone git@github.com:google/flatbuffers.git "$tmp/flatbuffers"
+        cd "$tmp/flatbuffers"
+        git checkout "$(git tag | tail -n 1)"
+
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$HOME/.local"
+        make
+        cp flatc "$bin"
+
+        rm -rf "$tmp"
+    }
+    bin="$HOME/.local/libexec/flatc"
+    update
+    "$bin" "$@"
 }
 
 run_presto-cli() {
-    latest() {
-        js_url=https://prestodb.io/static/js/version.js
+    download() {
+        js_url="https://prestodb.io/static/js/version.js"
         version="$(curl -fsSL "$js_url" | grep "\<presto_latest_presto_version\>" | sed "s/[^']*'\([^']*\)';/\1/")"
-        echo "https://repo1.maven.org/maven2/com/facebook/presto/presto-cli/$version/presto-cli-$version-executable.jar"
+        url="https://repo1.maven.org/maven2/com/facebook/presto/presto-cli/$version/presto-cli-$version-executable.jar"
+        curl -fsSL "$url" -o "$bin"
+        chmod +x "$bin"
     }
-    file="$HOME/.local/libexec/presto-cli"
-    download
-    "$file" "$@"
+    bin="$HOME/.local/libexec/presto-cli"
+    update
+    "$bin" "$@"
+}
+
+run_protoc() {
+    download() {
+        url="https://api.github.com/repos/protocolbuffers/protobuf/releases/latest"
+        header="Accept: application/vnd.github.v3+json"
+        version=$(curl -fsSL -H "$header" "$url" | jq --raw-output ".tag_name" | sed 's/^v//g')
+
+        os=$(uname -s | tr "[:upper:]" "[:lower:]")
+        arch=$(uname -m)
+        if [[ "$os" == "darwin" ]]; then
+            os="osx"
+            [[ "$arch" == "arm64" ]] && arch="aarch_64"
+        fi
+
+        prefix="https://github.com/protocolbuffers/protobuf/releases/download"
+        zip="protoc-$version-$os-$arch.zip"
+        url="$prefix/v$version/$zip"
+
+        tmp=$(mktemp -d)
+        zip="$tmp/$zip"
+        curl -fsSL "$url" -o "$zip"
+        dir="$HOME/.local/libexec/protoc"
+        rm -rf "$dir"
+        unzip "$zip" -d "$dir"
+        rm -rf "$tmp"
+        touch "$bin"
+    }
+    bin="$HOME/.local/libexec/protoc/bin/protoc"
+    update
+    "$bin" "$@"
 }
 
 run_trino-cli() {
-    latest() {
-        links "https://trino.io/download.html" | grep "trino-cli-[0-9]\+-executable.jar"
+    download() {
+        url=$(links "https://trino.io/download.html" | grep "trino-cli-[0-9]\+-executable.jar")
+        curl -fsSL "$url" -o "$bin"
+        chmod +x "$bin"
     }
-    file="$HOME/.local/libexec/trino-cli"
-    download
-    "$file" "$@"
+    bin="$HOME/.local/libexec/trino-cli"
+    update
+    "$bin" "$@"
 }
 
 bin="$(basename "$0")"

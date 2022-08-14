@@ -28,6 +28,26 @@ run_b2() {
     "$bin" "$@"
 }
 
+run_bazel() {
+    download() {
+        os=$(uname -s | tr "[:upper:]" "[:lower:]")
+        url="https://api.github.com/repos/bazelbuild/bazelisk/releases/latest"
+        header="Accept: application/vnd.github.v3+json"
+        version=$(curl -fsSL -H "$header" "$url" | jq --raw-output ".tag_name")
+
+        os=$(uname -s | tr "[:upper:]" "[:lower:]")
+        arch=$(uname -m)
+        [[ "$arch" == "x86_64" ]] && arch="amd64"
+        prefix="https://github.com/bazelbuild/bazelisk/releases/download"
+        url="$prefix/$version/bazelisk-$os-$arch"
+        curl -fsSL "$url" -o "$bin"
+        chmod +x "$bin"
+    }
+    bin="$HOME/.local/libexec/bazelisk"
+    update
+    "$bin" "$@"
+}
+
 run_flatc() {
     download() {
         tmp=$(mktemp -d)

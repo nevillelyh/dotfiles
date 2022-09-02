@@ -54,6 +54,7 @@ upgrade_docker() {
         platform=$(docker inspect "$image" | jq --raw-output '.[] | "\(.Os)/\(.Architecture)"')
         [[ -z "$digest" ]] || docker pull --platform "$platform" "$image"
     done
+    docker images --quiet --filter dangling=true | xargs -r docker rmi
 }
 
 upgrade_go() {

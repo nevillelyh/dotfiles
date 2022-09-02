@@ -20,10 +20,10 @@ upgrade_os() {
             brew autoremove
             ;;
         Linux)
-            sudo aptitude update
-            sudo aptitude upgrade
-            sudo aptitude autoclean
-            sudo apt-get autoremove
+            sudo aptitude -y update
+            sudo aptitude -y upgrade
+            sudo aptitude -y autoclean
+            sudo apt-get -y autoremove
             sudo snap refresh
             ;;
     esac

@@ -314,9 +314,11 @@ install() {
 }
 
 msg_box() {
-    echo "╔═${1//[[:ascii:]]/═}═╗"
-    echo "║ $1 ║"
-    echo "╚═${1//[[:ascii:]]/═}═╝"
+    color='\033[1;35m' # magenta
+    reset='\033[0m' #reset
+    echo -e "${color}╔═${1//[[:ascii:]]/═}═╗${reset}"
+    echo -e "${color}║ $1 ║${reset}"
+    echo -e "${color}╚═${1//[[:ascii:]]/═}═╝${reset}"
 }
 
 die() {

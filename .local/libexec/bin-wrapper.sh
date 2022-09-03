@@ -22,7 +22,12 @@ update() {
 
 run_b2() {
     download() {
-        url="https://github.com/Backblaze/B2_Command_Line_Tool/releases/latest/download/b2-$os"
+        url="https://api.github.com/repos/Backblaze/B2_Command_Line_Tool/releases/latest"
+        header="Accept: application/vnd.github.v3+json"
+        version=$(curl -fsSL -H "$header" "$url" | jq --raw-output ".tag_name")
+
+        prefix="https://github.com/Backblaze/B2_Command_Line_Tool/releases/download"
+        url="$prefix/$version/b2-$os"
         curl -fsSL "$url" -o "$bin"
         chmod +x "$bin"
     }

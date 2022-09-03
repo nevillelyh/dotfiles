@@ -3,6 +3,8 @@
 set -euo pipefail
 
 libexec="$HOME/.local/libexec"
+os=$(uname -s | tr "[:upper:]" "[:lower:]")
+arch=$(uname -m)
 
 links() {
     url=$1
@@ -20,7 +22,6 @@ update() {
 
 run_b2() {
     download() {
-        os=$(uname -s | tr "[:upper:]" "[:lower:]")
         url="https://github.com/Backblaze/B2_Command_Line_Tool/releases/latest/download/b2-$os"
         curl -fsSL "$url" -o "$bin"
         chmod +x "$bin"
@@ -32,12 +33,10 @@ run_b2() {
 
 run_bazel() {
     download() {
-        os=$(uname -s | tr "[:upper:]" "[:lower:]")
         url="https://api.github.com/repos/bazelbuild/bazelisk/releases/latest"
         header="Accept: application/vnd.github.v3+json"
         version=$(curl -fsSL -H "$header" "$url" | jq --raw-output ".tag_name")
 
-        arch=$(uname -m)
         [[ "$arch" == "x86_64" ]] && arch="amd64"
         prefix="https://github.com/bazelbuild/bazelisk/releases/download"
         url="$prefix/$version/bazelisk-$os-$arch"
@@ -76,9 +75,7 @@ run_gh() {
         header="Accept: application/vnd.github.v3+json"
         version=$(curl -fsSL -H "$header" "$url" | jq --raw-output ".tag_name" | sed 's/^v//g')
 
-        os=$(uname -s | tr "[:upper:]" "[:lower:]")
         [[ "$os" == "darwin" ]] && os="macOS"
-        arch=$(uname -m)
         [[ "$arch" == "x86_64" ]] && arch="amd64"
 
         prefix="https://github.com/cli/cli/releases/download"
@@ -115,8 +112,6 @@ run_protoc() {
         header="Accept: application/vnd.github.v3+json"
         version=$(curl -fsSL -H "$header" "$url" | jq --raw-output ".tag_name" | sed 's/^v//g')
 
-        os=$(uname -s | tr "[:upper:]" "[:lower:]")
-        arch=$(uname -m)
         if [[ "$os" == "darwin" ]]; then
             os="osx"
             [[ "$arch" == "arm64" ]] && arch="aarch_64"

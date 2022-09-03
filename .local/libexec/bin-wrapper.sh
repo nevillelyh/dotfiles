@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+libexec="$HOME/.local/libexec"
+
 links() {
     url=$1
     curl -fsSL "$url" | grep -o 'href="[^"]\+"' | sed 's/href="\([^"]*\)"/\1/'
@@ -23,7 +25,7 @@ run_b2() {
         curl -fsSL "$url" -o "$bin"
         chmod +x "$bin"
     }
-    bin="$HOME/.local/libexec/b2"
+    bin="$libexec/b2"
     update
     "$bin" "$@"
 }
@@ -42,7 +44,7 @@ run_bazel() {
         curl -fsSL "$url" -o "$bin"
         chmod +x "$bin"
     }
-    bin="$HOME/.local/libexec/bazelisk"
+    bin="$libexec/bazelisk"
     update
     "$bin" "$@"
 }
@@ -63,7 +65,7 @@ run_flatc() {
 
         rm -rf "$tmp"
     }
-    bin="$HOME/.local/libexec/flatc"
+    bin="$libexec/flatc"
     update
     "$bin" "$@"
 }
@@ -76,7 +78,7 @@ run_presto-cli() {
         curl -fsSL "$url" -o "$bin"
         chmod +x "$bin"
     }
-    bin="$HOME/.local/libexec/presto-cli"
+    bin="$libexec/presto-cli"
     update
     "$bin" "$@"
 }
@@ -101,13 +103,13 @@ run_protoc() {
         tmp=$(mktemp -d)
         zip="$tmp/$zip"
         curl -fsSL "$url" -o "$zip"
-        dir="$HOME/.local/libexec/protoc"
+        dir="$libexec/protoc"
         rm -rf "$dir"
         unzip "$zip" -d "$dir"
         rm -rf "$tmp"
         touch "$bin"
     }
-    bin="$HOME/.local/libexec/protoc/bin/protoc"
+    bin="$libexec/protoc/bin/protoc"
     update
     "$bin" "$@"
 }
@@ -118,7 +120,7 @@ run_trino-cli() {
         curl -fsSL "$url" -o "$bin"
         chmod +x "$bin"
     }
-    bin="$HOME/.local/libexec/trino-cli"
+    bin="$libexec/trino-cli"
     update
     "$bin" "$@"
 }

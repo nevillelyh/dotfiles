@@ -24,10 +24,10 @@ run_b2() {
     download() {
         url="https://api.github.com/repos/Backblaze/B2_Command_Line_Tool/releases/latest"
         header="Accept: application/vnd.github.v3+json"
-        version=$(curl -fsSL -H "$header" "$url" | jq --raw-output ".tag_name")
+        version=$(curl -fsSL -H "$header" "$url" | jq --raw-output ".tag_name" | sed 's/^v//g')
 
         prefix="https://github.com/Backblaze/B2_Command_Line_Tool/releases/download"
-        url="$prefix/$version/b2-$os"
+        url="$prefix/v$version/b2-$os"
         curl -fsSL "$url" -o "$bin"
         chmod +x "$bin"
     }
@@ -40,11 +40,11 @@ run_bazel() {
     download() {
         url="https://api.github.com/repos/bazelbuild/bazelisk/releases/latest"
         header="Accept: application/vnd.github.v3+json"
-        version=$(curl -fsSL -H "$header" "$url" | jq --raw-output ".tag_name")
+        version=$(curl -fsSL -H "$header" "$url" | jq --raw-output ".tag_name" | sed 's/^v//g')
 
         [[ "$arch" == "x86_64" ]] && arch="amd64"
         prefix="https://github.com/bazelbuild/bazelisk/releases/download"
-        url="$prefix/$version/bazelisk-$os-$arch"
+        url="$prefix/v$version/bazelisk-$os-$arch"
         curl -fsSL "$url" -o "$bin"
         chmod +x "$bin"
     }
@@ -57,7 +57,7 @@ run_flatc() {
     download() {
         url="https://api.github.com/repos/google/flatbuffers/releases/latest"
         header="Accept: application/vnd.github.v3+json"
-        version=$(curl -fsSL -H "$header" "$url" | jq --raw-output ".tag_name")
+        version=$(curl -fsSL -H "$header" "$url" | jq --raw-output ".tag_name" | sed 's/^v//g')
 
         if [[ "$os" == "darwin" ]]; then
             zip="Mac.flatc.binary.zip"
@@ -66,7 +66,7 @@ run_flatc() {
         fi
 
         prefix="https://github.com/google/flatbuffers/releases/download"
-        url="$prefix/$version/$zip"
+        url="$prefix/v$version/$zip"
 
         tmp=$(mktemp -d)
         zip="$tmp/$zip"

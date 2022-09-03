@@ -70,6 +70,32 @@ run_flatc() {
     "$bin" "$@"
 }
 
+run_gh() {
+    download() {
+        url="https://api.github.com/repos/cli/cli/releases/latest"
+        header="Accept: application/vnd.github.v3+json"
+        version=$(curl -fsSL -H "$header" "$url" | jq --raw-output ".tag_name" | sed 's/^v//g')
+
+        os=$(uname -s | tr "[:upper:]" "[:lower:]")
+        [[ "$os" == "darwin" ]] && os="macOS"
+        arch=$(uname -m)
+        [[ "$arch" == "x86_64" ]] && arch="amd64"
+
+        prefix="https://github.com/cli/cli/releases/download"
+        build="gh_${version}_${os}_$arch"
+        tarball="$build.tar.gz"
+        url="$prefix/v$version/$tarball"
+
+        curl -fsSL "$url" | tar -C "$libexec" -xz
+        rm -rf "$libexec/gh"
+        mv "$libexec/$build" "$libexec/gh"
+        touch "$bin"
+    }
+    bin="$libexec/gh/bin/gh"
+    update
+    "$bin" "$@"
+}
+
 run_presto-cli() {
     download() {
         js_url="https://prestodb.io/static/js/version.js"
@@ -131,6 +157,7 @@ case "$bin" in
     b2) brew_pkg=b2-tools;;
     bazel) brew_pkg=bazelisk;;
     flatc) brew_pkg=flatbuffers;;
+    gh) brew_pkg=gh;;
     protoc) brew_pkg=protobuf;;
 esac
 

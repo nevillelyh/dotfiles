@@ -97,4 +97,8 @@ while [[ $OPTIND -le $# ]]; do
     fi
 done
 
-"${cmd[@]}" "${args[@]}"
+if [[ ${#args[@]} -eq 0 ]]; then
+    "${cmd[@]}"
+else
+    "${cmd[@]}" "${args[@]}"
+fi

@@ -5,87 +5,119 @@ set -euo pipefail
 libexec="$HOME/.local/libexec"
 os=$(uname -s | tr "[:upper:]" "[:lower:]")
 arch=$(uname -m)
+header="Accept: application/vnd.github.v3+json"
 
 links() {
     url=$1
     curl -fsSL "$url" | grep -o 'href="[^"]\+"' | sed 's/href="\([^"]*\)"/\1/'
 }
 
+github_latest() {
+    repo=$1
+    url="https://api.github.com/repos/$repo/releases/latest"
+    curl -fsSL -H "$header" "$url" | jq --raw-output ".tag_name" | sed 's/^v//g'
+}
+
 update() {
     (( ttl = 7 * 24 * 60 * 60 ))
-    (( age = ttl + 1 ))
-    [[ -f "$bin" ]] && age=$(echo "$(date "+%s")" - "$(date -r "$bin" "+%s")" | bc -l)
-    if [[ $age -ge $ttl ]]; then
-        download
+    vfile="$libexec/.$bin-version"
+    dl=0
+
+    if [[ ! -f "$exec" ]]; then
+        latest=$(version)
+        dl=1
+    else
+        age=$(echo "$(date "+%s")" - "$(date -r "$exec" "+%s")" | bc -l)
+        if [[ $age -ge $ttl ]]; then
+            echo "Checking for latest $bin"
+            latest=$(version)
+            if [[ ! -f "$vfile" ]] || [[ "$(cat "$vfile")" != "$latest" ]]; then
+                dl=1
+            fi
+        fi
+    fi
+
+    if [[ "$dl" -eq 1 ]]; then
+        echo "Downloading latest $bin: $latest"
+        download "$latest"
+        echo "$latest" > "$vfile"
     fi
 }
 
 run_b2() {
-    download() {
-        url="https://api.github.com/repos/Backblaze/B2_Command_Line_Tool/releases/latest"
-        header="Accept: application/vnd.github.v3+json"
-        version=$(curl -fsSL -H "$header" "$url" | jq --raw-output ".tag_name" | sed 's/^v//g')
+    version() {
+        github_latest "Backblaze/B2_Command_Line_Tool"
+    }
 
+    download() {
+        version=$1
         prefix="https://github.com/Backblaze/B2_Command_Line_Tool/releases/download"
         url="$prefix/v$version/b2-$os"
-        curl -fsSL "$url" -o "$bin"
-        chmod +x "$bin"
+        curl -fsSL "$url" -o "$exec"
+        chmod +x "$exec"
     }
-    bin="$libexec/b2"
+
+    exec="$libexec/b2"
     update
-    "$bin" "$@"
+    "$exec" "$@"
 }
 
 run_bazel() {
-    download() {
-        url="https://api.github.com/repos/bazelbuild/bazelisk/releases/latest"
-        header="Accept: application/vnd.github.v3+json"
-        version=$(curl -fsSL -H "$header" "$url" | jq --raw-output ".tag_name" | sed 's/^v//g')
+    version() {
+        github_latest "bazelbuild/bazelisk"
+    }
 
+    download() {
+        version=$1
         [[ "$arch" == "x86_64" ]] && arch="amd64"
         prefix="https://github.com/bazelbuild/bazelisk/releases/download"
         url="$prefix/v$version/bazelisk-$os-$arch"
-        curl -fsSL "$url" -o "$bin"
-        chmod +x "$bin"
+        curl -fsSL "$url" -o "$exec"
+        chmod +x "$exec"
     }
-    bin="$libexec/bazelisk"
+
+    exec="$libexec/bazelisk"
     update
-    "$bin" "$@"
+    "$exec" "$@"
 }
 
 run_flatc() {
+    version() {
+        github_latest "google/flatbuffers"
+    }
+
     download() {
-        url="https://api.github.com/repos/google/flatbuffers/releases/latest"
-        header="Accept: application/vnd.github.v3+json"
-        version=$(curl -fsSL -H "$header" "$url" | jq --raw-output ".tag_name" | sed 's/^v//g')
+        version=$1
 
         if [[ "$os" == "darwin" ]]; then
             zip="Mac.flatc.binary.zip"
         elif [[ "$os" == "linux" ]]; then
             zip="Linux.flatc.binary.g++-10.zip"
         fi
-
         prefix="https://github.com/google/flatbuffers/releases/download"
         url="$prefix/v$version/$zip"
 
         tmp=$(mktemp -d)
         zip="$tmp/$zip"
         curl -fsSL "$url" -o "$zip"
-        rm -rf "$bin"
-        unzip "$zip" -d "$libexec"
+        rm -rf "$exec"
+        unzip -q "$zip" -d "$libexec"
         rm -rf "$tmp"
-        touch "$bin"
+        touch "$exec"
     }
-    bin="$libexec/flatc"
+
+    exec="$libexec/flatc"
     update
-    "$bin" "$@"
+    "$exec" "$@"
 }
 
 run_gh() {
+    version() {
+        github_latest "cli/cli"
+    }
+
     download() {
-        url="https://api.github.com/repos/cli/cli/releases/latest"
-        header="Accept: application/vnd.github.v3+json"
-        version=$(curl -fsSL -H "$header" "$url" | jq --raw-output ".tag_name" | sed 's/^v//g')
+        version=$1
 
         [[ "$os" == "darwin" ]] && os="macOS"
         [[ "$arch" == "x86_64" ]] && arch="amd64"
@@ -98,31 +130,39 @@ run_gh() {
         curl -fsSL "$url" | tar -C "$libexec" -xz
         rm -rf "$libexec/gh"
         mv "$libexec/$build" "$libexec/gh"
-        touch "$bin"
+        touch "$exec"
     }
-    bin="$libexec/gh/bin/gh"
+
+    exec="$libexec/gh/bin/gh"
     update
-    "$bin" "$@"
+    "$exec" "$@"
 }
 
 run_presto-cli() {
-    download() {
+    version() {
         js_url="https://prestodb.io/static/js/version.js"
-        version="$(curl -fsSL "$js_url" | grep "\<presto_latest_presto_version\>" | sed "s/[^']*'\([^']*\)';/\1/")"
-        url="https://repo1.maven.org/maven2/com/facebook/presto/presto-cli/$version/presto-cli-$version-executable.jar"
-        curl -fsSL "$url" -o "$bin"
-        chmod +x "$bin"
+        curl -fsSL "$js_url" | grep "\<presto_latest_presto_version\>" | sed "s/[^']*'\([^']*\)';/\1/"
     }
-    bin="$libexec/presto-cli"
+
+    download() {
+        version=$1
+        url="https://repo1.maven.org/maven2/com/facebook/presto/presto-cli/$version/presto-cli-$version-executable.jar"
+        curl -fsSL "$url" -o "$exec"
+        chmod +x "$exec"
+    }
+
+    exec="$libexec/presto-cli"
     update
-    "$bin" "$@"
+    "$exec" "$@"
 }
 
 run_protoc() {
+    version() {
+        github_latest "protocolbuffers/protobuf"
+    }
+
     download() {
-        url="https://api.github.com/repos/protocolbuffers/protobuf/releases/latest"
-        header="Accept: application/vnd.github.v3+json"
-        version=$(curl -fsSL -H "$header" "$url" | jq --raw-output ".tag_name" | sed 's/^v//g')
+        version=$1
 
         if [[ "$os" == "darwin" ]]; then
             os="osx"
@@ -138,26 +178,39 @@ run_protoc() {
         curl -fsSL "$url" -o "$zip"
         dir="$libexec/protoc"
         rm -rf "$dir"
-        unzip "$zip" -d "$dir"
+        unzip -q "$zip" -d "$dir"
         rm -rf "$tmp"
-        touch "$bin"
+        touch "$exec"
     }
-    bin="$libexec/protoc/bin/protoc"
+
+    exec="$libexec/protoc/bin/protoc"
     update
-    "$bin" "$@"
+    "$exec" "$@"
 }
 
 run_trino-cli() {
-    download() {
-        prefix="https://repo1.maven.org/maven2/io/trino/trino-cli"
-        version=$(links "$prefix" | grep -oP '^[0-9]+(?=/$)' | sort -n | tail -n 1)
-        url="$prefix/$version/trino-cli-$version-executable.jar"
-        curl -fsSL "$url" -o "$bin"
-        chmod +x "$bin"
+    prefix="https://repo1.maven.org/maven2/io/trino/trino-cli"
+
+    version() {
+        links "$prefix" | grep -oP '^[0-9]+(?=/$)' | sort -n | tail -n 1
     }
-    bin="$libexec/trino-cli"
+
+    download() {
+        version=$1
+        url="$prefix/$version/trino-cli-$version-executable.jar"
+        curl -fsSL "$url" -o "$exec"
+        chmod +x "$exec"
+    }
+
+    exec="$libexec/trino-cli"
     update
-    "$bin" "$@"
+    "$exec" "$@"
+}
+
+get_bins() {
+    # Bash 3 on Mac missing readarray
+    # shellcheck disable=SC2207
+    bins=($(grep -o "^run_.\+()" "$(readlink -f "$0")" | sed "s/^run_\(.*\)()$/\1/"))
 }
 
 bin="$(basename "$0")"
@@ -168,6 +221,11 @@ case "$bin" in
     flatc) brew_pkg=flatbuffers;;
     gh) brew_pkg=gh;;
     protoc) brew_pkg=protobuf;;
+    bin-wrapper.sh)
+        get_bins
+        echo "Binary wrapper for: ${bins[*]}"
+        exit 1
+        ;;
 esac
 
 if [[ -n ${brew_pkg+x} ]] && type brew &> /dev/null; then

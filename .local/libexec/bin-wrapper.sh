@@ -192,7 +192,7 @@ run_trino-cli() {
     prefix="https://repo1.maven.org/maven2/io/trino/trino-cli"
 
     version() {
-        links "$prefix" | grep -oP '^[0-9]+(?=/$)' | sort -n | tail -n 1
+        links "$prefix" | grep -o '^[0-9]\+\/$' | sed 's/\/$//' | sort -n | tail -n 1
     }
 
     download() {

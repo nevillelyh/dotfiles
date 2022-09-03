@@ -149,7 +149,9 @@ run_protoc() {
 
 run_trino-cli() {
     download() {
-        url=$(links "https://trino.io/download.html" | grep "trino-cli-[0-9]\+-executable.jar")
+        prefix="https://repo1.maven.org/maven2/io/trino/trino-cli"
+        version=$(links "$prefix" | grep -oP '^[0-9]+(?=/$)' | sort -n | tail -n 1)
+        url="$prefix/$version/trino-cli-$version-executable.jar"
         curl -fsSL "$url" -o "$bin"
         chmod +x "$bin"
     }

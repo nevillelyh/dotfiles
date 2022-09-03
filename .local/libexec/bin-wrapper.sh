@@ -55,19 +55,26 @@ run_bazel() {
 
 run_flatc() {
     download() {
+        url="https://api.github.com/repos/google/flatbuffers/releases/latest"
+        header="Accept: application/vnd.github.v3+json"
+        version=$(curl -fsSL -H "$header" "$url" | jq --raw-output ".tag_name")
+
+        if [[ "$os" == "darwin" ]]; then
+            zip="Mac.flatc.binary.zip"
+        elif [[ "$os" == "linux" ]]; then
+            zip="Linux.flatc.binary.g++-10.zip"
+        fi
+
+        prefix="https://github.com/google/flatbuffers/releases/download"
+        url="$prefix/$version/$zip"
+
         tmp=$(mktemp -d)
-
-        git clone git@github.com:google/flatbuffers.git "$tmp/flatbuffers"
-        cd "$tmp/flatbuffers"
-        git checkout "$(git tag | tail -n 1)"
-
-        mkdir build
-        cd build
-        cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$HOME/.local"
-        make
-        cp flatc "$bin"
-
+        zip="$tmp/$zip"
+        curl -fsSL "$url" -o "$zip"
+        rm -rf "$bin"
+        unzip "$zip" -d "$libexec"
         rm -rf "$tmp"
+        touch "$bin"
     }
     bin="$libexec/flatc"
     update

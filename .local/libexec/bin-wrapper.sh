@@ -35,7 +35,6 @@ run_bazel() {
         header="Accept: application/vnd.github.v3+json"
         version=$(curl -fsSL -H "$header" "$url" | jq --raw-output ".tag_name")
 
-        os=$(uname -s | tr "[:upper:]" "[:lower:]")
         arch=$(uname -m)
         [[ "$arch" == "x86_64" ]] && arch="amd64"
         prefix="https://github.com/bazelbuild/bazelisk/releases/download"

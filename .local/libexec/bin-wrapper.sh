@@ -124,4 +124,18 @@ run_trino-cli() {
 }
 
 bin="$(basename "$0")"
-"run_$bin" "$@"
+
+case "$bin" in
+    b2) brew_pkg=b2-tools;;
+    bazel) brew_pkg=bazelisk;;
+    flatc) brew_pkg=flatbuffers;;
+    protoc) brew_pkg=protobuf;;
+esac
+
+if [[ -n ${brew_pkg+x} ]] && type brew &> /dev/null; then
+    brew_bin="/opt/homebrew/bin/$bin"
+    [[ -L "$brew_bin" ]] || brew install "$brew_pkg"
+    "$brew_bin" "$@"
+else
+    "run_$bin" "$@"
+fi

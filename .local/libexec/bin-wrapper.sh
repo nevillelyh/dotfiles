@@ -21,9 +21,11 @@ github_latest() {
 update() {
     (( ttl = 7 * 24 * 60 * 60 ))
 
+    color='\033[1;35m' # magenta
+    reset='\033[0m' #reset
     if [[ ! -x "$exec" ]]; then
         latest=$(get_latest)
-        echo "Installing $bin $latest"
+        echo -e "${color}Installing $bin $latest${reset}"
         download "$latest"
     else
         age=$(echo "$(date "+%s")" - "$(date -r "$exec" "+%s")" | bc -l)
@@ -31,10 +33,10 @@ update() {
             current=$(get_current)
             latest=$(get_latest)
             if [[ "$current" != "$latest" ]]; then
-                echo "Upgrading $bin from $current to $latest"
+                echo -e "${color}Upgrading $bin from $current to $latest${reset}"
                 download "$latest"
             else
-                echo "Up-to-date $bin: $current"
+                echo "${color}Up-to-date $bin: $current${reset}"
             fi
         fi
     fi

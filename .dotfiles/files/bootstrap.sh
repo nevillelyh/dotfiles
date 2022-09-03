@@ -10,7 +10,7 @@ set -euo pipefail
 # python - leave macOS bundled python alone
 # pinentry-mac - for GPG
 # App Store - AdGuard for Safari, Instapaper, Kindle, Messenger, Slack, The Unarchiver, WhatsApp
-BREWS=(bat code-minimap cmake colordiff dust exa fd fzf gh git git-delta gitui golang gpg htop jq mas neovim ninja pinentry-mac python ripgrep shellcheck tmux wget zoxide)
+BREWS=(bat code-minimap cmake colordiff dust exa fd fzf git git-delta gitui golang gpg htop jq mas neovim ninja pinentry-mac python ripgrep shellcheck tmux wget zoxide)
 CASKS=(alacritty alfred discord dropbox github iterm2 jetbrains-toolbox joplin lastpass sublime-text visual-studio-code vimr)
 CASKS_OPT=(adobe-creative-cloud anki expressvpn firefox google-chrome guitar-pro macdive microsoft-edge shearwater-cloud spotify transmission vlc)
 # AdGuard Xcode Unarchiver Kindle Messenger Pocket Slack WhatsApp
@@ -70,7 +70,7 @@ setup_mac() {
 
 setup_apt() {
     [[ "$os" != "Linux" ]] && return 0
-    type gh &> /dev/null && return 0
+    type nvim &> /dev/null && return 0
     msg_box "Setting up Aptitude"
 
     sudo apt-get install -y apt-transport-https aptitude
@@ -93,7 +93,7 @@ setup_linux() {
     type nvidia-smi &> /dev/null && sudo aptitude install -y nvtop
 
     # Third-party APT repositories
-    install github go
+    install go
 
     # The following are GUI apps
     dpkg-query --show xorg &> /dev/null || return 0

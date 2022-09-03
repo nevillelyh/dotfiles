@@ -7,7 +7,7 @@ os=$(uname -s | tr "[:upper:]" "[:lower:]")
 arch=$(uname -m)
 header="Accept: application/vnd.github.v3+json"
 
-links() {
+get_links() {
     url=$1
     curl -fsSL "$url" | grep -o 'href="[^"]\+"' | sed 's/href="\([^"]*\)"/\1/'
 }
@@ -20,33 +20,33 @@ github_latest() {
 
 update() {
     (( ttl = 7 * 24 * 60 * 60 ))
-    vfile="$libexec/.$bin-version"
-    dl=0
 
-    if [[ ! -f "$exec" ]]; then
-        latest=$(version)
-        dl=1
+    if [[ ! -x "$exec" ]]; then
+        latest=$(get_latest)
+        echo "Installing $bin $latest"
+        download "$latest"
     else
         age=$(echo "$(date "+%s")" - "$(date -r "$exec" "+%s")" | bc -l)
         if [[ $age -ge $ttl ]]; then
-            echo "Checking for latest $bin"
-            latest=$(version)
-            if [[ ! -f "$vfile" ]] || [[ "$(cat "$vfile")" != "$latest" ]]; then
-                dl=1
+            current=$(get_current)
+            latest=$(get_latest)
+            if [[ "$current" != "$latest" ]]; then
+                echo "Upgrading $bin from $current to $latest"
+                download "$latest"
+            else
+                echo "Up-to-date $bin: $current"
             fi
         fi
-    fi
-
-    if [[ "$dl" -eq 1 ]]; then
-        echo "Downloading latest $bin: $latest"
-        download "$latest"
-        echo "$latest" > "$vfile"
     fi
 }
 
 run_b2() {
-    version() {
+    get_latest() {
         github_latest "Backblaze/B2_Command_Line_Tool"
+    }
+
+    get_current() {
+        "$exec" version | sed 's/^b2 command line tool, version \(.\+\)$/\1/'
     }
 
     download() {
@@ -63,8 +63,12 @@ run_b2() {
 }
 
 run_bazel() {
-    version() {
+    get_latest() {
         github_latest "bazelbuild/bazelisk"
+    }
+
+    get_current() {
+        "$exec" version 2> /dev/null | head -n 1 | sed 's/^Bazelisk version: v\(.\+\)$/\1/'
     }
 
     download() {
@@ -82,8 +86,12 @@ run_bazel() {
 }
 
 run_flatc() {
-    version() {
+    get_latest() {
         github_latest "google/flatbuffers"
+    }
+
+    get_current() {
+        "$exec" --version | sed 's/^flatc version \(.\+\)$/\1/'
     }
 
     download() {
@@ -112,8 +120,12 @@ run_flatc() {
 }
 
 run_gh() {
-    version() {
+    get_latest() {
         github_latest "cli/cli"
+    }
+
+    get_current() {
+        "$exec" --version 2> /dev/null | head -n 1 | sed 's/gh version \(.\+\) (.\+)$/\1/'
     }
 
     download() {
@@ -139,9 +151,13 @@ run_gh() {
 }
 
 run_presto-cli() {
-    version() {
+    get_latest() {
         js_url="https://prestodb.io/static/js/version.js"
         curl -fsSL "$js_url" | grep "\<presto_latest_presto_version\>" | sed "s/[^']*'\([^']*\)';/\1/"
+    }
+
+    get_current() {
+        "$exec" --version | sed 's/^Presto CLI \([^-]\+\)-.\+$/\1/'
     }
 
     download() {
@@ -157,8 +173,12 @@ run_presto-cli() {
 }
 
 run_protoc() {
-    version() {
+    get_latest() {
         github_latest "protocolbuffers/protobuf"
+    }
+
+    get_current() {
+        "$exec" --version | sed 's/^libprotoc [0-9]\+\.\(.\+\)$/\1/'
     }
 
     download() {
@@ -191,8 +211,12 @@ run_protoc() {
 run_trino-cli() {
     prefix="https://repo1.maven.org/maven2/io/trino/trino-cli"
 
-    version() {
-        links "$prefix" | grep -o '^[0-9]\+\/$' | sed 's/\/$//' | sort -n | tail -n 1
+    get_latest() {
+        get_links "$prefix" | grep -o '^[0-9]\+\/$' | sed 's/\/$//' | sort -n | tail -n 1
+    }
+
+    get_current() {
+        "$exec" --version | sed 's/^Trino CLI \(.\+\)$/\1/'
     }
 
     download() {

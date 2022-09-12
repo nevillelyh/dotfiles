@@ -21,6 +21,10 @@ alias lsa='exa -la' # 'ls -lah'
 alias lsg='exa -l --git'
 alias lst='exa -l -r -s modified'
 
+if [[ -L /opt/homebrew/bin/mvnd ]] || [[ -d "$HOME/.sdkman/candidates/mvnd" ]]; then
+    unalias mvnd
+fi
+
 function zt() {
     z "$1" && tmux new-session -s "$1"
 }

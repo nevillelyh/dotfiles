@@ -373,6 +373,7 @@ help() {
 ########################################
 
 basedir=$(dirname "$(readlink -f "$0")")
+os=$(uname -s)
 
 if [[ $# -eq 1 ]]; then
     case "$1" in
@@ -394,8 +395,6 @@ if [[ $# -eq 1 ]]; then
     esac
     exit 0
 fi
-
-os=$(uname -s)
 
 setup_ssh
 

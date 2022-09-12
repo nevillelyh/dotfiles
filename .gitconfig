@@ -1,6 +1,8 @@
 [user]
 	name = Neville Li
 	email = neville.lyh@gmail.com
+[includeIf "gitdir:~/src/starburstdata/**"]
+	path = .gitconfig-starburstdata
 [init]
 	defaultBranch = main
 [branch]

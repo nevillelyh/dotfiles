@@ -183,7 +183,7 @@ setup_jdk() {
     version="$1"
     vendor="$2"
 
-    jdk_version=$(sdk list java | grep -o "$version\.[0-9.]*-$vendor")
+    jdk_version=$(sdk list java | grep -o "\<$version\.[0-9.]*-$vendor" | head -n 1)
     [[ -z "$jdk_version" ]] && die "No Java $version SDK available"
     sdk install java "$jdk_version"
 }
@@ -193,8 +193,8 @@ setup_jvm() {
     msg_box "Setting up JVM"
 
     curl -fsSL "https://get.sdkman.io" | bash
-    sed -i "s/sdkman_rosetta2_compatible=true/sdkman_rosetta2_compatible=false/g" "$HOME/.sdkman/etc/config"
-    sed -i "s/sdkman_auto_answer=false/sdkman_auto_answer=true/g" "$HOME/.sdkman/etc/config"
+    sed -i '' "s/sdkman_rosetta2_compatible=true/sdkman_rosetta2_compatible=false/g" "$HOME/.sdkman/etc/config"
+    sed -i '' "s/sdkman_auto_answer=false/sdkman_auto_answer=true/g" "$HOME/.sdkman/etc/config"
 
     set +u
     # shellcheck source=/dev/null
@@ -211,7 +211,7 @@ setup_jvm() {
     sdk install sbt
     set -u
 
-    sed -i "s/sdkman_auto_answer=true/sdkman_auto_answer=false/g" "$HOME/.sdkman/etc/config"
+    sed -i '' "s/sdkman_auto_answer=true/sdkman_auto_answer=false/g" "$HOME/.sdkman/etc/config"
 }
 
 setup_python() {

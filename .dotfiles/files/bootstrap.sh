@@ -183,7 +183,7 @@ setup_jdk() {
     version="$1"
     vendor="$2"
 
-    jdk_version=$(sdk list java | grep -o "\<$version\.[0-9.]*-$vendor" | head -n 1)
+    jdk_version=$(sdk list java | grep -o "\<$version\.[0-9.]*-$vendor" | sort | head -n 1)
     [[ -z "$jdk_version" ]] && die "No Java $version SDK available"
     sdk install java "$jdk_version"
 }

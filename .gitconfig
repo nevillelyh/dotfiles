@@ -1,8 +1,6 @@
 [user]
 	name = Neville Li
 	email = neville.lyh@gmail.com
-[includeIf "gitdir:~/src/starburstdata/**"]
-	path = .gitconfig-starburstdata
 [init]
 	defaultBranch = main
 [branch]
@@ -48,3 +46,6 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+
+[includeIf "gitdir:~/src/starburstdata/**"]
+	path = .gitconfig-starburstdata

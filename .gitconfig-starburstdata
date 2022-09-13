@@ -1,2 +1,6 @@
 [user]
-    email = neville.li@starburstdata.com
+ 	email = neville.li@starburstdata.com
+[commit]
+	gpgSign = false
+[tag]
+	gpgSign = false

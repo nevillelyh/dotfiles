@@ -268,7 +268,7 @@ setup_fonts() {
             fonts_dir="$HOME/.local/share/fonts"
             ;;
     esac
-    [[ -d "$fonts_dir" ]] && return 0
+    [[ -f "$fonts_dir/Hack-Regular.ttf" ]] && return 0
     msg_box "Setting up fonts"
 
     wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf

@@ -287,11 +287,10 @@ setup_fonts() {
 }
 
 setup_zsh() {
-    [[ "$SHELL" == "/bin/zsh" ]] && return 0
-    msg_box "Setting up zsh"
-    chsh -s /bin/zsh
-
+    [[ "$SHELL" == "/bin/zsh" ]] || chsh -s /bin/zsh
     [[ "$os" != "Linux" ]] && return 0
+    [[ -d "$HOME/.local/share/zsh/site-functions" ]] && return 0
+    msg_box "Setting up zsh"
 
     # Missing ZSH completions for some packages, e.g. those from Cargo
     completions_sh="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/completions.sh"

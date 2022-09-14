@@ -46,6 +46,7 @@ upgrade_neovim() {
     msg_box "Upgrading NeoVim"
     nvim -u "$HOME/.config/nvim/dein.vim" --headless \
         '+let g:dein#install_progress_type = "none" | call dein#update() | echo "\r\n" | qall'
+    nvim -u "$HOME/.config/nvim/dein.vim" --headless '+Tmuxline | qall'
 }
 
 upgrade_docker() {

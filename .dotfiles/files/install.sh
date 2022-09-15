@@ -117,36 +117,18 @@ install_discord() {
 
 # https://docs.docker.com/engine/install/ubuntu/
 install_docker() {
-    if [[ "$(uname -s)" == "Darwin" ]]; then
-        echo "Which container runtime to install?"
-        echo " [1] Docker Desktop"
-        echo " [2] Colima"
-        read -p "Enter number: " -n 1 -r
-        echo # (optional) move to a new line
-        case "$REPLY" in
-            1)
-                brew install --cask docker
-                ;;
-            2)
-                brew install colima docker docker-compose
-                mkdir -p "$HOME/.docker/cli-plugins"
-                ln -sfn /opt/homebrew/opt/docker-compose/bin/docker-compose "$HOME/.docker/cli-plugins/docker-compose"
-                ;;
-            *)
-                exit 1
-                ;;
-        esac
-    else
-        url="https://download.docker.com/linux/ubuntu/gpg"
-        repo="deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/trusted.gpg.d/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-        setup_gpg "$url" docker-archive-keyring.gpg
-        setup_apt "$repo" docker.list
-        sudo aptitude update
-        sudo aptitude install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
-    fi
-
     # Default is ctrl-p, ctrl-q
+    mkdir -p "$HOME/.docker"
     echo '{"detachKeys": "ctrl-z,z"}' | jq --indent 4 > "$HOME/.docker/config.json"
+
+    brew_install_cask docker
+
+    url="https://download.docker.com/linux/ubuntu/gpg"
+    repo="deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/trusted.gpg.d/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    setup_gpg "$url" docker-archive-keyring.gpg
+    setup_apt "$repo" docker.list
+    sudo aptitude update
+    sudo aptitude install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 }
 
 # Dropbox manages its own repository

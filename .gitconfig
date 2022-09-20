@@ -6,7 +6,9 @@
 [branch]
 	autoSetupRebase = always
 [merge]
-	tool = vimdiff
+	tool = nvimdiff
+[mergetool "nvimdiff"]
+	cmd = nvim -d \"$LOCAL\" \"$MERGED\" \"$BASE\" \"$REMOTE\" -c \"wincmd w\" -c \"wincmd J\"
 [rebase]
 	autoSquash = true
 

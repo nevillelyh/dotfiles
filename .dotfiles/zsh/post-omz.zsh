@@ -20,6 +20,12 @@ alias ls='exa' # 'ls -G'
 alias lsa='exa -la' # 'ls -lah'
 alias lsg='exa -l --git'
 alias lst='exa -l -r -s modified'
+alias gscat='gsutil cat'
+alias gscp='gsutil -m cp'
+alias gsdu='gsutil du'
+alias gsls='gsutil ls'
+alias gsmv='gsutil -m mv'
+alias gsrm='gsutil -m rm'
 
 if [[ -L /opt/homebrew/bin/mvnd ]] || [[ -d "$HOME/.sdkman/candidates/mvnd" ]]; then
     unalias mvnd

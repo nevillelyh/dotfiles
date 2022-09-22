@@ -10,14 +10,14 @@ die() {
 }
 
 help() {
-    echo "Usage: $(basename "$0") <command> [arg]..."
+    echo "Usage: $(basename "$0") <COMMAND> [ARG]..."
     echo
     echo "  commands:"
     echo "    env"
-    echo "    install   <runfile|tarball>"
+    echo "    install   <RUNFILE|TARBALL>"
     echo "    list"
-    echo "    set       <cuda|cudnn> <version>"
-    echo "    uninstall <cuda|cudnn> <version>"
+    echo "    set       <cuda|cudnn> <VERSION>"
+    echo "    uninstall <cuda|cudnn> <VERSION>"
     echo "    help"
 }
 

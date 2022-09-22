@@ -328,6 +328,7 @@ get_packages() {
 
 if [[ $#  -eq 0 ]]; then
     echo "Usage: $(basename "$0") [PACKAGE]..."
+    echo "    Packages:"
     get_packages
     for pkg in "${pkgs[@]}"; do
         echo "        $pkg"

@@ -357,7 +357,7 @@ get_commands() {
 }
 
 help() {
-    echo "Usage: $(basename "$0") [command]"
+    echo "Usage: $(basename "$0") [COMMAND]"
     echo "    Commands:"
     echo "        check"
     get_commands

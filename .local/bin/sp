@@ -201,7 +201,7 @@ function sp-http {
 function sp-help {
   # Prints usage information.
 
-  echo "Usage: sp [command]"
+  echo "Usage: sp [COMMAND]"
   echo "Control a running Spotify instance from the command line."
   echo ""
   echo "  sp play       - Play/pause Spotify"

@@ -263,12 +263,8 @@ setup_code() {
 setup_fonts() {
     [[ "$os" == "Darwin" ]] || dpkg-query --show xorg &> /dev/null || return 0
     case "$os" in
-        Darwin)
-            fonts_dir="$HOME/Library/Fonts"
-            ;;
-        Linux)
-            fonts_dir="$HOME/.local/share/fonts"
-            ;;
+        Darwin) fonts_dir="$HOME/Library/Fonts" ;;
+        Linux) fonts_dir="$HOME/.local/share/fonts" ;;
     esac
     [[ -f "$fonts_dir/Hack-Regular.ttf" ]] && return 0
     msg_box "Setting up fonts"
@@ -332,12 +328,8 @@ run_check() {
 
     ssh git@github.com 2>&1 | grep -q nevillelyh
     case "$os" in
-        Darwin)
-            brew --version &> /dev/null
-            ;;
-        Linux)
-            aptitude --version &> /dev/null
-            ;;
+        Darwin) brew --version &> /dev/null ;;
+        Linux) aptitude --version &> /dev/null ;;
     esac
     git --version &> /dev/null
     gpg --output - --sign "$HOME/.dotfiles/files/bootstrap.sh" /dev/null
@@ -378,12 +370,8 @@ os=$(uname -s)
 
 if [[ $# -eq 1 ]]; then
     case "$1" in
-        check)
-            run_check
-            ;;
-        help)
-            help
-            ;;
+        check) run_check ;;
+        help) help ;;
         *)
             get_commands
             if [[ " ${cmds[*]} " =~ (^|[[:space:]])"$1"($|[[:space:]]) ]]; then

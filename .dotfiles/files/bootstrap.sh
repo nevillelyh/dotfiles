@@ -290,6 +290,11 @@ setup_zsh() {
     [[ -d "$HOME/.local/share/zsh/site-functions" ]] && return 0
     msg_box "Setting up zsh"
 
+    case "$os" in
+        Darwin) rm -rf "$HOME/.bash_profile" "$HOME/.bashrc" ;;
+        Linux) cp /etc/skel/.[^.]* "$HOME" ;;
+    esac
+
     # Missing ZSH completions for some packages, e.g. those from Cargo
     completions_sh="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/completions.sh"
     mkdir -p "$HOME/.local/share/zsh/site-functions"
@@ -409,14 +414,6 @@ setup_code
 setup_fonts
 setup_zsh
 
-case "$os" in
-    Darwin)
-        rm -rf "$HOME/.bash_profile" "$HOME/.bashrc"
-        ;;
-    Linux)
-        cp /etc/skel/.[^.]* "$HOME"
-        ;;
-esac
 # In case install scripts e.g. SDKMAN modify anything by accident
 git reset --hard
 

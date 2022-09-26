@@ -250,14 +250,12 @@ setup_code() {
         dracula-theme.theme-dracula \
         GitHub.vscode-pull-request-github \
         golang.go \
+        ms-azuretools.vscode-docker \
         ms-vscode.cpptools-extension-pack \
         rust-lang.rust-analyzer \
+        sswg.swift-lang \
         vadimcn.vscode-lldb
-    if [[ "$os" == "Linux" ]]; then
-        code --install-extension ms-azuretools.vscode-docker
-    fi
     if [[ "$os" == "Darwin" ]]; then
-        code --install-extension sswg.swift-lang
         defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
     fi
 }

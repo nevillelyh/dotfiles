@@ -64,11 +64,11 @@ done
 # Reuse a single SSH agent
 if [[ -z "$SSH_CONNECTION" ]]; then
     agent=/tmp/ssh-agent-tmux-$USER
-    if [[ -z $(pidof ssh-agent) ]]; then
+    if [[ -z $(pidof ssh-agent) ]] || [[ ! -e "$agent" ]]; then
         eval "$(ssh-agent)" &> /dev/null
         find "$HOME/.ssh" \( -name id_dsa -or -name id_rsa -or -name id_ecdsa -or -name id_ed25519 \) \
             -exec ssh-add -q {} \;
-        [[ "$SSH_AUTH_SOCK" != "$agent" ]] && ln -fs "$SSH_AUTH_SOCK" "$agent"
+        ln -fs "$SSH_AUTH_SOCK" "$agent"
     fi
     export SSH_AUTH_SOCK="$agent"
     unset agent

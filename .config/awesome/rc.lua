@@ -492,11 +492,11 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Mod1"    }, "space", my_keys.next_layout,
               {description = "next keyboard layout", group = "awesome"}),
 
-    awful.key({ }, "XF86AudioPlay", function() awful.spawn("sp play") end,
+    awful.key({ }, "XF86AudioPlay", function() awful.spawn(awesome_path .. "scripts/spotify.sh play") end,
               {description = "Spotify - play", group = "media"}),
-    awful.key({ }, "XF86AudioPrev", function() awful.spawn("sp prev") end,
+    awful.key({ }, "XF86AudioPrev", function() awful.spawn(awesome_path .. "scripts/spotify.sh prev") end,
               {description = "Spotify - previous", group = "media"}),
-    awful.key({ }, "XF86AudioNext", function() awful.spawn("sp next") end,
+    awful.key({ }, "XF86AudioNext", function() awful.spawn(awesome_path .. "scripts/spotify.sh next") end,
               {description = "Spotify - next", group = "media"}),
 
     -- pactl set-default-sink [sink]

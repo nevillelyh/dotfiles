@@ -668,6 +668,7 @@ font:
 
 key_bindings:
   - { key: W,     mods: Command,   action: ReceiveChar      }
+  - { key: N,     mods: Command,   action: CreateNewWindow  }
   # Fix Alt-* on macOS
   # bash/zsh back/forward one word
   - { key: B,     mods: Alt,       chars: "\x1bb"           }

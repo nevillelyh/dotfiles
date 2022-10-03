@@ -32,6 +32,8 @@ if dein#load_state($HOME.'/.local/share/dein')
   call dein#add('jjo/vim-cue', {'merged': 0})
   call dein#add('udalov/kotlin-vim', {'merged': 0})
   call dein#add('zchee/vim-flatbuffers', {'merged': 0})
+  call dein#add('godlygeek/tabular', {'merged': 0})
+  call dein#add('preservim/vim-markdown', {'merged': 0})
 
   " Required:
   call dein#end()

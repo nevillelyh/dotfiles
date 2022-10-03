@@ -21,6 +21,8 @@ if dein#load_state($HOME.'/.local/share/dein')
   call dein#add('vim-airline/vim-airline', {'merged': 0})
   call dein#add('ntpeters/vim-better-whitespace', {'merged': 0})
   call dein#add('kamykn/spelunker.vim', {'merged': 0})
+  call dein#add('godlygeek/tabular', {'merged': 0})
+  call dein#add('preservim/vim-markdown', {'merged': 0})
 
   " Required:
   call dein#end()

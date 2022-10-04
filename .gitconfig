@@ -36,7 +36,9 @@
 	diffFilter = delta --color-only
 [delta]
 	navigate = true
+	light = false
 	syntax-theme = Dracula
+	line-numbers = true
 [merge]
 	conflictstyle = diff3
 [diff]

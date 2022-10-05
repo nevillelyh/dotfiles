@@ -37,7 +37,7 @@
 [add.interactive]
 	useBuiltin = false # required for git 2.37.0
 [delta]
-	navigate = true
+	navigate = true # use n and N to move between diff sections
 	light = false
 	syntax-theme = Dracula
 	line-numbers = true

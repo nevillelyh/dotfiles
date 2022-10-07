@@ -2,6 +2,7 @@
 .*.swp
 
 !/.dotfiles
+!/.local/bin
 
 /Desktop
 /Documents

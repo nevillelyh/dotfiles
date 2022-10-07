@@ -18,4 +18,6 @@ if type docker &> /dev/null; then
     docker volume prune --force
 fi
 
+go clean -modcache
+
 rm -f "$HOME"/.sdkman/archives/*.zip

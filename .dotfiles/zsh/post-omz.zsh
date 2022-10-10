@@ -27,6 +27,10 @@ alias gsls='gsutil ls'
 alias gsmv='gsutil -m mv'
 alias gsrm='gsutil -m rm'
 
+function rg() {
+    command rg --json "$@" | delta
+}
+
 if [[ -L /opt/homebrew/bin/mvnd ]] || [[ -d "$HOME/.sdkman/candidates/mvnd" ]]; then
     unalias mvnd
 fi

@@ -4,8 +4,8 @@
 
 set -euo pipefail
 
-head=$(git symbolic-ref --quiet HEAD | sed 's/refs\/heads\///')
-git checkout "$head"
+branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed "s@^refs/remotes/origin/@@")
+git checkout "$branch"
 git fetch upstream
-git reset --hard upstream/"$head"
+git reset --hard upstream/"$branch"
 git push --force

@@ -133,6 +133,7 @@ setup_git() {
     git reset --hard origin/main
     git submodule update --init --recursive
     git branch --set-upstream-to=origin/main
+    git remote set-head origin --auto
 }
 
 setup_gnupg() {

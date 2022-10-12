@@ -3,6 +3,7 @@
 
 !/.dotfiles
 !/.local/bin
+/.dotfiles/private
 
 /Desktop
 /Documents

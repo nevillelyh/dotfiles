@@ -36,7 +36,12 @@ if [[ -L /opt/homebrew/bin/mvnd ]] || [[ -d "$HOME/.sdkman/candidates/mvnd" ]]; 
 fi
 
 function zt() {
-    z "$1" && tmux new-session -s "$1"
+    session="$1"
+    if tmux has-session -t "$session" &> /dev/null; then
+        tmux attach -d -t "$session"
+    else
+        z "$1" && tmux new-session -s "$session"
+    fi
 }
 
 export EDITOR=nvim

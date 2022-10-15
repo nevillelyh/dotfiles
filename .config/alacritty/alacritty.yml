@@ -976,20 +976,20 @@ font:
   size: 12.0
 
 key_bindings:
-  - { key: W,     mods: Command,   action: ReceiveChar      }
-  - { key: N,     mods: Command,   action: CreateNewWindow  }
+  - { key: W,     mods: Command,      action: ReceiveChar      }
+  - { key: N,     mods: Command,      action: CreateNewWindow  }
   # Fix Alt-* on macOS
   # bash/zsh back/forward one word
-  - { key: B,     mods: Alt,       chars: "\x1bb"           }
-  - { key: F,     mods: Alt,       chars: "\x1bf"           }
+  - { key: B,     mods: Option,       chars: "\x1bb"           }
+  - { key: F,     mods: Option,       chars: "\x1bf"           }
   # FZF cd into directory
-  - { key: C,     mods: Alt,       chars: "\x1bc"           }
+  - { key: C,     mods: Option,       chars: "\x1bc"           }
   # Vim previous/next buffer
-  - { key: P,     mods: Alt,       chars: "\x1bp"           }
-  - { key: N,     mods: Alt,       chars: "\x1bn"           }
+  - { key: P,     mods: Option,       chars: "\x1bp"           }
+  - { key: N,     mods: Option,       chars: "\x1bn"           }
   # Vim FZF
-  - { key: O,     mods: Alt,       chars: "\x1bo"           }
-  - { key: O,     mods: Alt|Shift, chars: "\x1bO"           }
+  - { key: O,     mods: Option,       chars: "\x1bo"           }
+  - { key: O,     mods: Option|Shift, chars: "\x1bO"           }
   # Vim NERD Commenter
-  - { key: Slash, mods: Alt,       chars: "\x1b/"           }
-  - { key: Slash, mods: Alt|Shift, chars: "\x1b?"           }
+  - { key: Slash, mods: Option,       chars: "\x1b/"           }
+  - { key: Slash, mods: Option|Shift, chars: "\x1b?"           }

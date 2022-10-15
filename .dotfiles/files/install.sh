@@ -216,6 +216,14 @@ install_proton() {
     curl -fsSL "$tarball" | tar -C "$HOME/.steam/root/compatibilitytools.d" -xz
 }
 
+# https://www.retroarch.com/index.php?page=linux-instructions
+install_retroarch() {
+    brew_install_cask retroarch
+    sudo add-apt-repository ppa:libretro/stable
+    sudo aptitude update
+    sudo aptitude install retroarch
+}
+
 # https://signal.org/download/
 install_signal() {
     brew_install_cask signal

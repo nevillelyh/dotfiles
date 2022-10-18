@@ -41,4 +41,5 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_mode_map = {'mode': 'active', 'passive_filetypes': ['java', 'scala']}
 let g:syntastic_cpp_compiler_options = '-std=c++20'
+let g:syntastic_python_flake8_args = "--max-line-length=100"
 let g:syntastic_sh_shellcheck_args = "-x"

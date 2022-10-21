@@ -71,12 +71,12 @@ for cb in "${condabin[@]}"; do
 done
 
 # Reuse a single SSH agent
-if [[ -z "$SSH_CONNECTION" ]]; then
+ssh_keys=("${(@f)$(find "$HOME/.ssh" \( -name id_dsa -or -name id_rsa -or -name id_ecdsa -or -name id_ed25519 \))}")
+if [[ "${#ssh_keys[@]}" -gt 0 ]] || ; then
     agent=/tmp/ssh-agent-tmux-$USER
     if [[ -z $(pidof ssh-agent) ]] || [[ ! -e "$agent" ]]; then
         eval "$(ssh-agent)" &> /dev/null
-        find "$HOME/.ssh" \( -name id_dsa -or -name id_rsa -or -name id_ecdsa -or -name id_ed25519 \) \
-            -exec ssh-add -q {} \;
+        ssh-add -q "${ssh_keys[@]}"
         ln -fs "$SSH_AUTH_SOCK" "$agent"
     fi
     export SSH_AUTH_SOCK="$agent"

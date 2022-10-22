@@ -13,7 +13,7 @@
 # - Terminal on Mac: login & interactive
 # - tmux: login & interactive
 # - SSH: login & interactive
-#
+
 if [[ -o interactive ]] || [[ -o login ]]; then
     if [[ -o login ]] && [[ -x /usr/libexec/path_helper ]]; then
         unset PATH # Let path_helper regenerate

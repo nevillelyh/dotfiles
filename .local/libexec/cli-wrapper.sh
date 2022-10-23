@@ -53,7 +53,7 @@ case "$(basename "$0")" in
         ;;
     s3rm)
         cmd=(aws s3 rm)
-        opts=":dq"
+        opts=":qr"
         fn() {
             case "$1" in
                 q) echo "--quiet" ;;

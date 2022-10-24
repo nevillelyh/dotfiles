@@ -8,7 +8,7 @@ if [[ -d "$HOME/.swift" ]]; then
 fi
 
 # CUDA and cuDNN
-eval "$($HOME/.local/bin/nvman env)"
+eval "$($HOME/.dotfiles/bin/nvman env)"
 
 # Some Linux packages have no bundled completion
 # https://cli.github.com/manual/gh_completion

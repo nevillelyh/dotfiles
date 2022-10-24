@@ -9,6 +9,7 @@ case "$(uname -s)" in
         ;;
 esac
 
+export PATH=$HOME/.dotfiles/bin:$PATH
 [[ -d $HOME/.local/bin ]] && export PATH=$HOME/.local/bin:$PATH
 [[ -s $HOME/.cargo/env ]] && source "$HOME/.cargo/env"
 

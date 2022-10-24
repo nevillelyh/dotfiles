@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-libexec="$HOME/.local/libexec"
+cache="$HOME/.dotfiles/libexec/cache"
 os=$(uname -s | tr "[:upper:]" "[:lower:]")
 arch=$(uname -m)
 header="Accept: application/vnd.github.v3+json"
@@ -60,7 +60,7 @@ run_b2() {
         chmod +x "$exec"
     }
 
-    exec="$libexec/b2"
+    exec="$cache/b2"
     update
     "$exec" "$@"
 }
@@ -83,7 +83,7 @@ run_bazel() {
         chmod +x "$exec"
     }
 
-    exec="$libexec/bazelisk"
+    exec="$cache/bazelisk"
     update
     "$exec" "$@"
 }
@@ -112,12 +112,12 @@ run_flatc() {
         zip="$tmp/$zip"
         curl -fsSL "$url" -o "$zip"
         rm -rf "$exec"
-        unzip -q "$zip" -d "$libexec"
+        unzip -q "$zip" -d "$cache"
         rm -rf "$tmp"
         touch "$exec"
     }
 
-    exec="$libexec/flatc"
+    exec="$cache/flatc"
     update
     "$exec" "$@"
 }
@@ -142,13 +142,13 @@ run_gh() {
         tarball="$build.tar.gz"
         url="$prefix/v$version/$tarball"
 
-        curl -fsSL "$url" | tar -C "$libexec" -xz
-        rm -rf "$libexec/gh"
-        mv "$libexec/$build" "$libexec/gh"
+        curl -fsSL "$url" | tar -C "$cache" -xz
+        rm -rf "$cache/gh"
+        mv "$cache/$build" "$cache/gh"
         touch "$exec"
     }
 
-    exec="$libexec/gh/bin/gh"
+    exec="$cache/gh/bin/gh"
     update
     "$exec" "$@"
 }
@@ -170,7 +170,7 @@ run_presto-cli() {
         chmod +x "$exec"
     }
 
-    exec="$libexec/presto-cli"
+    exec="$cache/presto-cli"
     update
     "$exec" "$@"
 }
@@ -199,14 +199,14 @@ run_protoc() {
         tmp=$(mktemp -d)
         zip="$tmp/$zip"
         curl -fsSL "$url" -o "$zip"
-        dir="$libexec/protoc"
+        dir="$cache/protoc"
         rm -rf "$dir"
         unzip -q "$zip" -d "$dir"
         rm -rf "$tmp"
         touch "$exec"
     }
 
-    exec="$libexec/protoc/bin/protoc"
+    exec="$cache/protoc/bin/protoc"
     update
     "$exec" "$@"
 }
@@ -229,7 +229,7 @@ run_trino-cli() {
         chmod +x "$exec"
     }
 
-    exec="$libexec/trino-cli"
+    exec="$cache/trino-cli"
     update
     "$exec" "$@"
 }

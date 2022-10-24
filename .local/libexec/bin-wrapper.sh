@@ -36,7 +36,7 @@ update() {
                 echo -e "${color}Upgrading $bin from $current to $latest${reset}"
                 download "$latest"
             else
-                echo "${color}Up-to-date $bin: $current${reset}"
+                echo -e "${color}Up-to-date $bin: $current${reset}"
             fi
         fi
     fi

@@ -37,6 +37,7 @@ update() {
                 download "$latest"
             else
                 echo -e "${color}Up-to-date $bin: $current${reset}"
+                touch "$exec"
             fi
         fi
     fi

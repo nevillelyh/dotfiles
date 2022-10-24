@@ -72,7 +72,7 @@ done
 
 # Reuse a single SSH agent
 ssh_keys=("${(@f)$(find "$HOME/.ssh" \( -name id_dsa -or -name id_rsa -or -name id_ecdsa -or -name id_ed25519 \))}")
-if [[ "${#ssh_keys[@]}" -gt 0 ]] || ; then
+if [[ -n "$ssh_keys" ]]; then
     agent=/tmp/ssh-agent-tmux-$USER
     if [[ -z $(pidof ssh-agent) ]] || [[ ! -e "$agent" ]]; then
         eval "$(ssh-agent)" &> /dev/null
@@ -82,6 +82,7 @@ if [[ "${#ssh_keys[@]}" -gt 0 ]] || ; then
     export SSH_AUTH_SOCK="$agent"
     unset agent
 fi
+unset ssh_keys
 
 if [[ -d $HOME/.dotfiles/private/profile.d ]]; then
     for f in $HOME/.dotfiles/private/profile.d/*.sh; do

@@ -10,25 +10,19 @@ if [[ $# -ne 1 ]]; then
 fi
 
 out=$(realpath "$1")
-tmp=$(mktemp -d)
 mkdir -p "$out"
 
-cd "$tmp"
+tmp=$(mktemp -d)
 
-git clone https://github.com/sharkdp/bat.git
-cd bat
+git clone https://github.com/sharkdp/bat.git "$tmp/bat"
+cd "$tmp/bat"
 cargo build --release
 cp target/release/build/bat-*/out/assets/completions/bat.zsh "$out/_bat"
-cd ..
-
-git clone https://github.com/dandavison/delta.git
-cd delta
-cp etc/completion/completion.zsh "$out/_delta"
-cd ..
-
-git clone https://github.com/sharkdp/fd.git
-cd fd
-cp contrib/completion/_fd "$out"
-cd ..
-
 rm -rf "$tmp"
+
+curl -fsSL https://raw.githubusercontent.com/wfxr/code-minimap/master/completions/zsh/_code-minimap -o "$out/_code-minimap"
+curl -fsSL https://github.com/dandavison/delta/blob/master/etc/completion/completion.zsh -o "$out/_delta"
+curl -fsSL https://raw.githubusercontent.com/bootandy/dust/master/completions/_dust -o "$out/_dust"
+curl -fsSL https://raw.githubusercontent.com/sharkdp/fd/master/contrib/completion/_fd -o "$out/_fd"
+curl -fsSL https://github.com/ajeetdsouza/zoxide/blob/main/contrib/completions/_zoxide -o "$out/_zoxide"
+

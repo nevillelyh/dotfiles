@@ -6,6 +6,7 @@ set mouse=a
 " Tabs and spaces
 set shiftwidth=4
 set expandtab
+set textwidth=100
 
 " Indentation
 set smartindent

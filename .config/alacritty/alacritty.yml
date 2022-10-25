@@ -969,6 +969,8 @@ window:
     columns: 132
     lines: 43
   opacity: 0.9
+  # https://github.com/alacritty/alacritty/issues/62#issuecomment-1291219520
+  ime_input: false
 
 font:
   normal:

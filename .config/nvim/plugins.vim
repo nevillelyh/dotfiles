@@ -26,8 +26,11 @@ nmap <A-O> :call fzf#run(fzf#wrap({'source': 'find . -type f'}))<CR>
 " Alt-/ - Comment line(s)
 " Alt-Shift-/ - Comment block
 let g:NERDSpaceDelims = 1
-nmap <A-/> <leader>ci<Down>
-vmap <A-/> <leader>ci
+let g:NERDDefaultAlign = 'left'
+let g:NERDCommentEmptyLines = 1
+let g:NERDTrimTrailingWhitespace = 1
+nmap <A-/> <leader>c<space><Down>
+vmap <A-/> <leader>c<space>
 vmap <A-?> <leader>cm
 
 " Syntastic

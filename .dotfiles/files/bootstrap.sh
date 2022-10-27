@@ -197,19 +197,17 @@ setup_jvm() {
     sed -i '' "s/sdkman_rosetta2_compatible=true/sdkman_rosetta2_compatible=false/g" "$HOME/.sdkman/etc/config"
     sed -i '' "s/sdkman_auto_answer=false/sdkman_auto_answer=true/g" "$HOME/.sdkman/etc/config"
 
+    sdkman_sh="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/sdkman.sh"
+    curl -fsSL "$sdkman_sh" | bash
+
     set +u
     # shellcheck source=/dev/null
     source "$HOME/.sdkman/bin/sdkman-init.sh"
-
-    setup_jdk 8 zulu
-    setup_jdk 11 zulu
-    setup_jdk 17 zulu
 
     sdk install gradle
     sdk install kotlin
     sdk install maven
     sdk install mvnd
-    sdk install scala
     sdk install sbt
     set -u
 

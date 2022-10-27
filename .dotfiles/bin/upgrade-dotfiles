@@ -92,12 +92,7 @@ upgrade_go() {
 
 upgrade_jvm() {
     msg_box "Upgrading JVM"
-    set +eu
-    # shellcheck source=/dev/null
-    source "$HOME/.sdkman/bin/sdkman-init.sh"
-    sdk update
-    sdk upgrade
-    set -eu
+    bash "$HOME/.dotfiles/files/sdkman.sh"
 }
 
 upgrade_python() {

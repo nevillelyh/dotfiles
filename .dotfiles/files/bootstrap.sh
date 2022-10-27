@@ -208,12 +208,9 @@ setup_jvm() {
     sdk install gradle
     sdk install kotlin
     sdk install maven
+    sdk install mvnd
     sdk install scala
     sdk install sbt
-    case "$os" in
-        Darwin) brew install --ignore-dependencies mvndaemon/homebrew-mvnd/mvnd ;;
-        Linux) sdk install mvnd ;;
-    esac
     set -u
 
     sed -i '' "s/sdkman_auto_answer=true/sdkman_auto_answer=false/g" "$HOME/.sdkman/etc/config"

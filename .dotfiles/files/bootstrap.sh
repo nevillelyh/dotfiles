@@ -194,8 +194,8 @@ setup_jvm() {
     msg_box "Setting up JVM"
 
     curl -fsSL "https://get.sdkman.io" | bash
-    sed -i '' "s/sdkman_rosetta2_compatible=true/sdkman_rosetta2_compatible=false/g" "$HOME/.sdkman/etc/config"
-    sed -i '' "s/sdkman_auto_answer=false/sdkman_auto_answer=true/g" "$HOME/.sdkman/etc/config"
+    sed_i '' "s/sdkman_rosetta2_compatible=true/sdkman_rosetta2_compatible=false/g" "$HOME/.sdkman/etc/config"
+    sed_i '' "s/sdkman_auto_answer=false/sdkman_auto_answer=true/g" "$HOME/.sdkman/etc/config"
 
     sdkman_sh="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/sdkman.sh"
     curl -fsSL "$sdkman_sh" | bash
@@ -211,7 +211,7 @@ setup_jvm() {
     sdk install sbt
     set -u
 
-    sed -i '' "s/sdkman_auto_answer=true/sdkman_auto_answer=false/g" "$HOME/.sdkman/etc/config"
+    sed_i '' "s/sdkman_auto_answer=true/sdkman_auto_answer=false/g" "$HOME/.sdkman/etc/config"
 }
 
 setup_python() {
@@ -349,6 +349,13 @@ get_commands() {
     # Bash 3 on Mac missing readarray
     # shellcheck disable=SC2207
     cmds=($(grep -o "^setup_\w\+()" "$(readlink -f "$0")" | sed "s/^setup_\(.*\)()$/\1/"))
+}
+
+sed_i() {
+    case "$os" in
+        Darwin) sed -i '' "$@" ;;
+        Linux) sed -i "$@" ;;
+    esac
 }
 
 help() {

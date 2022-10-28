@@ -78,9 +78,19 @@ manage_candidates() {
     done
 }
 
+sed_i() {
+    case "$(uname -s)" in
+        Darwin) sed -i '' "$@" ;;
+        Linux) sed -i "$@" ;;
+    esac
+}
+
+sed_i "s/sdkman_auto_answer=false/sdkman_auto_answer=true/g" "$HOME/.sdkman/etc/config"
 set +u
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 manage_java
 manage_scala
 manage_candidates
+
+sed_i "s/sdkman_auto_answer=true/sdkman_auto_answer=false/g" "$HOME/.sdkman/etc/config"

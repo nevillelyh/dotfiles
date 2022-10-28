@@ -14,7 +14,8 @@ if [[ $# -eq 1 ]]; then
     remote=$1
 fi
 
-for b in $(git remote prune "$remote" | grep '\[pruned\]' | awk '{print $3}' | sed -e "s/^$remote\///g"); do
-    echo git branch -D "$b"
-    git branch -D "$b"
+for branch in $(git remote prune "$remote" | grep '\[pruned\]' | awk '{print $3}' | sed -e "s/^$remote\///g"); do
+    if git branch --format="%(refname:short)" | grep -q "^$branch$"; then
+        git branch -D "$branch"
+    fi
 done

@@ -14,6 +14,15 @@ if [[ $# -eq 2 ]]; then
     remote=$2
 fi
 
-git branch -D "$1"
-git branch -D -r "$remote/$1"
-git push "$remote" ":$1"
+branch="$1"
+if git branch --format="%(refname:short)" | grep -q "^$branch$"; then
+    git branch -D "$branch"
+else
+    echo "Local branch does not exist: $branch"
+fi
+if ! git branch --format="%(refname:short)" --remote | grep -q "^$remote/$branch$"; then
+    git branch -D -r "$remote/$branch"
+else
+    echo "Remote branch does not exist: $branch"
+fi
+git push "$remote" ":$branch"

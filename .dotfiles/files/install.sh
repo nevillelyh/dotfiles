@@ -276,7 +276,7 @@ install_swift() {
 
 # https://tailscale.com/download/linux/ubuntu-2204
 install_tailscale() {
-    brew_install tailscale
+    brew_install_cask tailscale
 
     url="https://pkgs.tailscale.com/stable/ubuntu/jammy.noarmor.gpg"
     repo="deb [signed-by=/etc/apt/trusted.gpg.d/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/ubuntu jammy main"

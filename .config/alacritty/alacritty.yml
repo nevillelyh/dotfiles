@@ -991,9 +991,10 @@ key_bindings:
   - { key: F,     mods: Option,       chars: "\x1bf"           }
   # FZF cd into directory
   - { key: C,     mods: Option,       chars: "\x1bc"           }
-  # Vim previous/next buffer
+  # Vim previous/next/delete buffer
   - { key: P,     mods: Option,       chars: "\x1bp"           }
   - { key: N,     mods: Option,       chars: "\x1bn"           }
+  - { key: W,     mods: Option,       chars: "\x1bw"           }
   # Vim FZF
   - { key: O,     mods: Option,       chars: "\x1bo"           }
   - { key: O,     mods: Option|Shift, chars: "\x1bO"           }

@@ -11,3 +11,4 @@ nmap <C-N> gt
 " Buffer navigation
 nmap <silent> <A-p> :bprevious<CR>
 nmap <silent> <A-n> :bnext<CR>
+nmap <silent> <A-w> :bdelete<CR>

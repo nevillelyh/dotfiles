@@ -23,7 +23,7 @@
 
 # GPG
 [user]
-	signingKey = F91A03ED31E1842B
+	signingKey = 87498A1F55A9B766
 [commit]
 	gpgSign = true
 [tag]

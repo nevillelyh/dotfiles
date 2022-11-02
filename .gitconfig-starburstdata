@@ -1,6 +1,8 @@
 [user]
  	email = neville.li@starburstdata.com
+[user]
+	signingKey = AE8BE1D2CA875031
 [commit]
-	gpgSign = false
+	gpgSign = true
 [tag]
-	gpgSign = false
+	gpgSign = true

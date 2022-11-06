@@ -6,7 +6,7 @@ set mouse=a
 " Tabs and spaces
 set shiftwidth=4
 set expandtab
-set textwidth=100
+autocmd FileType markdown,rst,text setlocal textwidth=78
 
 " Indentation
 set smartindent

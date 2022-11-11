@@ -1,6 +1,9 @@
 FROM ubuntu:jammy
 
-RUN apt-get update && apt-get install -y neovim nodejs npm && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y curl neovim
+RUN curl -fsSL https://deb.nodesource.com/setup_19.x | bash -
+RUN apt-get install -y nodejs
+RUN rm -rf /var/lib/apt/lists/*
 
 RUN useradd -m -s /bin/bash joplin
 COPY --chown=joplin:joplin nvim /home/joplin/.config/nvim/

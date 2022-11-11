@@ -1,14 +1,7 @@
-source $HOME/.config/nvim/dein.vim
-
 " Look and feel
 behave xterm
 set termguicolors
 set mouse=a
-let g:dracula_colorterm = 0
-colorscheme dracula
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tmuxline#enabled = 0
 
 " Tabs and spaces
 set shiftwidth=4
@@ -26,6 +19,22 @@ set smartcase
 set listchars=tab:»·,eol:↵,trail:⋅,extends:❯,precedes:❮
 set list
 set colorcolumn=80,100
+
+set keymap=
+function! ToggleKeymap()
+  if &keymap == ""
+    set keymap=colemak
+  else
+    set keymap=
+  endif
+endfunction
+nmap <silent> <C-Space> :call ToggleKeymap()<CR>
+
+source $HOME/.config/nvim/dein.vim
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" source $HOME/.config/nvim/keybindings.vim
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Window navigation
 nmap <C-H> <C-W>h
@@ -56,12 +65,12 @@ nmap <A-j> zr
 nmap <A-J> zR
 nmap <A-K> zM
 
-set keymap=
-function! ToggleKeymap()
-  if &keymap == ""
-    set keymap=colemak
-  else
-    set keymap=
-  endif
-endfunction
-nmap <silent> <C-Space> :call ToggleKeymap()<CR>
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" source $HOME/.config/nvim/plugins.vim
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:dracula_colorterm = 0
+colorscheme dracula
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tmuxline#enabled = 0

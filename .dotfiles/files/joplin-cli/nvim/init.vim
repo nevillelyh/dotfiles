@@ -41,6 +41,21 @@ nmap <C-N> gt
 nmap <A-p> :bprevious<CR>
 nmap <A-n> :bnext<CR>
 
+" Folding
+" Open/close
+nmap <A-l> zo
+nmap <A-h> zc
+nmap <A-L> zO
+nmap <A-H> zC
+" Toggle
+nmap <A-.> za
+nmap <A-char-62> zA
+" More/reduce
+nmap <A-k> zm
+nmap <A-j> zr
+nmap <A-J> zR
+nmap <A-K> zM
+
 set keymap=
 function! ToggleKeymap()
   if &keymap == ""

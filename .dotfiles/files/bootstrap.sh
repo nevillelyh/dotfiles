@@ -185,8 +185,8 @@ setup_jvm() {
     msg_box "Setting up JVM"
 
     curl -fsSL "https://get.sdkman.io" | bash
-    sed_i '' "s/sdkman_rosetta2_compatible=true/sdkman_rosetta2_compatible=false/g" "$HOME/.sdkman/etc/config"
-    sed_i '' "s/sdkman_auto_answer=false/sdkman_auto_answer=true/g" "$HOME/.sdkman/etc/config"
+    sed_i "s/sdkman_rosetta2_compatible=true/sdkman_rosetta2_compatible=false/g" "$HOME/.sdkman/etc/config"
+    sed_i "s/sdkman_auto_answer=false/sdkman_auto_answer=true/g" "$HOME/.sdkman/etc/config"
 
     sdkman_sh="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/sdkman.sh"
     curl -fsSL "$sdkman_sh" | bash
@@ -202,7 +202,7 @@ setup_jvm() {
     sdk install sbt
     set -u
 
-    sed_i '' "s/sdkman_auto_answer=true/sdkman_auto_answer=false/g" "$HOME/.sdkman/etc/config"
+    sed_i "s/sdkman_auto_answer=true/sdkman_auto_answer=false/g" "$HOME/.sdkman/etc/config"
 }
 
 setup_python() {

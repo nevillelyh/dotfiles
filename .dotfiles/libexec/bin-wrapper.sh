@@ -88,6 +88,48 @@ run_bazel() {
     "$exec" "$@"
 }
 
+run_cockroach-sql() {
+    get_latest() {
+        get_links "https://www.cockroachlabs.com/docs/releases" | \
+            grep -o "\<cockroach-sql-v[0-9]\+\.[0-9]\+\.[0-9]\+\.linux-amd64.tgz$" | \
+            sed "s/^cockroach-sql-\(.*\)\.linux-amd64.tgz$/\1/" | \
+            head -n 1
+    }
+
+    get_current() {
+        cat "$exec.version"
+    }
+
+    download() {
+        version=$1
+        # shellcheck disable=SC2001
+        major="$(echo "$version" | sed "s/v\([0-9]*\)\..*/\1/")"
+        # shellcheck disable=SC2001
+        minor="$(echo "$version" | sed "s/v[0-9]*\.\([0-9]*\)\..*/\1/")"
+        if [[ "$os" == "darwin" ]]; then
+            arch="10.9-amd64"
+            if [[ "$arch" == "arm64" ]]; then
+                if [[ "$major" -gt 22 ]] || { [[ "$major" -eq 22 ]] && [[ "$minor" -ge 2 ]]; }; then
+                    arch="11.0-aarch64"
+                fi
+            fi
+        fi
+        prefix="https://binaries.cockroachdb.com"
+        build="cockroach-sql-$version.$os-$arch"
+        tarball="$build.tgz"
+        url="$prefix/$tarball"
+        curl -fsSL "$url" | tar -C "$cache" -xz
+        mv "$cache/$build/cockroach-sql" "$exec"
+        rmdir "$cache/$build"
+        touch "$exec"
+        echo "$version" > "$exec.version"
+    }
+
+    exec="$cache/cockroach-sql"
+    update
+    "$exec" "$@"
+}
+
 run_flatc() {
     get_latest() {
         github_latest "google/flatbuffers"

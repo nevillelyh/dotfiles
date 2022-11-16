@@ -106,6 +106,7 @@ run_cockroach() {
         major="$(echo "$version" | sed 's/v\([0-9]*\)\..*/\1/')"
         # shellcheck disable=SC2001
         minor="$(echo "$version" | sed 's/v[0-9]*\.\([0-9]*\)\..*/\1/')"
+        [[ "$arch" == "x86_64" ]] && arch="amd64"
         if [[ "$os" == "darwin" ]]; then
             arch="10.9-amd64"
             if [[ "$arch" == "arm64" ]]; then

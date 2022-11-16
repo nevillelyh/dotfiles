@@ -5,7 +5,7 @@
 set -euo pipefail
 
 image=nevillelyh/joplin-cli
-version=$(grep "npm install" Dockerfile | grep -o "\<joplin@[0-9\.]\+$" | cut -d "@" -f 2)
+version=$(grep 'npm install' Dockerfile | grep -o '\<joplin@[0-9\.]\+$' | cut -d '@' -f 2)
 
 [[ -d dein.vim ]] && rm -rf dein.vim
 git clone https://github.com/Shougo/dein.vim.git

@@ -12,9 +12,9 @@ fi
 conn=$1
 user=""
 host=$conn
-if echo "$conn" | grep -q "@"; then
-    user=$(echo "$conn" | cut -d "@" -f 1)
-    host=$(echo "$conn" | cut -d "@" -f 2)
+if echo "$conn" | grep -q '@'; then
+    user=$(echo "$conn" | cut -d '@' -f 1)
+    host=$(echo "$conn" | cut -d '@' -f 2)
 fi
 
 if grep -q "Host $host" .ssh/config 2> /dev/null; then
@@ -23,7 +23,7 @@ if grep -q "Host $host" .ssh/config 2> /dev/null; then
 fi
 
 echo "Sending public key to $host"
-gpg --export "$(grep signingKey "$HOME/.gitconfig" | grep -o "\<[0-9A-F]\+$")" | ssh "$conn" gpg --import
+gpg --export "$(grep signingKey "$HOME/.gitconfig" | grep -o '\<[0-9A-F]\+$')" | ssh "$conn" gpg --import
 
 dst=$(ssh "$conn" gpgconf --list-dir agent-socket)
 src=$(gpgconf --list-dir agent-extra-socket)

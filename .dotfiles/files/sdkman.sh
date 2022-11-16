@@ -50,7 +50,7 @@ manage_java() {
 }
 
 manage_scala() {
-    versions="$(sdk list scala | tr " " "\n" | grep "^[0-9]" | sort --version-sort)"
+    versions="$(sdk list scala | tr ' ' '\n' | grep '^[0-9]' | sort --version-sort)"
     matches=()
     for v in "${scala_versions[@]}"; do
         match=$(echo "$versions" | grep "^$v\." || true)
@@ -85,7 +85,7 @@ sed_i() {
     esac
 }
 
-sed_i "s/sdkman_auto_answer=false/sdkman_auto_answer=true/g" "$HOME/.sdkman/etc/config"
+sed_i 's/sdkman_auto_answer=false/sdkman_auto_answer=true/g' "$HOME/.sdkman/etc/config"
 set +u
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 
@@ -93,4 +93,4 @@ manage_java
 manage_scala
 manage_candidates
 
-sed_i "s/sdkman_auto_answer=true/sdkman_auto_answer=false/g" "$HOME/.sdkman/etc/config"
+sed_i 's/sdkman_auto_answer=true/sdkman_auto_answer=false/g' "$HOME/.sdkman/etc/config"

@@ -41,7 +41,7 @@ run_env() {
 }
 
 install_cuda() {
-    cuda_version=$(echo "$1" | grep -Po "(?<=^cuda_)[0-9\.]+")
+    cuda_version=$(echo "$1" | grep -Po '(?<=^cuda_)[0-9\.]+')
     dest=$HOME/.nvman/cuda-$cuda_version
     if [[ -d $dest ]]; then
         die "CUDA $cuda_version already installed"
@@ -56,7 +56,7 @@ install_cuda() {
 
 install_cudnn() {
     # shellcheck disable=SC2001
-    cudnn_version=$(echo "$1" | sed "s/cudnn-[^-]*-[^-]*-\([^-]*\)_cuda.*/\1/")
+    cudnn_version=$(echo "$1" | sed 's/cudnn-[^-]*-[^-]*-\([^-]*\)_cuda.*/\1/')
     dest=$HOME/.nvman/cudnn-$cudnn_version
     if [[ -d $dest ]]; then
         die "cuDNN $cudnn_version already installed"

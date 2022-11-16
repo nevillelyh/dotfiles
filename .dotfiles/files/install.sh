@@ -54,7 +54,7 @@ install_anaconda() {
     url="https://www.anaconda.com/products/distribution"
     arch=$(uname -m)
     url=$(curl -fsSL $url | grep -o "\<https://repo.anaconda.com/archive/Anaconda3-.*-Linux-$arch.sh\>" | uniq | tail -n 1)
-    pkg=$(echo "$url" | grep -o "\<Anaconda3-.*.sh$")
+    pkg=$(echo "$url" | grep -o '\<Anaconda3-.*.sh$')
     wget -nv "$url"
     bash "$pkg" -b -p "$HOME/.anaconda3"
     rm "$pkg"
@@ -136,7 +136,7 @@ install_dropbox() {
     brew_install_cask dropbox
 
     url="https://linux.dropbox.com/packages/ubuntu/"
-    pkg=$(curl -fsSL $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P "^dropbox_[\d\.]+_amd64.deb$" | tail -n 1)
+    pkg=$(curl -fsSL $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^dropbox_[\d\.]+_amd64.deb$' | tail -n 1)
     wget -nv "$url/$pkg"
     sudo dpkg -i dropbox_*_amd64.deb
     sudo aptitude install -fy
@@ -200,7 +200,7 @@ install_minikube() {
 install_nvidia() {
     url="https://nvidia.github.io/libnvidia-container/gpgkey"
     dist="ubuntu$(lsb_release -rs)"
-    repo=$(curl -fsSL "https://nvidia.github.io/libnvidia-container/$dist/libnvidia-container.list" | sed "s#deb https://#deb [signed-by=/etc/apt/trusted.gpg.d/nvidia-container-toolkit-keyring.gpg] https://#g")
+    repo=$(curl -fsSL "https://nvidia.github.io/libnvidia-container/$dist/libnvidia-container.list" | sed 's@deb https://@deb [signed-by=/etc/apt/trusted.gpg.d/nvidia-container-toolkit-keyring.gpg] https://@g')
     setup_gpg "$url" nvidia-container-toolkit-keyring.gpg
     setup_apt "$repo" nvidia-container-toolkit.list
     sudo aptitude update
@@ -293,7 +293,7 @@ install_teams() {
     brew_install_cask microsoft-teams
 
     url="https://packages.microsoft.com/repos/ms-teams/pool/main/t/teams/"
-    pkg=$(curl -fsSL $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P "^teams_[\d\.]+_amd64.deb$" | tail -n 1)
+    pkg=$(curl -fsSL $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^teams_[\d\.]+_amd64.deb$' | tail -n 1)
     wget -nv "$url/$pkg"
     sudo dpkg -i teams_*_amd64.deb
     sudo aptitude install -fy
@@ -331,7 +331,7 @@ install_zotero() {
 get_packages() {
     # Bash 3 on Mac missing readarray
     # shellcheck disable=SC2207
-    pkgs=($(grep -o "^install_\w\+()" "$(readlink -f "$0")" | sed "s/^install_\(.*\)()$/\1/"))
+    pkgs=($(grep -o '^install_\w\+()' "$(readlink -f "$0")" | sed 's/^install_\(.*\)()$/\1/'))
 }
 
 if [[ $#  -eq 0 ]]; then

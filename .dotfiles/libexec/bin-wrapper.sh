@@ -15,7 +15,7 @@ get_links() {
 github_latest() {
     repo=$1
     url="https://api.github.com/repos/$repo/releases/latest"
-    curl -fsSL -H "$header" "$url" | jq --raw-output ".tag_name" | sed 's/^v//g'
+    curl -fsSL -H "$header" "$url" | jq --raw-output '.tag_name' | sed 's/^v//g'
 }
 
 update() {
@@ -91,21 +91,21 @@ run_bazel() {
 run_cockroach() {
     get_latest() {
         get_links "https://www.cockroachlabs.com/docs/releases" | \
-            grep -o "\<cockroach-v[0-9]\+\.[0-9]\+\.[0-9]\+\.linux-amd64.tgz$" | \
-            sed "s/^cockroach-\(.*\)\.linux-amd64.tgz$/\1/" | \
+            grep -o '\<cockroach-v[0-9]\+\.[0-9]\+\.[0-9]\+\.linux-amd64.tgz$' | \
+            sed 's/^cockroach-\(.*\)\.linux-amd64.tgz$/\1/' | \
             head -n 1
     }
 
     get_current() {
-        "$exec" version | head -n 1 | sed "s/^Build Tag: *\(v.*\)$/\1/"
+        "$exec" version | head -n 1 | sed 's/^Build Tag: *\(v.*\)$/\1/'
     }
 
     download() {
         version=$1
         # shellcheck disable=SC2001
-        major="$(echo "$version" | sed "s/v\([0-9]*\)\..*/\1/")"
+        major="$(echo "$version" | sed 's/v\([0-9]*\)\..*/\1/')"
         # shellcheck disable=SC2001
-        minor="$(echo "$version" | sed "s/v[0-9]*\.\([0-9]*\)\..*/\1/")"
+        minor="$(echo "$version" | sed 's/v[0-9]*\.\([0-9]*\)\..*/\1/')"
         if [[ "$os" == "darwin" ]]; then
             arch="10.9-amd64"
             if [[ "$arch" == "arm64" ]]; then
@@ -197,7 +197,7 @@ run_gh() {
 run_presto-cli() {
     get_latest() {
         js_url="https://prestodb.io/static/js/version.js"
-        curl -fsSL "$js_url" | grep "\<presto_latest_presto_version\>" | sed "s/[^']*'\([^']*\)';/\1/"
+        curl -fsSL "$js_url" | grep '\<presto_latest_presto_version\>' | sed "s/[^']*'\([^']*\)';/\1/"
     }
 
     get_current() {
@@ -278,7 +278,7 @@ run_trino-cli() {
 get_bins() {
     # Bash 3 on Mac missing readarray
     # shellcheck disable=SC2207
-    bins=($(grep -o "^run_.\+()" "$(readlink -f "$0")" | sed "s/^run_\(.*\)()$/\1/"))
+    bins=($(grep -o '^run_.\+()' "$(readlink -f "$0")" | sed 's/^run_\(.*\)()$/\1/'))
 }
 
 bin="$(basename "$0")"

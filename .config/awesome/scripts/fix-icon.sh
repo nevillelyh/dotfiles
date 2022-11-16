@@ -24,7 +24,7 @@ esac
 
 # Find app window(s) by name. You need to handle multiple windows here to
 # actually get multiple workspaces working w/icons
-readarray -t ws < <(wmctrl -l | grep $regex | cut -f 1 -d " ")
+readarray -t ws < <(wmctrl -l | grep $regex | cut -f 1 -d ' ')
 
 for w in "${ws[@]}"; do
     # Use "xseticon", a compiled C binary, to change the icon of a running program

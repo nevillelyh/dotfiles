@@ -88,16 +88,16 @@ run_bazel() {
     "$exec" "$@"
 }
 
-run_cockroach-sql() {
+run_cockroach() {
     get_latest() {
         get_links "https://www.cockroachlabs.com/docs/releases" | \
-            grep -o "\<cockroach-sql-v[0-9]\+\.[0-9]\+\.[0-9]\+\.linux-amd64.tgz$" | \
-            sed "s/^cockroach-sql-\(.*\)\.linux-amd64.tgz$/\1/" | \
+            grep -o "\<cockroach-v[0-9]\+\.[0-9]\+\.[0-9]\+\.linux-amd64.tgz$" | \
+            sed "s/^cockroach-\(.*\)\.linux-amd64.tgz$/\1/" | \
             head -n 1
     }
 
     get_current() {
-        cat "$exec.version"
+        "$exec" version | head -n 1 | sed "s/^Build Tag: *\(v.*\)$/\1/"
     }
 
     download() {
@@ -115,17 +115,16 @@ run_cockroach-sql() {
             fi
         fi
         prefix="https://binaries.cockroachdb.com"
-        build="cockroach-sql-$version.$os-$arch"
+        build="cockroach-$version.$os-$arch"
         tarball="$build.tgz"
         url="$prefix/$tarball"
         curl -fsSL "$url" | tar -C "$cache" -xz
-        mv "$cache/$build/cockroach-sql" "$exec"
-        rmdir "$cache/$build"
+        rm -rf "$cache/cockroach"
+        mv "$cache/$build" "$cache/cockroach"
         touch "$exec"
-        echo "$version" > "$exec.version"
     }
 
-    exec="$cache/cockroach-sql"
+    exec="$cache/cockroach/cockroach"
     update
     "$exec" "$@"
 }
@@ -153,7 +152,7 @@ run_flatc() {
         tmp=$(mktemp -d)
         zip="$tmp/$zip"
         curl -fsSL "$url" -o "$zip"
-        rm -rf "$exec"
+        rm "$exec"
         unzip -q "$zip" -d "$cache"
         rm -rf "$tmp"
         touch "$exec"

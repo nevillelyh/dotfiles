@@ -287,6 +287,7 @@ bin="$(basename "$0")"
 case "$bin" in
     b2) brew_pkg=b2-tools;;
     bazel) brew_pkg=bazelisk;;
+    cockroach) brew_pkg=cockroachdb/tap/cockroach;;
     flatc) brew_pkg=flatbuffers;;
     gh) brew_pkg=gh;;
     protoc) brew_pkg=protobuf;;

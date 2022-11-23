@@ -153,7 +153,7 @@ run_flatc() {
         tmp=$(mktemp -d)
         zip="$tmp/$zip"
         curl -fsSL "$url" -o "$zip"
-        rm "$exec"
+        rm -f "$exec"
         unzip -q "$zip" -d "$cache"
         rm -rf "$tmp"
         touch "$exec"

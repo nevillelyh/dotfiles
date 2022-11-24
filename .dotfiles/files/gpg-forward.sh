@@ -23,7 +23,9 @@ if grep -q "Host $host" .ssh/config 2> /dev/null; then
 fi
 
 echo "Sending public key to $host"
-gpg --export "$(grep signingKey "$HOME/.gitconfig" | grep -o '\<[0-9A-F]\+$')" | ssh "$conn" gpg --import
+key=$(grep signingKey "$HOME/.gitconfig" | grep -o '\<[0-9A-F]\+$')
+gpg --export "$key" | ssh "$conn" gpg --import
+echo "default-key $key" | ssh "$conn" tee .gnupg/gpg.conf
 
 dst=$(ssh "$conn" gpgconf --list-dir agent-socket)
 src=$(gpgconf --list-dir agent-extra-socket)

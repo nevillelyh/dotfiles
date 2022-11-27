@@ -35,7 +35,7 @@ upgrade_git() {
     msg_box "Upgrading Git Repository"
     git pull --rebase --autostash
     git submodule update --init --remote
-    if [[ -d "$HOME/.dotfiles/private" ]]; then
+    if [[ -d "$HOME/.dotfiles/private" ]] && curl -fsSL --connect-timeout 1 --output /dev/null 192.168.86.202 &> /dev/null; then
         cd "$HOME/.dotfiles/private"
         git pull --rebase --autostash
     fi

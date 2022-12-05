@@ -92,6 +92,7 @@ upgrade_go() {
 
 upgrade_jvm() {
     msg_box "Upgrading JVM"
+    sdk update
     bash "$HOME/.dotfiles/files/sdkman.sh"
 }
 

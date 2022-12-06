@@ -89,6 +89,7 @@ sed_i 's/sdkman_auto_answer=false/sdkman_auto_answer=true/g' "$HOME/.sdkman/etc/
 set +u
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 
+sdk update
 manage_java
 manage_scala
 manage_candidates

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Launch joplin-cli
-# See Docker files in .dotfiles/files/joplin-cli
+# See Docker files in .dotfiles/builds/joplin-cli
 
 set -euo pipefail
 

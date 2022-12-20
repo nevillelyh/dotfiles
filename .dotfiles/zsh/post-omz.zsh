@@ -92,3 +92,8 @@ fi
 
 # Deduplicate $PATH
 typeset -aU path
+
+# For Docker
+# https://github.com/docker/compose/issues/2380
+export UID
+export GID

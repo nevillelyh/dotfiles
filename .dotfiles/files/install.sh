@@ -123,8 +123,10 @@ install_docker() {
 
     brew_install_cask docker
 
-    url="https://download.docker.com/linux/ubuntu/gpg"
-    repo="deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/trusted.gpg.d/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    distro=$(lsb_release -is | tr "[:upper:]" "[:lower:]")
+    [[ "$distro" == pop ]] && distro=ubuntu
+    url="https://download.docker.com/linux/$distro/gpg"
+    repo="deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/trusted.gpg.d/docker-archive-keyring.gpg] https://download.docker.com/linux/$distro $(lsb_release -cs) stable"
     setup_gpg "$url" docker-archive-keyring.gpg
     setup_apt "$repo" docker.list
     sudo aptitude update

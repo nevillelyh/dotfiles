@@ -26,6 +26,7 @@ upgrade_os() {
             sudo aptitude -y upgrade
             sudo aptitude -y autoclean
             sudo apt-get -y autoremove
+            type snap &> /dev/null || return 0
             sudo snap refresh
             ;;
     esac

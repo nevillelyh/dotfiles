@@ -1,8 +1,11 @@
 FROM ubuntu:jammy
 
-RUN apt-get update && apt-get install -y curl git make neovim pkg-config
+RUN apt-get update && apt-get install -y curl git gnupg make pkg-config
+COPY neovim-ppa-ubuntu-stable-jammy.list /etc/apt/sources.list.d/
+RUN curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x9dbb0be9366964f134855e2255f96fcf8231b6dd" \
+    | gpg --dearmor > /etc/apt/trusted.gpg.d/neovim-ppa-ubuntu-stable-jammy.gpg
 RUN curl -fsSL https://deb.nodesource.com/setup_19.x | bash -
-RUN apt-get install -y nodejs
+RUN apt-get install -y neovim nodejs
 RUN rm -rf /var/lib/apt/lists/*
 
 RUN useradd -m -s /bin/bash joplin

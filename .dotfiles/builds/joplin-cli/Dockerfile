@@ -1,6 +1,6 @@
 FROM ubuntu:jammy
 
-RUN apt-get update && apt-get install -y curl neovim
+RUN apt-get update && apt-get install -y curl git make neovim pkg-config
 RUN curl -fsSL https://deb.nodesource.com/setup_19.x | bash -
 RUN apt-get install -y nodejs
 RUN rm -rf /var/lib/apt/lists/*

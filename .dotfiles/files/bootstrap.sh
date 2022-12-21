@@ -74,6 +74,7 @@ setup_apt() {
     msg_box "Setting up Aptitude"
 
     sudo apt-get install -y apt-transport-https aptitude
+    sudo add-apt-repository -y ppa:neovim-ppa/stable
     sudo aptitude update
     sudo aptitude upgrade -y
     sudo aptitude install -y "${DEB_PKGS[@]}"

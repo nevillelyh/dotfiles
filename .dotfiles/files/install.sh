@@ -20,6 +20,22 @@ brew_install_cask() {
     fi
 }
 
+distro() {
+    id=$(lsb_release -is | tr "[:upper:]" "[:lower:]")
+    case "$id" in
+        pop) echo ubuntu ;;
+        *) echo "$id" ;;
+    esac
+}
+
+distro_version() {
+    echo "$(distro)$(lsb_release -rs)"
+}
+
+codename() {
+    lsb_release -cs
+}
+
 setup_gpg() {
     url=$1
     gpg=$2
@@ -38,7 +54,7 @@ setup_apt() {
 
 setup_hashicorp() {
     url="https://apt.releases.hashicorp.com/gpg"
-    repo="deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+    repo="deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(codename) main"
     setup_gpg "$url" hashicorp.gpg
     setup_apt "$repo" hashicorp.list
     sudo aptitude update
@@ -85,7 +101,7 @@ install_cmake() {
     brew_install cmake
 
     url="https://apt.kitware.com/keys/kitware-archive-latest.asc"
-    repo="deb [signed-by=/etc/apt/trusted.gpg.d/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ $(lsb_release -cs) main"
+    repo="deb [signed-by=/etc/apt/trusted.gpg.d/kitware-archive-keyring.gpg] https://apt.kitware.com/$(distro)/ $(codename) main"
     setup_gpg "$url" kitware-archive-keyring.gpg
     setup_apt "$repo" kitware.list
     sudo aptitude update
@@ -135,10 +151,8 @@ install_docker() {
 
     brew_install_cask docker
 
-    distro=$(lsb_release -is | tr "[:upper:]" "[:lower:]")
-    [[ "$distro" == pop ]] && distro=ubuntu
-    url="https://download.docker.com/linux/$distro/gpg"
-    repo="deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/trusted.gpg.d/docker-archive-keyring.gpg] https://download.docker.com/linux/$distro $(lsb_release -cs) stable"
+    url="https://download.docker.com/linux/$(distro)/gpg"
+    repo="deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/trusted.gpg.d/docker-archive-keyring.gpg] https://download.docker.com/linux/$(distro) $(codename) stable"
     setup_gpg "$url" docker-archive-keyring.gpg
     setup_apt "$repo" docker.list
     sudo aptitude update
@@ -151,8 +165,8 @@ install_docker() {
 install_dropbox() {
     brew_install_cask dropbox
 
-    url="https://linux.dropbox.com/packages/ubuntu/"
-    pkg=$(curl -fsSL $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^dropbox_[\d\.]+_amd64.deb$' | tail -n 1)
+    url="https://linux.dropbox.com/packages/$(distro)/"
+    pkg=$(curl -fsSL "$url" | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^dropbox_[\d\.]+_amd64.deb$' | tail -n 1)
     wget -nv "$url/$pkg"
     sudo dpkg -i dropbox_*_amd64.deb
     sudo aptitude install -fy
@@ -215,8 +229,7 @@ install_minikube() {
 # https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
 install_nvidia() {
     url="https://nvidia.github.io/libnvidia-container/gpgkey"
-    dist="ubuntu$(lsb_release -rs)"
-    repo=$(curl -fsSL "https://nvidia.github.io/libnvidia-container/$dist/libnvidia-container.list" | sed 's@deb https://@deb [signed-by=/etc/apt/trusted.gpg.d/nvidia-container-toolkit-keyring.gpg] https://@g')
+    repo=$(curl -fsSL "https://nvidia.github.io/libnvidia-container/$(distro_version)/libnvidia-container.list" | sed 's@deb https://@deb [signed-by=/etc/apt/trusted.gpg.d/nvidia-container-toolkit-keyring.gpg] https://@g')
     setup_gpg "$url" nvidia-container-toolkit-keyring.gpg
     setup_apt "$repo" nvidia-container-toolkit.list
     sudo aptitude update
@@ -279,11 +292,11 @@ install_sublime() {
 
 # https://www.swift.org/download/
 install_swift() {
-    re="ubuntu$(lsb_release -rs)"
-    [[ "$(uname -m)" == "aarch64" ]] && re="$re-aarch64"
+    dist="$(distro_version)"
+    [[ "$(uname -m)" == "aarch64" ]] && dist="$dist-aarch64"
     url="https://www.swift.org/download/"
 
-    url=$(curl -fsSL --compressed $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P "$re.tar.gz\$" | tac | tail -n 1)
+    url=$(curl -fsSL --compressed $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P "$dist.tar.gz\$" | tac | tail -n 1)
     base=$(basename --suffix .tar.gz "$url")
     curl -fsSL "$url" | tar -C "$HOME" -xz
     rm -rf "$HOME/.swift"
@@ -294,8 +307,8 @@ install_swift() {
 install_tailscale() {
     brew_install_cask tailscale
 
-    url="https://pkgs.tailscale.com/stable/ubuntu/jammy.noarmor.gpg"
-    repo="deb [signed-by=/etc/apt/trusted.gpg.d/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/ubuntu jammy main"
+    url="https://pkgs.tailscale.com/stable/$(distro)/$(codename).noarmor.gpg"
+    repo="deb [signed-by=/etc/apt/trusted.gpg.d/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/$(distro) $(codename) main"
     setup_gpg "$url" tailscale-archive-keyring.gpg
     setup_apt "$repo" tailscale.list
     sudo aptitude update

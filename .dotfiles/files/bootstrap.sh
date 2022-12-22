@@ -94,7 +94,7 @@ setup_linux() {
     type nvidia-smi &> /dev/null && sudo aptitude install -y nvtop
 
     # Third-party APT repositories
-    install go
+    install_ext go
 
     # The following are GUI apps
     dpkg-query --show xorg &> /dev/null || return 0
@@ -104,7 +104,7 @@ setup_linux() {
     sudo snap install slack spotify xseticon
 
     # Custom repositories
-    install chrome code discord dropbox sublime
+    install_ext chrome code discord dropbox sublime
 
     # Joplin uses AppImage
     curl -fsSL https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh | bash
@@ -293,13 +293,12 @@ setup_zsh() {
 # Helper functions
 ########################################
 
-INSTALL_SH="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/install.sh"
-
-install() {
+install_ext() {
     if [[ -s "$basedir/install.sh" ]]; then
         bash "$basedir/install.sh" "$1"
     else
-        curl -fsSL "$INSTALL_SH" | bash -s -- "$1"
+        install_sh="https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/install.sh"
+        curl -fsSL "$install_sh" | bash -s -- "$1"
     fi
 }
 

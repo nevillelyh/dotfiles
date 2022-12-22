@@ -23,7 +23,7 @@ MAS=(1440147259 497799835 425424353 405399194 1480068668 1477385213 803453959 11
 # gnome-screensaver xautolock xcalib - for screen locking in awesome
 # unzip, zip - for SDKMAN
 # Not available or outdated in Ubuntu - bat, git-delta, zoxide
-DEB_PKGS=(build-essential cmake colordiff exa fd-find fzf htop jq neovim ninja-build ripgrep shellcheck tmux unzip zip zsh)
+DEB_PKGS=(build-essential colordiff exa fd-find fzf htop jq neovim ninja-build ripgrep shellcheck tmux unzip zip zsh)
 DEB_GUI_PKGS=(alacritty awesome compton fonts-powerline gnome-screensaver gnome-screenshot neovim-qt ubuntu-restricted-extras vlc wmctrl xautolock xcalib xprintidle)
 LINUX_CRATES=(bat code-minimap du-dust git-delta gitui zoxide)
 
@@ -93,8 +93,8 @@ setup_linux() {
 
     type nvidia-smi &> /dev/null && sudo aptitude install -y nvtop
 
-    # Third-party APT repositories
-    install_ext go
+    # Third-party packages
+    install_ext cmake go
 
     # The following are GUI apps
     dpkg-query --show xorg &> /dev/null || return 0

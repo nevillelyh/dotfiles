@@ -83,7 +83,6 @@ setup_apt() {
     dpkg-query --show xorg &> /dev/null || return 0
 
     sudo aptitude install -y "${DEB_GUI_PKGS[@]}"
-
 }
 
 setup_linux() {

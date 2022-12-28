@@ -370,9 +370,15 @@ if [[ $# -eq 0 ]]; then
     for pkg in "${pkgs[@]}"; do
         echo "        $pkg"
     done
-    exit 1
+    # exit 1
 fi
 
 for pkg in "$@"; do
-    "install_$pkg"
+    get_packages
+    if [[ " ${pkgs[*]} " =~ (^|[[:space:]])"$pkg"($|[[:space:]]) ]]; then
+        "install_$pkg"
+    else
+        echo "Package not found: $pkg"
+        exit 1
+    fi
 done

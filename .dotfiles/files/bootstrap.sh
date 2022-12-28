@@ -35,7 +35,10 @@ setup_ssh() {
     # Bash 3 on Mac missing readarray
     # shellcheck disable=SC2207
     keys=($(find "$HOME/.ssh" -name id_dsa -or -name id_rsa -or -name id_ecdsa -or -name id_ed25519))
-    [[ "${#keys[@]}" -gt 0 ]] || die "SSH private key not found"
+    if [[ "${#keys[@]}" -eq 0 ]]; then
+        echo "SSH private key not found"
+        exit 1
+    fi
     killall -q ssh-agent || true
     eval "$(ssh-agent)"
     ssh-add "${keys[@]}"
@@ -312,11 +315,6 @@ msg_box() {
     echo -e "${color}╚═${1//[[:ascii:]]/═}═╝${reset}"
 }
 
-die() {
-    msg_box "Error: $1"
-    exit 1
-}
-
 run_check() {
     msg_box "Checking bootstrap"
 
@@ -379,7 +377,8 @@ if [[ $# -eq 1 ]]; then
                 msg_box "Setting up single step $1"
                 "setup_$1"
             else
-                die "Command not found: $1"
+                echo "Command not found: $1"
+                exit 1
             fi
             ;;
     esac

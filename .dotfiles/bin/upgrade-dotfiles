@@ -150,7 +150,8 @@ if [[ $# -eq 1 ]]; then
                 msg_box "Upgrade single step $1"
                 "upgrade_$1"
             else
-                die "Command not found: $1"
+                echo "Command not found: $1"
+                exit 1
             fi
             ;;
     esac

@@ -1,0 +1,206 @@
+#!/bin/bash
+
+# Common docker run shortcuts
+
+set -euo pipefail
+
+env() {
+    name=$1
+
+    if [[ $# -eq 2 ]]; then
+        default=$2
+    else
+        case $name in
+            DB) default=dev ;;
+            DB_USER) default=dev ;;
+            DB_PASS) default=devpass ;;
+            ROOT_PASS) default=rootpass ;;
+            COCKROACH_PORT) default=26257 ;;
+            MARIADB_PORT) default=3306 ;;
+            MYSQL_PORT) default=3306 ;;
+            KAFKA_PORT) default=9092 ;;
+            POSTGRES_PORT) default=5432 ;;
+            TRINO_PORT) default=8080 ;;
+            UI_PORT) default=8080 ;;
+            ZK_PORT) default=2181 ;;
+        esac
+    fi
+    value=${!name:-$default}
+    color='\033[1;33m' # yellow
+    reset='\033[0m' #reset
+    echo >&2 -e "$color$name=$value$reset"
+    echo "$value"
+}
+
+docker_run() {
+    color='\033[1;32m' # green
+    reset='\033[0m' #reset
+    echo >&2 -e "${color}docker run $*${reset}"
+    docker run --label drun "$@"
+}
+
+docker_srv() {
+    name=$1
+    shift
+    docker_run --name "$name" -d --rm "$@"
+    docker logs -f "$name"
+}
+
+docker_cli() {
+    name=$1
+    shift
+    # TTY for CLIs, e.g. psql
+    docker_run --name "$name-$(date "+%Y%m%d%H%M%S")" -it --rm --network host "$@"
+}
+
+docker_cmd() {
+    name=$1
+    shift
+    # no TTY for commands with stdin/stdout, e.g. kcat
+    docker_run --name "$name-$(date "+%Y%m%d%H%M%S")" -i --rm --network host "$@"
+}
+
+run_killall() {
+    docker ps --quiet --filter label=drun | xargs -r docker kill
+}
+
+run_cockroach() {
+    docker_srv cockroach \
+        --env COCKROACH_DATABASE="$(env DB)" \
+        --env COCKROACH_USER="$(env DB_USER)" \
+        --env COCKROACH_PASSWORD="$(env DB_PASS)" \
+        --publish "$(env COCKROACH_PORT)":26257 \
+        --publish "$(env UI_PORT)":8080 \
+        cockroachdb/cockroach:latest start-single-node "$@"
+}
+
+run_cockroach-sql() {
+    url="postgresql://$(env DB_USER):$(env DB_PASS)@localhost:$(env COCKROACH_PORT)/$(env DB)?sslmode=require"
+    docker_cli cockroach-cli \
+        cockroachdb/cockroach:latest sql --url "$url" "$@"
+}
+
+run_kafka() {
+    host=127.0.0.1 # workaround for IPv6 issue
+    port=$(env KAFKA_PORT)
+    docker_srv kafka \
+        --env KAFKA_BROKER_ID=1 \
+        --env KAFKA_ZOOKEEPER_CONNECT=zookeeper:"$(env ZK_PORT)" \
+        --env KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT \
+        --env KAFKA_ADVERTISED_LISTENERS="PLAINTEXT://$host:29092,PLAINTEXT_HOST://$host:$port" \
+        --env KAFKA_METRIC_REPORTERS=io.confluent.metrics.reporter.ConfluentMetricsReporter \
+        --env KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 \
+        --env KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR=1 \
+        --env KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR=1 \
+        --env KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1 \
+        --env CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS="$host:29092" \
+        --env CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS=1 \
+        --link zookeeper \
+        --publish "$port:$port" \
+        confluentinc/cp-server:latest "$@"
+}
+
+run_kcat() {
+    host=127.0.0.1 # workaround for IPv6 issue
+    docker_cmd kcat \
+        edenhill/kcat:1.7.1 -b "$host:$(env KAFKA_PORT)" "$@"
+}
+
+run_mariadb() {
+    docker_srv mariadb \
+        --env MARIADB_ROOT_PASSWORD="$(env ROOT_PASS)" \
+        --env MARIADB_DATABASE="$(env DB)" \
+        --env MARIADB_USER="$(env DB_USER)" \
+        --env MARIADB_PASSWORD="$(env DB_PASS)" \
+        --publish "$(env MARIADB_PORT)":3306 \
+        mariadb:latest "$@"
+}
+
+run_mariadb-cli() {
+    docker_cli mariadb-cli \
+        mariadb:latest mariadb \
+        --host=localhost --port="$(env MARIADB_PORT)" --protocol=tcp \
+        --database="$(env DB)" --user="$(env DB_USER)" --password="$(env DB_PASS)" \
+        "$@"
+}
+
+run_mysql() {
+    docker_srv mysql \
+        --env MYSQL_ROOT_PASSWORD="$(env ROOT_PASS)" \
+        --env MYSQL_DATABASE="$(env DB)" \
+        --env MYSQL_USER="$(env DB_USER)" \
+        --env MYSQL_PASSWORD="$(env DB_PASS)" \
+        --publish "$(env MYSQL_PORT)":3306 \
+        mysql:latest "$@"
+}
+
+run_mysql-cli() {
+    docker_cli mysql-cli \
+        mysql:latest mysql \
+        --host=localhost --port="$(env MYSQL_PORT)" --protocol=tcp \
+        --database="$(env DB)" --user="$(env DB_USER)" --password="$(env DB_PASS)" \
+        "$@"
+}
+
+run_postgres() {
+    docker_srv postgres \
+        --env POSTGRES_DB="$(env DB)" \
+        --env POSTGRES_USER="$(env DB_USER)" \
+        --env POSTGRES_PASSWORD="$(env DB_PASS)" \
+        --publish "$(env POSTGRES_PORT)":5432 \
+        postgres:latest "$@"
+}
+
+run_psql() {
+    docker_cli postgres-cli \
+        --env PGPASSWORD="$(env DB_PASS)" \
+        postgres:latest psql \
+        --host=localhost --port="$(env POSTGRES_PORT)" \
+        --dbname="$(env DB)" --username="$(env DB_USER)" \
+        "$@"
+}
+
+run_trino() {
+    docker_srv trino \
+        --publish "$(env TRINO_PORT)":8080 \
+        trinodb/trino:latest "$@"
+}
+
+run_trino-cli() {
+    docker_cli trino-cli \
+        trinodb/trino:latest trino "$@"
+}
+
+run_zookeeper() {
+    docker_srv zookeeper \
+        --env ZOOKEEPER_CLIENT_PORT=2181 \
+        --publish "$(env ZK_PORT)":2181 \
+        confluentinc/cp-zookeeper:latest "$@"
+}
+
+get_commands() {
+    # Bash 3 on Mac missing readarray
+    # shellcheck disable=SC2207
+    commands=($(grep -o '^run_.\+()' "$(readlink -f "$0")" | sed 's/^run_\(.*\)()$/\1/'))
+}
+
+if [[ $# -eq 0 ]]; then
+    echo "Usage: $(basename "$0") <COMMAND> [ARG]..."
+    echo "    Commands"
+    get_commands
+    for c in "${commands[@]}"; do
+        echo "        $c"
+    done
+    exit 1
+fi
+
+command=$(basename "$1")
+shift
+
+get_commands
+if [[ " ${commands[*]} " =~ (^|[[:space:]])"$command"($|[[:space:]]) ]]; then
+    "run_$command" "$@"
+else
+    echo "Command not found: $command"
+    exit 1
+fi

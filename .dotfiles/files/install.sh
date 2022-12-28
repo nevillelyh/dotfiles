@@ -363,7 +363,7 @@ get_packages() {
     pkgs=($(grep -o '^install_\w\+()' "$(readlink -f "$0")" | sed 's/^install_\(.*\)()$/\1/'))
 }
 
-if [[ $#  -eq 0 ]]; then
+if [[ $# -eq 0 ]]; then
     echo "Usage: $(basename "$0") [PACKAGE]..."
     echo "    Packages:"
     get_packages

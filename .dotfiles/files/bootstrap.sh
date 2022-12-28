@@ -168,6 +168,9 @@ setup_neovim() {
     mkdir -p "$dir"
     git clone git@github.com:Shougo/dein.vim.git "$dir/dein.vim"
     nvim -u "$HOME/.config/nvim/dein.vim" --headless "+call dein#install() | qall"
+
+    ! type update-alternatives &> /dev/null && return 0
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/vim-alternatives.sh)"
 }
 
 setup_go() {

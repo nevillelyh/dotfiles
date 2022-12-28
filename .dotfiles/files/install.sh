@@ -158,7 +158,7 @@ install_docker() {
     sudo aptitude update
     sudo aptitude install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
-    usermod -aG docker "$(whoami)"
+    sudo usermod -aG docker "$(whoami)"
 }
 
 # Dropbox manages its own repository

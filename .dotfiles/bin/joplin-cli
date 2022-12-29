@@ -22,7 +22,7 @@ if [[ $age -ge $ttl ]]; then
 fi
 
 mkdir -p "$HOME/.cache/joplin-cli"
-cmd="docker run -it -v $HOME/.cache/joplin-cli:/home/joplin/.config/joplin --rm $image:latest"
+cmd="docker run -it -v $HOME/.cache/joplin-cli:/home/node/.config/joplin --rm $image:latest"
 if tty &> /dev/null; then
     $cmd
 else

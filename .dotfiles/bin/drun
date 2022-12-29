@@ -103,7 +103,7 @@ run_kafka() {
 run_kcat() {
     host=127.0.0.1 # workaround for IPv6 issue
     docker_cmd kcat \
-        edenhill/kcat:1.7.1 -b "$host:$(env KAFKA_PORT)" "$@"
+        nevillelyh/kcat:latest -b "$host:$(env KAFKA_PORT)" "$@"
 }
 
 run_mariadb() {

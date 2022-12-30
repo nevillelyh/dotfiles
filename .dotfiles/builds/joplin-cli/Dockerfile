@@ -1,9 +1,16 @@
 FROM node:current-alpine
 
-RUN apk add --no-cache build-base git neovim python3 vips-dev
+ARG VERSION=2.9.1
+RUN if [[ "$(uname -m)" == aarch64 ]]; then \
+        apk add --no-cache --virtual .deps build-base python3 && \
+        apk add vips-dev; \
+    fi && \
+    npm install -g joplin@$VERSION && \
+    if [[ "$(uname -m)" == aarch64 ]]; then apk del .deps; fi
 
-COPY --chown=node:node nvim /home/node/.config/nvim/
-COPY --chown=node:node dein.vim /home/node/.local/share/dein/repos/github.com/Shougo/dein.vim/
+RUN apk add --no-cache git neovim
+COPY nvim /home/node/.config/nvim/
+COPY dein.vim /home/node/.local/share/dein/repos/github.com/Shougo/dein.vim/
 RUN chown -R node:node /home/node/.config /home/node/.local
 
 USER node
@@ -11,8 +18,5 @@ WORKDIR /home/node
 
 RUN nvim -u $HOME/.config/nvim/dein.vim --headless '+call dein#install() | qall'
 
-ENV NPM_CONFIG_PREFIX=/home/node/.npm
-RUN npm install -g joplin@2.9.1
-
 ENV EDITOR=nvim
-CMD .npm/bin/joplin
+CMD joplin

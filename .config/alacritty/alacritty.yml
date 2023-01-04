@@ -960,11 +960,6 @@ colors:
 
 ################################################################################
 
-shell:
-  program: /bin/zsh
-  args:
-    - --login
-
 env:
   WINIT_X11_SCALE_FACTOR: '0.90'
   TERM: xterm-256color

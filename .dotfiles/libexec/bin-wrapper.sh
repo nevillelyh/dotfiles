@@ -7,6 +7,16 @@ os=$(uname -s | tr "[:upper:]" "[:lower:]")
 arch=$(uname -m)
 header="Accept: application/vnd.github.v3+json"
 
+brew_run() {
+    [[ "$(uname -s)" != "Darwin" ]] && return 0
+    brew_pkg="$1"
+    brew_bin="/opt/homebrew/bin/$2"
+    shift 2
+    [[ -L "$brew_bin" ]] || brew install "$brew_pkg"
+    "$brew_bin" "$@"
+    exit 0
+}
+
 get_links() {
     url=$1
     curl -fsSL "$url" | grep -o 'href="[^"]\+"' | sed 's/href="\([^"]*\)"/\1/'
@@ -44,6 +54,8 @@ update() {
 }
 
 run_b2() {
+    brew_run b2-tools b2 "$@"
+
     get_latest() {
         github_latest "Backblaze/B2_Command_Line_Tool"
     }
@@ -66,6 +78,8 @@ run_b2() {
 }
 
 run_bazel() {
+    brew_run bazelisk bazel "$@"
+
     get_latest() {
         github_latest "bazelbuild/bazelisk"
     }
@@ -92,6 +106,8 @@ run_bazel() {
 }
 
 run_cockroach() {
+    brew_run cockroachdb/tap/cockroach cockroach "$@"
+
     get_latest() {
         get_links "https://www.cockroachlabs.com/docs/releases" | \
             grep -o '\<cockroach-v[0-9]\+\.[0-9]\+\.[0-9]\+\.linux-amd64.tgz$' | \
@@ -125,6 +141,8 @@ run_cockroach() {
 }
 
 run_flatc() {
+    brew_run flatbuffers flatc "$@"
+
     get_latest() {
         github_latest "google/flatbuffers"
     }
@@ -153,6 +171,8 @@ run_flatc() {
 }
 
 run_gh() {
+    brew_run gh gh "$@"
+
     get_latest() {
         github_latest "cli/cli"
     }
@@ -205,6 +225,8 @@ run_presto() {
 }
 
 run_protoc() {
+    brew_run protobuf protoc "$@"
+
     get_latest() {
         github_latest "protocolbuffers/protobuf"
     }
@@ -268,24 +290,13 @@ get_bins() {
 
 bin="$(basename "$0")"
 
-case "$bin" in
-    b2) brew_pkg=b2-tools ;;
-    bazel) brew_pkg=bazelisk ;;
-    cockroach) brew_pkg=cockroachdb/tap/cockroach ;;
-    flatc) brew_pkg=flatbuffers ;;
-    gh) brew_pkg=gh ;;
-    protoc) brew_pkg=protobuf ;;
-    bin-wrapper.sh)
-        get_bins
-        echo "Binary wrapper for: ${bins[*]}"
-        exit 1
-        ;;
-esac
-
-if [[ -n ${brew_pkg+x} ]] && type brew &> /dev/null; then
-    brew_bin="/opt/homebrew/bin/$bin"
-    [[ -L "$brew_bin" ]] || brew install "$brew_pkg"
-    "$brew_bin" "$@"
-else
-    "run_$bin" "$@"
+if [[ "$bin" == "bin-wrapper.sh" ]]; then
+    get_bins
+    echo "Binary wrapper for:"
+    for bin in "${bins[@]}"; do
+        echo "    $bin"
+    done
+    exit 1
 fi
+
+"run_$bin" "$@"

@@ -76,7 +76,10 @@ run_bazel() {
 
     download() {
         version=$1
-        [[ "$arch" == "x86_64" ]] && arch="amd64"
+        case "$arch" in
+            x86_64) arch="amd64" ;;
+            aarch64) arch="arm64" ;;
+        esac
         prefix="https://github.com/bazelbuild/bazelisk/releases/download"
         url="$prefix/v$version/bazelisk-$os-$arch"
         curl -fsSL "$url" -o "$exec"
@@ -102,19 +105,10 @@ run_cockroach() {
 
     download() {
         version=$1
-        # shellcheck disable=SC2001
-        major="$(echo "$version" | sed 's/v\([0-9]*\)\..*/\1/')"
-        # shellcheck disable=SC2001
-        minor="$(echo "$version" | sed 's/v[0-9]*\.\([0-9]*\)\..*/\1/')"
-        [[ "$arch" == "x86_64" ]] && arch="amd64"
-        if [[ "$os" == "darwin" ]]; then
-            arch="10.9-amd64"
-            if [[ "$arch" == "arm64" ]]; then
-                if [[ "$major" -gt 22 ]] || { [[ "$major" -eq 22 ]] && [[ "$minor" -ge 2 ]]; }; then
-                    arch="11.0-aarch64"
-                fi
-            fi
-        fi
+        case "$arch" in
+            x86_64) arch="amd64" ;;
+            aarch64) arch="3.7.10-gnu-aarch64" ;;
+        esac
         prefix="https://binaries.cockroachdb.com"
         build="cockroach-$version.$os-$arch"
         tarball="$build.tgz"
@@ -141,15 +135,9 @@ run_flatc() {
 
     download() {
         version=$1
-
-        if [[ "$os" == "darwin" ]]; then
-            zip="Mac.flatc.binary.zip"
-        elif [[ "$os" == "linux" ]]; then
-            zip="Linux.flatc.binary.g++-10.zip"
-        fi
+        zip="Linux.flatc.binary.g++-10.zip"
         prefix="https://github.com/google/flatbuffers/releases/download"
         url="$prefix/v$version/$zip"
-
         tmp=$(mktemp -d)
         zip="$tmp/$zip"
         curl -fsSL "$url" -o "$zip"
@@ -175,15 +163,14 @@ run_gh() {
 
     download() {
         version=$1
-
-        [[ "$os" == "darwin" ]] && os="macOS"
-        [[ "$arch" == "x86_64" ]] && arch="amd64"
-
+        case "$arch" in
+            x86_64) arch="amd64" ;;
+            aarch64) arch="arm64" ;;
+        esac
         prefix="https://github.com/cli/cli/releases/download"
         build="gh_${version}_${os}_$arch"
         tarball="$build.tar.gz"
         url="$prefix/v$version/$tarball"
-
         curl -fsSL "$url" | tar -C "$cache" -xz
         rm -rf "$cache/gh"
         mv "$cache/$build" "$cache/gh"
@@ -228,16 +215,13 @@ run_protoc() {
 
     download() {
         version=$1
-
-        if [[ "$os" == "darwin" ]]; then
-            os="osx"
-            [[ "$arch" == "arm64" ]] && arch="aarch_64"
-        fi
-
+        case "$arch" in
+            x86_64) ;;
+            aarch64) arch="aarch_64" ;;
+        esac
         prefix="https://github.com/protocolbuffers/protobuf/releases/download"
         zip="protoc-$version-$os-$arch.zip"
         url="$prefix/v$version/$zip"
-
         tmp=$(mktemp -d)
         zip="$tmp/$zip"
         curl -fsSL "$url" -o "$zip"
@@ -285,12 +269,12 @@ get_bins() {
 bin="$(basename "$0")"
 
 case "$bin" in
-    b2) brew_pkg=b2-tools;;
-    bazel) brew_pkg=bazelisk;;
-    cockroach) brew_pkg=cockroachdb/tap/cockroach;;
-    flatc) brew_pkg=flatbuffers;;
-    gh) brew_pkg=gh;;
-    protoc) brew_pkg=protobuf;;
+    b2) brew_pkg=b2-tools ;;
+    bazel) brew_pkg=bazelisk ;;
+    cockroach) brew_pkg=cockroachdb/tap/cockroach ;;
+    flatc) brew_pkg=flatbuffers ;;
+    gh) brew_pkg=gh ;;
+    protoc) brew_pkg=protobuf ;;
     bin-wrapper.sh)
         get_bins
         echo "Binary wrapper for: ${bins[*]}"

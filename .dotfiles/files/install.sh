@@ -5,19 +5,15 @@
 set -euo pipefail
 
 brew_install() {
-    if [[ "$(uname -s)" == "Darwin" ]]; then
-        brew install "$@"
-        [[ $(type -t post_brew) == "function" ]] && post_brew
-        exit 0
-    fi
+    [[ "$(uname -s)" != "Darwin" ]] && return 0
+    brew install "$@"
+    return 1
 }
 
 brew_install_cask() {
-    if [[ "$(uname -s)" == "Darwin" ]]; then
-        brew install --cask "$@"
-        [[ $(type -t post_brew) == "function" ]] && post_brew
-        exit 0
-    fi
+    [[ "$(uname -s)" != "Darwin" ]] && return 0
+    brew install --cask "$@"
+    return 1
 }
 
 distro() {
@@ -65,7 +61,7 @@ install_anaconda() {
     # Do not activate base automatically
     echo "auto_activate_base: false" > "$HOME/.condarc"
 
-    brew_install_cask anaconda
+    brew_install_cask anaconda || return 0
 
     url="https://www.anaconda.com/products/distribution"
     arch=$(uname -m)
@@ -77,7 +73,7 @@ install_anaconda() {
 }
 
 install_awscli() {
-    brew_install awscli
+    brew_install awscli || return 0
 
     arch=$(uname -m)
     curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-$arch.zip" -o awscliv2.zip
@@ -88,7 +84,7 @@ install_awscli() {
 
 # Chrome manages its own repository
 install_chrome() {
-    brew_install_cask google-chrome
+    brew_install_cask google-chrome || return 0
 
     wget -nv https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
     sudo dpkg -i google-chrome-stable_current_amd64.deb
@@ -98,7 +94,7 @@ install_chrome() {
 
 # https://apt.kitware.com/
 install_cmake() {
-    brew_install cmake
+    brew_install cmake || return 0
 
     url="https://apt.kitware.com/keys/kitware-archive-latest.asc"
     repo="deb [signed-by=/etc/apt/trusted.gpg.d/kitware-archive-keyring.gpg] https://apt.kitware.com/$(distro)/ $(codename) main"
@@ -110,7 +106,7 @@ install_cmake() {
 
 # https://code.visualstudio.com/docs/setup/linux
 install_code() {
-    brew_install_cask visual-studio-code
+    brew_install_cask visual-studio-code || return 0
 
     url="https://packages.microsoft.com/keys/microsoft.asc"
     repo="deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main"
@@ -122,7 +118,7 @@ install_code() {
 
 # https://dbeaver.io/download/
 install_dbeaver() {
-    brew_install_cask dbeaver-community
+    brew_install_cask dbeaver-community || return 0
 
     url="https://dbeaver.io/debs/dbeaver.gpg.key"
     repo="deb [signed-by=/etc/apt/trusted.gpg.d/dbeaver.gpg] https://dbeaver.io/debs/dbeaver-ce /"
@@ -134,7 +130,7 @@ install_dbeaver() {
 }
 
 install_discord() {
-    brew_install_cask discord
+    brew_install_cask discord || return 0
 
     url="https://discordapp.com/api/download/canary?platform=linux&format=deb"
     curl -fsSL "$url" -o discord.deb
@@ -149,7 +145,7 @@ install_docker() {
     mkdir -p "$HOME/.docker"
     echo '{"detachKeys": "ctrl-z,z"}' | jq --indent 4 > "$HOME/.docker/config.json"
 
-    brew_install_cask docker
+    brew_install_cask docker || return 0
 
     url="https://download.docker.com/linux/$(distro)/gpg"
     repo="deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/trusted.gpg.d/docker-archive-keyring.gpg] https://download.docker.com/linux/$(distro) $(codename) stable"
@@ -163,7 +159,7 @@ install_docker() {
 
 # Dropbox manages its own repository
 install_dropbox() {
-    brew_install_cask dropbox
+    brew_install_cask dropbox || return 0
 
     url="https://linux.dropbox.com/packages/$(distro)/"
     pkg=$(curl -fsSL "$url" | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^dropbox_[\d\.]+_amd64.deb$' | tail -n 1)
@@ -175,7 +171,7 @@ install_dropbox() {
 
 # https://cloud.google.com/sdk/docs/install#deb
 install_gcloud() {
-    brew_install_cask google-cloud-sdk
+    brew_install_cask google-cloud-sdk || return 0
 
     arch=$(uname -m)
     url="https://packages.cloud.google.com/apt/doc/apt-key.gpg"
@@ -189,7 +185,7 @@ install_gcloud() {
 
 # https://go.dev/doc/install
 install_go() {
-    brew_install go
+    brew_install go || return 0
 
     os=$(uname -s | tr "[:upper:]" "[:lower:]")
     arch=$(dpkg --print-architecture)
@@ -199,13 +195,13 @@ install_go() {
 
 # https://helm.sh/
 install_helm() {
-    brew_install helm
+    brew_install helm || return 0
     sudo snap install helm --classic
 }
 
 # https://kubernetes.io/docs/tasks/tools/
 install_kubectl() {
-    brew_install kubectl
+    brew_install kubectl || return 0
 
     url="https://packages.cloud.google.com/apt/doc/apt-key.gpg"
     repo="deb [signed-by=/etc/apt/trusted.gpg.d/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main"
@@ -217,7 +213,7 @@ install_kubectl() {
 
 # https://minikube.sigs.k8s.io/docs/start/
 install_minikube() {
-    brew_install minikube
+    brew_install minikube || return 0
 
     arch=$(dpkg --print-architecture)
     wget -nv "https://storage.googleapis.com/minikube/releases/latest/minikube_latest_$arch.deb"
@@ -247,7 +243,7 @@ install_proton() {
 
 # https://www.retroarch.com/index.php?page=linux-instructions
 install_retroarch() {
-    brew_install_cask retroarch
+    brew_install_cask retroarch || return 0
     sudo add-apt-repository ppa:libretro/stable
     sudo aptitude update
     sudo aptitude install retroarch
@@ -255,7 +251,7 @@ install_retroarch() {
 
 # https://signal.org/download/
 install_signal() {
-    brew_install_cask signal
+    brew_install_cask signal || return 0
     url="https://updates.signal.org/desktop/apt/keys.asc"
     repo="deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main"
     setup_gpg "$url" signal-desktop-keyring.gpg
@@ -266,7 +262,7 @@ install_signal() {
 
 # https://repo.steampowered.com/steam/
 install_steam() {
-    brew_install_cask steam
+    brew_install_cask steam || return 0
 
     url="https://repo.steampowered.com/steam/archive/stable/steam.gpg"
     line1="deb [arch=amd64,i386] http://repo.steampowered.com/steam/ stable steam"
@@ -280,7 +276,7 @@ install_steam() {
 
 # https://www.sublimetext.com/docs/linux_repositories.html
 install_sublime() {
-    brew_install_cask sublime-text
+    brew_install_cask sublime-text || return 0
 
     url="https://download.sublimetext.com/sublimehq-pub.gpg"
     repo="deb https://download.sublimetext.com/ apt/stable/"
@@ -305,7 +301,7 @@ install_swift() {
 
 # https://tailscale.com/download/linux/ubuntu-2204
 install_tailscale() {
-    brew_install_cask tailscale
+    brew_install_cask tailscale || return 0
 
     url="https://pkgs.tailscale.com/stable/$(distro)/$(codename).noarmor.gpg"
     repo="deb [signed-by=/etc/apt/trusted.gpg.d/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/$(distro) $(codename) main"
@@ -319,7 +315,7 @@ install_tailscale() {
 
 # https://aka.ms/get-teams-linux
 install_teams() {
-    brew_install_cask microsoft-teams
+    brew_install_cask microsoft-teams || return 0
 
     url="https://packages.microsoft.com/repos/ms-teams/pool/main/t/teams/"
     pkg=$(curl -fsSL $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^teams_[\d\.]+_amd64.deb$' | tail -n 1)
@@ -331,7 +327,7 @@ install_teams() {
 
 # https://learn.hashicorp.com/tutorials/terraform/install-cli
 install_terraform() {
-    brew_install terraform
+    brew_install terraform || return 0
 
     setup_hashicorp
     sudo aptitude install -y terraform
@@ -339,7 +335,7 @@ install_terraform() {
 
 # https://www.vaultproject.io/downloads
 install_vault() {
-    brew_install vault
+    brew_install vault || return 0
 
     setup_hashicorp
     sudo aptitude install -y vault
@@ -347,7 +343,7 @@ install_vault() {
 
 # https://github.com/retorquere/zotero-deb/blob/master/install.sh
 install_zotero() {
-    brew_install_cask zotero
+    brew_install_cask zotero || return 0
 
     url="https://raw.githubusercontent.com/retorquere/zotero-deb/master/zotero-archive-keyring.gpg"
     repo="deb [signed-by=/etc/apt/trusted.gpg.d/zotero-archive-keyring.gpg by-hash=force] https://zotero.retorque.re/file/apt-package-archive ./"

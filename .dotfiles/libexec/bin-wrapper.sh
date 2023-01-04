@@ -195,7 +195,7 @@ run_gh() {
     "$exec" "$@"
 }
 
-run_presto-cli() {
+run_presto() {
     get_latest() {
         js_url="https://prestodb.io/static/js/version.js"
         curl -fsSL "$js_url" | grep '\<presto_latest_presto_version\>' | sed "s/[^']*'\([^']*\)';/\1/"
@@ -212,7 +212,7 @@ run_presto-cli() {
         chmod +x "$exec"
     }
 
-    exec="$cache/presto-cli"
+    exec="$cache/presto"
     update
     "$exec" "$@"
 }
@@ -253,7 +253,7 @@ run_protoc() {
     "$exec" "$@"
 }
 
-run_trino-cli() {
+run_trino() {
     prefix="https://repo1.maven.org/maven2/io/trino/trino-cli"
 
     get_latest() {
@@ -271,7 +271,7 @@ run_trino-cli() {
         chmod +x "$exec"
     }
 
-    exec="$cache/trino-cli"
+    exec="$cache/trino"
     update
     "$exec" "$@"
 }

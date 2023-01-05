@@ -12,6 +12,8 @@ esac
 alias cat='bat'
 alias diff='colordiff'
 alias digc='docker images --quiet --filter dangling=true | xargs -r docker rmi'
+alias dcgc='docker ps --all --filter "status=exited" --quiet | xargs -r docker rm'
+alias dka='docker ps --quiet | xargs -r docker kill'
 alias darch='docker images --quiet | xargs docker inspect |jq -r ".[]|.Architecture+\"\t\"+(.RepoTags|join(\",\"))"'
 alias ghpr='gh pr create'
 alias l='exa -la' # 'ls -lah'

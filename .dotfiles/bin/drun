@@ -36,7 +36,7 @@ docker_run() {
     color='\033[1;32m' # green
     reset='\033[0m' #reset
     echo >&2 -e "${color}docker run $*${reset}"
-    docker run --label drun "$@"
+    docker run --label dotfiles.bin.drun=true "$@"
 }
 
 docker_srv() {
@@ -61,7 +61,7 @@ docker_cmd() {
 }
 
 run_killall() {
-    docker ps --quiet --filter label=drun | xargs -r docker kill
+    docker ps --quiet --filter label=dotfiles.bin.drun=true | xargs -r docker kill
 }
 
 run_cockroach() {

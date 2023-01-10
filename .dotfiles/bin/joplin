@@ -24,7 +24,7 @@ fi
 mkdir -p "$HOME/.cache/joplin-cli"
 cmd="docker run -it -v $HOME/.cache/joplin-cli:/home/node/.config/joplin --rm $image:latest"
 if tty &> /dev/null; then
-    $cmd
+    $cmd "$@"
 else
-    alacritty -e "$cmd"
+    alacritty -e "$cmd" "$@"
 fi

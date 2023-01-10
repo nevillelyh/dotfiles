@@ -19,4 +19,4 @@ WORKDIR /home/node
 RUN nvim -u $HOME/.config/nvim/dein.vim --headless '+call dein#install() | qall'
 
 ENV EDITOR=nvim
-CMD joplin
+ENTRYPOINT ["joplin"]

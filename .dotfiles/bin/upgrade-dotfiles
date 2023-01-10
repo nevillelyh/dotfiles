@@ -65,6 +65,8 @@ upgrade_docker() {
         [[ -z "$digest" ]] || docker pull --platform "$platform" "$image"
     done
     docker images --quiet --filter dangling=true | xargs -r docker rmi
+
+    joplin sync
 }
 
 upgrade_go() {

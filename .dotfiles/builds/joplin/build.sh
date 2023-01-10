@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Build and publish joplin-cli Docker image
+# Build and publish joplin Docker image
 
 set -euo pipefail
 
-image=nevillelyh/joplin-cli
+image=nevillelyh/joplin
 version=$(grep '^ARG VERSION=' Dockerfile | cut -d '=' -f 2)
 
 [[ -d dein.vim ]] && rm -rf dein.vim

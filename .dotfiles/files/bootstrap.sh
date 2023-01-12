@@ -56,6 +56,15 @@ setup_homebrew() {
 
     mas install "${MAS[@]}"
 
+    # https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
+    infocmp=$(find /opt/homebrew/Cellar/ncurses/ -name infocmp | tail -n 1)
+    "$infocmp" -x tmux-256color | \
+        sed -E 's/[[:<:]]pairs#(0x10000|65536)[[:>:]]/pairs#32767/g' > \
+        "$HOME/tmux-256color.src"
+    mkdir -p "$HOME/.local/share/terminfo"
+    /usr/bin/tic -x -o "$HOME/.local/share/terminfo" "$HOME/tmux-256color.src"
+    rm "$HOME/tmux-256color.src"
+
     read -p "Install optional casks (y/N)? " -n 1 -r
     echo # (optional) move to a new line
     [[ $REPLY =~ ^[Yy]$ ]] && brew install --cask "${CASKS_OPT[@]}"

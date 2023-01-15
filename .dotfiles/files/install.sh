@@ -204,7 +204,7 @@ install_kubectl() {
     brew_install kubectl || return 0
 
     url="https://packages.cloud.google.com/apt/doc/apt-key.gpg"
-    repo="deb [signed-by=/etc/apt/trusted.gpg.d/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main"
+    repo="deb [signed-by=/etc/apt/trusted.gpg.d/cloud.google.gpg] https://apt.kubernetes.io/ kubernetes-xenial main"
     setup_gpg "$url" kubernetes-archive-keyring.gpg
     setup_apt "$repo" kubernetes.list
     sudo aptitude update

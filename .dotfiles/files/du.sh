@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Check disk usage
+
 dirs=(
     .cache/bazel
     .cache/coursier

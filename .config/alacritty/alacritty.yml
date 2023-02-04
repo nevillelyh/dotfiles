@@ -969,41 +969,14 @@ window:
     columns: 132
     lines: 43
   opacity: 0.9
-  # https://github.com/alacritty/alacritty/issues/62#issuecomment-1291219520
-  ime_input: false
+  option_as_alt: OnlyLeft
 
 font:
   normal:
     family: 'MesloLGS NF'
   size: 12.0
 
+
 key_bindings:
   - { key: W,      mods: Command,      action: ReceiveChar      }
   - { key: N,      mods: Command,      action: CreateNewWindow  }
-  # Fix Alt-* on macOS
-  # bash/zsh back/forward one word
-  - { key: B,      mods: Option,       chars: "\x1bb"           }
-  - { key: F,      mods: Option,       chars: "\x1bf"           }
-  # FZF cd into directory
-  - { key: C,      mods: Option,       chars: "\x1bc"           }
-  # Vim previous/next/delete buffer
-  - { key: P,      mods: Option,       chars: "\x1bp"           }
-  - { key: N,      mods: Option,       chars: "\x1bn"           }
-  - { key: W,      mods: Option,       chars: "\x1bw"           }
-  # Vim folding
-  - { key: H,      mods: Option,       chars: "\x1bh"           }
-  - { key: J,      mods: Option,       chars: "\x1bj"           }
-  - { key: K,      mods: Option,       chars: "\x1bk"           }
-  - { key: L,      mods: Option,       chars: "\x1bl"           }
-  - { key: H,      mods: Option|Shift, chars: "\x1bH"           }
-  - { key: J,      mods: Option|Shift, chars: "\x1bJ"           }
-  - { key: K,      mods: Option|Shift, chars: "\x1bK"           }
-  - { key: L,      mods: Option|Shift, chars: "\x1bL"           }
-  - { key: Period, mods: Option,       chars: "\x1b."           }
-  - { key: Period, mods: Option|Shift, chars: "\x1b>"           }
-  # Vim FZF
-  - { key: O,      mods: Option,       chars: "\x1bo"           }
-  - { key: O,      mods: Option|Shift, chars: "\x1bO"           }
-  # Vim NERD Commenter
-  - { key: Slash,  mods: Option,       chars: "\x1b/"           }
-  - { key: Slash,  mods: Option|Shift, chars: "\x1b?"           }

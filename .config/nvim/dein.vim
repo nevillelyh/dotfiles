@@ -35,6 +35,7 @@ if dein#load_state($HOME.'/.local/share/dein')
   call dein#add('vim-syntastic/syntastic', {'merged': 0})
 
   " Syntax
+  call dein#add('hashivim/vim-terraform', {'merged': 0})
   call dein#add('jjo/vim-cue', {'merged': 0})
   call dein#add('preservim/vim-markdown', {'merged': 0})
   call dein#add('udalov/kotlin-vim', {'merged': 0})

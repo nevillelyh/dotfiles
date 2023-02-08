@@ -64,6 +64,10 @@ run_killall() {
     docker ps --quiet --filter label=dotfiles.bin.drun=true | xargs -r docker kill
 }
 
+run_ps() {
+    docker ps --filter label=dotfiles.bin.drun=true
+}
+
 run_cockroach() {
     docker_srv cockroach \
         --env COCKROACH_DATABASE="$(env DB)" \

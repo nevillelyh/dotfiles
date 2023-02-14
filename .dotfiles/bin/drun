@@ -110,6 +110,12 @@ run_kcat() {
         nevillelyh/kcat:latest -b "$host:$(env KAFKA_PORT)" "$@"
 }
 
+run_kraft() {
+    docker_srv kraft \
+        --publish 9092:9092 \
+        nevillelyh/kraft:latest "$@"
+}
+
 run_mariadb() {
     docker_srv mariadb \
         --env MARIADB_ROOT_PASSWORD="$(env ROOT_PASS)" \

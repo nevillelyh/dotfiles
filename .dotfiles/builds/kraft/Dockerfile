@@ -1,5 +1,5 @@
 FROM azul/zulu-openjdk-alpine:17-latest
-ARG VERSION=7.3.1
+ARG VERSION=7.3.2
 
 RUN apk add --no-cache bash curl
 

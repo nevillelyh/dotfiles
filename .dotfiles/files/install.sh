@@ -152,7 +152,7 @@ install_docker() {
     setup_gpg "$url" docker-archive-keyring.gpg
     setup_apt "$repo" docker.list
     sudo aptitude update
-    sudo aptitude install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+    sudo aptitude install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
     sudo usermod -aG docker "$(whoami)"
 }

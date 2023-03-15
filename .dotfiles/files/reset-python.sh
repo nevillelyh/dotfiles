@@ -15,7 +15,7 @@ case "$(uname -s)" in
         ;;
 esac
 
-(grep -l $shebang "$prefix/bin/"* || echo) | xargs -r rm
+(grep -l "$shebang" "$prefix/bin/"* || echo) | xargs -r rm
 rm -rf "$prefix"/bin/virtualenvwrapper*
 rm -rf "$prefix"/lib/python*
 rm -rf "$prefix"/share/virtualenv*

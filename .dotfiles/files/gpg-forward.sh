@@ -9,6 +9,13 @@ if [[ $# -ne 1 ]]; then
     exit 1
 fi
 
+if [[ -f "$HOME/.dotfiles/files/bs.sh" ]]; then
+    # shellcheck source=/dev/null
+    source "$HOME/.dotfiles/files/bs.sh"
+else
+    eval "$(curl -fsSL https://raw.githubusercontent.com/nevillelyh/dotfiles/main/.dotfiles/files/bs.sh)"
+fi
+
 conn=$1
 user=""
 host=$conn
@@ -18,11 +25,10 @@ if echo "$conn" | grep -q '@'; then
 fi
 
 if grep -q "Host $host" .ssh/config 2> /dev/null; then
-    echo "Host $host already set up"
-    exit 1
+    bs_fatal "Host $host already set up"
 fi
 
-echo "Sending public key to $host"
+bs_info "Sending public key to $host"
 key=$(grep signingKey "$HOME/.gitconfig" | grep -o '\<[0-9A-F]\+$')
 gpg --export "$key" | ssh "$conn" gpg --import
 echo "default-key $key" | ssh "$conn" tee .gnupg/gpg.conf
@@ -30,7 +36,7 @@ echo "default-key $key" | ssh "$conn" tee .gnupg/gpg.conf
 dst=$(ssh "$conn" gpgconf --list-dir agent-socket)
 src=$(gpgconf --list-dir agent-extra-socket)
 
-echo "Adding $host to $HOME/.ssh/config"
+bs_info "Adding $host to $HOME/.ssh/config"
 echo "Host $host" >> "$HOME/.ssh/config"
 [[ -z "$user" ]] || echo "    User $user" >> "$HOME/.ssh/config"
 cat << EOF >> "$HOME/.ssh/config"

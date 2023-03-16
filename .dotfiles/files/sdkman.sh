@@ -4,6 +4,13 @@
 
 set -euo pipefail
 
+if [[ -f "$HOME/.dotfiles/files/bs.sh" ]]; then
+    # shellcheck source=/dev/null
+    source "$HOME/.dotfiles/files/bs.sh"
+else
+    eval "$(curl -fsSL https://raw.githubusercontent.com/nevillelyh/dotfiles/main/.dotfiles/files/bs.sh)"
+fi
+
 java_versions=(8 11 17)
 java_default=17
 java_dist="zulu"
@@ -11,7 +18,7 @@ scala_versions=(2.13 3)
 scala_default=2.13
 
 manage() {
-    candidate=$1
+    local candidate=$1
     shift
     for wanted in "$@"; do
         [[ -d "$HOME/.sdkman/candidates/$candidate/$wanted" ]] && continue
@@ -20,26 +27,24 @@ manage() {
     for installed in "$HOME/.sdkman/candidates/$candidate"/*; do
         [[ -L "$installed" ]] && continue
         installed=$(basename "$installed")
-        m=0
-        for wanted in "$@"; do
-            [[ "$installed" == "$wanted" ]] && m=1
-        done
-        if [[ "$m" -eq 0 ]]; then
+        if [[ "$(bs_array_contains "$installed" "$@")" == "1" ]]; then
             sdk uninstall "$candidate" "$installed"
         fi
     done
 }
 
 manage_java() {
+    local versions
     versions="$(sdk list java | awk '{print $(NF)}' | \
         grep "\-$java_dist$" | grep -v "\.fx-$java_dist" | \
         sort --version-sort)"
-    matches=()
+    local matches=()
+    local default
     for v in "${java_versions[@]}"; do
+        local match
         match=$(echo "$versions" | grep "^$v\." || true)
         if [[ -z "$match" ]]; then
-            echo "Java $v $java_dist not found"
-            exit 1
+            bs_fatal "Java $v $java_dist not found"
         fi
         match=$(echo "$match" | tail -n 1)
         matches+=("$match")
@@ -50,13 +55,15 @@ manage_java() {
 }
 
 manage_scala() {
+    local versions
     versions="$(sdk list scala | tr ' ' '\n' | grep '^[0-9]' | sort --version-sort)"
-    matches=()
+    local matches=()
+    local default
     for v in "${scala_versions[@]}"; do
+        local match
         match=$(echo "$versions" | grep "^$v\." || true)
         if [[ -z "$match" ]]; then
-            echo "Scala $v not found"
-            exit 1
+            bs_fatal "Scala $v not found"
         fi
         match=$(echo "$match" | tail -n 1)
         matches+=("$match")
@@ -73,20 +80,15 @@ manage_candidates() {
             continue
         fi
         sdk upgrade "$candidate"
+        local current
         current=$(basename "$(readlink -f "$HOME/.sdkman/candidates/$candidate/current")")
         manage "$candidate" "$current"
     done
 }
 
-sed_i() {
-    case "$(uname -s)" in
-        Darwin) sed -i '' "$@" ;;
-        Linux) sed -i "$@" ;;
-    esac
-}
-
-sed_i 's/sdkman_auto_answer=false/sdkman_auto_answer=true/g' "$HOME/.sdkman/etc/config"
+bs_sed_i 's/sdkman_auto_answer=false/sdkman_auto_answer=true/g' "$HOME/.sdkman/etc/config"
 set +u
+# shellcheck source=/dev/null
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 sdk update
@@ -94,4 +96,4 @@ manage_java
 manage_scala
 manage_candidates
 
-sed_i 's/sdkman_auto_answer=true/sdkman_auto_answer=false/g' "$HOME/.sdkman/etc/config"
+bs_sed_i 's/sdkman_auto_answer=true/sdkman_auto_answer=false/g' "$HOME/.sdkman/etc/config"

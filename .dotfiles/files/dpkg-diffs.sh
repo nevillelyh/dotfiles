@@ -13,7 +13,9 @@ diffs="$(find "$tmp" -type f -name dpkg-diffs | tail -n 1)"
 
 get_packages() {
     echo >&2 "# sudo dpkg -V"
+    local dpkgv
     dpkgv="$(sudo dpkg -V || true)"
+    local files
     readarray -t files < <(echo "$dpkgv" | cut -c 13-)
     for file in "${files[@]}"; do
         readarray -t pkgs < <(dpkg-query -S "$file" | cut -d ':' -f 1 | sed 's/, /\n/g')

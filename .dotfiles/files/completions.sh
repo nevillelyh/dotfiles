@@ -25,4 +25,3 @@ curl -fsSL https://github.com/dandavison/delta/blob/master/etc/completion/comple
 curl -fsSL https://raw.githubusercontent.com/bootandy/dust/master/completions/_dust -o "$out/_dust"
 curl -fsSL https://raw.githubusercontent.com/sharkdp/fd/master/contrib/completion/_fd -o "$out/_fd"
 curl -fsSL https://github.com/ajeetdsouza/zoxide/blob/main/contrib/completions/_zoxide -o "$out/_zoxide"
-

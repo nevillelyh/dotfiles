@@ -4,17 +4,16 @@
 
 set -euo pipefail
 
-msg_box() {
-    color='\033[1;35m' # magenta
-    reset='\033[0m' #reset
-    echo -e "${color}╔═${1//[[:ascii:]]/═}═╗${reset}"
-    echo -e "${color}║ $1 ║${reset}"
-    echo -e "${color}╚═${1//[[:ascii:]]/═}═╝${reset}"
-}
+if [[ -f "$HOME/.dotfiles/files/bs.sh" ]]; then
+    # shellcheck source=/dev/null
+    source "$HOME/.dotfiles/files/bs.sh"
+else
+    eval "$(curl -fsSL https://raw.githubusercontent.com/nevillelyh/dotfiles/main/.dotfiles/files/bs.sh)"
+fi
 
 upgrade_os() {
-    msg_box "Upgrading system packages"
-    case "$(uname -s)" in
+    bs_info_box "Upgrading system packages"
+    case "$BS_UNAME_S" in
         Darwin)
             brew update
             brew upgrade
@@ -33,22 +32,22 @@ upgrade_os() {
 }
 
 upgrade_git() {
-    msg_box "Upgrading Git Repository"
+    bs_info_box "Upgrading Git Repository"
     git pull --rebase --autostash
     git submodule update --init --recursive --remote
-    if [[ -d "$HOME/.dotfiles/private" ]] && curl -fsSL --connect-timeout 1 --output /dev/null 192.168.86.202 &> /dev/null; then
+    if [[ -d "$HOME/.dotfiles/private" ]] && curl -fsSL --connect-timeout 1 --output /dev/null fides.lan &> /dev/null; then
         cd "$HOME/.dotfiles/private"
         git pull --rebase --autostash
     fi
 }
 
 upgrade_omz() {
-    msg_box "Upgrading Oh-My-Zsh"
+    bs_info_box "Upgrading Oh-My-Zsh"
     zsh -i -c "omz update"
 }
 
 upgrade_neovim() {
-    msg_box "Upgrading NeoVim"
+    bs_info_box "Upgrading NeoVim"
     nvim -u "$HOME/.config/nvim/dein.vim" --headless \
         '+let g:dein#install_progress_type = "none" | call dein#update() | echo "\r\n" | qall'
     if [[ -n "${TMUX-}" ]]; then
@@ -58,7 +57,7 @@ upgrade_neovim() {
 
 upgrade_docker() {
     type docker &> /dev/null || return 0
-    msg_box "Upgrading Docker"
+    bs_info_box "Upgrading Docker"
     for image in $(docker images --format "{{.Repository}}:{{.Tag}}" | grep -v ':<none>' | grep -v '\.amazonaws\.com/'); do
         digest=$(docker inspect "$image" | jq --raw-output ".[].RepoDigests[]")
         platform=$(docker inspect "$image" | jq --raw-output '.[] | "\(.Os)/\(.Architecture)"')
@@ -70,7 +69,7 @@ upgrade_docker() {
 }
 
 upgrade_go() {
-    msg_box "Upgrading Go"
+    bs_info_box "Upgrading Go"
     if [[ -d /usr/local/go ]]; then
         os=$(uname -s | tr "[:upper:]" "[:lower:]")
         arch=$(dpkg --print-architecture)
@@ -82,7 +81,7 @@ upgrade_go() {
             echo # (optional) move to a new line
             if [[ $REPLY =~ ^[Yy]$ ]]; then
                 sudo rm -rf /usr/local/go
-                bash "$HOME/.dotfiles/files/install.sh" go
+                "$HOME/.dotfiles/files/install.sh" go
             fi
         fi
     fi
@@ -94,12 +93,12 @@ upgrade_go() {
 }
 
 upgrade_jvm() {
-    msg_box "Upgrading JVM"
-    bash "$HOME/.dotfiles/files/sdkman.sh"
+    bs_info_box "Upgrading JVM"
+    "$HOME/.dotfiles/files/sdkman.sh"
 }
 
 upgrade_python() {
-    msg_box "Upgrading Python"
+    bs_info_box "Upgrading Python"
     python3 -m pip install --upgrade pip
     # Bash 3 on Mac missing readarray
     # shellcheck disable=SC2207
@@ -108,7 +107,7 @@ upgrade_python() {
 }
 
 upgrade_rust() {
-    msg_box "Upgrading Rust"
+    bs_info_box "Upgrading Rust"
     rustup update
     # Bash 3 on Mac missing readarray
     if [[ -s "$HOME/.cargo/.crates.toml" ]]; then
@@ -120,7 +119,7 @@ upgrade_rust() {
 
 upgrade_anaconda() {
     type conda &> /dev/null || return 0
-    msg_box "Upgrading Anaconda"
+    bs_info_box "Upgrading Anaconda"
     conda update --all --name base --yes
 }
 
@@ -142,18 +141,18 @@ help() {
 }
 
 if [[ $# -eq 1 ]]; then
-    case "$1" in
+    cmd="$1"
+    case "$cmd" in
         help)
             help
             ;;
         *)
             get_commands
-            if [[ " ${cmds[*]} " =~ (^|[[:space:]])"$1"($|[[:space:]]) ]]; then
-                msg_box "Upgrade single step $1"
-                "upgrade_$1"
+            if [[ "$(bs_array_contains "$cmd" "${cmds[@]}")" == 0 ]]; then
+                bs_info_box "Upgrade single step $1"
+                "upgrade_$cmd"
             else
-                echo "Command not found: $1"
-                exit 1
+                bs_fatal "Command not found: $cmd"
             fi
             ;;
     esac
@@ -171,4 +170,4 @@ upgrade_jvm
 upgrade_python
 upgrade_rust
 upgrade_anaconda
-msg_box "Upgrade complete"
+bs_success_box "Upgrade complete"

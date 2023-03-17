@@ -137,6 +137,10 @@ bs_sed_i() {
     esac
 }
 
+bs_timestamp() {
+    date "+%Y%m%d%H%M%S"
+}
+
 _bs_test_exec() {
     bs_df files/install.sh sublime
 }

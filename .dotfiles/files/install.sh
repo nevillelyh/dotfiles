@@ -390,7 +390,6 @@ if [[ $# -eq 0 ]]; then
     for pkg in "${pkgs[@]}"; do
         echo "        $pkg"
     done
-    # exit 1
 fi
 
 for pkg in "$@"; do
@@ -402,8 +401,7 @@ for pkg in "$@"; do
         if [[ "$(bs_array_contains "$pkg" "${pkgs[@]}")" == 0 ]]; then
             "install_$pkg"
         else
-            echo "Package not found: $pkg"
-            exit 1
+            bs_fatal "Package not found: $pkg"
         fi
     fi
 done

@@ -4,10 +4,12 @@
 
 set -euo pipefail
 
-die() {
-    echo "Error: $1"
-    exit 1
-}
+if [[ -f "$HOME/.dotfiles/files/bs.sh" ]]; then
+    # shellcheck source=/dev/null
+    source "$HOME/.dotfiles/files/bs.sh"
+else
+    eval "$(curl -fsSL https://raw.githubusercontent.com/nevillelyh/dotfiles/main/.dotfiles/files/bs.sh)"
+fi
 
 help() {
     echo "Usage: $(basename "$0") <COMMAND> [ARG]..."
@@ -23,7 +25,7 @@ help() {
 }
 
 help_and_die() {
-    echo "$1"
+    bs_error "$1"
     echo
     help
     exit 1
@@ -33,9 +35,9 @@ run_env() {
     [[ $# -ne 0 ]] && help_and_die "Invalid argument: $*"
     [[ ! -d $HOME/.nvman ]] && exit 0
     cuda=$HOME/.nvman/cuda-current
-    [[ ! -L $cuda ]] && die "CUDA not installed"
+    [[ ! -L $cuda ]] && bs_fatal "CUDA not installed"
     cudnn=$HOME/.nvman/cudnn-current
-    [[ ! -L $cudnn ]] && die "cuDNN not installed"
+    [[ ! -L $cudnn ]] && bs_fatal "cuDNN not installed"
     echo "export CUDA_PATH=$HOME/.nvman/cuda-current"
     echo "export PATH=$cuda/bin${PATH:+:${PATH}}"
     echo "export LD_LIBRARY_PATH=$cuda/lib64:$cudnn/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
@@ -45,9 +47,9 @@ install_cuda() {
     cuda_version=$(echo "$1" | grep -Po '(?<=^cuda_)[0-9\.]+')
     dest=$HOME/.nvman/cuda-$cuda_version
     if [[ -d $dest ]]; then
-        die "CUDA $cuda_version already installed"
+        bs_fatal "CUDA $cuda_version already installed"
     fi
-    echo "Installing CUDA $cuda_version in $dest"
+    bs_info "Installing CUDA $cuda_version in $dest"
     mkdir -p "$HOME/.nvman"
     bash "$1" --silent --installpath="$dest" --toolkit --samples --no-opengl-libs --no-drm
     link=$HOME/.nvman/cuda-current
@@ -60,9 +62,9 @@ install_cudnn() {
     cudnn_version=$(echo "$1" | sed 's/cudnn-[^-]*-[^-]*-\([^-]*\)_cuda.*/\1/')
     dest=$HOME/.nvman/cudnn-$cudnn_version
     if [[ -d $dest ]]; then
-        die "cuDNN $cudnn_version already installed"
+        bs_fatal "cuDNN $cudnn_version already installed"
     fi
-    echo "Installing CUDNN $cudnn_version in $dest"
+    bs_info "Installing CUDNN $cudnn_version in $dest"
     mkdir -p "$HOME/.nvman"
     tar xJf "$1" -C "$HOME/.nvman"
     base=$(basename "$1" .tar.xz)
@@ -75,8 +77,8 @@ install_cudnn() {
 run_install() {
     [[ $# -lt 1 ]] && help_and_die "Missing RUNFILE or TARBALL"
     [[ $# -gt 1 ]] && help_and_die "Invalid argument: $*"
-    type lspci &> /dev/null || die "GPU not found"
-    lspci | grep -i nvidia &> /dev/null || die "GPU not found"
+    type lspci &> /dev/null || bs_fatal "GPU not found"
+    lspci | grep -i nvidia &> /dev/null || bs_fatal "GPU not found"
 
     base=$(basename "$1")
     ext="${base##*.}"
@@ -88,13 +90,13 @@ run_install() {
             install_cudnn "$1"
             ;;
         *)
-            die "Unsupported file: $1"
+            bs_fatal "Unsupported file: $1"
     esac
 }
 
 run_list() {
     [[ $# -ne 0 ]] && help_and_die "Invalid argument: $*"
-    [[ ! -d $HOME/.nvman ]] && die "nvman not installed"
+    [[ ! -d $HOME/.nvman ]] && bs_fatal "nvman not installed"
     cuda=()
     [[ -L "$HOME/.nvman/cuda-current" ]] && current="$(basename "$(readlink -f "$HOME/.nvman/cuda-current")")" || current="UNKNOWN"
     for c in "$HOME"/.nvman/cuda-*; do
@@ -136,7 +138,7 @@ run_set() {
     fi
     src="$HOME/.nvman/$pkg-$version"
     link="$HOME/.nvman/$pkg-current"
-    [[ -d "$src" ]] || die "Not installed: $pkg-$version"
+    [[ -d "$src" ]] || bs_fatal "Not installed: $pkg-$version"
     [[ -L "$link" ]] && rm -f "$link"
     ln -rsf "$src" "$link"
 }
@@ -166,9 +168,9 @@ run_uninstall() {
     pkg=$1
     version=$2
     src="$HOME/.nvman/$pkg-$version"
-    [[ -d "$src" ]] || die "Not installed: $pkg-$version"
+    [[ -d "$src" ]] || bs_fatal "Not installed: $pkg-$version"
     current=$(readlink -f "$HOME/.nvman/$pkg-current")
-    [[ "$src" == "$current" ]] && die "Cannot uninstall current: $pkg-$version"
+    [[ "$src" == "$current" ]] && bs_fatal "Cannot uninstall current: $pkg-$version"
     rm -rf "$src"
 }
 

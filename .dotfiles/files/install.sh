@@ -11,17 +11,14 @@ else
     eval "$(curl -fsSL https://raw.githubusercontent.com/nevillelyh/dotfiles/main/.dotfiles/files/bs.sh)"
 fi
 
-uname_s=$(uname -s)
-uname_m=$(uname -m)
-
 brew_install() {
-    [[ "$uname_s" != "Darwin" ]] && return 0
+    [[ "$BS_UNAME_S" != "Darwin" ]] && return 0
     brew install "$@"
     return 1
 }
 
 brew_install_cask() {
-    [[ "$uname_s" != "Darwin" ]] && return 0
+    [[ "$BS_UNAME_S" != "Darwin" ]] && return 0
     brew install --cask "$@"
     return 1
 }
@@ -76,7 +73,7 @@ install_anaconda() {
     brew_install_cask anaconda || return 0
 
     local url="https://www.anaconda.com/products/distribution"
-    url=$(curl -fsSL $url | grep -o "\<https://repo.anaconda.com/archive/Anaconda3-.*-Linux-$uname_m.sh\>" | uniq | tail -n 1)
+    url=$(curl -fsSL $url | grep -o "\<https://repo.anaconda.com/archive/Anaconda3-.*-Linux-$BS_UNAME_M.sh\>" | uniq | tail -n 1)
     local pkg
     pkg=$(echo "$url" | grep -o '\<Anaconda3-.*.sh$')
     wget -nv "$url"
@@ -87,7 +84,7 @@ install_anaconda() {
 install_awscli() {
     brew_install awscli || return 0
 
-    curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-$uname_m.zip" -o awscliv2.zip
+    curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-$BS_UNAME_M.zip" -o awscliv2.zip
     unzip awscliv2.zip
     ./aws/install --install-dir "$HOME/.aws" --bin-dir "$HOME/.local/bin"
     rm -rf awscliv2.zip aws
@@ -203,7 +200,7 @@ install_go() {
     brew_install go || return 0
 
     local os
-    os=$(echo "$uname_s" | tr "[:upper:]" "[:lower:]")
+    os=$(echo "$BS_UNAME_S" | tr "[:upper:]" "[:lower:]")
     local arch
     arch=$(dpkg --print-architecture)
     tarball=$(curl -fsSL "https://go.dev/dl" | grep -oP '(?<=href=")[^"]+(?=")' | grep "/dl/go.*\.$os-$arch\.tar\.gz" | tac | tail -n 1)
@@ -312,7 +309,7 @@ install_sublime() {
 install_swift() {
     local dist
     dist="$(distro_version)"
-    [[ "$uname_m" == "aarch64" ]] && dist="$dist-aarch64"
+    [[ "$BS_UNAME_M" == "aarch64" ]] && dist="$dist-aarch64"
     local url="https://www.swift.org/download/"
 
     url=$(curl -fsSL --compressed $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P "$dist.tar.gz\$" | tac | tail -n 1)

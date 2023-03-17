@@ -8,7 +8,10 @@ set -euo pipefail
 # Enviroment
 ############################################################
 
-_bs_uname_s=$(uname -s)
+BS_UNAME_S=$(uname -s)
+BS_UNAME_M=$(uname -m)
+export BS_UNAME_S
+export BS_UNAME_M
 
 ############################################################
 # ANSI Escape Code
@@ -128,7 +131,7 @@ bs_fatal() {
 }
 
 bs_sed_i() {
-    case "$_bs_uname_s" in
+    case "$BS_UNAME_S" in
         Darwin) sed -i '' "$@" ;;
         Linux) sed -i "$@" ;;
     esac

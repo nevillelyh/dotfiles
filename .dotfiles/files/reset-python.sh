@@ -4,7 +4,14 @@
 
 set -euo pipefail
 
-case "$(uname -s)" in
+if [[ -f "$HOME/.dotfiles/files/bs.sh" ]]; then
+    # shellcheck source=/dev/null
+    source "$HOME/.dotfiles/files/bs.sh"
+else
+    eval "$(curl -fsSL https://raw.githubusercontent.com/nevillelyh/dotfiles/main/.dotfiles/files/bs.sh)"
+fi
+
+case "$BS_UNAME_S" in
     Darwin)
         shebang='^#!/opt/homebrew/opt/python@'
         prefix=/opt/homebrew

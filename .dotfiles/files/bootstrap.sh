@@ -355,16 +355,17 @@ help() {
 os=$(uname -s)
 
 if [[ $# -eq 1 ]]; then
-    case "$1" in
+    cmd="$1"
+    case "$cmd" in
         check) run_check ;;
         help) help ;;
         *)
             get_commands
-            if [[ "$(bs_array_contains "$1" "${cmds[@]}")" == 0 ]]; then
-                bs_info_box "Setting up single step $1"
-                "setup_$1"
+            if [[ "$(bs_array_contains "$cmd" "${cmds[@]}")" == 0 ]]; then
+                bs_info_box "Setting up single step $cmd"
+                "setup_$cmd"
             else
-                bs_fatal "Command not found: $1"
+                bs_fatal "Command not found: $cmd"
             fi
             ;;
     esac

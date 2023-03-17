@@ -2,51 +2,47 @@
 
 set -euo pipefail
 
+if [[ -f "$HOME/.dotfiles/files/bs.sh" ]]; then
+    # shellcheck source=/dev/null
+    source "$HOME/.dotfiles/files/bs.sh"
+else
+    eval "$(curl -fsSL https://raw.githubusercontent.com/nevillelyh/dotfiles/main/.dotfiles/files/bs.sh)"
+fi
+
 cache="$HOME/.dotfiles/libexec/cache"
-os=$(uname -s | tr "[:upper:]" "[:lower:]")
-arch=$(uname -m)
-header="Accept: application/vnd.github.v3+json"
+os=$(echo "$BS_UNAME_S" | tr "[:upper:]" "[:lower:]")
+arch="$BS_UNAME_M"
 
 brew_run() {
-    [[ "$(uname -s)" != "Darwin" ]] && return 0
-    brew_pkg="$1"
-    brew_bin="/opt/homebrew/bin/$2"
+    [[ "$BS_UNAME_S" != "Darwin" ]] && return 0
+    local brew_pkg="$1"
+    local brew_bin="/opt/homebrew/bin/$2"
     shift 2
     [[ -L "$brew_bin" ]] || brew install "$brew_pkg"
     "$brew_bin" "$@"
     exit 0
 }
 
-get_links() {
-    url=$1
-    curl -fsSL "$url" | grep -o 'href="[^"]\+"' | sed 's/href="\([^"]*\)"/\1/'
-}
-
-github_latest() {
-    repo=$1
-    url="https://api.github.com/repos/$repo/releases/latest"
-    curl -fsSL -H "$header" "$url" | jq --raw-output '.tag_name' | sed 's/^v//g'
-}
-
 update() {
+    local ttl
     (( ttl = 7 * 24 * 60 * 60 ))
 
-    color='\033[1;35m' # magenta
-    reset='\033[0m' #reset
     if [[ ! -x "$exec" ]]; then
+        local latest
         latest=$(get_latest)
-        echo -e "${color}Installing $bin $latest${reset}"
+        bs_info "Installing $bin $latest"
         download "$latest"
     else
-        age=$(echo "$(date "+%s")" - "$(date -r "$exec" "+%s")" | bc -l)
-        if [[ $age -ge $ttl ]]; then
+        if [[ $(bs_file_age "$exec") -ge $ttl ]]; then
+            local current
+            local latest
             current=$(get_current)
             latest=$(get_latest)
             if [[ "$current" != "$latest" ]]; then
-                echo -e "${color}Upgrading $bin from $current to $latest${reset}"
+                bs_info "Upgrading $bin from $current to $latest"
                 download "$latest"
             else
-                echo -e "${color}Up-to-date $bin: $current${reset}"
+                bs_info "Up-to-date $bin: $current"
                 touch "$exec"
             fi
         fi
@@ -57,7 +53,7 @@ run_b2() {
     brew_run b2-tools b2 "$@"
 
     get_latest() {
-        github_latest "Backblaze/B2_Command_Line_Tool"
+        bs_gh_latest "Backblaze/B2_Command_Line_Tool"
     }
 
     get_current() {
@@ -65,9 +61,9 @@ run_b2() {
     }
 
     download() {
-        version=$1
-        prefix="https://github.com/Backblaze/B2_Command_Line_Tool/releases/download"
-        url="$prefix/v$version/b2-$os"
+        local version=$1
+        local prefix="https://github.com/Backblaze/B2_Command_Line_Tool/releases/download"
+        local url="$prefix/v$version/b2-$os"
         curl -fsSL "$url" -o "$exec"
         chmod +x "$exec"
     }
@@ -81,7 +77,7 @@ run_bazel() {
     brew_run bazelisk bazel "$@"
 
     get_latest() {
-        github_latest "bazelbuild/bazelisk"
+        bs_gh_latest "bazelbuild/bazelisk"
     }
 
     get_current() {
@@ -89,13 +85,13 @@ run_bazel() {
     }
 
     download() {
-        version=$1
+        local version=$1
         case "$arch" in
             x86_64) arch="amd64" ;;
             aarch64) arch="arm64" ;;
         esac
-        prefix="https://github.com/bazelbuild/bazelisk/releases/download"
-        url="$prefix/v$version/bazelisk-$os-$arch"
+        local prefix="https://github.com/bazelbuild/bazelisk/releases/download"
+        local url="$prefix/v$version/bazelisk-$os-$arch"
         curl -fsSL "$url" -o "$exec"
         chmod +x "$exec"
     }
@@ -109,7 +105,7 @@ run_cockroach() {
     brew_run cockroachdb/tap/cockroach cockroach "$@"
 
     get_latest() {
-        get_links "https://www.cockroachlabs.com/docs/releases" | \
+        bs_urls "https://www.cockroachlabs.com/docs/releases" | \
             grep -o '\<cockroach-v[0-9]\+\.[0-9]\+\.[0-9]\+\.linux-amd64.tgz$' | \
             sed 's/^cockroach-\(.*\)\.linux-amd64.tgz$/\1/' | \
             head -n 1
@@ -120,15 +116,15 @@ run_cockroach() {
     }
 
     download() {
-        version=$1
+        local version=$1
         case "$arch" in
             x86_64) arch="amd64" ;;
             aarch64) arch="3.7.10-gnu-aarch64" ;;
         esac
-        prefix="https://binaries.cockroachdb.com"
-        build="cockroach-$version.$os-$arch"
-        tarball="$build.tgz"
-        url="$prefix/$tarball"
+        local prefix="https://binaries.cockroachdb.com"
+        local build="cockroach-$version.$os-$arch"
+        local tarball="$build.tgz"
+        local url="$prefix/$tarball"
         curl -fsSL "$url" | tar -C "$cache" -xz
         rm -rf "$cache/cockroach"
         mv "$cache/$build" "$cache/cockroach"
@@ -144,7 +140,7 @@ run_flatc() {
     brew_run flatbuffers flatc "$@"
 
     get_latest() {
-        github_latest "google/flatbuffers"
+        bs_gh_latest "google/flatbuffers"
     }
 
     get_current() {
@@ -152,11 +148,12 @@ run_flatc() {
     }
 
     download() {
-        version=$1
-        zip="Linux.flatc.binary.g++-10.zip"
-        prefix="https://github.com/google/flatbuffers/releases/download"
-        url="$prefix/v$version/$zip"
-        tmp=$(mktemp -d)
+        local version=$1
+        local zip="Linux.flatc.binary.g++-10.zip"
+        local prefix="https://github.com/google/flatbuffers/releases/download"
+        local url="$prefix/v$version/$zip"
+        local tmp
+        tmp=$(bs_temp_dir bin-wrapper-flatc)
         zip="$tmp/$zip"
         curl -fsSL "$url" -o "$zip"
         rm -f "$exec"
@@ -174,7 +171,7 @@ run_gh() {
     brew_run gh gh "$@"
 
     get_latest() {
-        github_latest "cli/cli"
+        bs_gh_latest "cli/cli"
     }
 
     get_current() {
@@ -182,15 +179,15 @@ run_gh() {
     }
 
     download() {
-        version=$1
+        local version=$1
         case "$arch" in
             x86_64) arch="amd64" ;;
             aarch64) arch="arm64" ;;
         esac
-        prefix="https://github.com/cli/cli/releases/download"
-        build="gh_${version}_${os}_$arch"
-        tarball="$build.tar.gz"
-        url="$prefix/v$version/$tarball"
+        local prefix="https://github.com/cli/cli/releases/download"
+        local build="gh_${version}_${os}_$arch"
+        local tarball="$build.tar.gz"
+        local url="$prefix/v$version/$tarball"
         curl -fsSL "$url" | tar -C "$cache" -xz
         rm -rf "$cache/gh"
         mv "$cache/$build" "$cache/gh"
@@ -213,8 +210,8 @@ run_presto() {
     }
 
     download() {
-        version=$1
-        url="https://repo1.maven.org/maven2/com/facebook/presto/presto-cli/$version/presto-cli-$version-executable.jar"
+        local version=$1
+        local url="https://repo1.maven.org/maven2/com/facebook/presto/presto-cli/$version/presto-cli-$version-executable.jar"
         curl -fsSL "$url" -o "$exec"
         chmod +x "$exec"
     }
@@ -228,7 +225,7 @@ run_protoc() {
     brew_run protobuf protoc "$@"
 
     get_latest() {
-        github_latest "protocolbuffers/protobuf"
+        bs_gh_latest "protocolbuffers/protobuf"
     }
 
     get_current() {
@@ -236,15 +233,16 @@ run_protoc() {
     }
 
     download() {
-        version=$1
+        local version=$1
         case "$arch" in
             x86_64) ;;
             aarch64) arch="aarch_64" ;;
         esac
-        prefix="https://github.com/protocolbuffers/protobuf/releases/download"
-        zip="protoc-$version-$os-$arch.zip"
-        url="$prefix/v$version/$zip"
-        tmp=$(mktemp -d)
+        local prefix="https://github.com/protocolbuffers/protobuf/releases/download"
+        local zip="protoc-$version-$os-$arch.zip"
+        local url="$prefix/v$version/$zip"
+        local tmp
+        tmp=$(bs_temp_dir bin-wrapper-protoc)
         zip="$tmp/$zip"
         curl -fsSL "$url" -o "$zip"
         dir="$cache/protoc"
@@ -263,7 +261,7 @@ run_trino() {
     prefix="https://repo1.maven.org/maven2/io/trino/trino-cli"
 
     get_latest() {
-        get_links "$prefix" | grep -o '^[0-9]\+\/$' | sed 's/\/$//' | sort -n | tail -n 1
+        bs_urls "$prefix" | grep -o '^[0-9]\+\/$' | sed 's/\/$//' | sort -n | tail -n 1
     }
 
     get_current() {
@@ -271,8 +269,8 @@ run_trino() {
     }
 
     download() {
-        version=$1
-        url="$prefix/$version/trino-cli-$version-executable.jar"
+        local version=$1
+        local url="$prefix/$version/trino-cli-$version-executable.jar"
         curl -fsSL "$url" -o "$exec"
         chmod +x "$exec"
     }

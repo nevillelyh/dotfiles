@@ -122,7 +122,11 @@ _bs_test_array() {
 bs_df() {
     local path=$1
     shift
-    curl -fsSL "https://raw.githubusercontent.com/nevillelyh/dotfiles/master/.dotfiles/$path" | bash -s -- "$@"
+    if [[ -f "$HOME/.dotfiles/$path" ]]; then
+        bash "$HOME/.dotfiles/$path" "$@"
+    else
+        curl -fsSL "https://raw.githubusercontent.com/nevillelyh/dotfiles/master/.dotfiles/$path" | bash -s -- "$@"
+    fi
 }
 
 bs_fatal() {
@@ -138,11 +142,12 @@ bs_sed_i() {
 }
 
 bs_timestamp() {
-    date "+%Y%m%d%H%M%S"
+    date "$@" "+%Y%m%d%H%M%S"
 }
 
 _bs_test_exec() {
-    bs_df files/install.sh sublime
+    _bs_test_stdout "pong" bs_df files/bs-test.sh ping
+    _bs_test_stdout "20230101000000" bs_timestamp -r 1672531200 -u
 }
 
 ############################################################

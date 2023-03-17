@@ -11,4 +11,8 @@ else
     eval "$(curl -fsSL https://raw.githubusercontent.com/nevillelyh/dotfiles/main/.dotfiles/files/bs.sh)"
 fi
 
-_bs_test
+if [[ $# -eq 1 ]] && [[ "$1" == "ping" ]]; then
+    echo "pong"
+else
+    _bs_test
+fi

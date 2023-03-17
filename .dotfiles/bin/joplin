@@ -5,6 +5,13 @@
 
 set -euo pipefail
 
+if [[ -f "$HOME/.dotfiles/files/bs.sh" ]]; then
+    # shellcheck source=/dev/null
+    source "$HOME/.dotfiles/files/bs.sh"
+else
+    eval "$(curl -fsSL https://raw.githubusercontent.com/nevillelyh/dotfiles/main/.dotfiles/files/bs.sh)"
+fi
+
 if ! type docker &> /dev/null; then
     echo "Docker not installed"
     exit 1
@@ -14,9 +21,7 @@ image=nevillelyh/joplin:latest
 
 file=$HOME/.cache/joplin-update
 (( ttl = 7 * 24 * 60 * 60 ))
-(( age = ttl + 1 ))
-[[ -f "$file" ]] && age=$(echo "$(date "+%s")" - "$(date -r "$file" "+%s")" | bc -l)
-if [[ $age -ge $ttl ]]; then
+if [[ ! -f "$file" ]] || [[ $(bs_file_age "$file") -ge $ttl ]]; then
     docker pull -q "$image" > /dev/null
     touch "$file"
 fi

@@ -37,7 +37,7 @@ LINUX_CRATES=(bat code-minimap du-dust git-delta gitui zoxide)
 # PIP packages:
 PIP_PKGS=(flake8 ipython virtualenv virtualenvwrapper)
 
-setup_ssh() {
+cmd_ssh() {
     [[ -n "${SSH_CONNECTION-}" ]] && return 0 # remote host
     local keys
     # Bash 3 on Mac missing readarray
@@ -51,8 +51,8 @@ setup_ssh() {
     ssh-add "${keys[@]}"
 }
 
-setup_homebrew() {
-    [[ "$os" != "Darwin" ]] && return 0
+cmd_homebrew() {
+    [[ "$BS_UNAME_S" != "Darwin" ]] && return 0
     [[ -L /opt/homebrew/bin/zoxide ]] && return 0
     bs_info_box "Setting up Homebrew"
 
@@ -75,8 +75,8 @@ setup_homebrew() {
     [[ $REPLY =~ ^[Yy]$ ]] && brew install --cask "${CASKS_OPT[@]}"
 }
 
-setup_mac() {
-    [[ "$os" != "Darwin" ]] && return 0
+cmd_mac() {
+    [[ "$BS_UNAME_S" != "Darwin" ]] && return 0
     bs_info_box "Setting up Mac specifics"
 
     read -r -p "Enter hostname: "
@@ -85,8 +85,8 @@ setup_mac() {
     sudo scutil --set LocalHostName "$REPLY"
 }
 
-setup_apt() {
-    [[ "$os" != "Linux" ]] && return 0
+cmd_apt() {
+    [[ "$BS_UNAME_S" != "Linux" ]] && return 0
     type nvim &> /dev/null && return 0
     bs_info_box "Setting up Aptitude"
 
@@ -102,8 +102,8 @@ setup_apt() {
     sudo aptitude install -y "${DEB_GUI_PKGS[@]}"
 }
 
-setup_linux() {
-    [[ "$os" != "Linux" ]] && return 0
+cmd_linux() {
+    [[ "$BS_UNAME_S" != "Linux" ]] && return 0
     [[ -d /usr/local/go ]] && return 0
     bs_info_box "Setting up Linux specifics"
 
@@ -138,7 +138,7 @@ setup_linux() {
     gsettings set org.gnome.desktop.screensaver picture-uri "$uri"
 }
 
-setup_git() {
+cmd_git() {
     [[ -d $HOME/.dotfiles/oh-my-zsh ]] && return 0
     bs_info_box "Setting up Git"
 
@@ -153,7 +153,7 @@ setup_git() {
     git remote set-head origin --auto
 }
 
-setup_gnupg() {
+cmd_gnupg() {
     [[ -s $HOME/.gnupg/gpg-agent.conf ]] && return 0
     bs_info_box "Setting up GnuPG"
 
@@ -163,7 +163,7 @@ setup_gnupg() {
     echo "default-cache-ttl 7200" >> "$HOME/.gnupg/gpg-agent.conf"
     echo "max-cache-ttl 86400" >> "$HOME/.gnupg/gpg-agent.conf"
 
-    case "$os" in
+    case "$BS_UNAME_S" in
         Darwin)
             echo "pinentry-program /opt/homebrew/bin/pinentry-mac" >> "$HOME/.gnupg/gpg-agent.conf"
             # Disable Pinentry "Save in Keychain"
@@ -177,7 +177,7 @@ setup_gnupg() {
     esac
 }
 
-setup_neovim() {
+cmd_neovim() {
     local dir=$HOME/.local/share/dein/repos/github.com/Shougo
     [[ -d $dir ]] && return 0
     bs_info_box "Setting up NeoVim"
@@ -190,7 +190,7 @@ setup_neovim() {
     bs_df files/vim-alternatives.sh
 }
 
-setup_go() {
+cmd_go() {
     [[ -d $HOME/.go ]] && return 0
     bs_info_box "Setting up Go"
     [[ -d /usr/local/go/bin ]] && export PATH=/usr/local/go/bin:$PATH
@@ -200,7 +200,7 @@ setup_go() {
     go install -v cuelang.org/go/cmd/cue@latest
 }
 
-setup_jvm() {
+cmd_jvm() {
     [[ -d $HOME/.sdkman ]] && return 0
     bs_info_box "Setting up JVM"
 
@@ -224,19 +224,19 @@ setup_jvm() {
     bs_sed_i 's/sdkman_auto_answer=true/sdkman_auto_answer=false/g' "$HOME/.sdkman/etc/config"
 }
 
-setup_python() {
+cmd_python() {
     type ipython &> /dev/null && return 0
     bs_info_box "Setting up Python"
 
     # Homebrew python includes pip
-    if [[ "$os" == "Linux" ]]; then
+    if [[ "$BS_UNAME_S" == "Linux" ]]; then
         curl -fsSL https://bootstrap.pypa.io/get-pip.py | python3
         export PATH=$HOME/.local/bin:$PATH
     fi
     python3 -m pip install "${PIP_PKGS[@]}"
 }
 
-setup_rust() {
+cmd_rust() {
     [[ -d $HOME/.cargo ]] && return 0
     bs_info_box "Setting up Rust"
 
@@ -244,10 +244,10 @@ setup_rust() {
 
     # shellcheck source=/dev/null
     source "$HOME/.cargo/env"
-    [[ "$os" == "Linux" ]] && cargo install -q "${LINUX_CRATES[@]}"
+    [[ "$BS_UNAME_S" == "Linux" ]] && cargo install -q "${LINUX_CRATES[@]}"
 }
 
-setup_code() {
+cmd_code() {
     type code &> /dev/null || return 0
     code --list-extensions | grep 'dracula-theme\.theme-dracula' &> /dev/null && return 0
     bs_info_box "Setting up Visual Studio Code"
@@ -261,14 +261,14 @@ setup_code() {
         rust-lang.rust-analyzer \
         sswg.swift-lang \
         vadimcn.vscode-lldb
-    if [[ "$os" == "Darwin" ]]; then
+    if [[ "$BS_UNAME_S" == "Darwin" ]]; then
         defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
     fi
 }
 
-setup_fonts() {
-    [[ "$os" == "Darwin" ]] || dpkg-query --show xorg &> /dev/null || return 0
-    case "$os" in
+cmd_fonts() {
+    [[ "$BS_UNAME_S" == "Darwin" ]] || dpkg-query --show xorg &> /dev/null || return 0
+    case "$BS_UNAME_S" in
         Darwin) fonts_dir="$HOME/Library/Fonts" ;;
         Linux) fonts_dir="$HOME/.local/share/fonts" ;;
     esac
@@ -281,7 +281,7 @@ setup_fonts() {
     wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
     mkdir -p "$fonts_dir"
     mv MesloLGS*.ttf "$fonts_dir"
-    [[ "$os" == "Linux" ]] && fc-cache -fv "$HOME/.local/share/fonts"
+    [[ "$BS_UNAME_S" == "Linux" ]] && fc-cache -fv "$HOME/.local/share/fonts"
 
     git clone https://github.com/powerline/fonts
     cd fonts
@@ -290,13 +290,13 @@ setup_fonts() {
     rm -rf fonts
 }
 
-setup_zsh() {
+cmd_zsh() {
     [[ "$SHELL" == "/bin/zsh" ]] || chsh -s /bin/zsh
-    [[ "$os" != "Linux" ]] && return 0
+    [[ "$BS_UNAME_S" != "Linux" ]] && return 0
     [[ -d "$HOME/.local/share/zsh/site-functions" ]] && return 0
     bs_info_box "Setting up zsh"
 
-    case "$os" in
+    case "$BS_UNAME_S" in
         Darwin) rm -rf "$HOME/.bash_profile" "$HOME/.bashrc" ;;
         Linux) cp /etc/skel/.[^.]* "$HOME" ;;
     esac
@@ -306,15 +306,11 @@ setup_zsh() {
     bs_df files/completions.sh "$HOME/.local/share/zsh/site-functions"
 }
 
-########################################
-# Helper functions
-########################################
-
-run_check() {
+cmd_check() {
     bs_info_box "Checking bootstrap"
 
     ssh git@github.com 2>&1 | grep -q nevillelyh
-    case "$os" in
+    case "$BS_UNAME_S" in
         Darwin) brew --version &> /dev/null ;;
         Linux) aptitude --version &> /dev/null ;;
     esac
@@ -331,72 +327,39 @@ run_check() {
     cargo --version &> /dev/null
 }
 
-get_commands() {
-    # Bash 3 on Mac missing readarray
-    # shellcheck disable=SC2207
-    cmds=($(grep -o '^setup_\w\+()' "$(readlink -f "$0")" | sed 's/^setup_\(.*\)()$/\1/'))
-}
-
-help() {
-    echo "Usage: $(basename "$0") [COMMAND]"
-    echo "    Commands:"
-    echo "        check"
-    get_commands
-    for cmd in "${cmds[@]}"; do
-        echo "        $cmd"
-    done
-    exit 0
-}
-
 ########################################
 # Script starts
 ########################################
 
-os=$(uname -s)
+bootstrap() {
+    cmd_ssh
 
-if [[ $# -eq 1 ]]; then
-    cmd="$1"
-    case "$cmd" in
-        check) run_check ;;
-        help) help ;;
-        *)
-            get_commands
-            if [[ "$(bs_array_contains "$cmd" "${cmds[@]}")" == 0 ]]; then
-                bs_info_box "Setting up single step $cmd"
-                "setup_$cmd"
-            else
-                bs_fatal "Command not found: $cmd"
-            fi
+    case "$BS_UNAME_S" in
+        Darwin)
+            cmd_homebrew
+            cmd_mac
+            ;;
+        Linux)
+            cmd_apt
+            cmd_linux
             ;;
     esac
-    exit 0
-fi
 
-setup_ssh
+    cmd_git
+    cmd_gnupg
+    cmd_neovim
+    cmd_go
+    cmd_jvm
+    cmd_python
+    cmd_rust
+    cmd_code
+    cmd_fonts
+    cmd_zsh
 
-case "$os" in
-    Darwin)
-        setup_homebrew
-        setup_mac
-        ;;
-    Linux)
-        setup_apt
-        setup_linux
-        ;;
-esac
+    # In case install scripts e.g. SDKMAN modify anything by accident
+    git reset --hard
 
-setup_git
-setup_gnupg
-setup_neovim
-setup_go
-setup_jvm
-setup_python
-setup_rust
-setup_code
-setup_fonts
-setup_zsh
+    bs_info_box "Bootstrap complete"
+}
 
-# In case install scripts e.g. SDKMAN modify anything by accident
-git reset --hard
-
-bs_info_box "Bootstrap complete"
+bs_cmd_optional bootstrap "$@"

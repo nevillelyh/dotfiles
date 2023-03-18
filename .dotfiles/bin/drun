@@ -64,15 +64,15 @@ docker_cmd() {
     docker_run --name "$name-$(bs_timestamp)" -i --rm --network host "$@"
 }
 
-run_killall() {
+cmd_killall() {
     docker ps --quiet --filter label=dotfiles.bin.drun=true | xargs -r docker kill
 }
 
-run_ps() {
+cmd_ps() {
     docker ps --filter label=dotfiles.bin.drun=true
 }
 
-run_cockroach() {
+cmd_cockroach() {
     docker_srv cockroach \
         --env COCKROACH_DATABASE="$(env DB)" \
         --env COCKROACH_USER="$(env DB_USER)" \
@@ -82,14 +82,14 @@ run_cockroach() {
         cockroachdb/cockroach:latest start-single-node "$@"
 }
 
-run_cockroach-sql() {
+cmd_cockroach-sql() {
     local url
     url="postgresql://$(env DB_USER):$(env DB_PASS)@localhost:$(env COCKROACH_PORT)/$(env DB)?sslmode=require"
     docker_cli cockroach-cli \
         cockroachdb/cockroach:latest sql --url "$url" "$@"
 }
 
-run_kafka() {
+cmd_kafka() {
     local host=127.0.0.1 # workaround for IPv6 issue
     local port
     port=$(env KAFKA_PORT)
@@ -110,19 +110,19 @@ run_kafka() {
         confluentinc/cp-server:latest "$@"
 }
 
-run_kcat() {
+cmd_kcat() {
     local host=127.0.0.1 # workaround for IPv6 issue
     docker_cmd kcat \
         nevillelyh/kcat:latest -b "$host:$(env KAFKA_PORT)" "$@"
 }
 
-run_kraft() {
+cmd_kraft() {
     docker_srv kraft \
         --publish 9092:9092 \
         nevillelyh/kraft:latest "$@"
 }
 
-run_mariadb() {
+cmd_mariadb() {
     docker_srv mariadb \
         --env MARIADB_ROOT_PASSWORD="$(env ROOT_PASS)" \
         --env MARIADB_DATABASE="$(env DB)" \
@@ -132,7 +132,7 @@ run_mariadb() {
         mariadb:latest "$@"
 }
 
-run_mariadb-cli() {
+cmd_mariadb-cli() {
     docker_cli mariadb-cli \
         mariadb:latest mariadb \
         --host=localhost --port="$(env MARIADB_PORT)" --protocol=tcp \
@@ -140,7 +140,7 @@ run_mariadb-cli() {
         "$@"
 }
 
-run_mysql() {
+cmd_mysql() {
     docker_srv mysql \
         --env MYSQL_ROOT_PASSWORD="$(env ROOT_PASS)" \
         --env MYSQL_DATABASE="$(env DB)" \
@@ -150,7 +150,7 @@ run_mysql() {
         mysql:latest "$@"
 }
 
-run_mysql-cli() {
+cmd_mysql-cli() {
     docker_cli mysql-cli \
         mysql:latest mysql \
         --host=localhost --port="$(env MYSQL_PORT)" --protocol=tcp \
@@ -158,7 +158,7 @@ run_mysql-cli() {
         "$@"
 }
 
-run_postgres() {
+cmd_postgres() {
     docker_srv postgres \
         --env POSTGRES_DB="$(env DB)" \
         --env POSTGRES_USER="$(env DB_USER)" \
@@ -167,7 +167,7 @@ run_postgres() {
         postgres:latest "$@"
 }
 
-run_psql() {
+cmd_psql() {
     docker_cli postgres-cli \
         --env PGPASSWORD="$(env DB_PASS)" \
         postgres:latest psql \
@@ -176,47 +176,22 @@ run_psql() {
         "$@"
 }
 
-run_trino() {
+cmd_trino() {
     docker_srv trino \
         --publish "$(env TRINO_PORT)":8080 \
         trinodb/trino:latest "$@"
 }
 
-run_trino-cli() {
+cmd_trino-cli() {
     docker_cli trino-cli \
         trinodb/trino:latest trino "$@"
 }
 
-run_zookeeper() {
+cmd_zookeeper() {
     docker_srv zookeeper \
         --env ZOOKEEPER_CLIENT_PORT=2181 \
         --publish "$(env ZK_PORT)":2181 \
         confluentinc/cp-zookeeper:latest "$@"
 }
 
-get_commands() {
-    # Bash 3 on Mac missing readarray
-    # shellcheck disable=SC2207
-    cmds=($(grep -o '^run_.\+()' "$(readlink -f "$0")" | sed 's/^run_\(.*\)()$/\1/'))
-}
-
-if [[ $# -eq 0 ]]; then
-    echo "Usage: $(basename "$0") <COMMAND> [ARG]..."
-    echo "    Commands"
-    get_commands
-    for c in "${cmds[@]}"; do
-        echo "        $c"
-    done
-    exit 1
-fi
-
-cmd=$(basename "$1")
-shift
-
-get_commands
-if [[ "$(bs_array_contains "$cmd" "${cmds[@]}")" == 0 ]]; then
-    "run_$cmd" "$@"
-else
-    echo "Command not found: $cmd"
-    exit 1
-fi
+bs_cmd_args "$@"

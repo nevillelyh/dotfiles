@@ -11,7 +11,7 @@ else
     eval "$(curl -fsSL https://raw.githubusercontent.com/nevillelyh/dotfiles/main/.dotfiles/files/bs.sh)"
 fi
 
-upgrade_os() {
+cmd_os() {
     bs_info_box "Upgrading system packages"
     case "$BS_UNAME_S" in
         Darwin)
@@ -31,7 +31,7 @@ upgrade_os() {
     esac
 }
 
-upgrade_git() {
+cmd_git() {
     bs_info_box "Upgrading Git Repository"
     git pull --rebase --autostash
     git submodule update --init --recursive --remote
@@ -41,12 +41,12 @@ upgrade_git() {
     fi
 }
 
-upgrade_omz() {
+cmd_omz() {
     bs_info_box "Upgrading Oh-My-Zsh"
     zsh -i -c "omz update"
 }
 
-upgrade_neovim() {
+cmd_neovim() {
     bs_info_box "Upgrading NeoVim"
     nvim -u "$HOME/.config/nvim/dein.vim" --headless \
         '+let g:dein#install_progress_type = "none" | call dein#update() | echo "\r\n" | qall'
@@ -55,7 +55,7 @@ upgrade_neovim() {
     fi
 }
 
-upgrade_docker() {
+cmd_docker() {
     type docker &> /dev/null || return 0
     bs_info_box "Upgrading Docker"
     for image in $(docker images --format "{{.Repository}}:{{.Tag}}" | grep -v ':<none>' | grep -v '\.amazonaws\.com/'); do
@@ -68,7 +68,7 @@ upgrade_docker() {
     joplin sync
 }
 
-upgrade_go() {
+cmd_go() {
     bs_info_box "Upgrading Go"
     if [[ -d /usr/local/go ]]; then
         os=$(uname -s | tr "[:upper:]" "[:lower:]")
@@ -92,12 +92,12 @@ upgrade_go() {
     fi
 }
 
-upgrade_jvm() {
+cmd_jvm() {
     bs_info_box "Upgrading JVM"
     "$HOME/.dotfiles/files/sdkman.sh"
 }
 
-upgrade_python() {
+cmd_python() {
     bs_info_box "Upgrading Python"
     python3 -m pip install --upgrade pip
     # Bash 3 on Mac missing readarray
@@ -106,7 +106,7 @@ upgrade_python() {
     python3 -m pip install --upgrade "${pip_pkgs[@]}"
 }
 
-upgrade_rust() {
+cmd_rust() {
     bs_info_box "Upgrading Rust"
     rustup update
     # Bash 3 on Mac missing readarray
@@ -117,57 +117,25 @@ upgrade_rust() {
     fi
 }
 
-upgrade_anaconda() {
+cmd_anaconda() {
     type conda &> /dev/null || return 0
     bs_info_box "Upgrading Anaconda"
     conda update --all --name base --yes
 }
 
-get_commands() {
-    # Bash 3 on Mac missing readarray
-    # shellcheck disable=SC2207
-    cmds=($(grep -o '^upgrade_\w\+()' "$(readlink -f "$0")" | sed 's/^upgrade_\(.*\)()$/\1/'))
+upgrade() {
+    cd "$HOME"
+    cmd_os
+    cmd_git
+    cmd_omz
+    cmd_neovim
+    cmd_docker
+    cmd_go
+    cmd_jvm
+    cmd_python
+    cmd_rust
+    cmd_anaconda
+    bs_success_box "Upgrade complete"
 }
 
-help() {
-    echo "Usage: $(basename "$0") [COMMAND]"
-    echo "    Commands:"
-    echo "        help"
-    get_commands
-    for cmd in "${cmds[@]}"; do
-        echo "        $cmd"
-    done
-    exit 0
-}
-
-if [[ $# -eq 1 ]]; then
-    cmd="$1"
-    case "$cmd" in
-        help)
-            help
-            ;;
-        *)
-            get_commands
-            if [[ "$(bs_array_contains "$cmd" "${cmds[@]}")" == 0 ]]; then
-                bs_info_box "Upgrade single step $1"
-                "upgrade_$cmd"
-            else
-                bs_fatal "Command not found: $cmd"
-            fi
-            ;;
-    esac
-    exit 0
-fi
-
-cd "$HOME"
-upgrade_os
-upgrade_git
-upgrade_omz
-upgrade_neovim
-upgrade_docker
-upgrade_go
-upgrade_jvm
-upgrade_python
-upgrade_rust
-upgrade_anaconda
-bs_success_box "Upgrade complete"
+bs_cmd_optional upgrade "$@"

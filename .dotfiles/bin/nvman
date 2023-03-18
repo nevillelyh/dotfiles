@@ -14,14 +14,14 @@ fi
 help() {
     echo "Usage: $(basename "$0") <COMMAND> [ARG]..."
     echo
-    echo "  commands:"
-    echo "    env"
-    echo "    install   <RUNFILE|TARBALL>"
-    echo "    list"
-    echo "    set       <cuda|cudnn> <VERSION>"
-    echo "    test"
-    echo "    uninstall <cuda|cudnn> <VERSION>"
-    echo "    help"
+    echo "    Commands:"
+    echo "        env"
+    echo "        install   <RUNFILE|TARBALL>"
+    echo "        list"
+    echo "        set       <cuda|cudnn> <VERSION>"
+    echo "        test"
+    echo "        uninstall <cuda|cudnn> <VERSION>"
+    echo "        help"
 }
 
 help_and_die() {
@@ -179,35 +179,15 @@ if [[ $# -eq 0 ]]; then
     exit 1
 fi
 
-case "$1" in
-    env)
-        shift
-        run_env "$@"
-        ;;
-    install)
-        shift
-        run_install "$@"
-        ;;
-    list)
-        shift
-        run_list "$@"
-        ;;
-    set)
-        shift
-        run_set "$@"
-        ;;
-    test)
-        shift
-        run_test "$@"
-        ;;
-    uninstall)
-        shift
-        run_uninstall "$@"
-        ;;
-    help)
-        help
-        ;;
-    *)
-        help_and_die "Invalid command: $1"
-        ;;
+cmd="$1"
+shift
+case "$cmd" in
+    env)       run_env "$@" ;;
+    install)   run_install "$@" ;;
+    list)      run_list "$@" ;;
+    set)       run_set "$@" ;;
+    test)      run_test "$@" ;;
+    uninstall) run_uninstall "$@" ;;
+    help)      help ;;
+    *)         help_and_die "Invalid command: $cmd" ;;
 esac

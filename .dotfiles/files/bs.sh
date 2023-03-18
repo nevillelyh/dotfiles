@@ -119,6 +119,80 @@ _bs_test_array() {
 # Execution
 ############################################################
 
+bs_cmds() {
+    # Bash 3 on Mac missing readarray
+    # shellcheck disable=SC2207
+    cmds=($(grep -o '^cmd_\(\w\|[_-]\)\+()' "$(readlink -f "$0")" | sed 's/^cmd_\(.*\)()$/\1/'))
+}
+
+bs_cmd_args() {
+    local name=$0
+    bs_cmds
+    if [[ $# -eq 0 ]]; then
+        echo "Usage: $(basename "$name") <COMMAND> [ARG]..."
+        echo "    Commands:"
+        for cmd in "${cmds[@]}"; do
+            echo "        $cmd"
+        done
+        exit 1
+    fi
+
+    cmd=$1
+    shift
+    if [[ "$(bs_array_contains "$cmd" "${cmds[@]}")" == 0 ]]; then
+        "cmd_$cmd" "$@"
+    else
+        bs_fatal "Command not found: $cmd"
+    fi
+}
+
+bs_cmd_optional() {
+    local name=$0
+    local default=$1
+    bs_cmds
+    if [[ $# -eq 1 ]]; then
+        "$default"
+    elif [[ $# -eq 2 ]] && [[ "$2" == help ]]; then
+        echo "Usage: $(basename "$name") <COMMAND>..."
+        echo "    Commands:"
+        echo "        help"
+        for cmd in "${cmds[@]}"; do
+            echo "        $cmd"
+        done
+        exit 1
+    fi
+
+    shift
+    for cmd in "$@"; do
+        if [[ "$(bs_array_contains "$cmd" "${cmds[@]}")" == 0 ]]; then
+            "cmd_$cmd"
+        else
+            bs_fatal "Command not found: $cmd"
+        fi
+    done
+}
+
+bs_cmd_required() {
+    local name=$0
+    bs_cmds
+    if [[ $# -eq 0 ]]; then
+        echo "Usage: $(basename "$name") <COMMAND>..."
+        echo "    Commands:"
+        for cmd in "${cmds[@]}"; do
+            echo "        $cmd"
+        done
+        exit 1
+    fi
+
+    for cmd in "$@"; do
+        if [[ "$(bs_array_contains "$cmd" "${cmds[@]}")" == 0 ]]; then
+            "cmd_$cmd"
+        else
+            bs_fatal "Command not found: $cmd"
+        fi
+    done
+}
+
 bs_df() {
     local path=$1
     shift

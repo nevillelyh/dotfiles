@@ -66,7 +66,7 @@ setup_hashicorp() {
 }
 
 # https://docs.anaconda.com/anaconda/install/linux/
-install_anaconda() {
+cmd_anaconda() {
     # Do not activate base automatically
     echo "auto_activate_base: false" > "$HOME/.condarc"
 
@@ -81,7 +81,7 @@ install_anaconda() {
     rm "$pkg"
 }
 
-install_awscli() {
+cmd_awscli() {
     brew_install awscli || return 0
 
     curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-$BS_UNAME_M.zip" -o awscliv2.zip
@@ -91,7 +91,7 @@ install_awscli() {
 }
 
 # Chrome manages its own repository
-install_chrome() {
+cmd_chrome() {
     brew_install_cask google-chrome || return 0
 
     wget -nv https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -101,7 +101,7 @@ install_chrome() {
 }
 
 # https://apt.kitware.com/
-install_cmake() {
+cmd_cmake() {
     brew_install cmake || return 0
 
     local url="https://apt.kitware.com/keys/kitware-archive-latest.asc"
@@ -114,7 +114,7 @@ install_cmake() {
 }
 
 # https://code.visualstudio.com/docs/setup/linux
-install_code() {
+cmd_code() {
     brew_install_cask visual-studio-code || return 0
 
     local url="https://packages.microsoft.com/keys/microsoft.asc"
@@ -126,7 +126,7 @@ install_code() {
 }
 
 # https://dbeaver.io/download/
-install_dbeaver() {
+cmd_dbeaver() {
     brew_install_cask dbeaver-community || return 0
 
     local url="https://dbeaver.io/debs/dbeaver.gpg.key"
@@ -138,7 +138,7 @@ install_dbeaver() {
     sudo aptitude install dbeaver-ce
 }
 
-install_discord() {
+cmd_discord() {
     brew_install_cask discord || return 0
 
     local url="https://discordapp.com/api/download/canary?platform=linux&format=deb"
@@ -149,7 +149,7 @@ install_discord() {
 }
 
 # https://docs.docker.com/engine/install/ubuntu/
-install_docker() {
+cmd_docker() {
     # Default is ctrl-p, ctrl-q
     mkdir -p "$HOME/.docker"
     echo '{"detachKeys": "ctrl-z,z"}' | jq --indent 4 > "$HOME/.docker/config.json"
@@ -169,7 +169,7 @@ install_docker() {
 }
 
 # Dropbox manages its own repository
-install_dropbox() {
+cmd_dropbox() {
     brew_install_cask dropbox || return 0
 
     local url
@@ -183,7 +183,7 @@ install_dropbox() {
 }
 
 # https://cloud.google.com/sdk/docs/install#deb
-install_gcloud() {
+cmd_gcloud() {
     brew_install_cask google-cloud-sdk || return 0
 
     local url="https://packages.cloud.google.com/apt/doc/apt-key.gpg"
@@ -196,7 +196,7 @@ install_gcloud() {
 }
 
 # https://go.dev/doc/install
-install_go() {
+cmd_go() {
     brew_install go || return 0
 
     local os
@@ -208,13 +208,13 @@ install_go() {
 }
 
 # https://helm.sh/
-install_helm() {
+cmd_helm() {
     brew_install helm || return 0
     sudo snap install helm --classic
 }
 
 # https://kubernetes.io/docs/tasks/tools/
-install_kubectl() {
+cmd_kubectl() {
     brew_install kubectl || return 0
 
     local url="https://packages.cloud.google.com/apt/doc/apt-key.gpg"
@@ -226,7 +226,7 @@ install_kubectl() {
 }
 
 # https://minikube.sigs.k8s.io/docs/start/
-install_minikube() {
+cmd_minikube() {
     brew_install minikube || return 0
 
     local arch
@@ -238,7 +238,7 @@ install_minikube() {
 }
 
 # https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
-install_nvidia() {
+cmd_nvidia() {
     local url="https://nvidia.github.io/libnvidia-container/gpgkey"
     local repo
     repo=$(curl -fsSL "https://nvidia.github.io/libnvidia-container/$(distro_version)/libnvidia-container.list" | sed 's@deb https://@deb [signed-by=/etc/apt/trusted.gpg.d/nvidia-container-toolkit-keyring.gpg] https://@g')
@@ -249,7 +249,7 @@ install_nvidia() {
 }
 
 # https://github.com/GloriousEggroll/proton-ge-custom/tree/master#installation
-install_proton() {
+cmd_proton() {
     local url="https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases/latest"
     local header="Accept: application/vnd.github.v3+json"
     local version
@@ -260,7 +260,7 @@ install_proton() {
 }
 
 # https://www.retroarch.com/index.php?page=linux-instructions
-install_retroarch() {
+cmd_retroarch() {
     brew_install_cask retroarch || return 0
     sudo add-apt-repository ppa:libretro/stable
     sudo aptitude update
@@ -268,7 +268,7 @@ install_retroarch() {
 }
 
 # https://signal.org/download/
-install_signal() {
+cmd_signal() {
     brew_install_cask signal || return 0
     local url="https://updates.signal.org/desktop/apt/keys.asc"
     local repo="deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main"
@@ -279,7 +279,7 @@ install_signal() {
 }
 
 # https://repo.steampowered.com/steam/
-install_steam() {
+cmd_steam() {
     brew_install_cask steam || return 0
 
     local url="https://repo.steampowered.com/steam/archive/stable/steam.gpg"
@@ -294,7 +294,7 @@ install_steam() {
 }
 
 # https://www.sublimetext.com/docs/linux_repositories.html
-install_sublime() {
+cmd_sublime() {
     brew_install_cask sublime-text || return 0
 
     local url="https://download.sublimetext.com/sublimehq-pub.gpg"
@@ -306,7 +306,7 @@ install_sublime() {
 }
 
 # https://www.swift.org/download/
-install_swift() {
+cmd_swift() {
     local dist
     dist="$(distro_version)"
     [[ "$BS_UNAME_M" == "aarch64" ]] && dist="$dist-aarch64"
@@ -321,7 +321,7 @@ install_swift() {
 }
 
 # https://tailscale.com/download/linux/ubuntu-2204
-install_tailscale() {
+cmd_tailscale() {
     brew_install_cask tailscale || return 0
 
     local url
@@ -337,7 +337,7 @@ install_tailscale() {
 }
 
 # https://aka.ms/get-teams-linux
-install_teams() {
+cmd_teams() {
     brew_install_cask microsoft-teams || return 0
 
     local url="https://packages.microsoft.com/repos/ms-teams/pool/main/t/teams/"
@@ -350,7 +350,7 @@ install_teams() {
 }
 
 # https://learn.hashicorp.com/tutorials/terraform/install-cli
-install_terraform() {
+cmd_terraform() {
     brew_install terraform || return 0
 
     setup_hashicorp
@@ -358,7 +358,7 @@ install_terraform() {
 }
 
 # https://www.vaultproject.io/downloads
-install_vault() {
+cmd_vault() {
     brew_install vault || return 0
 
     setup_hashicorp
@@ -366,7 +366,7 @@ install_vault() {
 }
 
 # https://github.com/retorquere/zotero-deb/blob/master/install.sh
-install_zotero() {
+cmd_zotero() {
     brew_install_cask zotero || return 0
 
     local url="https://raw.githubusercontent.com/retorquere/zotero-deb/master/zotero-archive-keyring.gpg"
@@ -377,31 +377,4 @@ install_zotero() {
     sudo aptitude install -y zotero
 }
 
-get_packages() {
-    # Bash 3 on Mac missing readarray
-    # shellcheck disable=SC2207
-    pkgs=($(grep -o '^install_\w\+()' "$(readlink -f "$0")" | sed 's/^install_\(.*\)()$/\1/'))
-}
-
-if [[ $# -eq 0 ]]; then
-    echo "Usage: $(basename "$0") [PACKAGE]..."
-    echo "    Packages:"
-    get_packages
-    for pkg in "${pkgs[@]}"; do
-        echo "        $pkg"
-    done
-fi
-
-for pkg in "$@"; do
-    # curl | bash, file not available
-    if [[ "$0" == "bash" ]]; then
-        "install_$pkg"
-    else
-        get_packages
-        if [[ "$(bs_array_contains "$pkg" "${pkgs[@]}")" == 0 ]]; then
-            "install_$pkg"
-        else
-            bs_fatal "Package not found: $pkg"
-        fi
-    fi
-done
+bs_cmd_required "$@"

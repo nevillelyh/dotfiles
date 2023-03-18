@@ -155,7 +155,12 @@ _bs_test_exec() {
     _bs_test_stdout "foobaz" cat "$file"
     rm "$file"
 
-    _bs_test_stdout "20230101000000" bs_timestamp -r 1672531200 -u
+    local args
+    case "$BS_UNAME_S" in
+        Darwin) args=(-r 1672531200 -u) ;;
+        Linux)  args=(-d "2023-01-01 00:00:00" -u) ;;
+    esac
+    _bs_test_stdout "20230101000000" bs_timestamp "${args[@]}"
 }
 
 ############################################################
@@ -247,12 +252,12 @@ _bs_test_passes=0
 _bs_test_failures=0
 
 _bs_test_fail() {
-    (( _bs_test_failures++ ))
+    (( _bs_test_failures = _bs_test_failures + 1 ))
     bs_error "[FAIL] $*"
 }
 
 _bs_test_pass() {
-    (( _bs_test_passes++ ))
+    (( _bs_test_passes = _bs_test_passes + 1 ))
     bs_success "[PASS] $*"
 }
 

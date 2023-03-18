@@ -119,7 +119,10 @@ _bs_test_array() {
 # Execution
 ############################################################
 
-bs_cmds() {
+_bs_cmds() {
+    # curl URL | bash
+    [[ "$0" == bash ]] && return
+
     # Bash 3 on Mac missing readarray
     # shellcheck disable=SC2207
     cmds=($(grep -o '^cmd_\(\w\|[_-]\)\+()' "$(readlink -f "$0")" | sed 's/^cmd_\(.*\)()$/\1/'))
@@ -127,13 +130,15 @@ bs_cmds() {
 
 bs_cmd_args() {
     local name=$0
-    bs_cmds
+    _bs_cmds
     if [[ $# -eq 0 ]]; then
         echo "Usage: $(basename "$name") <COMMAND> [ARG]..."
-        echo "    Commands:"
-        for cmd in "${cmds[@]}"; do
-            echo "        $cmd"
-        done
+        if [[ -n "${cmds[*]}" ]]; then
+            echo "    Commands:"
+            for cmd in "${cmds[@]}"; do
+                echo "        $cmd"
+            done
+        fi
         exit 1
     fi
 
@@ -149,7 +154,7 @@ bs_cmd_args() {
 bs_cmd_optional() {
     local name=$0
     local default=$1
-    bs_cmds
+    _bs_cmds
     if [[ $# -eq 1 ]]; then
         "$default"
     elif [[ $# -eq 2 ]] && [[ "$2" == help ]]; then
@@ -174,13 +179,15 @@ bs_cmd_optional() {
 
 bs_cmd_required() {
     local name=$0
-    bs_cmds
+    _bs_cmds
     if [[ $# -eq 0 ]]; then
         echo "Usage: $(basename "$name") <COMMAND>..."
-        echo "    Commands:"
-        for cmd in "${cmds[@]}"; do
-            echo "        $cmd"
-        done
+        if [[ -n "${cmds[*]}" ]]; then
+            echo "    Commands:"
+            for cmd in "${cmds[@]}"; do
+                echo "        $cmd"
+            done
+        fi
         exit 1
     fi
 

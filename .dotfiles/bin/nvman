@@ -24,15 +24,8 @@ help() {
     echo "        help"
 }
 
-help_and_die() {
-    bs_error "$1"
-    echo
-    help
-    exit 1
-}
-
-run_env() {
-    [[ $# -ne 0 ]] && help_and_die "Invalid argument: $*"
+cmd_env() {
+    [[ $# -ne 0 ]] && bs_fatal "Invalid argument: $*"
     [[ ! -d $HOME/.nvman ]] && exit 0
     cuda=$HOME/.nvman/cuda-current
     [[ ! -L $cuda ]] && bs_fatal "CUDA not installed"
@@ -74,9 +67,11 @@ install_cudnn() {
     ln -rs "$dest" "$link"
 }
 
-run_install() {
-    [[ $# -lt 1 ]] && help_and_die "Missing RUNFILE or TARBALL"
-    [[ $# -gt 1 ]] && help_and_die "Invalid argument: $*"
+# shellcheck disable=SC2034
+cmd_install_help="<RUNFILE|TARBALL>"
+cmd_install() {
+    [[ $# -lt 1 ]] && bs_fatal "Missing RUNFILE or TARBALL"
+    [[ $# -gt 1 ]] && bs_fatal "Invalid argument: $*"
     type lspci &> /dev/null || bs_fatal "GPU not found"
     lspci | grep -i nvidia &> /dev/null || bs_fatal "GPU not found"
 
@@ -94,8 +89,8 @@ run_install() {
     esac
 }
 
-run_list() {
-    [[ $# -ne 0 ]] && help_and_die "Invalid argument: $*"
+cmd_list() {
+    [[ $# -ne 0 ]] && bs_fatal "Invalid argument: $*"
     [[ ! -d $HOME/.nvman ]] && bs_fatal "nvman not installed"
     cuda=()
     [[ -L "$HOME/.nvman/cuda-current" ]] && current="$(basename "$(readlink -f "$HOME/.nvman/cuda-current")")" || current="UNKNOWN"
@@ -129,12 +124,14 @@ run_list() {
     fi
 }
 
-run_set() {
-    [[ $# -ne 2 ]] && help_and_die "Invalid argument: $*"
+# shellcheck disable=SC2034
+cmd_set_help="<cuda|cudnn> <VERSION>"
+cmd_set() {
+    [[ $# -ne 2 ]] && bs_fatal "Invalid argument: $*"
     pkg=$1
     version=$2
     if [[ "$pkg" != "cuda" ]] && [[ "$pkg" != "cudnn" ]]; then
-        help_and_die "Invalid argument: $*"
+        bs_fatal "Invalid argument: $*"
     fi
     src="$HOME/.nvman/$pkg-$version"
     link="$HOME/.nvman/$pkg-current"
@@ -143,8 +140,8 @@ run_set() {
     ln -rsf "$src" "$link"
 }
 
-run_test() {
-    [[ $# -ne 0 ]] && help_and_die "Invalid argument: $*"
+cmd_test() {
+    [[ $# -ne 0 ]] && bs_fatal "Invalid argument: $*"
     cat /proc/driver/nvidia/version
     nvidia-smi
 
@@ -163,8 +160,10 @@ run_test() {
     rm -rf "$tmp"
 }
 
-run_uninstall() {
-    [[ $# -ne 2 ]] && help_and_die "Invalid argument: $*"
+# shellcheck disable=SC2034
+cmd_uninstall_help="<cuda|cudnn> <VERSION>"
+cmd_uninstall() {
+    [[ $# -ne 2 ]] && bs_fatal "Invalid argument: $*"
     pkg=$1
     version=$2
     src="$HOME/.nvman/$pkg-$version"
@@ -174,20 +173,4 @@ run_uninstall() {
     rm -rf "$src"
 }
 
-if [[ $# -eq 0 ]]; then
-    help
-    exit 1
-fi
-
-cmd="$1"
-shift
-case "$cmd" in
-    env)       run_env "$@" ;;
-    install)   run_install "$@" ;;
-    list)      run_list "$@" ;;
-    set)       run_set "$@" ;;
-    test)      run_test "$@" ;;
-    uninstall) run_uninstall "$@" ;;
-    help)      help ;;
-    *)         help_and_die "Invalid command: $cmd" ;;
-esac
+bs_cmd_args "$@"

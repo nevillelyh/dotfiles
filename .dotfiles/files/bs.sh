@@ -131,12 +131,18 @@ _bs_cmds() {
 bs_cmd_args() {
     local name=$0
     _bs_cmds
-    if [[ $# -eq 0 ]]; then
+    if [[ $# -eq 0 ]] || { [[ $# -eq 1 ]] && [[ "$1" == help ]]; } then
         echo "Usage: $(basename "$name") <COMMAND> [ARG]..."
         if [[ -n "${cmds[*]}" ]]; then
             echo "    Commands:"
+            echo "        help"
             for cmd in "${cmds[@]}"; do
-                echo "        $cmd"
+                local h="cmd_${cmd}_help"
+                if [[ -z "${!h:-}" ]]; then
+                    echo "        $cmd"
+                else
+                    echo "        $cmd ${!h}"
+                fi
             done
         fi
         exit 1

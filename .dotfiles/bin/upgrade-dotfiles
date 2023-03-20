@@ -38,6 +38,7 @@ cmd_git() {
     if [[ -d "$HOME/.dotfiles/private" ]] && curl -fsSL --connect-timeout 1 --output /dev/null fides.lan &> /dev/null; then
         cd "$HOME/.dotfiles/private"
         git pull --rebase --autostash
+        git push
     fi
 }
 

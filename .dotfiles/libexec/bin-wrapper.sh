@@ -126,6 +126,8 @@ run_bw() {
         unzip -q "$zip" -d "$cache"
         rm -rf "$tmp"
         touch "$exec"
+
+        "$exec" completion --shell zsh > "$HOME/.local/share/zsh/site-functions/_bw"
     }
 
     exec="$cache/bw"
@@ -224,6 +226,8 @@ run_gh() {
         rm -rf "$cache/gh"
         mv "$cache/$build" "$cache/gh"
         touch "$exec"
+
+        "$exec" completion --shell zsh > "$HOME/.local/share/zsh/site-functions/_gh"
     }
 
     exec="$cache/gh/bin/gh"

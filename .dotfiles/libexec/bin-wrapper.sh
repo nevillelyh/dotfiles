@@ -101,6 +101,38 @@ run_bazel() {
     "$exec" "$@"
 }
 
+run_bw() {
+    brew_run bitwarden-cli bw "$@"
+
+    get_latest() {
+        local url="https://api.github.com/repos/bitwarden/clients/releases"
+        local header="Accept: application/vnd.github.v3+json"
+        curl -fsSL -H "$header" "$url" | jq --raw-output '.[].tag_name' | grep "^cli-v" | sed "s/^cli-v//" | head -n 1
+    }
+
+    get_current() {
+        "$exec" --version
+    }
+
+    download() {
+        local version=$1
+        local zip="bw-linux-$version.zip"
+        local url="https://github.com/bitwarden/clients/releases/download/cli-v$version/$zip"
+        local tmp
+        tmp=$(bs_temp_dir bin-wrapper-bw)
+        zip="$tmp/$zip"
+        curl -fsSL "$url" -o "$zip"
+        rm -f "$exec"
+        unzip -q "$zip" -d "$cache"
+        rm -rf "$tmp"
+        touch "$exec"
+    }
+
+    exec="$cache/bw"
+    update
+    "$exec" "$@"
+}
+
 run_cockroach() {
     brew_run cockroachdb/tap/cockroach cockroach "$@"
 

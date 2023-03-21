@@ -49,6 +49,14 @@ update() {
     fi
 }
 
+mk_comp() {
+    local cmd=$1
+    shift
+    local sfpath="$HOME/.local/share/zsh/site-functions"
+    [[ -d "$sfpath" ]] || mkdir -p "$sfpath"
+    "$cmd" "$@" > "$sfpath/_$(basename "$cmd")"
+}
+
 run_b2() {
     brew_run b2-tools b2 "$@"
 
@@ -102,8 +110,6 @@ run_bazel() {
 }
 
 run_bw() {
-    brew_run bitwarden-cli bw "$@"
-
     get_latest() {
         local url="https://api.github.com/repos/bitwarden/clients/releases"
         local header="Accept: application/vnd.github.v3+json"
@@ -116,7 +122,8 @@ run_bw() {
 
     download() {
         local version=$1
-        local zip="bw-linux-$version.zip"
+        [[ "$os" == darwin ]] && os=macos
+        local zip="bw-$os-$version.zip"
         local url="https://github.com/bitwarden/clients/releases/download/cli-v$version/$zip"
         local tmp
         tmp=$(bs_temp_dir bin-wrapper-bw)
@@ -127,7 +134,7 @@ run_bw() {
         rm -rf "$tmp"
         touch "$exec"
 
-        "$exec" completion --shell zsh > "$HOME/.local/share/zsh/site-functions/_bw"
+        mk_comp "$exec" completion --shell zsh
     }
 
     exec="$cache/bw"
@@ -227,7 +234,7 @@ run_gh() {
         mv "$cache/$build" "$cache/gh"
         touch "$exec"
 
-        "$exec" completion --shell zsh > "$HOME/.local/share/zsh/site-functions/_gh"
+        mk_comp "$exec" completion --shell zsh
     }
 
     exec="$cache/gh/bin/gh"

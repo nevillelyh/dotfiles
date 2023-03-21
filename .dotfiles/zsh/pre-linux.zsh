@@ -14,7 +14,7 @@ eval "$($HOME/.dotfiles/bin/nvman env)"
 # https://cli.github.com/manual/gh_completion
 local sfpath="$HOME/.local/share/zsh/site-functions"
 
-[[ ! -d "$sfpath" ]] && mkdir -p "$sfpath"
+[[ -d "$sfpath" ]] || mkdir -p "$sfpath"
 
 mk_comp() {
     cmd=$1

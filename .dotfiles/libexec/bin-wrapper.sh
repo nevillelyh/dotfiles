@@ -32,19 +32,17 @@ update() {
         latest=$(get_latest)
         bs_info "Installing $bin $latest"
         download "$latest"
-    else
-        if [[ $(bs_file_age "$exec") -ge $ttl ]]; then
-            local current
-            local latest
-            current=$(get_current)
-            latest=$(get_latest)
-            if [[ "$current" != "$latest" ]]; then
-                bs_info "Upgrading $bin from $current to $latest"
-                download "$latest"
-            else
-                bs_info "Up-to-date $bin: $current"
-                touch "$exec"
-            fi
+    elif [[ $(bs_file_age "$exec") -ge $ttl ]]; then
+        local current
+        local latest
+        current=$(get_current)
+        latest=$(get_latest)
+        if [[ "$current" != "$latest" ]]; then
+            bs_info "Upgrading $bin from $current to $latest"
+            download "$latest"
+        else
+            bs_info "Up-to-date $bin: $current"
+            touch "$exec"
         fi
     fi
 }

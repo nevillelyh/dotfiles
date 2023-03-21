@@ -22,7 +22,8 @@ image=nevillelyh/joplin:latest
 file=$HOME/.cache/joplin-update
 (( ttl = 7 * 24 * 60 * 60 ))
 if [[ ! -f "$file" ]] || [[ $(bs_file_age "$file") -ge $ttl ]]; then
-    docker pull -q "$image" > /dev/null
+    bs_info "Pulling Docker image $image"
+    docker pull -q "$image"
     touch "$file"
 fi
 

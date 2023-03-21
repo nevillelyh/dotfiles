@@ -21,5 +21,6 @@ fi
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
+FPATH="$HOME/.local/share/zsh/site-functions:$FPATH"
 autoload -Uz compinit
 compinit

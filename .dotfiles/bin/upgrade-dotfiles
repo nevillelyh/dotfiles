@@ -72,7 +72,7 @@ cmd_docker() {
 cmd_go() {
     bs_info_box "Upgrading Go"
     if [[ -d /usr/local/go ]]; then
-        os=$(echo "$UNAME_S" | tr "[:upper:]" "[:lower:]")
+        os=$(echo "$BS_UNAME_S" | tr "[:upper:]" "[:lower:]")
         arch=$(dpkg --print-architecture)
         tarball=$(curl -fsSL "https://go.dev/dl" | grep -oP '(?<=href=")[^"]+(?=")' | grep "/dl/go.*\.$os-$arch\.tar\.gz" | tac | tail -n 1)
         latest=$(echo "$tarball" | sed "s/^\/dl\/\(go.*\)\.$os-$arch\.tar\.gz$/\1/")

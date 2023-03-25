@@ -13,7 +13,7 @@ dirs=(
     .local/share/Steam/steamapps/common
     .m2/repository
     .nvman
-    .sdkman/archives
+    .sdkman/tmp
     Library/Caches/Coursier
     Library/Caches/Homebrew
     "Library/Application Support/Steam/steamapps/common"

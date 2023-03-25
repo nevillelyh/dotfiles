@@ -13,6 +13,8 @@ fi
 
 if [[ $# -eq 1 ]] && [[ "$1" == "ping" ]]; then
     echo "pong"
+elif [[ $# -gt 0 ]]; then
+    "$@"
 else
     _bs_test
 fi

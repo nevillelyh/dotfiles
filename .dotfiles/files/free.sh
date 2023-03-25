@@ -11,6 +11,15 @@ else
     eval "$(curl -fsSL https://raw.githubusercontent.com/nevillelyh/dotfiles/main/.dotfiles/files/bs.sh)"
 fi
 
+find_delete() {
+    local dir=$1
+    local size
+    size="$(find "$@" -print0 | xargs du -hcs | tail -n 1 | awk '{print $1}')"
+    [[ -z "$size" ]] && size="0B"
+    printf "%s\t%s\n" "$size" "$dir"
+    find "$@" -delete
+}
+
 case "$BS_UNAME_S" in
     Darwin)
         bs_info_box "Cleaning up Homebrew cache"
@@ -31,7 +40,15 @@ fi
 bs_info_box "Cleaning up Go cache"
 go clean -modcache
 
+bs_info_box "Cleaning up Maven cache"
+dirs=(.cache/coursier .gradle/caches .ivy/cache .m2/repository Library/Caches/Coursier)
+for dir in "${dirs[@]}"; do
+    if [[ -d "$HOME/$dir" ]]; then
+        find_delete "$HOME/$dir" -type f -name "*-SNAPSHOT.*" -mtime +30d
+    fi
+done
+
 bs_info_box "Cleaning up SDKMAN cache"
-rm -f "$HOME"/.sdkman/archives/*.zip
+find_delete "$HOME/.sdkman/tmp" -name "*.zip"
 
 bs_success_box "Clean Up Completed"

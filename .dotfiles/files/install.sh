@@ -81,6 +81,20 @@ cmd_anaconda() {
     rm "$pkg"
 }
 
+# https://docs.ankiweb.net/platform/linux/installing.html
+cmd_anki() {
+    brew_install_cask anki || return 0
+
+    local url="https://apps.ankiweb.net/"
+    url=$(bs_urls "$url" | grep -- "-linux-qt6.tar.zst$")
+    curl -fsSL "$url" | tar -C "$HOME" -x --zstd
+    local dir
+    dir="$(basename "$url" ".tar.zst")"
+    cd "$dir"
+    sudo ./install.sh
+    rm -rf "${HOME:?}/$dir"
+}
+
 cmd_awscli() {
     brew_install awscli || return 0
 

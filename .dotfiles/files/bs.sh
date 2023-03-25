@@ -84,11 +84,10 @@ bs_array_contains() {
     shift
     for i in "$@"; do
         if [[ "$i" == "$needle" ]]; then
-            echo 0
-            return
+            return 0
         fi
     done
-    echo 1
+    return 1
 }
 
 bs_array_to_string() {
@@ -109,8 +108,8 @@ bs_array_to_string() {
 }
 
 _bs_test_array() {
-    _bs_test_stdout "0" bs_array_contains "foo" "foo" "bar" "baz"
-    _bs_test_stdout "1" bs_array_contains "foo" "bar" "baz"
+    _bs_test_true bs_array_contains "foo" "foo" "bar" "baz"
+    _bs_test_false bs_array_contains "foo" "bar" "baz"
     _bs_test_stdout "[]" bs_array_to_string
     _bs_test_stdout "[foo, bar, baz]" bs_array_to_string "foo" "bar" "baz"
 }
@@ -150,7 +149,7 @@ bs_cmd_args() {
 
     cmd=$1
     shift
-    if [[ "$(bs_array_contains "$cmd" "${cmds[@]}")" == 0 ]]; then
+    if bs_array_contains "$cmd" "${cmds[@]}"; then
         "cmd_$cmd" "$@"
     else
         bs_fatal "Command not found: $cmd"
@@ -175,7 +174,7 @@ bs_cmd_optional() {
 
     shift
     for cmd in "$@"; do
-        if [[ "$(bs_array_contains "$cmd" "${cmds[@]}")" == 0 ]]; then
+        if bs_array_contains "$cmd" "${cmds[@]}"; then
             "cmd_$cmd"
         else
             bs_fatal "Command not found: $cmd"
@@ -198,7 +197,7 @@ bs_cmd_required() {
     fi
 
     for cmd in "$@"; do
-        if [[ "$(bs_array_contains "$cmd" "${cmds[@]}")" == 0 ]]; then
+        if bs_array_contains "$cmd" "${cmds[@]}"; then
             "cmd_$cmd"
         else
             bs_fatal "Command not found: $cmd"
@@ -358,6 +357,24 @@ _bs_test_stdout() {
     else
         _bs_test_fail "$@"
         echo "Test failure, expected: $expected, actual: $actual"
+    fi
+}
+
+_bs_test_true() {
+    if "$@" &> /dev/null; then
+        _bs_test_pass "$@"
+    else
+        _bs_test_fail "$@"
+        echo "Test failure, expected: true, actual: false"
+    fi
+}
+
+_bs_test_false() {
+    if "$@" &> /dev/null; then
+        _bs_test_fail "$@"
+        echo "Test failure, expected: false, actual: true"
+    else
+        _bs_test_pass "$@"
     fi
 }
 

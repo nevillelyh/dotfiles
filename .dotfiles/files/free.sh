@@ -49,6 +49,6 @@ for dir in "${dirs[@]}"; do
 done
 
 bs_info_box "Cleaning up SDKMAN cache"
-find_delete "$HOME/.sdkman/tmp" -name "*.zip"
+find_delete "$HOME/.sdkman/tmp" -name "*.zip" -or -name "*.tmp"
 
 bs_success_box "Clean Up Completed"

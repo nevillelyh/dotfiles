@@ -44,7 +44,7 @@ bs_info_box "Cleaning up Maven cache"
 dirs=(.cache/coursier .gradle/caches .ivy/cache .m2/repository Library/Caches/Coursier)
 for dir in "${dirs[@]}"; do
     if [[ -d "$HOME/$dir" ]]; then
-        find_delete "$HOME/$dir" -type f -name "*-SNAPSHOT.*" -mtime +30d
+        find_delete "$HOME/$dir" -type f -name "*-SNAPSHOT.*" -atime +30d
     fi
 done
 

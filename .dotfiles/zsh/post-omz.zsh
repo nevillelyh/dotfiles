@@ -117,6 +117,10 @@ alias bwgu="bw-unlock && bw get username"
 alias bwgp="bw-unlock && bw get password"
 alias bwgt="bw-unlock && bw get totp"
 
+bwg() {
+    bw-unlock && bw get item "$@" | jq --raw-output ".login.username,.login.password" && bwgt "$@"
+}
+
 bwgi() {
     bw-unlock && bw get item "$@" | jq
 }

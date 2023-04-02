@@ -93,6 +93,38 @@ if [[ -d $HOME/.dotfiles/private/profile.d ]]; then
     done
 fi
 
+# BitWarden
+
+bw-unlock() {
+    case "$(bw status | jq --raw-output ".status")" in
+        unauthenticated)
+            local email
+            email="$(git config --get user.email)"
+            BW_SESSION=$(bw login "$email" --raw)
+            export BW_SESSION
+            ;;
+        locked)
+            BW_SESSION=$(bw unlock --raw)
+            export BW_SESSION
+            ;;
+        *) ;;
+    esac
+}
+
+alias bwst="bw status"
+alias bws="bw sync"
+alias bwgu="bw-unlock && bw get username"
+alias bwgp="bw-unlock && bw get password"
+alias bwgt="bw-unlock && bw get totp"
+
+bwgi() {
+    bw-unlock && bw get item "$@" | jq
+}
+
+bwf() {
+    bw-unlock && bw list items --search "$@" | jq
+}
+
 # Deduplicate $PATH
 typeset -aU path
 

@@ -27,7 +27,7 @@ manage() {
     for installed in "$HOME/.sdkman/candidates/$candidate"/*; do
         [[ -L "$installed" ]] && continue
         installed=$(basename "$installed")
-        if [[ "$(bs_array_contains "$installed" "$@")" == "1" ]]; then
+        if ! bs_array_contains "$installed" "$@"; then
             sdk uninstall "$candidate" "$installed"
         fi
     done

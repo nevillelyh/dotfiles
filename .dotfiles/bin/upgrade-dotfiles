@@ -25,6 +25,7 @@ cmd_os() {
             sudo aptitude -y upgrade
             sudo aptitude -y autoclean
             sudo apt-get -y autoremove
+            dpkg-query -l | grep '^rc' | awk '{print $2}' | xargs -r sudo aptitude -y purge || true
             type snap &> /dev/null || return 0
             sudo snap refresh
             ;;

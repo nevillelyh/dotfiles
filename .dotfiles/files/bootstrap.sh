@@ -58,7 +58,6 @@ cmd_homebrew() {
     bs_info_box "Setting up Homebrew"
 
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    [[ -d /opt/homebrew ]] && export PATH=/opt/homebrew/bin:$PATH
     brew install "${BREWS[@]}"
     brew install --cask "${CASKS[@]}"
 
@@ -190,7 +189,6 @@ cmd_neovim() {
 cmd_go() {
     [[ -d $HOME/.go ]] && return 0
     bs_info_box "Setting up Go"
-    [[ -d /usr/local/go/bin ]] && export PATH=/usr/local/go/bin:$PATH
     export GOPATH=$HOME/.go
     go install -v golang.org/x/tools/gopls@latest
     go install -v github.com/go-delve/delve/cmd/dlv@latest
@@ -228,7 +226,6 @@ cmd_python() {
     # Homebrew python includes pip
     if [[ "$BS_UNAME_S" == "Linux" ]]; then
         curl -fsSL https://bootstrap.pypa.io/get-pip.py | python3
-        export PATH=$HOME/.local/bin:$PATH
     fi
     python3 -m pip install "${PIP_PKGS[@]}"
 }
@@ -327,6 +324,17 @@ cmd_check() {
 ########################################
 # Script starts
 ########################################
+
+case "$BS_UNAME_S" in
+    Darwin)
+        export PATH=/opt/homebrew/bin:$PATH
+        export PATH=$HOME/.local/bin:$PATH
+        ;;
+    Linux)
+        export PATH=/usr/local/go/bin:$PATH
+        ;;
+esac
+export PATH=$HOME/.dotfiles/bin:$PATH
 
 bootstrap() {
     cmd_ssh

@@ -240,6 +240,29 @@ run_gh() {
     "$exec" "$@"
 }
 
+run_nvim() {
+    brew_run neovim nvim "$@"
+
+    get_latest() {
+        bs_gh_tags "neovim/neovim" | sort --version-sort | tail -n 1
+    }
+
+    get_current() {
+        "$exec" --version 2> /dev/null | head -n 1 | sed 's/^NVIM v//g'
+    }
+
+    download() {
+        local version=$1
+        local url="https://github.com/neovim/neovim/releases/download/v$version/nvim.appimage"
+        curl -fsSL "$url" -o "$exec"
+        chmod +x "$exec"
+    }
+
+    exec="$cache/nvim"
+    update
+    "$exec" "$@"
+}
+
 run_presto() {
     get_latest() {
         js_url="https://prestodb.io/static/js/version.js"

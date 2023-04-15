@@ -36,6 +36,15 @@ alias gsls='gsutil ls'
 alias gsmv='gsutil -m mv'
 alias gsrm='gsutil -m rm'
 
+# NeoVim
+alias ex='nvim -e'
+alias rview='nvim -RZ'
+alias rvim='nvim -Z'
+alias vi='nvim'
+alias view='nvim -R'
+alias vim='nvim'
+alias vimdiff='nvim -d'
+
 function rg() {
     command rg --json "$@" | delta
 }

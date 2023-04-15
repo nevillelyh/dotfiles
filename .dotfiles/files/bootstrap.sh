@@ -28,10 +28,11 @@ MAS=(1440147259 1352778147 425424353 405399194 1480068668 1477385213 803453959 1
 # wmctrl - for Slack & Spotify icon fixes
 # fonts-powerline - PowerlineSymbols only, no patched fonts
 # gnome-screensaver xautolock xcalib - for screen locking in awesome
+# libfuse2 - for NeoVim AppImage
 # unzip, zip - for SDKMAN
 # Not available or outdated in Ubuntu - bat, git-delta, zoxide
-DEB_PKGS=(build-essential colordiff exa fd-find fzf htop jq neovim ninja-build ripgrep shellcheck tmux unzip zip zsh)
-DEB_GUI_PKGS=(alacritty awesome compton fonts-powerline gnome-screensaver gnome-screenshot neovim-qt ubuntu-restricted-extras vlc wmctrl xautolock xcalib xprintidle)
+DEB_PKGS=(build-essential colordiff exa fd-find fzf htop jq libfuse2 ninja-build ripgrep shellcheck tmux unzip zip zsh)
+DEB_GUI_PKGS=(alacritty awesome compton fonts-powerline gnome-screensaver gnome-screenshot ubuntu-restricted-extras vlc wmctrl xautolock xcalib xprintidle)
 LINUX_CRATES=(bat code-minimap du-dust git-delta gitui zoxide)
 
 # PIP packages:
@@ -87,11 +88,10 @@ cmd_mac() {
 
 cmd_apt() {
     [[ "$BS_UNAME_S" != "Linux" ]] && return 0
-    type nvim &> /dev/null && return 0
+    type shellcheck &> /dev/null && return 0
     bs_info_box "Setting up Aptitude"
 
     sudo apt-get install -y apt-transport-https aptitude
-    sudo add-apt-repository -y ppa:neovim-ppa/stable
     sudo aptitude update
     sudo aptitude upgrade -y
     sudo aptitude install -y "${DEB_PKGS[@]}"
@@ -185,9 +185,6 @@ cmd_neovim() {
     mkdir -p "$dir"
     git clone git@github.com:Shougo/dein.vim.git "$dir/dein.vim"
     nvim -u "$HOME/.config/nvim/dein.vim" --headless "+call dein#install() | qall"
-
-    ! type update-alternatives &> /dev/null && return 0
-    bs_df files/vim-alternatives.sh
 }
 
 cmd_go() {

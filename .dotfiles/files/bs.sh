@@ -263,11 +263,29 @@ bs_urls() {
     curl -fsSL "$url" | grep -o 'href="[^"]\+"' | sed 's/href="\([^"]*\)"/\1/'
 }
 
+bs_gh() {
+    local path=$1
+    local url="https://api.github.com/$path"
+    local headers=(-H "Accept: application/vnd.github.v3+json")
+    if [[ -n "${DOTFILES_GITHUB_API_TOKEN:-}" ]]; then
+        headers+=(-H "Authorization: Bearer $DOTFILES_GITHUB_API_TOKEN")
+    fi
+    curl -fsSL "${headers[@]}" "$url"
+}
+
 bs_gh_latest() {
     local repo=$1
-    local url="https://api.github.com/repos/$repo/releases/latest"
-    local header="Accept: application/vnd.github.v3+json"
-    curl -fsSL -H "$header" "$url" | jq --raw-output '.tag_name' | sed 's/^v//g'
+    bs_gh "repos/$repo/releases/latest" | jq --raw-output '.tag_name' | sed 's/^v//g'
+}
+
+bs_gh_releases() {
+    local repo=$1
+    bs_gh "repos/$repo/releases" | jq --raw-output '.[].tag_name' | sed 's/^v//g'
+}
+
+bs_gh_tags() {
+    local repo=$1
+    bs_gh "repos/$repo/tags" | jq --raw-output '.[].name' | sed 's/^v//g'
 }
 
 bs_temp_file() {
@@ -307,7 +325,11 @@ _bs_test_resources() {
         _bs_test_pass "bs_urls https://github.com/nevillelyh"
     fi
 
+    local tags
+    tags="$(echo -e "0.2.0\n0.1.10\n0.1.9\n0.1.8\n0.1.7\n0.1.6\n0.1.5\n0.1.4\n0.1.3\n0.1.2\n0.1.1\n0.1.0")"
     _bs_test_stdout "0.2.0" bs_gh_latest nevillelyh/shapeless-datatype
+    _bs_test_stdout "$tags" bs_gh_releases nevillelyh/shapeless-datatype
+    _bs_test_stdout "$tags" bs_gh_tags nevillelyh/shapeless-datatype
 
     path="$(bs_temp_file bs-test)"
     base="$(basename "$path")"

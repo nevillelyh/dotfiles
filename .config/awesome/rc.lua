@@ -697,6 +697,9 @@ awful.rules.rules = {
     { rule_any = { class = { "Steam" },
       }, properties = { tag = awful.screen.focused().tags[9], titlebars_enabled = false }
     },
+    { rule_any = { class = { "jetbrains-fleet", "jetbrains-idea-ce" },
+      }, properties = { titlebars_enabled = false }
+    },
     { rule_any = {
         name = {
             "Aragami",

@@ -11,11 +11,15 @@ esac
 
 alias cat='bat'
 alias diff='colordiff'
+alias ghpr='gh pr create'
+
+# Docker
 alias digc='docker images --quiet --filter dangling=true | xargs -r docker rmi'
 alias dcgc='docker ps --all --filter "status=exited" --quiet | xargs -r docker rm'
 alias dka='docker ps --quiet | xargs -r docker kill'
 alias darch='docker images --quiet | xargs docker inspect |jq -r ".[]|.Architecture+\"\t\"+(.RepoTags|join(\",\"))"'
-alias ghpr='gh pr create'
+
+# exa
 alias l='exa -la' # 'ls -lah'
 alias la='exa -la' # 'ls -lAh'
 alias ll='exa -l' # 'ls -lh'
@@ -23,6 +27,8 @@ alias ls='exa' # 'ls -G'
 alias lsa='exa -la' # 'ls -lah'
 alias lsg='exa -l --git'
 alias lst='exa -l -r -s modified'
+
+# gsutil
 alias gscat='gsutil cat'
 alias gscp='gsutil -m cp'
 alias gsdu='gsutil du'

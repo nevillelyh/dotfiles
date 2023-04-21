@@ -36,6 +36,18 @@ cmd_git() {
     bs_info_box "Upgrading Git Repository"
     git pull --rebase --autostash
     git submodule update --init --recursive --remote
+    for path in $(git submodule status  | grep '^[^ ]' | awk '{print $2}'); do
+        git add "$path"
+        local prefix
+        if [[ $path == .config/awesome/* ]]; then
+            prefix="[awesome]"
+        else
+            prefix="[zsh]"
+        fi
+        git commit --message "$prefix upgrade $(basename "$path")"
+    done
+    git push
+
     if [[ -d "$HOME/.dotfiles/private" ]] && curl -fsSL --connect-timeout 1 --output /dev/null fides.lan &> /dev/null; then
         cd "$HOME/.dotfiles/private"
         git pull --rebase --autostash

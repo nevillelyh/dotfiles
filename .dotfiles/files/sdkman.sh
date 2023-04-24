@@ -50,8 +50,11 @@ manage_java() {
         matches+=("$match")
         [[ "$v" == "$java_default" ]] && default="$match"
     done
-    manage java "${matches[@]}"
-    sdk use java "$default"
+    # https://bugs.openjdk.org/browse/CODETOOLS-7903447
+    local amzn
+    amzn="$(sdk list java | awk '{print $(NF)}' | grep '^17\..*-amzn' | sort --version-sort | tail -n 1)"
+    manage java "${matches[@]}" "$amzn"
+    sdk use java "$amzn"
 }
 
 manage_scala() {

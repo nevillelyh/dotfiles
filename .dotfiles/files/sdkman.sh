@@ -51,7 +51,7 @@ manage_java() {
         [[ "$v" == "$java_default" ]] && default="$match"
     done
     manage java "${matches[@]}"
-    sdk use java "$default"
+    sdk default java "$default"
 }
 
 manage_scala() {
@@ -70,7 +70,7 @@ manage_scala() {
         [[ "$v" == "$scala_default" ]] && default="$match"
     done
     manage scala "${matches[@]}"
-    sdk use scala "$default"
+    sdk default scala "$default"
 }
 
 manage_candidates() {

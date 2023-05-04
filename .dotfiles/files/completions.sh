@@ -21,7 +21,6 @@ cp target/release/build/bat-*/out/assets/completions/bat.zsh "$out/_bat"
 rm -rf "$tmp"
 
 prefix="https://raw.githubusercontent.com"
-curl -fsSL "$prefix/wfxr/code-minimap/master/completions/zsh/_code-minimap" -o "$out/_code-minimap"
 curl -fsSL "$prefix/dandavison/delta/master/etc/completion/completion.zsh" -o "$out/_delta"
 curl -fsSL "$prefix/bootandy/dust/master/completions/_dust" -o "$out/_dust"
 curl -fsSL "$prefix/sharkdp/fd/master/contrib/completion/_fd" -o "$out/_fd"

@@ -17,7 +17,7 @@ fi
 # python - leave macOS bundled python alone
 # pinentry-mac - for GPG
 # App Store - AdGuard for Safari, Instapaper, Kindle, Messenger, Slack, The Unarchiver, WhatsApp
-BREWS=(bat code-minimap cmake colordiff dust exa fd fzf git git-delta gitui golang gpg htop jq mas neovim ninja pinentry-mac python ripgrep shellcheck tmux wget zoxide)
+BREWS=(bat cmake colordiff dust exa fd fzf git git-delta gitui golang gpg htop jq mas neovim ninja pinentry-mac python ripgrep shellcheck tmux wget zoxide)
 CASKS=(alacritty alfred dbeaver-community discord dropbox expressvpn github iterm2 jetbrains-toolbox joplin sublime-text visual-studio-code vimr zotero)
 CASKS_OPT=(adobe-creative-cloud anki firefox google-chrome google-cloud-sdk guitar-pro hiarcs-chess-explorer macdive microsoft-edge signal shearwater-cloud spotify steam subsurface transmission vlc)
 # AdGuard Bitwarden Xcode Unarchiver Kindle Messenger Pocket Slack WhatsApp
@@ -33,7 +33,7 @@ MAS=(1440147259 1352778147 425424353 405399194 1480068668 1477385213 803453959 1
 # Not available or outdated in Ubuntu - bat, git-delta, zoxide
 DEB_PKGS=(build-essential colordiff exa fd-find fzf htop jq libfuse2 ninja-build ripgrep shellcheck tmux unzip zip zsh)
 DEB_GUI_PKGS=(alacritty awesome compton fonts-powerline gnome-screensaver gnome-screenshot ubuntu-restricted-extras vlc wmctrl xautolock xcalib xprintidle)
-LINUX_CRATES=(bat code-minimap du-dust git-delta gitui zoxide)
+LINUX_CRATES=(bat du-dust git-delta gitui zoxide)
 
 # PIP packages:
 PIP_PKGS=(flake8 ipython virtualenv virtualenvwrapper)

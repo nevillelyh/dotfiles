@@ -56,9 +56,7 @@ run_notify() {
     (( c = frames ))
     while (( c > 0 )); do
         new_idle="$(xprintidle)"
-        if [[ $last_idle -gt $new_idle ]]; then
-            exit 0
-        fi
+        [[ $last_idle -gt $new_idle ]] && exit 0
         last_idle=$new_idle
         xcalib -alter -contrast $c
         sleep "$interval"

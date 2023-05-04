@@ -83,9 +83,7 @@ bs_array_contains() {
     local needle="$1"
     shift
     for i in "$@"; do
-        if [[ "$i" == "$needle" ]]; then
-            return 0
-        fi
+        [[ "$i" == "$needle" ]] && return 0
     done
     return 1
 }

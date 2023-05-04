@@ -43,9 +43,7 @@ go clean -modcache
 bs_info_box "Cleaning up Maven cache"
 dirs=(.cache/coursier .gradle/caches .ivy/cache .m2/repository Library/Caches/Coursier)
 for dir in "${dirs[@]}"; do
-    if [[ -d "$HOME/$dir" ]]; then
-        find_delete "$HOME/$dir" -type f -name "*-SNAPSHOT.*" -atime +30
-    fi
+    [[ -d "$HOME/$dir" ]] && find_delete "$HOME/$dir" -type f -name "*-SNAPSHOT.*" -atime +30
 done
 
 bs_info_box "Cleaning up SDKMAN cache"

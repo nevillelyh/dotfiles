@@ -10,9 +10,7 @@ if [[ $# -lt 1 ]] || [[ $# -gt 2 ]]; then
 fi
 
 remote="origin"
-if [[ $# -eq 2 ]]; then
-    remote=$2
-fi
+[[ $# -eq 2 ]] && remote=$2
 
 branch="$1"
 if git branch --format="%(refname:short)" | grep -q "^$branch$"; then

@@ -24,9 +24,7 @@ if echo "$conn" | grep -q '@'; then
     host=$(echo "$conn" | cut -d '@' -f 2)
 fi
 
-if grep -q "Host $host" .ssh/config 2> /dev/null; then
-    bs_fatal "Host $host already set up"
-fi
+grep -q "Host $host" .ssh/config 2> /dev/null && bs_fatal "Host $host already set up"
 
 bs_info "Sending public key to $host"
 key=$(grep signingKey "$HOME/.gitconfig" | grep -o '\<[0-9A-F]\+$')

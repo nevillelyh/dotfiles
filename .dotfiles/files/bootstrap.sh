@@ -44,9 +44,7 @@ cmd_ssh() {
     # Bash 3 on Mac missing readarray
     # shellcheck disable=SC2207
     keys=($(find "$HOME/.ssh" -name id_dsa -or -name id_rsa -or -name id_ecdsa -or -name id_ed25519))
-    if [[ "${#keys[@]}" -eq 0 ]]; then
-        bs_fatal "SSH private key not found"
-    fi
+    [[ "${#keys[@]}" -eq 0 ]] && bs_fatal "SSH private key not found"
     killall -q ssh-agent || true
     eval "$(ssh-agent)"
     ssh-add "${keys[@]}"
@@ -224,9 +222,7 @@ cmd_python() {
     bs_info_box "Setting up Python"
 
     # Homebrew python includes pip
-    if [[ "$BS_UNAME_S" == "Linux" ]]; then
-        curl -fsSL https://bootstrap.pypa.io/get-pip.py | python3
-    fi
+    [[ "$BS_UNAME_S" == "Linux" ]] && curl -fsSL https://bootstrap.pypa.io/get-pip.py | python3
     python3 -m pip install "${PIP_PKGS[@]}"
 }
 
@@ -255,9 +251,7 @@ cmd_code() {
         rust-lang.rust-analyzer \
         sswg.swift-lang \
         vadimcn.vscode-lldb
-    if [[ "$BS_UNAME_S" == "Darwin" ]]; then
-        defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
-    fi
+    [[ "$BS_UNAME_S" == "Darwin" ]] && defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 }
 
 cmd_fonts() {

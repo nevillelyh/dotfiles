@@ -64,14 +64,13 @@ cmd_neovim() {
     bs_info_box "Upgrading NeoVim"
     nvim -u "$HOME/.config/nvim/dein.vim" --headless \
         '+let g:dein#install_progress_type = "none" | call dein#update() | echo "\r\n" | qall'
-    if [[ -n "${TMUX-}" ]]; then
-        nvim -u "$HOME/.config/nvim/dein.vim" --headless '+Tmuxline | qall'
-    fi
+    [[ -n "${TMUX-}" ]] && nvim -u "$HOME/.config/nvim/dein.vim" --headless '+Tmuxline | qall'
 }
 
 cmd_docker() {
     type docker &> /dev/null || return 0
     bs_info_box "Upgrading Docker"
+    [[ "$BS_UNAME_S" == "Darwin" ]] && open /Applications/Docker.app
     for image in $(docker images --format "{{.Repository}}:{{.Tag}}" | grep -v ':<none>' | grep -v '\.amazonaws\.com/'); do
         digest=$(docker inspect "$image" | jq --raw-output ".[].RepoDigests[]")
         platform=$(docker inspect "$image" | jq --raw-output '.[] | "\(.Os)/\(.Architecture)"')

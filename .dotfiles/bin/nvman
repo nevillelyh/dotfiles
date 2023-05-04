@@ -39,9 +39,7 @@ cmd_env() {
 install_cuda() {
     cuda_version=$(echo "$1" | grep -Po '(?<=^cuda_)[0-9\.]+')
     dest=$HOME/.nvman/cuda-$cuda_version
-    if [[ -d $dest ]]; then
-        bs_fatal "CUDA $cuda_version already installed"
-    fi
+    [[ -d $dest ]] && bs_fatal "CUDA $cuda_version already installed"
     bs_info "Installing CUDA $cuda_version in $dest"
     mkdir -p "$HOME/.nvman"
     bash "$1" --silent --installpath="$dest" --toolkit --samples --no-opengl-libs --no-drm
@@ -54,9 +52,7 @@ install_cudnn() {
     # shellcheck disable=SC2001
     cudnn_version=$(echo "$1" | sed 's/cudnn-[^-]*-[^-]*-\([^-]*\)_cuda.*/\1/')
     dest=$HOME/.nvman/cudnn-$cudnn_version
-    if [[ -d $dest ]]; then
-        bs_fatal "cuDNN $cudnn_version already installed"
-    fi
+    [[ -d $dest ]] && bs_fatal "cuDNN $cudnn_version already installed"
     bs_info "Installing CUDNN $cudnn_version in $dest"
     mkdir -p "$HOME/.nvman"
     tar xJf "$1" -C "$HOME/.nvman"

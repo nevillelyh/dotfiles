@@ -10,9 +10,7 @@ if [[ $# -gt 1 ]]; then
 fi
 
 remote=origin
-if [[ $# -eq 1 ]]; then
-    remote=$1
-fi
+[[ $# -eq 1 ]] && remote=$1
 
 for branch in $(git remote prune "$remote" | grep '\[pruned\]' | awk '{print $3}' | sed -e "s@^$remote/@@g"); do
     if git branch --format="%(refname:short)" | grep -q "^$branch$"; then

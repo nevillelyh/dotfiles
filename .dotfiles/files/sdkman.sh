@@ -27,9 +27,7 @@ manage() {
     for installed in "$HOME/.sdkman/candidates/$candidate"/*; do
         [[ -L "$installed" ]] && continue
         installed=$(basename "$installed")
-        if ! bs_array_contains "$installed" "$@"; then
-            sdk uninstall "$candidate" "$installed"
-        fi
+        bs_array_contains "$installed" "$@" || sdk uninstall "$candidate" "$installed"
     done
 }
 
@@ -43,9 +41,7 @@ manage_java() {
     for v in "${java_versions[@]}"; do
         local match
         match=$(echo "$versions" | grep "^$v\." || true)
-        if [[ -z "$match" ]]; then
-            bs_fatal "Java $v $java_dist not found"
-        fi
+        [[ -z "$match" ]] && bs_fatal "Java $v $java_dist not found"
         match=$(echo "$match" | tail -n 1)
         matches+=("$match")
         [[ "$v" == "$java_default" ]] && default="$match"
@@ -62,9 +58,7 @@ manage_scala() {
     for v in "${scala_versions[@]}"; do
         local match
         match=$(echo "$versions" | grep "^$v\." || true)
-        if [[ -z "$match" ]]; then
-            bs_fatal "Scala $v not found"
-        fi
+        [[ -z "$match" ]] && bs_fatal "Scala $v not found"
         match=$(echo "$match" | tail -n 1)
         matches+=("$match")
         [[ "$v" == "$scala_default" ]] && default="$match"

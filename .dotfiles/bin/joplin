@@ -12,10 +12,7 @@ else
     eval "$(curl -fsSL https://raw.githubusercontent.com/nevillelyh/dotfiles/main/.dotfiles/files/bs.sh)"
 fi
 
-if ! type docker &> /dev/null; then
-    echo "Docker not installed"
-    exit 1
-fi
+type docker &> /dev/null || bs_fatal "Docker not installed"
 
 image=nevillelyh/joplin:latest
 

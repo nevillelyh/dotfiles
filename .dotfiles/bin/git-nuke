@@ -21,8 +21,8 @@ else
     echo "Local branch does not exist: $branch"
 fi
 if ! git branch --format="%(refname:short)" --remote | grep -q "^$remote/$branch$"; then
-    git branch -D -r "$remote/$branch"
-else
     echo "Remote branch does not exist: $branch"
+else
+    git branch -D -r "$remote/$branch"
 fi
 git push "$remote" ":$branch"

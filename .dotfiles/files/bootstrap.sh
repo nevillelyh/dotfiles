@@ -2,7 +2,7 @@
 
 # Bootstrap a new environment
 
-# bash -c "$(curl -fsSL https://raw.github.com/nevillelyh/dotfiles/master/.dotfiles/files/bootstrap.sh)"
+# bash -c "$(curl -fsSL bit.ly/bootstrap-sh)"
 
 set -euo pipefail
 

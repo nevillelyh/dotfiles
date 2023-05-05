@@ -8,7 +8,7 @@ if [[ -f "$HOME/.dotfiles/files/bs.sh" ]]; then
     # shellcheck source=/dev/null
     source "$HOME/.dotfiles/files/bs.sh"
 else
-    eval "$(curl -fsSL https://raw.githubusercontent.com/nevillelyh/dotfiles/main/.dotfiles/files/bs.sh)"
+    eval "$(curl -fsSL bit.ly/bs-dot-sh)"
 fi
 
 case "$BS_UNAME_S" in

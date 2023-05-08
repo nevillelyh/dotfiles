@@ -17,7 +17,7 @@ fi
 # python - leave macOS bundled python alone
 # pinentry-mac - for GPG
 # App Store - AdGuard for Safari, Instapaper, Kindle, Messenger, Slack, The Unarchiver, WhatsApp
-BREWS=(bat cmake colordiff dust exa fd fzf git git-delta gitui golang gpg htop jq mas neovim ninja pinentry-mac python ripgrep shellcheck tmux wget zoxide)
+BREWS=(bat btop cmake colordiff dust exa fd fzf git git-delta gitui golang gpg htop jq mas neovim ninja pinentry-mac python ripgrep shellcheck tmux wget zoxide)
 CASKS=(alacritty alfred dbeaver-community discord dropbox expressvpn github iterm2 jetbrains-toolbox joplin sublime-text visual-studio-code vimr zotero)
 CASKS_OPT=(adobe-creative-cloud anki firefox google-chrome google-cloud-sdk guitar-pro hiarcs-chess-explorer macdive microsoft-edge signal shearwater-cloud spotify steam subsurface transmission vlc)
 # AdGuard Bitwarden Xcode Unarchiver Kindle Messenger Pocket Slack WhatsApp
@@ -114,7 +114,7 @@ cmd_linux() {
 
     # Snap Store
     sudo aptitude install -y snapd
-    sudo snap install slack spotify xseticon
+    sudo snap install btop slack spotify xseticon
 
     # Custom repositories
     bs_df files/install.sh chrome code discord dropbox sublime

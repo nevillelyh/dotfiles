@@ -1,3 +1,6 @@
+# Workaround for themes relative path
+alias btop='/snap/btop/current/usr/local/bin/btop'
+
 alias open='xdg-open'
 
 FD_COMMAND=fd

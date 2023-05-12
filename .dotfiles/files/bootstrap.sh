@@ -251,7 +251,7 @@ cmd_code() {
         rust-lang.rust-analyzer \
         sswg.swift-lang \
         vadimcn.vscode-lldb
-    [[ "$BS_UNAME_S" == "Darwin" ]] && defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+    [[ "$BS_UNAME_S" != "Darwin" ]] || defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 }
 
 cmd_fonts() {

@@ -96,7 +96,7 @@ cmd_go() {
         latest=$(echo "$tarball" | sed "s/^\/dl\/\(go.*\)\.$os-$arch\.tar\.gz$/\1/")
         current=$(go version | awk '{ print $3 }')
         if [[ "$latest" != "$current" ]]; then
-            read -p "Upgrade from $current to $latest (y/N)? " -n 1 -r
+            read -n 1 -r -p "Upgrade from $current to $latest (y/N)? "
             echo # (optional) move to a new line
             if [[ $REPLY =~ ^[Yy]$ ]]; then
                 sudo rm -rf /usr/local/go

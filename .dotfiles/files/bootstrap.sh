@@ -68,7 +68,7 @@ cmd_homebrew() {
     /usr/bin/tic -x -o "$HOME/.local/share/terminfo" "$HOME/tmux-256color"
     rm "$HOME/tmux-256color"
 
-    read -p "Install optional casks (y/N)? " -n 1 -r
+    read -n 1 -r -p "Install optional casks (y/N)? "
     echo # (optional) move to a new line
     [[ $REPLY =~ ^[Yy]$ ]] && brew install --cask "${CASKS_OPT[@]}"
 }

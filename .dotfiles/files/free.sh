@@ -40,7 +40,7 @@ fi
 bs_info_box "Cleaning up Go cache"
 go clean -modcache
 
-bs_info_box "Cleaning up Maven cache"
+bs_info_box "Cleaning up JVM cache"
 dirs=(.cache/coursier .gradle/caches .ivy/cache .m2/repository Library/Caches/Coursier)
 for dir in "${dirs[@]}"; do
     [[ -d "$HOME/$dir" ]] && find_delete "$HOME/$dir" -type f -name "*-SNAPSHOT.*" -atime +30

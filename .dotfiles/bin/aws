@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# AWS CLI wrapper
+
+set -euo pipefail
+
+if [[ -f "$HOME/.dotfiles/files/bs.sh" ]]; then
+    # shellcheck source=/dev/null
+    source "$HOME/.dotfiles/files/bs.sh"
+else
+    eval "$(curl -fsSL bit.ly/bs-dot-sh)"
+fi
+
+case "$BS_UNAME_S" in
+    Darwin) bin=/opt/homebrew/bin/aws ;;
+    Linux) bin=$HOME/.local/bin/aws ;;
+esac
+
+expand_profile() {
+    local pattern="$1"
+    local matches=()
+    while IFS= read -r p; do
+        if [[ "$p" == *$pattern* ]]; then
+            matches+=("$p")
+        fi
+    done < <(grep -O '^\[[^]]\+\]' ~/.aws/credentials | sed 's/^\[\(.*\)\]/\1/g')
+
+    if [[ "${#matches[@]}" -eq 1 ]]; then
+        echo "${matches[0]}"
+    elif [[ "${#matches[@]}" -eq 0 ]]; then
+        >&2 bs_fatal "No profile matching *$pattern*"
+    else
+        >&2 bs_fatal "Multiple profiles matching *$pattern*: ${matches[*]}"
+    fi
+}
+
+args=()
+
+while [[ $# -gt 0 ]]; do
+    arg="$1"
+    case "$arg" in
+        -p|--profile)
+            shift
+            args+=(--profile "$(expand_profile "$1")")
+            ;;
+        *)
+            args+=("$arg")
+            ;;
+    esac
+    shift
+done
+
+"$bin" "${args[@]}"

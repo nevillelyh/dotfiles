@@ -10,6 +10,3 @@
 [submodule ".dotfiles/zsh/custom/themes/powerlevel10k"]
 	path = .dotfiles/zsh/custom/themes/powerlevel10k
 	url = https://github.com/romkatv/powerlevel10k.git
-[submodule ".dotfiles/zsh/custom/plugins/conda"]
-	path = .dotfiles/zsh/custom/plugins/conda
-	url = git@github.com:esc/conda-zsh-completion.git

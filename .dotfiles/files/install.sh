@@ -65,22 +65,6 @@ setup_hashicorp() {
     sudo aptitude update
 }
 
-# https://docs.anaconda.com/anaconda/install/linux/
-cmd_anaconda() {
-    # Do not activate base automatically
-    echo "auto_activate_base: false" > "$HOME/.condarc"
-
-    brew_install_cask anaconda || return 0
-
-    local url="https://www.anaconda.com/products/distribution"
-    url=$(curl -fsSL $url | grep -o "\<https://repo.anaconda.com/archive/Anaconda3-.*-Linux-$BS_UNAME_M.sh\>" | uniq | tail -n 1)
-    local pkg
-    pkg=$(echo "$url" | grep -o '\<Anaconda3-.*.sh$')
-    wget -nv "$url"
-    bash "$pkg" -b -p "$HOME/.anaconda3"
-    rm "$pkg"
-}
-
 # https://docs.ankiweb.net/platform/linux/installing.html
 cmd_anki() {
     brew_install_cask anki || return 0

@@ -136,12 +136,6 @@ cmd_rust() {
     fi
 }
 
-cmd_anaconda() {
-    type conda &> /dev/null || return 0
-    bs_info_box "Upgrading Anaconda"
-    conda update --all --name base --yes
-}
-
 upgrade() {
     cd "$HOME"
     cmd_os
@@ -153,7 +147,6 @@ upgrade() {
     cmd_jvm
     cmd_python
     cmd_rust
-    cmd_anaconda
     bs_success_box "Upgrade complete"
 }
 

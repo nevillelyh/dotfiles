@@ -43,7 +43,7 @@ cat << EOF >> "$HOME/.ssh/config"
 EOF
 
 cat << EOF
-Add the following to remote host /etc/ssh/sshd_config:
+Add the following to remote host /etc/ssh/sshd_config.d/gpg.conf:
 
 # https://wiki.gnupg.org/AgentForwarding
 StreamLocalBindUnlink yes

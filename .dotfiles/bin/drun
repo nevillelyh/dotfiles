@@ -113,7 +113,7 @@ cmd_kafka() {
 cmd_kcat() {
     local host=127.0.0.1 # workaround for IPv6 issue
     docker_cmd kcat \
-        nevillelyh/kcat:latest -b "$host:$(env KAFKA_PORT)" "$@"
+        nevillelyh/kcat:latest "$@"
 }
 
 cmd_kraft() {

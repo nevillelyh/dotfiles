@@ -50,4 +50,8 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-"$bin" "${args[@]}"
+if [[ "${#args[@]}" -eq 0 ]]; then
+    "$bin"
+else
+    "$bin" "${args[@]}"
+fi

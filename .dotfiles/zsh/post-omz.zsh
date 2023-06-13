@@ -45,6 +45,9 @@ alias view='nvim -R'
 alias vim='nvim'
 alias vimdiff='nvim -d'
 
+# AWS
+alias sts-whoami='aws sts get-caller-identity'
+
 function rg() {
     command rg --json "$@" | delta
 }

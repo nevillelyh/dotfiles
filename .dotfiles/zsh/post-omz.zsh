@@ -52,10 +52,6 @@ function rg() {
     command rg --json "$@" | delta
 }
 
-if [[ -L /opt/homebrew/bin/mvnd ]] || [[ -d "$HOME/.sdkman/candidates/mvnd" ]]; then
-    unalias mvnd
-fi
-
 function zt() {
     session="$1"
     if tmux has-session -t "$session" &> /dev/null; then

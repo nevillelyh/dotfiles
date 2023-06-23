@@ -72,7 +72,20 @@ cmd_ps() {
     docker ps --filter label=dotfiles.bin.drun=true
 }
 
+cmd_cockroach_help="<server|sql>"
 cmd_cockroach() {
+    if [[ $# -lt 1 ]]; then
+        bs_fatal "Usage: drun cockroach $cmd_cockroach_help [ARG]..."
+    fi
+    cmd=$1
+    shift
+    case $cmd in
+        server) cockroach_server "$@" ;;
+        sql) cockroach_sql "$@" ;;
+    esac
+}
+
+cockroach_server() {
     docker_srv cockroach \
         --env COCKROACH_DATABASE="$(env DB)" \
         --env COCKROACH_USER="$(env DB_USER)" \
@@ -82,7 +95,7 @@ cmd_cockroach() {
         cockroachdb/cockroach:latest start-single-node "$@"
 }
 
-cmd_cockroach-sql() {
+cockroach_sql() {
     local url
     url="postgresql://$(env DB_USER):$(env DB_PASS)@localhost:$(env COCKROACH_PORT)/$(env DB)?sslmode=require"
     docker_cli cockroach-cli \
@@ -122,7 +135,20 @@ cmd_kraft() {
         nevillelyh/kraft:latest "$@"
 }
 
+cmd_mariadb_help="<server|cli>"
 cmd_mariadb() {
+    if [[ $# -lt 1 ]]; then
+        bs_fatal "Usage: drun mariadb $cmd_mariadb_help [ARG]..."
+    fi
+    cmd=$1
+    shift
+    case $cmd in
+        server) mariadb_server "$@" ;;
+        cli) mariadb_cli "$@" ;;
+    esac
+}
+
+mariadb_server() {
     docker_srv mariadb \
         --env MARIADB_ROOT_PASSWORD="$(env ROOT_PASS)" \
         --env MARIADB_DATABASE="$(env DB)" \
@@ -132,7 +158,7 @@ cmd_mariadb() {
         mariadb:latest "$@"
 }
 
-cmd_mariadb-cli() {
+mariadb_cli() {
     docker_cli mariadb-cli \
         mariadb:latest mariadb \
         --host=localhost --port="$(env MARIADB_PORT)" --protocol=tcp \
@@ -140,7 +166,20 @@ cmd_mariadb-cli() {
         "$@"
 }
 
+cmd_mysql_help="<server|cli>"
 cmd_mysql() {
+    if [[ $# -lt 1 ]]; then
+        bs_fatal "Usage: drun mysql $cmd_mysql_help [ARG]..."
+    fi
+    cmd=$1
+    shift
+    case $cmd in
+        server) mysql_server "$@" ;;
+        cli) mysql_cli "$@" ;;
+    esac
+}
+
+mysql_server() {
     docker_srv mysql \
         --env MYSQL_ROOT_PASSWORD="$(env ROOT_PASS)" \
         --env MYSQL_DATABASE="$(env DB)" \
@@ -150,7 +189,7 @@ cmd_mysql() {
         mysql:latest "$@"
 }
 
-cmd_mysql-cli() {
+mysql_cli() {
     docker_cli mysql-cli \
         mysql:latest mysql \
         --host=localhost --port="$(env MYSQL_PORT)" --protocol=tcp \
@@ -176,13 +215,26 @@ cmd_psql() {
         "$@"
 }
 
+cmd_trino_help="<server|cli>"
 cmd_trino() {
+    if [[ $# -lt 1 ]]; then
+        bs_fatal "Usage: drun trino $cmd_trino_help [ARG]..."
+    fi
+    cmd=$1
+    shift
+    case $cmd in
+        server) trino_server "$@" ;;
+        cli) trino_cli "$@" ;;
+    esac
+}
+
+trino_server() {
     docker_srv trino \
         --publish "$(env TRINO_PORT)":8080 \
         trinodb/trino:latest "$@"
 }
 
-cmd_trino-cli() {
+trino_cli() {
     docker_cli trino-cli \
         trinodb/trino:latest trino "$@"
 }

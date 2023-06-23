@@ -28,7 +28,7 @@ MAS=(1440147259 1352778147 425424353 405399194 1480068668 1477385213 803453959 1
 # wmctrl - for Slack & Spotify icon fixes
 # fonts-powerline - PowerlineSymbols only, no patched fonts
 # gnome-screensaver xautolock xcalib - for screen locking in awesome
-# libfuse2 - for NeoVim AppImage
+# libfuse2 - for AppImage, e.g. JetBrains Toolbox, NeoVim
 # unzip, zip - for SDKMAN
 # Not available or outdated in Ubuntu - bat, git-delta, zoxide
 DEB_PKGS=(build-essential colordiff exa fd-find fzf htop jq libfuse2 ninja-build ripgrep shellcheck tmux unzip zip zsh)

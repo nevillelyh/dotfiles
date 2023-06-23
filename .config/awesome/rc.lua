@@ -694,7 +694,7 @@ awful.rules.rules = {
     { rule_any = { name = { "JetBrains Toolbox" },
         }, properties = { placement = awful.placement.top_right }
     },
-    { rule_any = { class = { "Steam" },
+    { rule_any = { name = { "Steam" },
       }, properties = { tag = awful.screen.focused().tags[9], titlebars_enabled = false }
     },
     { rule_any = { class = { "jetbrains-fleet", "jetbrains-idea-ce" },

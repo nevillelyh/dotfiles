@@ -242,15 +242,19 @@ cmd_code() {
     code --list-extensions | grep 'dracula-theme\.theme-dracula' &> /dev/null && return 0
     bs_info_box "Setting up Visual Studio Code"
 
-    code --install-extension \
-        dracula-theme.theme-dracula \
-        GitHub.vscode-pull-request-github \
-        golang.go \
-        ms-azuretools.vscode-docker \
-        ms-vscode.cpptools-extension-pack \
-        rust-lang.rust-analyzer \
-        sswg.swift-lang \
+    extensions=(
+        dracula-theme.theme-dracula
+        GitHub.vscode-pull-request-github
+        golang.go
+        ms-azuretools.vscode-docker
+        ms-vscode.cpptools-extension-pack
+        rust-lang.rust-analyzer
+        sswg.swift-lang
         vadimcn.vscode-lldb
+    )
+    for ext in "${extensions[@]}"; do
+        code --install-extension "$ext"
+    done
     [[ "$BS_UNAME_S" != "Darwin" ]] || defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 }
 

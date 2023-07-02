@@ -259,6 +259,9 @@ run_nvim() {
     }
 
     exec="$cache/nvim"
+    # Workaround for Linux arm64
+    # https://github.com/matsuu/neovim-aarch64-appimage
+    [[ "$BS_UNAME_S-$BS_UNAME_M" != "Linux-aarch64" ]] && update
     update
     "$exec" "$@"
 }

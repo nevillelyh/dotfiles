@@ -13,6 +13,8 @@ else
     eval "$(curl -fsSL bit.ly/bs-dot-sh)"
 fi
 
+GUI=${GUI:-1}
+
 # Mac packages:
 # python - leave macOS bundled python alone
 # pinentry-mac - for GPG
@@ -94,6 +96,7 @@ cmd_apt() {
     sudo aptitude install -y "${DEB_PKGS[@]}"
 
     # The following are GUI apps
+    [[ $GUI -eq 1 ]] || return 0
     dpkg-query --show xorg &> /dev/null || return 0
 
     sudo aptitude install -y "${DEB_GUI_PKGS[@]}"
@@ -109,11 +112,13 @@ cmd_linux() {
     # Third-party packages
     bs_df files/install.sh cmake go
 
+    sudo aptitude install -y snapd
+    sudo snap install btop
+
     # The following are GUI apps
+    [[ $GUI -eq 1 ]] || return 0
     dpkg-query --show xorg &> /dev/null || return 0
 
-    # Snap Store
-    sudo aptitude install -y snapd
     sudo snap install btop slack spotify xseticon
 
     # Custom repositories
@@ -259,6 +264,7 @@ cmd_code() {
 }
 
 cmd_fonts() {
+    [[ $GUI -eq 1 ]] || return 0
     [[ "$BS_UNAME_S" == "Darwin" ]] || dpkg-query --show xorg &> /dev/null || return 0
     case "$BS_UNAME_S" in
         Darwin) fonts_dir="$HOME/Library/Fonts" ;;

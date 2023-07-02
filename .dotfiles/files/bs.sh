@@ -209,7 +209,10 @@ bs_df() {
     if [[ -f "$HOME/.dotfiles/$path" ]]; then
         bash "$HOME/.dotfiles/$path" "$@"
     else
-        curl -fsSL "https://raw.githubusercontent.com/nevillelyh/dotfiles/master/.dotfiles/$path" | bash -s -- "$@"
+        file=$(bs_temp_file bs-df)
+        curl -fsSL "https://raw.githubusercontent.com/nevillelyh/dotfiles/master/.dotfiles/$path" -o "$file"
+        bash "$file" "$@"
+        rm "$file"
     fi
 }
 

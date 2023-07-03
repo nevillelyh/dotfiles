@@ -136,7 +136,9 @@ run_bw() {
     }
 
     exec="$cache/bw"
-    update
+    # Workaround for Linux arm64
+    # $HOME/.dotfiles/builds/bitwarden/build.sh
+    [[ "$BS_UNAME_S-$BS_UNAME_M" != "Linux-aarch64" ]] && update
     "$exec" "$@"
 }
 

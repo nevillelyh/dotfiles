@@ -1,0 +1,6 @@
+[Desktop Entry]
+Version=2023.5.1
+Type=Application
+Name=Bitwarden
+Exec=/home/neville/.dotfiles/libexec/cache/Bitwarden.AppImage
+Icon=bitwarden.png

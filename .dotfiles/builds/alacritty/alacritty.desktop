@@ -1,0 +1,6 @@
+[Desktop Entry]
+Version=0.12.2
+Type=Application
+Name=Alacritty
+Exec=/home/neville/.dotfiles/libexec/cache/alacritty
+Icon=alacritty.svg

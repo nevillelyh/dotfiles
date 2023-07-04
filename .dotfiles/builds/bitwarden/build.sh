@@ -5,10 +5,6 @@ set -euo pipefail
 cli_version=2023.5.0
 
 run_guest() {
-    apt update
-    apt upgrade -y
-    apt install -y git
-
     git clone https://github.com/bitwarden/clients.git
 
     cd /clients

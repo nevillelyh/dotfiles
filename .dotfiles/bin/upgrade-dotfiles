@@ -37,7 +37,7 @@ cmd_git() {
     git pull --rebase --autostash
     git submodule update --init --recursive --remote
     for path in $(git submodule status  | grep '^[^ ]' | awk '{print $2}'); do
-        git add "$path"
+        git add -f "$path"
         local prefix
         if [[ $path == .config/awesome/* ]]; then
             prefix="[awesome]"

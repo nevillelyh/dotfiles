@@ -52,6 +52,17 @@ cmd_ssh() {
     ssh-add "${keys[@]}"
 }
 
+cmd_mac() {
+    [[ "$BS_UNAME_S" != "Darwin" ]] && return 0
+    bs_info_box "Setting up Mac specifics"
+
+    read -r -p "Enter hostname: "
+    sudo scutil --set ComputerName "$REPLY"
+    sudo scutil --set HostName "$REPLY"
+    sudo scutil --set LocalHostName "$REPLY"
+    dscacheutil -flushcache
+}
+
 cmd_homebrew() {
     [[ "$BS_UNAME_S" != "Darwin" ]] && return 0
     [[ -L /opt/homebrew/bin/zoxide ]] && return 0
@@ -61,7 +72,15 @@ cmd_homebrew() {
     brew install "${BREWS[@]}"
     brew install --cask "${CASKS[@]}"
 
-    mas install "${MAS[@]}"
+    read -n 1 -r -p "Install optional casks (y/N)? "
+    echo # (optional) move to a new line
+    [[ $REPLY =~ ^[Yy]$ ]] && brew install --cask "${CASKS_OPT[@]}"
+}
+
+cmd_mac_extras() {
+    [[ "$BS_UNAME_S" != "Darwin" ]] && return 0
+    [[ -d "$HOME/.local/share/terminfo" ]] && return 0
+    bs_info_box "Setting up Mac extras"
 
     # https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
     # https://github.com/htop-dev/htop/issues/251
@@ -70,19 +89,13 @@ cmd_homebrew() {
     /usr/bin/tic -x -o "$HOME/.local/share/terminfo" "$HOME/tmux-256color"
     rm "$HOME/tmux-256color"
 
-    read -n 1 -r -p "Install optional casks (y/N)? "
-    echo # (optional) move to a new line
-    [[ $REPLY =~ ^[Yy]$ ]] && brew install --cask "${CASKS_OPT[@]}"
+    mas install "${MAS[@]}"
 }
 
-cmd_mac() {
-    [[ "$BS_UNAME_S" != "Darwin" ]] && return 0
-    bs_info_box "Setting up Mac specifics"
-
-    read -r -p "Enter hostname: "
-    sudo scutil --set ComputerName "$REPLY"
-    sudo scutil --set HostName "$REPLY"
-    sudo scutil --set LocalHostName "$REPLY"
+cmd_linux() {
+    [[ "$BS_UNAME_S" != "Linux" ]] && return 0
+    bs_info_box "Setting up Linux specifics"
+    # Nothing to do here
 }
 
 cmd_apt() {
@@ -102,10 +115,10 @@ cmd_apt() {
     sudo aptitude install -y "${DEB_GUI_PKGS[@]}"
 }
 
-cmd_linux() {
+cmd_linux_extras() {
     [[ "$BS_UNAME_S" != "Linux" ]] && return 0
     [[ -d /usr/local/go ]] && return 0
-    bs_info_box "Setting up Linux specifics"
+    bs_info_box "Setting up Linux extras"
 
     type nvidia-smi &> /dev/null && sudo aptitude install -y nvtop
 
@@ -345,12 +358,14 @@ bootstrap() {
 
     case "$BS_UNAME_S" in
         Darwin)
-            cmd_homebrew
             cmd_mac
+            cmd_homebrew
+            cmd_mac_extras
             ;;
         Linux)
-            cmd_apt
             cmd_linux
+            cmd_apt
+            cmd_linux_extras
             ;;
     esac
 

@@ -57,10 +57,14 @@ cmd_mac() {
     bs_info_box "Setting up Mac specifics"
 
     read -r -p "Enter hostname: "
+    [[ "$(scutil --get ComputerName)" == "$REPLY" ]] && return 0
     sudo scutil --set ComputerName "$REPLY"
     sudo scutil --set HostName "$REPLY"
     sudo scutil --set LocalHostName "$REPLY"
     dscacheutil -flushcache
+
+    bs_warn_box "Restarting"
+    sudo shutdown -r
 }
 
 cmd_homebrew() {

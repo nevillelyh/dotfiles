@@ -40,7 +40,7 @@ run_guest() {
 }
 
 run_host() {
-    base="$(readlink -f "$0")"
+    base="$(dirname "$(readlink -f "$0")")"
     cd "$base"
     docker run --name bitwarden --volume "$base":/build.sh node:18 /build.sh
     docker cp bitwarden:/clients/apps/cli/dist/linux/bw .

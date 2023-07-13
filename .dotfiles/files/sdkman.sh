@@ -11,7 +11,7 @@ else
     eval "$(curl -fsSL bit.ly/bs-dot-sh)"
 fi
 
-java_versions=(8 11 17)
+java_versions=(8 11 17 20)
 java_default=17
 java_dist="amzn"
 scala_versions=(2.13 3)

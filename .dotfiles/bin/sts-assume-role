@@ -10,7 +10,9 @@ if [[ $# -ne 1 ]]; then
 fi
 
 # shellcheck disable=SC2016
-echo '# eval $(sts-assume-role <ROLE_ARN>)'
+if [ -t 1 ]; then
+    echo '# eval $(sts-assume-role <ROLE_ARN>)'
+fi
 envs="$(aws sts assume-role --role-arn "$1" --role-session-name zsh \
     --query "Credentials.[AccessKeyId,SecretAccessKey,SessionToken]" \
     --output text)"

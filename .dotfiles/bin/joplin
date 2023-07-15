@@ -24,7 +24,21 @@ if [[ ! -f "$file" ]] || [[ $(bs_file_age "$file") -ge $ttl ]]; then
     touch "$file"
 fi
 
+read -r -d '' settings << EOF || true
+{
+    "locale": "en_US",
+    "dateFormat": "MM/DD/YYYY",
+    "timeFormat": "h:mm A",
+    "sync.target": 7
+}
+EOF
+
 mkdir -p "$HOME/.cache/joplin"
+json="$HOME/.cache/joplin/settings.json"
+if ! [[ -f "$json" ]]; then
+    echo "$settings" > "$json"
+fi
+
 docker run -it --rm \
     -v "$HOME/.cache/joplin:/home/node/.config/joplin" \
     "$image" "$@"

@@ -1,10 +1,21 @@
 #!/bin/bash
 
+# Build Bitwarden for arm64
+
 set -euo pipefail
 
 cli_version=2023.5.0
 desktop_version=2023.5.1
 icon_url='https://github.com/bitwarden/clients/blob/master/apps/desktop/src/images/icon.png?raw=true'
+
+read -r -d '' desktop << EOF || true
+[Desktop Entry]
+Version=$desktop_version
+Type=Application
+Name=Bitwarden
+Exec=/home/neville/.dotfiles/libexec/cache/Bitwarden.AppImage
+Icon=bitwarden.png
+EOF
 
 run_guest() {
     git clone https://github.com/bitwarden/clients.git
@@ -40,9 +51,9 @@ run_guest() {
 }
 
 run_host() {
-    base="$(dirname "$(readlink -f "$0")")"
-    cd "$base"
-    docker run --name bitwarden --volume "$base":/build.sh node:18 /build.sh
+    script="$(readlink -f "$0")"
+    cd "$(dirname "$script")"
+    docker run --name bitwarden --volume "$script":/build.sh node:18 /build.sh
     docker cp bitwarden:/clients/apps/cli/dist/linux/bw .
     docker cp "bitwarden:/clients/apps/desktop/dist/Bitwarden-$desktop_version-arm64.AppImage" .
     docker rm bitwarden
@@ -52,7 +63,7 @@ run_host() {
     mkdir -p "$HOME/.local/share/icons"
     curl -fsSL "$icon_url" -o "$HOME/.local/share/icons/bitwarden.png"
     mkdir -p "$HOME/.local/share/applications"
-    ln -frs bitwarden.desktop "$HOME/.local/share/applications"
+    echo "$desktop" > "$HOME/.local/share/applications/bitwarden.desktop"
 }
 
 if [[ -f /.dockerenv ]]; then

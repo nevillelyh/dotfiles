@@ -223,7 +223,7 @@ local function wifi_signal_to_icon(signal)
     end
 end
 
-local vpns = { ids = {}, activated = nil, activating = nil }
+local vpn_activated = false
 local vpn_icons = {
     default = icons_dir .. "ePapirus/network-vpn-patched.svg",
     activated = icons_dir .. "ePapirus/network-vpn.svg",
@@ -231,86 +231,52 @@ local vpn_icons = {
 }
 
 local function set_vpn_icon(widget)
-    local cmd = "nmcli -t -f name,type,state connection | grep ':vpn:' | cut -d ':' -f 1,3"
-    awful.spawn.easy_async_with_shell(cmd, function(stdout,_,_,_)
-        vpns = { ids = {}, activated = nil, activating = nil }
-        local vpn_icon = vpn_icons.default
-        for line in stdout:gmatch("[^\r\n]+") do
-            local i, _ = line:find(":")
-            local id = line:sub(1, i - 1)
-            if line:find(":activated$") then
-                vpn_icon = vpn_icons.activated
-                vpns.activated = id
-            elseif line:find(":activating$") then
-                vpn_icon = vpn_icons.activating
-                vpns.activating = id
-            end
-            vpns.ids[#vpns.ids+1] = id
-        end
-        if #vpns.ids > 0 then
-            widget:set_image(vpn_icon)
-            vpns.icon = vpn_icon
-        else
+    local cmd = "expressvpn status | head -n 1 | sed -e 's/^\\x1b\\[[0-9;]*m//g'"
+    awful.spawn.easy_async_with_shell(cmd, function(stdout,_,_,exit_code)
+        if exit_code ~= 0 then
             widget:set_image(nil)
+        else
+            if stdout:find("^Connected") ~= Nil then
+                vpn_activated = true
+                vpn_icon = vpn_icons.activated
+            else
+                vpn_activated = false
+                vpn_icon = vpn_icons.default
+            end
+            widget:set_image(vpn_icon)
         end
     end)
-end
-
-local function vpn_up(id)
-    awful.spawn.easy_async(awesome_path .. "scripts/nmcli.sh up " .. id, function(_,_,_,exit_code)
-        if exit_code == 0 then
-            naughty.notify({ title = "Connected to VPN: " .. id })
-        elseif exit_code ~= 130 then
-            -- Script terminated by Control-C, e.g. cancelled
-            naughty.notify({ title = "Failed to connect to VPN: " .. id })
-        end
-    end)
-end
-
-local function vpn_down(id)
-    awful.spawn.easy_async(awesome_path .. "scripts/nmcli.sh down " .. id, function(_,_,_,exit_code)
-        if exit_code == 0 then
-            naughty.notify({ title = "Disconnected from VPN: " .. id })
-        elseif exit_code ~= 130 then
-            -- Script terminated by Control-C, e.g. cancelled
-            naughty.notify({ title = "Failed to disconnect from VPN: " .. id })
-        end
-    end)
-end
-
-local function vpn_notify(title)
-    naughty.notify({ title = title, text = "Disconnect first" })
 end
 
 local function on_vpn_button_press(widget)
     widget:connect_signal("button::press", function(_,_,_,button)
         if (button == 1) then
             set_vpn_icon(widget)
-            table.sort(vpns.ids)
-            items = {}
-            for _, id in ipairs(vpns.ids) do
-                local icon = nil
-                local action = nil
-                if id == vpns.activated then
-                    icon = vpn_icons.activated
-                    action = function() vpn_down(id) end
-                elseif id == vpns.activating then
-                    icon = vpn_icons.activating
-                    action = function() vpn_notify("Connecting to " .. id) end
-                else
-                    icon = vpn_icons.default
-                    if vpns.activated then
-                        action = function() vpn_notify("Connected to " .. id) end
-                    elseif vpns.activating then
-                        action = function() vpn_notify("Connecting to " .. id) end
+            if vpn_activated then
+                naughty.notify({ title = "Disconnecting from ExpressVPN" })
+                awful.spawn.easy_async("expressvpn disconnect", function(_,_,_,exit_code)
+                    if exit_code == 0 then
+                        naughty.notify({ title = "Disconnected from ExpressVPN" })
                     else
-                        action = function() vpn_up(id) end
+                        naughty.notify({
+                            preset = naughty.config.presets.critical,
+                            title = "Failed to disconnect from ExpressVPN",
+                        })
                     end
-                end
-                items[#items+1] = { id, action, icon }
+                end)
+            else
+                naughty.notify({ title = "Connecting to ExpressVPN" })
+                awful.spawn.easy_async("expressvpn connect", function(_,_,_,exit_code)
+                    if exit_code == 0 then
+                        naughty.notify({ title = "Connected from ExpressVPN" })
+                    else
+                        naughty.notify({
+                            preset = naughty.config.presets.critical,
+                            title = "Failed to connect from ExpressVPN",
+                        })
+                    end
+                end)
             end
-            menu = awful.menu({ items = items })
-            menu:show()
         end
     end)
 end
@@ -387,13 +353,10 @@ local function net()
     local vpn_tooltip = awful.tooltip(tooltip_preset)
     vpn_tooltip:add_to_object(vpn_widget)
     vpn_widget:connect_signal("mouse::enter", function()
-        local cmd = "nmcli | awk '/VPN connection/' RS="
-        awful.spawn.easy_async_with_shell(cmd, function(stdout,_,_,_)
-            stdout = stdout:gsub("%s*$", "")
-            if stdout ~= "" then
-                vpn_tooltip:set_markup(fmt_net(stdout))
-            else
-                vpn_tooltip:set_markup("Not connected")
+        local cmd = "expressvpn status | head -n 1 | sed -e 's/^\\x1b\\[[0-9;]*m//g'"
+        awful.spawn.easy_async_with_shell(cmd, function(stdout,_,_,exit_code)
+            if exit_code == 0 then
+                vpn_tooltip:set_markup(stdout)
             end
         end)
     end)

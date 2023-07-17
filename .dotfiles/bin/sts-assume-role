@@ -9,8 +9,8 @@ if [[ $# -ne 1 ]]; then
     exit
 fi
 
-# shellcheck disable=SC2016
 if [ -t 1 ]; then
+    # shellcheck disable=SC2016
     echo '# eval $(sts-assume-role <ROLE_ARN>)'
 fi
 envs="$(aws sts assume-role --role-arn "$1" --role-session-name zsh \

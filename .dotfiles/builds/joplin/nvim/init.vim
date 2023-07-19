@@ -6,7 +6,6 @@ set mouse=a
 " Tabs and spaces
 set shiftwidth=4
 set tabstop=4
-set noexpandtab
 
 " Indentation
 set smartindent
@@ -29,6 +28,9 @@ function! ToggleKeymap()
   endif
 endfunction
 nmap <silent> <C-Space> :call ToggleKeymap()<CR>
+
+" Override Markdown file type to match Joplin Desktop
+:autocmd FileType markdown setlocal noexpandtab
 
 source $HOME/.config/nvim/dein.vim
 

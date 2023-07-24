@@ -88,6 +88,7 @@ cmd_mac_extras() {
 
     # https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
     # https://github.com/htop-dev/htop/issues/251
+    cd "$HOME"
     wget -nv https://gist.githubusercontent.com/nicm/ea9cf3c93f22e0246ec858122d9abea1/raw/37ae29fc86e88b48dbc8a674478ad3e7a009f357/tmux-256color
     mkdir -p "$HOME/.local/share/terminfo"
     /usr/bin/tic -x -o "$HOME/.local/share/terminfo" "$HOME/tmux-256color"

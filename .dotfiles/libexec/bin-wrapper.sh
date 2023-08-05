@@ -160,7 +160,7 @@ run_cockroach() {
         local version=$1
         case "$arch" in
             x86_64) arch="amd64" ;;
-            aarch64) arch="3.7.10-gnu-aarch64" ;;
+            aarch64) arch="arm64" ;;
         esac
         local prefix="https://binaries.cockroachdb.com"
         local build="cockroach-$version.$os-$arch"

@@ -242,6 +242,36 @@ run_gh() {
     "$exec" "$@"
 }
 
+run_lazydocker() {
+    brew_run lazydocker lazydocker "$@"
+
+    get_latest() {
+        bs_gh_latest "jesseduffield/lazydocker"
+    }
+
+    get_current() {
+        "$exec" --version | grep '^Version' | awk '{print $2}'
+    }
+
+    download() {
+        local version=$1
+        case "$arch" in
+            x86_64) ;;
+            aarch64) arch="arm64" ;;
+        esac
+        local prefix="https://github.com/jesseduffield/lazydocker/releases/download"
+        local build="lazydocker_${version}_${BS_UNAME_S}_$arch"
+        local tarball="$build.tar.gz"
+        local url="$prefix/v$version/$tarball"
+        curl -fsSL "$url" | tar -C "$cache" -xz lazydocker
+        touch "$exec"
+    }
+
+    exec="$cache/lazydocker"
+    update
+    "$exec" "$@"
+}
+
 run_nvim() {
     brew_run neovim nvim "$@"
 

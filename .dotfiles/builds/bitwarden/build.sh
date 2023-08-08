@@ -4,8 +4,8 @@
 
 set -euo pipefail
 
-cli_version=2023.5.0
-desktop_version=2023.5.1
+cli_version=2023.7.0
+desktop_version=2023.7.1
 icon_url='https://github.com/bitwarden/clients/blob/master/apps/desktop/src/images/icon.png?raw=true'
 
 read -r -d '' desktop << EOF || true

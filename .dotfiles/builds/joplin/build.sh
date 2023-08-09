@@ -10,7 +10,9 @@ version=$(grep '^ARG VERSION=' Dockerfile | cut -d '=' -f 2)
 [[ -d dein.vim ]] && rm -rf dein.vim
 git clone https://github.com/Shougo/dein.vim.git
 
-docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+if [[ "$(uname -m)" == x86_64 ]]; then
+    docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+fi
 docker buildx inspect cross-build &> /dev/null || docker buildx create --name cross-build --use
 docker buildx build --platform linux/amd64,linux/arm64 --tag "$image:latest" --tag "$image:$version" --push .
 

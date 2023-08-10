@@ -142,6 +142,60 @@ run_bw() {
     "$exec" "$@"
 }
 
+run_cfssl() {
+    brew_run cfssl cfssl "$@"
+
+    get_latest() {
+        bs_gh_latest "cloudflare/cfssl"
+    }
+
+    get_current() {
+        "$exec" version | head -n 1 | sed 's/^Version: \(.\+\)$/\1/'
+    }
+
+    download() {
+        local version=$1
+        case "$arch" in
+            x86_64) arch="amd64" ;;
+            aarch64) arch="arm64" ;;
+        esac
+        local url="https://github.com/cloudflare/cfssl/releases/download/v1.6.4/cfssl_${version}_${os}_${arch}"
+        curl -fsSL "$url" -o "$exec"
+        chmod +x "$exec"
+    }
+
+    exec="$cache/cfssl"
+    update
+    "$exec" "$@"
+}
+
+run_cfssljson() {
+    brew_run cfssl cfssljson "$@"
+
+    get_latest() {
+        bs_gh_latest "cloudflare/cfssl"
+    }
+
+    get_current() {
+        "$exec" --version | head -n 1 | sed 's/^Version: \(.\+\)$/\1/'
+    }
+
+    download() {
+        local version=$1
+        case "$arch" in
+            x86_64) arch="amd64" ;;
+            aarch64) arch="arm64" ;;
+        esac
+        local url="https://github.com/cloudflare/cfssl/releases/download/v1.6.4/cfssljson_${version}_${os}_${arch}"
+        curl -fsSL "$url" -o "$exec"
+        chmod +x "$exec"
+    }
+
+    exec="$cache/cfssljson"
+    update
+    "$exec" "$@"
+}
+
 run_cockroach() {
     brew_run cockroachdb/tap/cockroach cockroach "$@"
 

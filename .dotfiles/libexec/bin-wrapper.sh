@@ -111,7 +111,7 @@ run_bw() {
     get_latest() {
         local url="https://api.github.com/repos/bitwarden/clients/releases"
         local header="Accept: application/vnd.github.v3+json"
-        curl -fsSL -H "$header" "$url" | jq --raw-output '.[].tag_name' | grep "^cli-v" | sed 's/^cli-v//' | head -n 1
+        curl -fsSL -H "$header" "$url" | jq --raw-output '.[].tag_name' | grep "^cli-v" | sed 's/cli-v\(.\+\)$/\1/' | head -n 1
     }
 
     get_current() {
@@ -250,7 +250,7 @@ run_lazydocker() {
     }
 
     get_current() {
-        "$exec" --version | grep '^Version' | awk '{print $2}'
+        "$exec" --version | head -n 1 | sed 's/^Version: \(.\+\)$/\1/'
     }
 
     download() {
@@ -280,7 +280,7 @@ run_nvim() {
     }
 
     get_current() {
-        "$exec" --version 2> /dev/null | head -n 1 | sed 's/^NVIM v//g'
+        "$exec" --version 2> /dev/null | head -n 1 | sed 's/^NVIM v\(.\+\)$/\1/'
     }
 
     download() {
@@ -301,7 +301,7 @@ run_nvim() {
 run_presto() {
     get_latest() {
         js_url="https://prestodb.io/static/js/version.js"
-        curl -fsSL "$js_url" | grep '\<presto_latest_presto_version\>' | sed "s/[^']*'\([^']*\)';/\1/"
+        curl -fsSL "$js_url" | grep '\<presto_latest_presto_version\>' | sed "s/[^']*'\([^']*\)';$/\1/"
     }
 
     get_current() {

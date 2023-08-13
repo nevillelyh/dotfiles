@@ -14,7 +14,7 @@ os=$(echo "$BS_UNAME_S" | tr "[:upper:]" "[:lower:]")
 arch="$BS_UNAME_M"
 
 brew_run() {
-    [[ "$BS_UNAME_S" != "Darwin" ]] && return 0
+    [[ "$BS_UNAME_S" != Darwin ]] && return 0
     local brew_pkg="$1"
     local brew_bin="/opt/homebrew/bin/$2"
     shift 2
@@ -69,7 +69,7 @@ run_b2() {
     brew_run b2-tools b2 "$@"
 
     get_latest() {
-        bs_gh_latest "Backblaze/B2_Command_Line_Tool"
+        bs_gh_latest Backblaze/B2_Command_Line_Tool
     }
 
     get_current() {
@@ -90,7 +90,7 @@ run_bazel() {
     brew_run bazelisk bazel "$@"
 
     get_latest() {
-        bs_gh_latest "bazelbuild/bazelisk"
+        bs_gh_latest bazelbuild/bazelisk
     }
 
     get_current() {
@@ -100,8 +100,8 @@ run_bazel() {
     download() {
         local version=$1
         case "$arch" in
-            x86_64) arch="amd64" ;;
-            aarch64) arch="arm64" ;;
+            x86_64) arch=amd64 ;;
+            aarch64) arch=arm64 ;;
         esac
         download_gh_bin bazelbuild/bazelisk "$version" "bazelisk-$os-$arch"
     }
@@ -142,7 +142,7 @@ run_bw() {
     exec="$cache/bw"
     # Workaround for Linux arm64
     # $HOME/.dotfiles/builds/bitwarden/build.sh
-    [[ "$BS_UNAME_S-$BS_UNAME_M" != "Linux-aarch64" ]] && update
+    [[ "$os-$arch" != linux-aarch64 ]] && update
     "$exec" "$@"
 }
 
@@ -150,7 +150,7 @@ run_cfssl() {
     brew_run cfssl cfssl "$@"
 
     get_latest() {
-        bs_gh_latest "cloudflare/cfssl"
+        bs_gh_latest cloudflare/cfssl
     }
 
     get_current() {
@@ -160,8 +160,8 @@ run_cfssl() {
     download() {
         local version=$1
         case "$arch" in
-            x86_64) arch="amd64" ;;
-            aarch64) arch="arm64" ;;
+            x86_64) arch=amd64 ;;
+            aarch64) arch=arm64 ;;
         esac
         download_gh_bin cloudflare/cfssl "$version" "cfssl_${version}_${os}_${arch}"
     }
@@ -175,7 +175,7 @@ run_cfssljson() {
     brew_run cfssl cfssljson "$@"
 
     get_latest() {
-        bs_gh_latest "cloudflare/cfssl"
+        bs_gh_latest cloudflare/cfssl
     }
 
     get_current() {
@@ -185,8 +185,8 @@ run_cfssljson() {
     download() {
         local version=$1
         case "$arch" in
-            x86_64) arch="amd64" ;;
-            aarch64) arch="arm64" ;;
+            x86_64) arch=amd64 ;;
+            aarch64) arch=arm64 ;;
         esac
         download_gh_bin cloudflare/cfssl "$version" "cfssljson_${version}_${os}_${arch}"
     }
@@ -213,8 +213,8 @@ run_cockroach() {
     download() {
         local version=$1
         case "$arch" in
-            x86_64) arch="amd64" ;;
-            aarch64) arch="arm64" ;;
+            x86_64) arch=amd64 ;;
+            aarch64) arch=arm64 ;;
         esac
         local prefix="https://binaries.cockroachdb.com"
         local build="cockroach-$version.$os-$arch"
@@ -235,7 +235,7 @@ run_flatc() {
     brew_run flatbuffers flatc "$@"
 
     get_latest() {
-        bs_gh_latest "google/flatbuffers"
+        bs_gh_latest google/flatbuffers
     }
 
     get_current() {
@@ -266,7 +266,7 @@ run_gh() {
     brew_run gh gh "$@"
 
     get_latest() {
-        bs_gh_latest "cli/cli"
+        bs_gh_latest cli/cli
     }
 
     get_current() {
@@ -276,8 +276,8 @@ run_gh() {
     download() {
         local version=$1
         case "$arch" in
-            x86_64) arch="amd64" ;;
-            aarch64) arch="arm64" ;;
+            x86_64) arch=amd64 ;;
+            aarch64) arch=arm64 ;;
         esac
         local prefix="https://github.com/cli/cli/releases/download"
         local build="gh_${version}_${os}_$arch"
@@ -300,7 +300,7 @@ run_helm() {
     brew_run helm helm "$@"
 
     get_latest() {
-        bs_gh_latest "helm/helm"
+        bs_gh_latest helm/helm
     }
 
     get_current() {
@@ -310,8 +310,8 @@ run_helm() {
     download() {
         local version=$1
         case "$arch" in
-            x86_64) arch="amd64" ;;
-            aarch64) arch="arm64" ;;
+            x86_64) arch=amd64 ;;
+            aarch64) arch=arm64 ;;
         esac
         curl -fsSL "https://get.helm.sh/helm-v$version-$os-$arch.tar.gz" | tar -C "$cache" -xz --strip 1 "$os-$arch/helm"
 
@@ -327,7 +327,7 @@ run_k3d() {
     brew_run k3d k3d "$@"
 
     get_latest() {
-        bs_gh_latest "k3d-io/k3d"
+        bs_gh_latest k3d-io/k3d
     }
 
     get_current() {
@@ -337,8 +337,8 @@ run_k3d() {
     download() {
         local version=$1
         case "$arch" in
-            x86_64) arch="amd64" ;;
-            aarch64) arch="arm64" ;;
+            x86_64) arch=amd64 ;;
+            aarch64) arch=arm64 ;;
         esac
         download_gh_bin k3d-io/k3d "$version" "k3d-$os-$arch"
 
@@ -354,7 +354,7 @@ run_lazydocker() {
     brew_run lazydocker lazydocker "$@"
 
     get_latest() {
-        bs_gh_latest "jesseduffield/lazydocker"
+        bs_gh_latest jesseduffield/lazydocker
     }
 
     get_current() {
@@ -365,7 +365,7 @@ run_lazydocker() {
         local version=$1
         case "$arch" in
             x86_64) ;;
-            aarch64) arch="arm64" ;;
+            aarch64) arch=arm64 ;;
         esac
         local prefix="https://github.com/jesseduffield/lazydocker/releases/download"
         local build="lazydocker_${version}_${BS_UNAME_S}_$arch"
@@ -384,7 +384,7 @@ run_nvim() {
     brew_run neovim nvim "$@"
 
     get_latest() {
-        bs_gh_tags "neovim/neovim" | sort --version-sort | tail -n 1
+        bs_gh_tags neovim/neovim | sort --version-sort | tail -n 1
     }
 
     get_current() {
@@ -399,7 +399,7 @@ run_nvim() {
     exec="$cache/nvim"
     # Workaround for Linux arm64
     # https://github.com/matsuu/neovim-aarch64-appimage
-    [[ "$BS_UNAME_S-$BS_UNAME_M" != "Linux-aarch64" ]] && update
+    [[ "$os-$arch" != linux-aarch64 ]] && update
     update
     "$exec" "$@"
 }
@@ -430,7 +430,7 @@ run_protoc() {
     brew_run protobuf protoc "$@"
 
     get_latest() {
-        bs_gh_latest "protocolbuffers/protobuf"
+        bs_gh_latest protocolbuffers/protobuf
     }
 
     get_current() {
@@ -441,7 +441,7 @@ run_protoc() {
         local version=$1
         case "$arch" in
             x86_64) ;;
-            aarch64) arch="aarch_64" ;;
+            aarch64) arch=aarch_64 ;;
         esac
         local prefix="https://github.com/protocolbuffers/protobuf/releases/download"
         local zip="protoc-$version-$os-$arch.zip"
@@ -493,7 +493,7 @@ get_bins() {
 
 bin="$(basename "$0")"
 
-if [[ "$bin" == "bin-wrapper.sh" ]]; then
+if [[ "$bin" == bin-wrapper.sh ]]; then
     get_bins
     echo "Binary wrapper for:"
     for bin in "${bins[@]}"; do

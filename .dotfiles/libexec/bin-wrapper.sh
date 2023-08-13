@@ -296,6 +296,34 @@ run_gh() {
     "$exec" "$@"
 }
 
+run_k3d() {
+    brew_run k3d k3d "$@"
+
+    get_latest() {
+        bs_gh_latest "k3d-io/k3d"
+    }
+
+    get_current() {
+        "$exec" --version | head -n 1 | sed 's/^k3d version v\(.\+\)/\1/'
+    }
+
+    download() {
+        local version=$1
+        case "$arch" in
+            x86_64) arch="amd64" ;;
+            aarch64) arch="arm64" ;;
+        esac
+        local prefix="https://github.com/k3d-io/k3d/releases/download"
+        local url="$prefix/v$version/k3d-$os-$arch"
+        curl -fsSL "$url" -o "$exec"
+        chmod +x "$exec"
+    }
+
+    exec="$cache/k3d"
+    update
+    "$exec" "$@"
+}
+
 run_lazydocker() {
     brew_run lazydocker lazydocker "$@"
 

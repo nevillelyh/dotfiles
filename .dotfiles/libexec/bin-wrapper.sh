@@ -159,7 +159,7 @@ run_cfssl() {
             x86_64) arch="amd64" ;;
             aarch64) arch="arm64" ;;
         esac
-        local url="https://github.com/cloudflare/cfssl/releases/download/v1.6.4/cfssl_${version}_${os}_${arch}"
+        local url="https://github.com/cloudflare/cfssl/releases/download/v$version/cfssl_${version}_${os}_${arch}"
         curl -fsSL "$url" -o "$exec"
         chmod +x "$exec"
     }
@@ -186,7 +186,7 @@ run_cfssljson() {
             x86_64) arch="amd64" ;;
             aarch64) arch="arm64" ;;
         esac
-        local url="https://github.com/cloudflare/cfssl/releases/download/v1.6.4/cfssljson_${version}_${os}_${arch}"
+        local url="https://github.com/cloudflare/cfssl/releases/download/v$version/cfssljson_${version}_${os}_${arch}"
         curl -fsSL "$url" -o "$exec"
         chmod +x "$exec"
     }

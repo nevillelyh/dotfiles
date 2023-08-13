@@ -314,6 +314,8 @@ run_k3d() {
             aarch64) arch="arm64" ;;
         esac
         download_gh_bin k3d-io/k3d "$version" "k3d-$os-$arch"
+
+        mk_comp "$exec" completion zsh
     }
 
     exec="$cache/k3d"

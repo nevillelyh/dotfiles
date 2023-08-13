@@ -296,6 +296,33 @@ run_gh() {
     "$exec" "$@"
 }
 
+run_helm() {
+    brew_run helm helm "$@"
+
+    get_latest() {
+        bs_gh_latest "helm/helm"
+    }
+
+    get_current() {
+        "$exec" version --short | sed 's/v\([^+]\+\).\+/\1/'
+    }
+
+    download() {
+        local version=$1
+        case "$arch" in
+            x86_64) arch="amd64" ;;
+            aarch64) arch="arm64" ;;
+        esac
+        curl -fsSL "https://get.helm.sh/helm-v$version-$os-$arch.tar.gz" | tar -C "$cache" -xz --strip 1 "$os-$arch/helm"
+
+        mk_comp "$exec" completion zsh
+    }
+
+    exec="$cache/helm"
+    update
+    "$exec" "$@"
+}
+
 run_k3d() {
     brew_run k3d k3d "$@"
 

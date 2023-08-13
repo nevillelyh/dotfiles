@@ -270,6 +270,7 @@ cmd_code() {
         GitHub.vscode-pull-request-github
         golang.go
         ms-azuretools.vscode-docker
+        ms-kubernetes-tools.vscode-kubernetes-tools
         ms-vscode.cpptools-extension-pack
         rust-lang.rust-analyzer
         sswg.swift-lang

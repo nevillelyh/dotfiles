@@ -47,6 +47,16 @@ update() {
     fi
 }
 
+download_gh_bin() {
+    local repo=$1
+    local version=$2
+    local bin=$3
+    local prefix="https://github.com/$repo/releases/download"
+    local url="$prefix/v$version/$bin"
+    curl -fsSL "$url" -o "$exec"
+    chmod +x "$exec"
+}
+
 mk_comp() {
     local cmd=$1
     shift
@@ -68,10 +78,7 @@ run_b2() {
 
     download() {
         local version=$1
-        local prefix="https://github.com/Backblaze/B2_Command_Line_Tool/releases/download"
-        local url="$prefix/v$version/b2-$os"
-        curl -fsSL "$url" -o "$exec"
-        chmod +x "$exec"
+        download_gh_bin Backblaze/B2_Command_Line_Tool "$version" "b2-$os"
     }
 
     exec="$cache/b2"
@@ -96,10 +103,7 @@ run_bazel() {
             x86_64) arch="amd64" ;;
             aarch64) arch="arm64" ;;
         esac
-        local prefix="https://github.com/bazelbuild/bazelisk/releases/download"
-        local url="$prefix/v$version/bazelisk-$os-$arch"
-        curl -fsSL "$url" -o "$exec"
-        chmod +x "$exec"
+        download_gh_bin bazelbuild/bazelisk "$version" "bazelisk-$os-$arch"
     }
 
     exec="$cache/bazelisk"
@@ -159,9 +163,7 @@ run_cfssl() {
             x86_64) arch="amd64" ;;
             aarch64) arch="arm64" ;;
         esac
-        local url="https://github.com/cloudflare/cfssl/releases/download/v$version/cfssl_${version}_${os}_${arch}"
-        curl -fsSL "$url" -o "$exec"
-        chmod +x "$exec"
+        download_gh_bin cloudflare/cfssl "$version" "cfssl_${version}_${os}_${arch}"
     }
 
     exec="$cache/cfssl"
@@ -186,9 +188,7 @@ run_cfssljson() {
             x86_64) arch="amd64" ;;
             aarch64) arch="arm64" ;;
         esac
-        local url="https://github.com/cloudflare/cfssl/releases/download/v$version/cfssljson_${version}_${os}_${arch}"
-        curl -fsSL "$url" -o "$exec"
-        chmod +x "$exec"
+        download_gh_bin cloudflare/cfssl "$version" "cfssljson_${version}_${os}_${arch}"
     }
 
     exec="$cache/cfssljson"
@@ -313,10 +313,7 @@ run_k3d() {
             x86_64) arch="amd64" ;;
             aarch64) arch="arm64" ;;
         esac
-        local prefix="https://github.com/k3d-io/k3d/releases/download"
-        local url="$prefix/v$version/k3d-$os-$arch"
-        curl -fsSL "$url" -o "$exec"
-        chmod +x "$exec"
+        download_gh_bin k3d-io/k3d "$version" "k3d-$os-$arch"
     }
 
     exec="$cache/k3d"
@@ -367,9 +364,7 @@ run_nvim() {
 
     download() {
         local version=$1
-        local url="https://github.com/neovim/neovim/releases/download/v$version/nvim.appimage"
-        curl -fsSL "$url" -o "$exec"
-        chmod +x "$exec"
+        download_gh_bin neovim/neovim "$version" nvim.appimage
     }
 
     exec="$cache/nvim"

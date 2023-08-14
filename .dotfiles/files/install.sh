@@ -211,30 +211,6 @@ cmd_helm() {
     sudo snap install helm --classic
 }
 
-# https://kubernetes.io/docs/tasks/tools/
-cmd_kubectl() {
-    brew_install kubectl || return 0
-
-    local url="https://packages.cloud.google.com/apt/doc/apt-key.gpg"
-    local repo="deb [signed-by=/etc/apt/trusted.gpg.d/cloud.google.gpg] https://apt.kubernetes.io/ kubernetes-xenial main"
-    setup_gpg "$url" kubernetes-archive-keyring.gpg
-    setup_apt "$repo" kubernetes.list
-    sudo aptitude update
-    sudo aptitude install -y kubectl
-}
-
-# https://minikube.sigs.k8s.io/docs/start/
-cmd_minikube() {
-    brew_install minikube || return 0
-
-    local arch
-    arch=$(dpkg --print-architecture)
-    wget -nv "https://storage.googleapis.com/minikube/releases/latest/minikube_latest_$arch.deb"
-    sudo dpkg -i minikube_latest_*.deb
-    sudo aptitude install -fy
-    rm minikube_latest_*.deb
-}
-
 # https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
 cmd_nvidia() {
     local url="https://nvidia.github.io/libnvidia-container/gpgkey"

@@ -22,7 +22,4 @@ mk_comp() {
     type "$cmd" &> /dev/null && [[ ! -s "$sfpath/_$cmd" ]] && "$cmd" "$@" > "$sfpath/_$cmd"
 }
 
-mk_comp helm completion zsh
-mk_comp kubectl completion zsh
-mk_comp minikube completion zsh
 mk_comp zoxide init zsh

@@ -350,6 +350,34 @@ run_k3d() {
     "$exec" "$@"
 }
 
+run_kubectl() {
+    brew_run kubernetes-cli kubectl "$@"
+
+    get_latest() {
+        curl -L -s https://dl.k8s.io/release/stable.txt | sed 's/^v//'
+    }
+
+    get_current() {
+        "$exec" version --client=true --output=json | jq --raw-output '.clientVersion.gitVersion' | sed 's/^v//'
+    }
+
+    download() {
+        local version=$1
+        case "$arch" in
+            x86_64) arch=amd64 ;;
+            aarch64) arch=arm64 ;;
+        esac
+        curl -fsSL "https://dl.k8s.io/release/v$version/bin/$os/$arch/kubectl" -o "$exec"
+        chmod +x "$exec"
+
+        mk_comp "$exec" completion zsh
+    }
+
+    exec="$cache/kubectl"
+    update
+    "$exec" "$@"
+}
+
 run_lazydocker() {
     brew_run lazydocker lazydocker "$@"
 
@@ -376,6 +404,33 @@ run_lazydocker() {
     }
 
     exec="$cache/lazydocker"
+    update
+    "$exec" "$@"
+}
+
+run_minikube() {
+    brew_run minikube minikube "$@"
+
+    get_latest() {
+        bs_gh_latest kubernetes/minikube
+    }
+
+    get_current() {
+        "$exec" version | head -n 1 | sed 's/^minikube version: v\(.\+\)$/\1/'
+    }
+
+    download() {
+        case "$arch" in
+            x86_64) arch=amd64 ;;
+            aarch64) arch=arm64 ;;
+        esac
+        curl -fsSL "https://storage.googleapis.com/minikube/releases/latest/minikube-$os-$arch" -o "$exec"
+        chmod +x "$exec"
+
+        mk_comp "$exec" completion zsh
+    }
+
+    exec="$cache/minikube"
     update
     "$exec" "$@"
 }

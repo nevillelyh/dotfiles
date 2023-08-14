@@ -319,8 +319,7 @@ cmd_zsh() {
     esac
 
     # Missing ZSH completions for some packages, e.g. those from Cargo
-    mkdir -p "$HOME/.local/share/zsh/site-functions"
-    bs_df files/completions.sh "$HOME/.local/share/zsh/site-functions"
+    bs_df files/completions.sh
 }
 
 cmd_check() {

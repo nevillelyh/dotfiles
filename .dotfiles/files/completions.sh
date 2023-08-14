@@ -4,12 +4,7 @@
 
 set -euo pipefail
 
-if [[ $# -ne 1 ]]; then
-    echo "Usage: $(basename "$0") <DIR>"
-    exit 1
-fi
-
-out=$(realpath "$1")
+out="$HOME/.local/share/zsh/site-functions"
 mkdir -p "$out"
 
 tmp=$(mktemp -d)

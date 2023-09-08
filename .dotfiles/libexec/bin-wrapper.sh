@@ -455,7 +455,6 @@ run_nvim() {
     # Workaround for Linux arm64
     # https://github.com/matsuu/neovim-aarch64-appimage
     [[ "$os-$arch" != linux-aarch64 ]] && update
-    update
     "$exec" "$@"
 }
 

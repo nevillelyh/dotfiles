@@ -11,8 +11,8 @@ else
     eval "$(curl -fsSL bit.ly/bs-dot-sh)"
 fi
 
-java_versions=(8 11 17 20)
-java_default=17
+java_versions=(8 11 17 21)
+java_default=21
 java_dist="amzn"
 scala_versions=(2.13 3)
 scala_default=2.13
@@ -33,14 +33,12 @@ manage() {
 
 manage_java() {
     local versions
-    versions="$(sdk list java | awk '{print $(NF)}' | \
-        grep "\-$java_dist$" | grep -v "\.fx-$java_dist" | \
-        sort --version-sort)"
+    versions="$(sdk list java | awk '{print $(NF)}' | grep "\-$java_dist$" | sort --version-sort)"
     local matches=()
     local default
     for v in "${java_versions[@]}"; do
         local match
-        match=$(echo "$versions" | grep "^$v\." || true)
+        match=$(echo "$versions" | grep "^$v\>" || true)
         [[ -z "$match" ]] && bs_fatal "Java $v $java_dist not found"
         match=$(echo "$match" | tail -n 1)
         matches+=("$match")
@@ -57,7 +55,7 @@ manage_scala() {
     local default
     for v in "${scala_versions[@]}"; do
         local match
-        match=$(echo "$versions" | grep "^$v\." || true)
+        match=$(echo "$versions" | grep "^$v\>" || true)
         [[ -z "$match" ]] && bs_fatal "Scala $v not found"
         match=$(echo "$match" | tail -n 1)
         matches+=("$match")

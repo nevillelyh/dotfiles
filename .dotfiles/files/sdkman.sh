@@ -11,11 +11,15 @@ else
     eval "$(curl -fsSL bit.ly/bs-dot-sh)"
 fi
 
+# shellcheck disable=SC1091
+[[ -f "$HOME/.sdkman.conf" ]] && source "$HOME/.sdkman.conf"
 java_versions=(8 11 17 21)
-java_default=21
-java_dist="amzn"
+java_versions=( "${SDK_JAVA_VERSIONS[@]:-"${java_versions[@]}"}" )
+java_default=${SDK_JAVA_DEFAULT:-17}
+java_dist=${SDK_JAVA_DIST:-amzn}
 scala_versions=(2.13 3)
-scala_default=2.13
+scala_versions=( "${SDK_SCALA_VERSIONS[@]:-"${scala_versions[@]}"}" )
+scala_default=${SDK_SCALA_DEFAULT:-2.13}
 
 manage() {
     local candidate=$1

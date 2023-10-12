@@ -15,7 +15,7 @@ fi
 [[ -f "$HOME/.sdkman.conf" ]] && source "$HOME/.sdkman.conf"
 java_versions=(8 11 17 21)
 java_versions=( "${SDK_JAVA_VERSIONS[@]:-"${java_versions[@]}"}" )
-java_default=${SDK_JAVA_DEFAULT:-17}
+java_default=${SDK_JAVA_DEFAULT:-21}
 java_dist=${SDK_JAVA_DIST:-amzn}
 scala_versions=(2.13 3)
 scala_versions=( "${SDK_SCALA_VERSIONS[@]:-"${scala_versions[@]}"}" )

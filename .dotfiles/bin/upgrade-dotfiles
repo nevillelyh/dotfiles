@@ -26,8 +26,12 @@ cmd_os() {
             sudo aptitude -y autoclean
             sudo apt-get -y autoremove
             dpkg-query -l | grep '^rc' | awk '{print $2}' | xargs -r sudo aptitude -y purge || true
-            type snap &> /dev/null || return 0
-            sudo snap refresh
+            if type snap &> /dev/null; then
+                sudo snap refresh
+            fi
+            if [[ "$(lsb_release --id --short)" == Pop ]]; then
+                pop-upgrade recovery upgrade from-release
+            fi
             ;;
     esac
 }

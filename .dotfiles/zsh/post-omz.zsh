@@ -68,7 +68,15 @@ unset FD_COMMAND
 export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,hl:#bd93f9 --color=fg+:#f8f8f2,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4'
 
 if type virtualenvwrapper.sh &> /dev/null; then
-    export VIRTUALENVWRAPPER_PYTHON=$(which python3)
+    case "$(uname -s)" in
+        Linux)
+            VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+            ;;
+        Darwin)
+            VIRTUALENVWRAPPER_PYTHON=/opt/homebrew/bin/python3
+            ;;
+    esac
+    export VIRTUALENVWRAPPER_PYTHON
     export WORKON_HOME=$HOME/.virtualenvs
     source $(which virtualenvwrapper.sh)
 fi

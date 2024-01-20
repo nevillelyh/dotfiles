@@ -12,3 +12,4 @@ if [[ "$(uname -m)" == x86_64 ]]; then
 fi
 docker buildx inspect cross-build &> /dev/null || docker buildx create --name cross-build --use
 docker buildx build --platform linux/amd64,linux/arm64 --tag "$image:latest" --tag "$image:$version" --push .
+docker pull "$image:latest"

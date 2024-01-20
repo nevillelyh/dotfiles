@@ -7,7 +7,7 @@ RUN adduser -D confluent
 RUN mkdir /confluent
 COPY kraft.sh /confluent
 RUN chown -R confluent /confluent
-#
+
 USER confluent
 WORKDIR /confluent
 

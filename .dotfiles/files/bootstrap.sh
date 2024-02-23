@@ -39,6 +39,7 @@ LINUX_CRATES=(bat du-dust git-delta gitui zoxide)
 
 # PIP packages:
 PIP_PKGS=(flake8 ipython virtualenv virtualenvwrapper)
+BREW_PIP_PKGS=("${PIP_PKGS[@]}")
 
 cmd_ssh() {
     [[ -n "${SSH_CONNECTION-}" ]] && return 0 # remote host
@@ -244,9 +245,15 @@ cmd_python() {
     type ipython &> /dev/null && return 0
     bs_info_box "Setting up Python"
 
-    # Homebrew python includes pip
-    [[ "$BS_UNAME_S" == "Linux" ]] && curl -fsSL https://bootstrap.pypa.io/get-pip.py | python3
-    python3 -m pip install "${PIP_PKGS[@]}"
+    case "$BS_UNAME_S" in
+        Darwin)
+            curl -fsSL https://bootstrap.pypa.io/get-pip.py | python3
+            python3 -m pip install "${PIP_PKGS[@]}"
+            ;;
+        Linux)
+            brew install "${BREW_PIP_PKGS[@]}"
+            ;;
+    esac
 }
 
 cmd_rust() {

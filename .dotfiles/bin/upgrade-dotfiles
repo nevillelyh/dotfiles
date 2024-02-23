@@ -122,6 +122,7 @@ cmd_jvm() {
 
 cmd_python() {
     bs_info_box "Upgrading Python"
+    [[ "$BS_UNAME_S" == "Darwin" ]] && return 0
     python3 -m pip install --upgrade pip
     # Bash 3 on Mac missing readarray
     # shellcheck disable=SC2207

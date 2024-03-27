@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -euo pipefail
+
+if [[ $# -eq 0 ]]; then
+    echo "Usage: $(basename "$0") [HOST]..."
+    echo
+    echo "Example: $(basename "$0") host-{01..16}.domain"
+    exit 1
+fi
+
+target="tms $(date "+%Y%m%d%H%M%S")"
+tmux new-window -n "$target" ssh "$1"
+shift
+for h in "$@"; do
+    tmux split-window -h -t "$target" "ssh $h"
+    tmux select-layout -t "$target" tiled
+done
+tmux select-pane -t 0
+tmux set-window-option -t "$target" synchronize-panes on

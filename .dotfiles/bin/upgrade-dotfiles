@@ -86,6 +86,9 @@ cmd_docker() {
         platform=$(docker inspect "$image" | jq --raw-output '.[] | "\(.Os)/\(.Architecture)"')
         [[ -z "$digest" ]] || docker pull --platform "$platform" "$image"
     done
+    for file in $(docker compose ls --format json | jq --raw-output '.[].ConfigFiles'); do
+        docker compose --file "$file" up --detach
+    done
     docker images --quiet --filter dangling=true | xargs -r docker rmi
 
     joplin sync

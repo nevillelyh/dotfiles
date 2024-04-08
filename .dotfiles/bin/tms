@@ -9,7 +9,8 @@ if [[ $# -eq 0 ]]; then
     exit 1
 fi
 
-target="tms $(date "+%Y%m%d%H%M%S")"
+id=$(LC_ALL=C tr -dc 'A-Za-z0-9' </dev/urandom | head -c 4 || true)
+target=tms-$id
 tmux new-window -n "$target" ssh "$1"
 shift
 for h in "$@"; do

@@ -283,6 +283,7 @@ cmd_code() {
         rust-lang.rust-analyzer
         sswg.swift-lang
         vadimcn.vscode-lldb
+        zxh404.vscode-proto3
     )
     for ext in "${extensions[@]}"; do
         code --install-extension "$ext"

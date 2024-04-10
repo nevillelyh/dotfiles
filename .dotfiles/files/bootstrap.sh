@@ -278,6 +278,7 @@ cmd_code() {
         golang.go
         ms-azuretools.vscode-docker
         ms-kubernetes-tools.vscode-kubernetes-tools
+        ms-python.python
         ms-vscode.cpptools-extension-pack
         rust-lang.rust-analyzer
         sswg.swift-lang

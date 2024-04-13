@@ -1,6 +1,6 @@
 FROM node:current-alpine
 
-ARG VERSION=2.13.2
+ARG VERSION=2.14.1
 RUN if [[ "$(uname -m)" == aarch64 ]]; then \
         apk add --no-cache --virtual .deps build-base python3 && \
         apk add vips-dev; \

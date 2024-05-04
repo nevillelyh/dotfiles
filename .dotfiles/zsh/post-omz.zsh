@@ -79,6 +79,10 @@ if type virtualenvwrapper.sh &> /dev/null; then
     export VIRTUALENVWRAPPER_PYTHON
     export WORKON_HOME=$HOME/.virtualenvs
     source $(which virtualenvwrapper.sh)
+
+    if [[ -n "$VIRTUAL_ENV" ]]; then
+        source "$VIRTUAL_ENV/bin/activate"
+    fi
 fi
 
 # Reuse a single SSH agent

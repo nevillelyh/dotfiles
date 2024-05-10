@@ -2,6 +2,7 @@
 alias btop='/snap/btop/current/usr/local/bin/btop'
 
 alias open='xdg-open'
+alias xc='xclip -selection clipboard'
 
 FD_COMMAND=fd
 # fd is already used by package fdclone on Ubuntu 19.04 or later

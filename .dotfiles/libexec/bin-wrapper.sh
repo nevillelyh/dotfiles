@@ -231,6 +231,31 @@ run_cockroach() {
     "$exec" "$@"
 }
 
+run_cog() {
+    brew_run cog cog "$@"
+
+    get_latest() {
+        bs_gh_latest replicate/cog
+    }
+
+    get_current() {
+        "$exec" version | head -n 1 | sed 's/^Build Tag: *\(v.*\)$/\1/'
+    }
+
+    download() {
+        local version=$1
+        case "$arch" in
+            x86_64) ;;
+            aarch64) arch=arm64 ;;
+        esac
+        download_gh_bin replicate/cog "$version" "cog_${BS_UNAME_S}_${arch}"
+    }
+
+    exec="$cache/cog"
+    update
+    "$exec" "$@"
+}
+
 run_flatc() {
     brew_run flatbuffers flatc "$@"
 

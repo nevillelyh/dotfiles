@@ -85,6 +85,37 @@ if type virtualenvwrapper.sh &> /dev/null; then
     fi
 fi
 
+# $PWD/.venv for VS Code
+
+mkvenv() {
+    if [[ $# -ne 1 ]]; then
+        echo "Usage: $(basename $0) <DIR>"
+        return 1
+    fi
+    cd "$1"
+    if [[ -n "$VIRTUAL_ENV" ]]; then
+        echo 'Error: Already inside a virtual environment'
+        return 1
+    fi
+    python3 -m venv .venv
+    source .venv/bin/activate
+}
+
+rmvenv() {
+    if [[ $# -ne 1 ]]; then
+        echo "Usage: $(basename $0) <DIR>"
+        return 1
+    fi
+    cd "$1"
+    if [[ -z "$VIRTUAL_ENV" ]]; then
+        echo 'Error: Not inside a virtual environment'
+        return 1
+    fi
+    dir="$VIRTUAL_ENV"
+    deactivate
+    rm -rf "$dir"
+}
+
 # Reuse a single SSH agent
 ssh_keys=("${(@f)$(find "$HOME/.ssh" \( -name id_dsa -or -name id_rsa -or -name id_ecdsa -or -name id_ed25519 \))}")
 if [[ -n "$ssh_keys" ]]; then

@@ -99,6 +99,12 @@ mkvenv() {
     fi
     python3 -m venv .venv
     source .venv/bin/activate
+
+    if [[ -f "requirements.txt" ]]; then
+        read -q 'REPLY?pip install -r requirements.txt (y/N)? '
+        echo
+        [[ $REPLY =~ ^[Yy]$ ]] && pip install -r requirements.txt
+    fi
 }
 
 rmvenv() {

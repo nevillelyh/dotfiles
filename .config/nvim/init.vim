@@ -1,5 +1,4 @@
 " Look and feel
-behave xterm
 set termguicolors
 set mouse=a
 

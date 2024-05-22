@@ -239,7 +239,7 @@ run_cog() {
     }
 
     get_current() {
-        "$exec" version | head -n 1 | sed 's/^Build Tag: *\(v.*\)$/\1/'
+        "$exec" --version | sed 's/^cog version \([^ ]\+\).*$/\1/'
     }
 
     download() {

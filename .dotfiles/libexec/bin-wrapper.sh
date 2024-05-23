@@ -460,6 +460,32 @@ run_minikube() {
     "$exec" "$@"
 }
 
+run_nerdctl() {
+    [[ "$os" == darwin ]] && bs_fatal "OS not supported"
+
+    get_latest() {
+        bs_gh_latest containerd/nerdctl
+    }
+
+    get_current() {
+        "$exec" --version | sed 's/^nerdctl version \(.*\)/\1/'
+    }
+
+    download() {
+        local version=$1
+        case "$arch" in
+            x86_64) arch=amd64 ;;
+            aarch64) arch=arm64 ;;
+        esac
+        curl -fsSL "https://github.com/containerd/nerdctl/releases/download/v$version/nerdctl-$version-$os-$arch.tar.gz" | tar -C "$cache" -xz nerdctl
+        touch "$exec"
+    }
+
+    exec="$cache/nerdctl"
+    update
+    sudo "$exec" "$@"
+}
+
 run_nvim() {
     brew_run neovim nvim "$@"
 

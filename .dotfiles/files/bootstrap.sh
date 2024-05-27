@@ -38,8 +38,8 @@ DEB_GUI_PKGS=(alacritty awesome compton fonts-powerline gnome-screensaver gnome-
 LINUX_CRATES=(bat du-dust git-delta gitui zoxide)
 
 # PIP packages:
-PIP_PKGS=(flake8 ipython virtualenv virtualenvwrapper)
-BREW_PIP_PKGS=("${PIP_PKGS[@]}")
+PIP_PKGS=(flake8 ipython requests virtualenv virtualenvwrapper)
+BREW_PIP_PKGS=(flake8 ipython python-requests virtualenv virtualenvwrapper)
 
 cmd_ssh() {
     [[ -n "${SSH_CONNECTION-}" ]] && return 0 # remote host

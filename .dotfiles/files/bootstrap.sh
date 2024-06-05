@@ -138,7 +138,10 @@ cmd_linux_extras() {
     [[ $GUI -eq 1 ]] || return 0
     dpkg-query --show xorg &> /dev/null || return 0
 
-    sudo snap install btop slack spotify xseticon
+    sudo snap install btop spotify xseticon
+    # Workaround for AppArmor on PopOS
+    # https://forum.snapcraft.io/t/apparmor-blocking-the-opening-of-slack/29212
+    sudo snap install --devmode slack
 
     # Custom repositories
     bs_df files/install.sh chrome code discord dropbox sublime

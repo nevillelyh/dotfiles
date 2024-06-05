@@ -93,8 +93,6 @@ cmd_docker() {
         docker compose --file "$file" up --detach
     done
     docker images --quiet --filter dangling=true | xargs -r docker rmi
-
-    joplin sync
 }
 
 cmd_go() {

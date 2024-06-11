@@ -247,11 +247,11 @@ cmd_python() {
 
     case "$BS_UNAME_S" in
         Darwin)
-            curl -fsSL https://bootstrap.pypa.io/get-pip.py | python3
-            python3 -m pip install "${PIP_PKGS[@]}"
+            brew install "${BREW_PIP_PKGS[@]}"
             ;;
         Linux)
-            brew install "${BREW_PIP_PKGS[@]}"
+            curl -fsSL https://bootstrap.pypa.io/get-pip.py | python3
+            python3 -m pip install "${PIP_PKGS[@]}"
             ;;
     esac
 }

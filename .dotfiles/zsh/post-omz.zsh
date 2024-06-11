@@ -19,14 +19,14 @@ alias dcgc='docker ps --all --filter "status=exited" --quiet | xargs -r docker r
 alias dka='docker ps --quiet | xargs -r docker kill'
 alias darch='docker images --quiet | xargs -r docker inspect | jq -r ".[]|.Architecture+\"\t\"+(.RepoTags|join(\",\"))"'
 
-# exa
-alias l='exa -la' # 'ls -lah'
-alias la='exa -la' # 'ls -lAh'
-alias ll='exa -l' # 'ls -lh'
-alias ls='exa' # 'ls -G'
-alias lsa='exa -la' # 'ls -lah'
-alias lsg='exa -l --git'
-alias lst='exa -l -r -s modified'
+# eza
+alias l='eza -la' # 'ls -lah'
+alias la='eza -la' # 'ls -lAh'
+alias ll='eza -l' # 'ls -lh'
+alias ls='eza' # 'ls -G'
+alias lsa='eza -la' # 'ls -lah'
+alias lsg='eza -l --git'
+alias lst='eza -l -r -s modified'
 
 # gsutil
 alias gscat='gsutil cat'

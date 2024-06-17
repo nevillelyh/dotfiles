@@ -19,7 +19,7 @@ GUI=${GUI:-1}
 # python - leave macOS bundled python alone
 # pinentry-mac - for GPG
 # App Store - AdGuard for Safari, Instapaper, Kindle, Messenger, Slack, The Unarchiver, WhatsApp
-BREWS=(bat btop cmake colordiff dust eza fd fzf git git-delta gitui golang gpg htop jq mas neovim ninja pinentry-mac python ripgrep shellcheck tmux wget zoxide)
+BREWS=(bat btop cmake colordiff dust eza fd fzf git git-delta gitui golang gpg htop jq mas neovim ninja pinentry-mac python ripgrep scroll-reverser shellcheck tmux wget zoxide)
 CASKS=(alacritty alfred dbeaver-community discord docker dropbox expressvpn github iterm2 jetbrains-toolbox notion sublime-text tailscale visual-studio-code vimr zotero)
 CASKS_OPT=(adobe-creative-cloud anki firefox google-chrome google-cloud-sdk guitar-pro hiarcs-chess-explorer macdive microsoft-edge retroarch signal shearwater-cloud spotify steam subsurface transmission vlc waves-central)
 # AdGuard Bitwarden Kindle Magnet Messenger Pocket Slack Unarchiver WhatsApp

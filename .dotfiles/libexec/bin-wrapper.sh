@@ -567,6 +567,36 @@ run_protoc() {
     "$exec" "$@"
 }
 
+run_protoc-gen-go() {
+    bin=protoc-gen-go
+    case "$os" in
+        darwin)
+            exec="/opt/homebrew/bin/$bin"
+            [[ -f "$exec" ]] || brew install "$bin"
+            ;;
+        linux)
+            exec="$HOME/.go/bin/$bin"
+            [[ -f "$exec" ]] || go install "google.golang.org/protobuf/cmd/$bin@latest"
+            ;;
+    esac
+    "$exec" "$@"
+}
+
+run_protoc-gen-go-grpc() {
+    bin=protoc-gen-go-grpc
+    case "$os" in
+        darwin)
+            exec="/opt/homebrew/bin/$bin"
+            [[ -f "$exec" ]] || brew install "$bin"
+            ;;
+        linux)
+            exec="$HOME/.go/bin/$bin"
+            [[ -f "$exec" ]] || go install "google.golang.org/grpc/cmd/$bin@latest"
+            ;;
+    esac
+    "$exec" "$@"
+}
+
 run_trino() {
     prefix="https://repo1.maven.org/maven2/io/trino/trino-cli"
 

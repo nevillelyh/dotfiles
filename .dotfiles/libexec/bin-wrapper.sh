@@ -572,7 +572,7 @@ run_protoc-gen-go() {
     case "$os" in
         darwin)
             exec="/opt/homebrew/bin/$bin"
-            [[ -f "$exec" ]] || brew install "$bin"
+            [[ -f "$exec" ]] || brew install "$bin" &> /dev/null
             ;;
         linux)
             exec="$HOME/.go/bin/$bin"
@@ -587,7 +587,7 @@ run_protoc-gen-go-grpc() {
     case "$os" in
         darwin)
             exec="/opt/homebrew/bin/$bin"
-            [[ -f "$exec" ]] || brew install "$bin"
+            [[ -f "$exec" ]] || brew install "$bin" &> /dev/null
             ;;
         linux)
             exec="$HOME/.go/bin/$bin"

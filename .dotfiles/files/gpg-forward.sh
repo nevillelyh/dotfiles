@@ -17,14 +17,10 @@ else
 fi
 
 conn=$1
-user=""
 host=$conn
 if echo "$conn" | grep -q '@'; then
-    user=$(echo "$conn" | cut -d '@' -f 1)
     host=$(echo "$conn" | cut -d '@' -f 2)
 fi
-
-grep -q "Host $host" .ssh/config 2> /dev/null && bs_fatal "Host $host already set up"
 
 bs_info "Sending public key to $host"
 key=$(grep signingKey "$HOME/.gitconfig" | grep -o '\<[0-9A-F]\+$')
@@ -33,16 +29,11 @@ echo "default-key $key" | ssh "$conn" tee .gnupg/gpg.conf
 
 dst=$(ssh "$conn" gpgconf --list-dir agent-socket)
 src=$(gpgconf --list-dir agent-extra-socket)
-
-bs_info "Adding $host to $HOME/.ssh/config"
-echo "Host $host" >> "$HOME/.ssh/config"
-[[ -z "$user" ]] || echo "    User $user" >> "$HOME/.ssh/config"
-cat << EOF >> "$HOME/.ssh/config"
-    ForwardAgent yes
-    RemoteForward $dst $src
-EOF
-
 cat << EOF
+Add the following to $HOME/.ssh/config
+
+RemoteForward $dst $src
+
 Add the following to remote host /etc/ssh/sshd_config.d/gpg.conf:
 
 # https://wiki.gnupg.org/AgentForwarding

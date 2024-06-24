@@ -62,7 +62,7 @@ setup_hashicorp() {
     repo="deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(codename) main"
     setup_gpg "$url" hashicorp.gpg
     setup_apt "$repo" hashicorp.list
-    sudo aptitude update
+    sudo apt-get update
 }
 
 # https://docs.ankiweb.net/platform/linux/installing.html
@@ -94,7 +94,7 @@ cmd_chrome() {
 
     wget -nv https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
     sudo dpkg -i google-chrome-stable_current_amd64.deb
-    sudo aptitude install -fy
+    sudo apt-get install -fy
     rm google-chrome-stable_current_amd64.deb
 }
 
@@ -107,8 +107,8 @@ cmd_cmake() {
     repo="deb [signed-by=/etc/apt/trusted.gpg.d/kitware-archive-keyring.gpg] https://apt.kitware.com/$(distro)/ $(codename) main"
     setup_gpg "$url" kitware-archive-keyring.gpg
     setup_apt "$repo" kitware.list
-    sudo aptitude update
-    sudo aptitude install -y cmake kitware-archive-keyring
+    sudo apt-get update
+    sudo apt-get install -y cmake kitware-archive-keyring
 }
 
 # https://code.visualstudio.com/docs/setup/linux
@@ -119,8 +119,8 @@ cmd_code() {
     local repo="deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main"
     setup_gpg "$url" packages.microsoft.gpg
     setup_apt "$repo" vscode.list
-    sudo aptitude update
-    sudo aptitude install -y code
+    sudo apt-get update
+    sudo apt-get install -y code
 }
 
 # https://dbeaver.io/download/
@@ -132,8 +132,8 @@ cmd_dbeaver() {
 
     setup_gpg "$url" dbeaver.gpg
     setup_apt "$repo" dbeaver.list
-    sudo aptitude update
-    sudo aptitude install dbeaver-ce
+    sudo apt-get update
+    sudo apt-get install dbeaver-ce
 }
 
 cmd_discord() {
@@ -142,7 +142,7 @@ cmd_discord() {
     local url="https://discordapp.com/api/download/canary?platform=linux&format=deb"
     curl -fsSL "$url" -o discord.deb
     sudo dpkg -i discord.deb
-    sudo aptitude install -fy
+    sudo apt-get install -fy
     rm discord.deb
 }
 
@@ -160,8 +160,8 @@ cmd_docker() {
     repo="deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/trusted.gpg.d/docker-archive-keyring.gpg] https://download.docker.com/linux/$(distro) $(codename) stable"
     setup_gpg "$url" docker-archive-keyring.gpg
     setup_apt "$repo" docker.list
-    sudo aptitude update
-    sudo aptitude install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    sudo apt-get update
+    sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
     sudo usermod -aG docker "$(whoami)"
 }
@@ -176,7 +176,7 @@ cmd_dropbox() {
     pkg=$(curl -fsSL "$url" | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^dropbox_[\d\.]+_amd64.deb$' | tail -n 1)
     wget -nv "$url/$pkg"
     sudo dpkg -i dropbox_*_amd64.deb
-    sudo aptitude install -fy
+    sudo apt-get install -fy
     rm dropbox_*_amd64.deb
 }
 
@@ -189,8 +189,8 @@ cmd_gcloud() {
 
     setup_gpg "$url" cloud.google.gpg
     setup_apt "$repo" google-cloud-sdk.list
-    sudo aptitude update
-    sudo aptitude install google-cloud-cli
+    sudo apt-get update
+    sudo apt-get install google-cloud-cli
 }
 
 # https://go.dev/doc/install
@@ -218,8 +218,8 @@ cmd_nvidia() {
     repo=$(curl -fsSL "https://nvidia.github.io/libnvidia-container/$(distro_version)/libnvidia-container.list" | sed 's@deb https://@deb [signed-by=/etc/apt/trusted.gpg.d/nvidia-container-toolkit-keyring.gpg] https://@g')
     setup_gpg "$url" nvidia-container-toolkit-keyring.gpg
     setup_apt "$repo" nvidia-container-toolkit.list
-    sudo aptitude update
-    sudo aptitude install -y nvidia-docker2
+    sudo apt-get update
+    sudo apt-get install -y nvidia-docker2
 }
 
 # https://github.com/GloriousEggroll/proton-ge-custom/tree/master#installation
@@ -237,8 +237,8 @@ cmd_proton() {
 cmd_retroarch() {
     brew_install_cask retroarch || return 0
     sudo add-apt-repository ppa:libretro/stable
-    sudo aptitude update
-    sudo aptitude install retroarch
+    sudo apt-get update
+    sudo apt-get install retroarch
 }
 
 # https://signal.org/download/
@@ -248,8 +248,8 @@ cmd_signal() {
     local repo="deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main"
     setup_gpg "$url" signal-desktop-keyring.gpg
     setup_apt "$repo" signal-xenial.list
-    sudo aptitude update
-    sudo aptitude install -y signal-desktop
+    sudo apt-get update
+    sudo apt-get install -y signal-desktop
 }
 
 # https://repo.steampowered.com/steam/
@@ -263,8 +263,8 @@ cmd_steam() {
     repo=$(echo -e "$line1\n$line2")
     setup_gpg "$url" steam.gpg
     setup_apt "$repo" steam.list
-    sudo aptitude update
-    sudo aptitude install -y steam-launcher
+    sudo apt-get update
+    sudo apt-get install -y steam-launcher
 }
 
 # https://www.sublimetext.com/docs/linux_repositories.html
@@ -275,8 +275,8 @@ cmd_sublime() {
     local repo="deb https://download.sublimetext.com/ apt/stable/"
     setup_gpg "$url" sublimehq-pub.gpg
     setup_apt "$repo" sublime-text.list
-    sudo aptitude update
-    sudo aptitude install -y sublime-text
+    sudo apt-get update
+    sudo apt-get install -y sublime-text
 }
 
 # https://www.swift.org/download/
@@ -304,8 +304,8 @@ cmd_tailscale() {
     repo="deb [signed-by=/etc/apt/trusted.gpg.d/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/$(distro) $(codename) main"
     setup_gpg "$url" tailscale-archive-keyring.gpg
     setup_apt "$repo" tailscale.list
-    sudo aptitude update
-    sudo aptitude install -y tailscale
+    sudo apt-get update
+    sudo apt-get install -y tailscale
 
     sudo tailscale up
 }
@@ -319,7 +319,7 @@ cmd_teams() {
     pkg=$(curl -fsSL $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^teams_[\d\.]+_amd64.deb$' | tail -n 1)
     wget -nv "$url/$pkg"
     sudo dpkg -i teams_*_amd64.deb
-    sudo aptitude install -fy
+    sudo apt-get install -fy
     rm teams_*_amd64.deb
 }
 
@@ -328,7 +328,7 @@ cmd_terraform() {
     brew_install terraform || return 0
 
     setup_hashicorp
-    sudo aptitude install -y terraform
+    sudo apt-get install -y terraform
 }
 
 # https://www.vaultproject.io/downloads
@@ -336,7 +336,7 @@ cmd_vault() {
     brew_install vault || return 0
 
     setup_hashicorp
-    sudo aptitude install -y vault
+    sudo apt-get install -y vault
 }
 
 # https://github.com/retorquere/zotero-deb/blob/master/install.sh
@@ -347,8 +347,8 @@ cmd_zotero() {
     local repo="deb [signed-by=/etc/apt/trusted.gpg.d/zotero-archive-keyring.gpg by-hash=force] https://zotero.retorque.re/file/apt-package-archive ./"
     setup_gpg "$url" zotero-archive-keyring.gpg
     setup_apt "$repo" zotero.list
-    sudo aptitude update
-    sudo aptitude install -y zotero
+    sudo apt-get update
+    sudo apt-get install -y zotero
 }
 
 bs_cmd_required "$@"

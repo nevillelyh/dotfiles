@@ -202,12 +202,12 @@ run_cockroach() {
     get_latest() {
         bs_urls "https://www.cockroachlabs.com/docs/releases" | \
             grep -o '\<cockroach-v[0-9]\+\.[0-9]\+\.[0-9]\+\.linux-amd64.tgz$' | \
-            sed 's/^cockroach-\(.*\)\.linux-amd64.tgz$/\1/' | \
+            sed 's/^cockroach-\(.\+\)\.linux-amd64.tgz$/\1/' | \
             head -n 1
     }
 
     get_current() {
-        "$exec" version | head -n 1 | sed 's/^Build Tag: *\(v.*\)$/\1/'
+        "$exec" version | head -n 1 | sed 's/^Build Tag: *\(v.\+\)$/\1/'
     }
 
     download() {
@@ -468,7 +468,7 @@ run_nerdctl() {
     }
 
     get_current() {
-        "$exec" --version | sed 's/^nerdctl version \(.*\)/\1/'
+        "$exec" --version | sed 's/^nerdctl version \(.\+\)/\1/'
     }
 
     download() {
@@ -605,7 +605,7 @@ run_sops() {
     }
 
     get_current() {
-        "$exec" --version | head -n 1 | sed 's/^sops \([^ ]*\).*/\1/g'
+        "$exec" --version | head -n 1 | sed 's/^sops \([^ ]\+\).\+/\1/g'
     }
 
     download() {

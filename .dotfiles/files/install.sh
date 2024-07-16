@@ -23,6 +23,15 @@ brew_install_cask() {
     return 1
 }
 
+brew_install_hashicorp() {
+    [[ "$BS_UNAME_S" != "Darwin" ]] && return 0
+    brew tap hashicorp/tap
+    for f in "$@"; do
+        brew install "hashicorp/tap/$f"
+    done
+    return 1
+}
+
 distro() {
     local id
     id=$(lsb_release -is | tr "[:upper:]" "[:lower:]")
@@ -222,6 +231,13 @@ cmd_nvidia() {
     sudo apt-get install -y nvidia-docker2
 }
 
+cmd_packer() {
+    brew_install_hashicorp packer || return 0
+
+    setup_hashicorp
+    sudo apt-get install -y packer
+}
+
 # https://github.com/GloriousEggroll/proton-ge-custom/tree/master#installation
 cmd_proton() {
     local url="https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases/latest"
@@ -325,7 +341,7 @@ cmd_teams() {
 
 # https://learn.hashicorp.com/tutorials/terraform/install-cli
 cmd_terraform() {
-    brew_install terraform || return 0
+    brew_install_hashicorp terraform || return 0
 
     setup_hashicorp
     sudo apt-get install -y terraform
@@ -333,7 +349,7 @@ cmd_terraform() {
 
 # https://www.vaultproject.io/downloads
 cmd_vault() {
-    brew_install vault || return 0
+    brew_install_hashicorp vault || return 0
 
     setup_hashicorp
     sudo apt-get install -y vault

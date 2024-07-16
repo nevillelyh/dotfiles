@@ -597,6 +597,30 @@ run_protoc-gen-go-grpc() {
     "$exec" "$@"
 }
 
+run_sops() {
+    brew_run sops sops "$@"
+
+    get_latest() {
+        bs_gh_latest getsops/sops
+    }
+
+    get_current() {
+        "$exec" --version | head -n 1 | sed 's/^sops \([^ ]*\).*/\1/g'
+    }
+
+    download() {
+        local version=$1
+        case "$arch" in
+            x86_64) arch=amd64 ;;
+            aarch64) arch=arm64 ;;
+        esac
+        download_gh_bin getsops/sops "$version" "sops-v$version.$os.$arch"
+    }
+
+    exec="$cache/sops"
+    update
+    "$exec" "$@"
+}
 run_trino() {
     prefix="https://repo1.maven.org/maven2/io/trino/trino-cli"
 

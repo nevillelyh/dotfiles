@@ -375,6 +375,35 @@ run_k3d() {
     "$exec" "$@"
 }
 
+run_kustomize() {
+    brew_run kustomize kustomize "$@"
+
+    get_latest() {
+        local url="https://api.github.com/repos/kubernetes-sigs/kustomize/releases"
+        local header="Accept: application/vnd.github.v3+json"
+        curl -fsSL -H "$header" "$url" | jq --raw-output '.[].tag_name' | grep '^kustomize/v' | sed 's/^kustomize\/v\(.\+\)$/\1/' | head -n 1
+    }
+
+    get_current() {
+        "$exec" version --short | sed 's/v\([^+]\+\).\+/\1/'
+    }
+
+    download() {
+        local version=$1
+        case "$arch" in
+            x86_64) arch=amd64 ;;
+            aarch64) arch=arm64 ;;
+        esac
+        curl -fsSL "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv$version/kustomize_v${version}_${os}_$arch.tar.gz" | tar -C "$cache" -xz kustomize
+
+        mk_comp "$exec" completion zsh
+    }
+
+    exec="$cache/kustomize"
+    update
+    "$exec" "$@"
+}
+
 run_kubectl() {
     brew_run kubernetes-cli kubectl "$@"
 

@@ -115,7 +115,7 @@ run_bw() {
     get_latest() {
         local url="https://api.github.com/repos/bitwarden/clients/releases"
         local header="Accept: application/vnd.github.v3+json"
-        curl -fsSL -H "$header" "$url" | jq --raw-output '.[].tag_name' | grep "^cli-v" | sed 's/cli-v\(.*\)$/\1/' | head -n 1
+        curl -fsSL -H "$header" "$url" | jq --raw-output '.[].tag_name' | grep '^cli-v' | sed 's/^cli-v\(.*\)$/\1/' | head -n 1
     }
 
     get_current() {

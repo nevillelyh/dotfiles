@@ -375,6 +375,33 @@ run_k3d() {
     "$exec" "$@"
 }
 
+run_k9s() {
+    brew_run k9s k9s "$@"
+
+    get_latest() {
+        bs_gh_latest derailed/k9s
+    }
+
+    get_current() {
+        "$exec" version --short | head -n 1 | sed 's/^Version \+\(.\+\)/\1/'
+    }
+
+    download() {
+        local version=$1
+        case "$arch" in
+            x86_64) arch=amd64 ;;
+            aarch64) arch=arm64 ;;
+        esac
+        curl -fsSL "https://github.com/derailed/k9s/releases/download/v$version/k9s_${os}_$arch.tar.gz" | tar -C "$cache" -xz k9s
+
+        mk_comp "$exec" completion zsh
+    }
+
+    exec="$cache/k9s"
+    update
+    "$exec" "$@"
+}
+
 run_kustomize() {
     brew_run kustomize kustomize "$@"
 

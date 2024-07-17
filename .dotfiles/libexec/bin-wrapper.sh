@@ -94,7 +94,7 @@ run_bazel() {
     }
 
     get_current() {
-        "$exec" version 2> /dev/null | head -n 1 | sed 's/^Bazelisk version: v\(.\+\)$/\1/'
+        "$exec" version 2> /dev/null | grep '^Bazelisk version:' | sed 's/^Bazelisk version: v\(.\+\)$/\1/'
     }
 
     download() {
@@ -115,7 +115,7 @@ run_bw() {
     get_latest() {
         local url="https://api.github.com/repos/bitwarden/clients/releases"
         local header="Accept: application/vnd.github.v3+json"
-        curl -fsSL -H "$header" "$url" | jq --raw-output '.[].tag_name' | grep '^cli-v' | sed 's/^cli-v\(.*\)$/\1/' | head -n 1
+        curl -fsSL -H "$header" "$url" | jq --raw-output '.[].tag_name' | grep '^cli-v' | sed 's/^cli-v\(.*\)$/\1/' | tac | tail -n 1
     }
 
     get_current() {
@@ -154,7 +154,7 @@ run_cfssl() {
     }
 
     get_current() {
-        "$exec" version | head -n 1 | sed 's/^Version: \(.\+\)$/\1/'
+        "$exec" version | grep '^Version:' | sed 's/^Version: \(.\+\)$/\1/'
     }
 
     download() {
@@ -179,7 +179,7 @@ run_cfssljson() {
     }
 
     get_current() {
-        "$exec" --version | head -n 1 | sed 's/^Version: \(.\+\)$/\1/'
+        "$exec" --version | grep '^Version:' | sed 's/^Version: \(.\+\)$/\1/'
     }
 
     download() {
@@ -203,11 +203,11 @@ run_cockroach() {
         bs_urls "https://www.cockroachlabs.com/docs/releases" | \
             grep -o '\<cockroach-v[0-9]\+\.[0-9]\+\.[0-9]\+\.linux-amd64.tgz$' | \
             sed 's/^cockroach-\(.\+\)\.linux-amd64.tgz$/\1/' | \
-            head -n 1
+            tac | tail -n 1
     }
 
     get_current() {
-        "$exec" version | head -n 1 | sed 's/^Build Tag: *\(v.\+\)$/\1/'
+        "$exec" version | grep '^Build Tag:' | sed 's/^Build Tag: *\(v.\+\)$/\1/'
     }
 
     download() {
@@ -295,7 +295,7 @@ run_gh() {
     }
 
     get_current() {
-        "$exec" --version 2> /dev/null | head -n 1 | sed 's/gh version \(.\+\) (.\+)$/\1/'
+        "$exec" --version 2> /dev/null | grep '^gh version\>' | sed 's/^gh version \(.\+\) (.\+)$/\1/'
     }
 
     download() {
@@ -356,7 +356,7 @@ run_k3d() {
     }
 
     get_current() {
-        "$exec" --version | head -n 1 | sed 's/^k3d version v\(.\+\)/\1/'
+        "$exec" --version | grep '^k3d version\>' | sed 's/^k3d version v\(.\+\)/\1/'
     }
 
     download() {
@@ -383,7 +383,7 @@ run_k9s() {
     }
 
     get_current() {
-        "$exec" version --short | head -n 1 | sed 's/^Version \+\(.\+\)/\1/'
+        "$exec" version --short | grep '^Version\>' | sed 's/^Version \+v\?\(.\+\)/\1/'
     }
 
     download() {
@@ -490,7 +490,7 @@ run_kustomize() {
     get_latest() {
         local url="https://api.github.com/repos/kubernetes-sigs/kustomize/releases"
         local header="Accept: application/vnd.github.v3+json"
-        curl -fsSL -H "$header" "$url" | jq --raw-output '.[].tag_name' | grep '^kustomize/v' | sed 's/^kustomize\/v\(.\+\)$/\1/' | head -n 1
+        curl -fsSL -H "$header" "$url" | jq --raw-output '.[].tag_name' | grep '^kustomize/v' | sed 's/^kustomize\/v\(.\+\)$/\1/' | tac | tail -n 1
     }
 
     get_current() {
@@ -521,7 +521,7 @@ run_lazydocker() {
     }
 
     get_current() {
-        "$exec" --version | head -n 1 | sed 's/^Version: \(.\+\)$/\1/'
+        "$exec" --version | grep '^Version:' | sed 's/^Version: \(.\+\)$/\1/'
     }
 
     download() {
@@ -551,7 +551,7 @@ run_minikube() {
     }
 
     get_current() {
-        "$exec" version | head -n 1 | sed 's/^minikube version: v\(.\+\)$/\1/'
+        "$exec" version | grep '^minikube version:' | sed 's/^minikube version: v\(.\+\)$/\1/'
     }
 
     download() {
@@ -604,7 +604,7 @@ run_nvim() {
     }
 
     get_current() {
-        "$exec" --version 2> /dev/null | head -n 1 | sed 's/^NVIM v\(.\+\)$/\1/'
+        "$exec" --version 2> /dev/null | grep '^NVIM\>' | sed 's/^NVIM v\(.\+\)$/\1/'
     }
 
     download() {
@@ -715,7 +715,7 @@ run_sops() {
     }
 
     get_current() {
-        "$exec" --version | head -n 1 | sed 's/^sops \([^ ]\+\).\+/\1/g'
+        "$exec" --version | grep '^sops\>' | sed 's/^sops \([^ ]\+\).\+/\1/g'
     }
 
     download() {

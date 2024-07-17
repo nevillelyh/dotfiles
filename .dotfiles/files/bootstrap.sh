@@ -77,8 +77,8 @@ cmd_homebrew() {
     brew install "${BREWS[@]}"
     brew install --cask "${CASKS[@]}"
 
-    read -n 1 -r -p "Install optional casks (y/N)? "
-    echo # (optional) move to a new line
+    read -n 1 -r -p "Install optional casks? (y/N) "
+    echo
     [[ $REPLY =~ ^[Yy]$ ]] && brew install --cask "${CASKS_OPT[@]}"
 }
 

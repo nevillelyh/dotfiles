@@ -84,7 +84,7 @@ cmd_docker() {
             sleep 1
         done
     fi
-    for image in $(docker images --format "{{.Repository}}:{{.Tag}}" | grep -v ':<none>' | grep -v '\.amazonaws\.com/'); do
+    for image in $(docker images --format "{{.Repository}}:{{.Tag}}" | grep -v ':<none>' | grep -v '\.amazonaws\.com/' | grep -v '\.pkg\.dev/' ); do
         digest=$(docker inspect "$image" | jq --raw-output ".[].RepoDigests[]")
         platform=$(docker inspect "$image" | jq --raw-output '.[] | "\(.Os)/\(.Architecture)"')
         [[ -z "$digest" ]] || docker pull --platform "$platform" "$image"

@@ -39,7 +39,7 @@ LINUX_CRATES=(bat du-dust eza git-delta gitui zoxide)
 
 # PIP packages:
 PIP_PKGS=(flake8 ipython requests virtualenv virtualenvwrapper)
-BREW_PIP_PKGS=(flake8 ipython python-requests virtualenv virtualenvwrapper)
+BREW_PIP_PKGS=(flake8 ipython virtualenv virtualenvwrapper)
 
 cmd_ssh() {
     [[ -n "${SSH_CONNECTION-}" ]] && return 0 # remote host

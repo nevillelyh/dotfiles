@@ -429,6 +429,34 @@ run_kconf() {
     "$exec" "$@"
 }
 
+run_kubectl() {
+    brew_run kubernetes-cli kubectl "$@"
+
+    get_latest() {
+        curl -L -s https://dl.k8s.io/release/stable.txt | sed 's/^v//'
+    }
+
+    get_current() {
+        "$exec" version --client=true --output=json | jq --raw-output '.clientVersion.gitVersion' | sed 's/^v//'
+    }
+
+    download() {
+        local version=$1
+        case "$arch" in
+            x86_64) arch=amd64 ;;
+            aarch64) arch=arm64 ;;
+        esac
+        curl -fsSL "https://dl.k8s.io/release/v$version/bin/$os/$arch/kubectl" -o "$exec"
+        chmod +x "$exec"
+
+        mk_comp "$exec" completion zsh
+    }
+
+    exec="$cache/kubectl"
+    update
+    "$exec" "$@"
+}
+
 run_kustomize() {
     brew_run kustomize kustomize "$@"
 
@@ -454,34 +482,6 @@ run_kustomize() {
     }
 
     exec="$cache/kustomize"
-    update
-    "$exec" "$@"
-}
-
-run_kubectl() {
-    brew_run kubernetes-cli kubectl "$@"
-
-    get_latest() {
-        curl -L -s https://dl.k8s.io/release/stable.txt | sed 's/^v//'
-    }
-
-    get_current() {
-        "$exec" version --client=true --output=json | jq --raw-output '.clientVersion.gitVersion' | sed 's/^v//'
-    }
-
-    download() {
-        local version=$1
-        case "$arch" in
-            x86_64) arch=amd64 ;;
-            aarch64) arch=arm64 ;;
-        esac
-        curl -fsSL "https://dl.k8s.io/release/v$version/bin/$os/$arch/kubectl" -o "$exec"
-        chmod +x "$exec"
-
-        mk_comp "$exec" completion zsh
-    }
-
-    exec="$cache/kubectl"
     update
     "$exec" "$@"
 }
@@ -704,6 +704,7 @@ run_sops() {
     update
     "$exec" "$@"
 }
+
 run_trino() {
     prefix="https://repo1.maven.org/maven2/io/trino/trino-cli"
 

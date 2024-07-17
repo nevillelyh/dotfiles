@@ -457,6 +457,33 @@ run_kubectl() {
     "$exec" "$@"
 }
 
+run_kubectx() {
+    brew_run kubectx kubectx "$@"
+
+    get_latest() {
+        bs_gh_latest ahmetb/kubectx
+    }
+
+    get_current() {
+        cat "$vfile"
+    }
+
+    download() {
+        local version=$1
+        case "$arch" in
+            x86_64) ;;
+            aarch64) arch=arm64 ;;
+        esac
+        curl -fsSL "https://github.com/ahmetb/kubectx/releases/download/v$version/kubectx_v${version}_${os}_$arch.tar.gz" | tar -C "$cache" -xz kubectx
+        echo "$version" > "$vfile"
+    }
+
+    exec="$cache/kubectx"
+    vfile="$cache/kubectx-version"
+    update
+    "$exec" "$@"
+}
+
 run_kustomize() {
     brew_run kustomize kustomize "$@"
 

@@ -402,6 +402,33 @@ run_k9s() {
     "$exec" "$@"
 }
 
+run_kconf() {
+    brew_run kconf kconf "$@"
+
+    get_latest() {
+        bs_gh_latest particledecay/kconf
+    }
+
+    get_current() {
+        "$exec" version | sed 's/^v\+\(.\+\)/\1/'
+    }
+
+    download() {
+        local version=$1
+        case "$arch" in
+            x86_64) ;;
+            aarch64) arch=arm64 ;;
+        esac
+        curl -fsSL "https://github.com/particledecay/kconf/releases/download/v$version/kconf-$os-$arch-$version.tar.gz" | tar -C "$cache" -xz kconf
+
+        mk_comp "$exec" completion zsh
+    }
+
+    exec="$cache/kconf"
+    update
+    "$exec" "$@"
+}
+
 run_kustomize() {
     brew_run kustomize kustomize "$@"
 

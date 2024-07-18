@@ -19,8 +19,8 @@ GUI=${GUI:-1}
 # python - leave macOS bundled python alone
 # pinentry-mac - for GPG
 # App Store - AdGuard for Safari, Instapaper, Kindle, Messenger, Slack, The Unarchiver, WhatsApp
-BREWS=(bat btop cmake colordiff dust eza fd fzf git git-delta gitui golang gpg htop jq mas neovim ninja pinentry-mac python ripgrep scroll-reverser shellcheck tmux wget zoxide)
-CASKS=(alacritty alfred dbeaver-community discord docker dropbox expressvpn github iterm2 jetbrains-toolbox notion sublime-text tailscale visual-studio-code vimr zotero)
+BREWS=(bat btop cmake colordiff dust eza fd fzf git git-delta gitui golang gpg htop jq mas neovim ninja pinentry-mac python ripgrep shellcheck tmux wget zoxide)
+CASKS=(alacritty alfred dbeaver-community discord docker dropbox expressvpn github iterm2 jetbrains-toolbox notion scroll-reverser sublime-text tailscale visual-studio-code vimr zotero)
 CASKS_OPT=(adobe-creative-cloud anki firefox google-chrome google-cloud-sdk guitar-pro hiarcs-chess-explorer macdive microsoft-edge retroarch signal shearwater-cloud spotify steam subsurface transmission vlc waves-central)
 # AdGuard Bitwarden Kindle Magnet Messenger Pocket Slack Unarchiver WhatsApp
 MAS=(1440147259 1352778147 472772 441258766 1480068668 1477385213 803453959 425424353 1147396723)
@@ -35,10 +35,10 @@ MAS=(1440147259 1352778147 472772 441258766 1480068668 1477385213 803453959 4254
 # Not available or outdated in Ubuntu - bat, git-delta, zoxide
 DEB_PKGS=(build-essential colordiff fd-find fzf htop jq libfuse2 ninja-build python3-venv ripgrep shellcheck tmux unzip zip zsh)
 DEB_GUI_PKGS=(alacritty awesome compton fonts-powerline gnome-screensaver gnome-screenshot ubuntu-restricted-extras vlc wmctrl xautolock xcalib xprintidle)
-LINUX_CRATES=(bat du-dust eza git-delta gitui zoxide)
+LINUX_CRATES=(bat du-dust eza git-delta zoxide)
 
 # PIP packages:
-PIP_PKGS=(flake8 ipython requests virtualenv virtualenvwrapper)
+APT_PIP_PKGS=(python3-flake8 python3-ipython python3-virtualenv python3-virtualenvwrapper)
 BREW_PIP_PKGS=(flake8 ipython virtualenv virtualenvwrapper)
 
 cmd_ssh() {
@@ -54,7 +54,7 @@ cmd_ssh() {
 }
 
 cmd_mac() {
-    [[ "$BS_UNAME_S" != "Darwin" ]] && return 0
+    [[ "$BS_UNAME_S" != Darwin ]] && return 0
     bs_info_box "Setting up Mac specifics"
 
     read -r -p "Enter hostname: "
@@ -69,7 +69,7 @@ cmd_mac() {
 }
 
 cmd_homebrew() {
-    [[ "$BS_UNAME_S" != "Darwin" ]] && return 0
+    [[ "$BS_UNAME_S" != Darwin ]] && return 0
     [[ -L /opt/homebrew/bin/zoxide ]] && return 0
     bs_info_box "Setting up Homebrew"
 
@@ -83,7 +83,7 @@ cmd_homebrew() {
 }
 
 cmd_mac_extras() {
-    [[ "$BS_UNAME_S" != "Darwin" ]] && return 0
+    [[ "$BS_UNAME_S" != Darwin ]] && return 0
     [[ -d "$HOME/.local/share/terminfo" ]] && return 0
     bs_info_box "Setting up Mac extras"
 
@@ -99,13 +99,13 @@ cmd_mac_extras() {
 }
 
 cmd_linux() {
-    [[ "$BS_UNAME_S" != "Linux" ]] && return 0
+    [[ "$BS_UNAME_S" != Linux ]] && return 0
     bs_info_box "Setting up Linux specifics"
     # Nothing to do here
 }
 
 cmd_apt() {
-    [[ "$BS_UNAME_S" != "Linux" ]] && return 0
+    [[ "$BS_UNAME_S" != Linux ]] && return 0
     type shellcheck &> /dev/null && return 0
     bs_info_box "Setting up Aptitude"
 
@@ -122,7 +122,7 @@ cmd_apt() {
 }
 
 cmd_linux_extras() {
-    [[ "$BS_UNAME_S" != "Linux" ]] && return 0
+    [[ "$BS_UNAME_S" != Linux ]] && return 0
     [[ -d /usr/local/go ]] && return 0
     bs_info_box "Setting up Linux extras"
 
@@ -131,24 +131,33 @@ cmd_linux_extras() {
     # Third-party packages
     bs_df files/install.sh cmake go
 
-    sudo aptitude install -y snapd
-    sudo snap install btop
+    if [[ ! -f /.dockerenv ]]; then
+        sudo aptitude install -y snapd
+        sudo snap install btop
+    fi
 
     # The following are GUI apps
     [[ $GUI -eq 1 ]] || return 0
     dpkg-query --show xorg &> /dev/null || return 0
 
-    sudo snap install btop spotify xseticon
-    # Workaround for AppArmor on PopOS
-    # https://forum.snapcraft.io/t/apparmor-blocking-the-opening-of-slack/29212
-    sudo snap install --devmode slack
+    if type snap &> /dev/null; then
+        sudo snap install btop spotify xseticon
+
+        # FIXME: Workaround for AppArmor on PopOS
+        # https://forum.snapcraft.io/t/apparmor-blocking-the-opening-of-slack/29212
+        sudo snap install --devmode slack
+    fi
 
     # Custom repositories
-    bs_df files/install.sh chrome code discord dropbox sublime
+    # FIXME: not available for Linux arm64
+    [[ "$BS_UNAME_M" != x86_64 ]] || bs_df files/install.sh chrome discord dropbox
+    bs_df files/install.sh code sublime
 
-    git clone https://github.com/dracula/gnome-terminal
-    ./gnome-terminal/install.sh
-    rm -rf gnome-terminal
+    if type gnome-terminal &> /dev/null; then
+        git clone https://github.com/dracula/gnome-terminal
+        ./gnome-terminal/install.sh
+        rm -rf gnome-terminal
+    fi
 
     mkdir -p "$HOME/.local/share/backgrounds"
     wget -nv https://raw.githubusercontent.com/dracula/wallpaper/master/awesome.png -P "$HOME/.local/share/backgrounds"
@@ -205,6 +214,8 @@ cmd_neovim() {
 
     mkdir -p "$dir"
     git clone git@github.com:Shougo/dein.vim.git "$dir/dein.vim"
+    # FIXME: not available for Linux arm64
+    [[ "$BS_UNAME_S-$BS_UNAME_M" == Linux-aarch64 ]] && return 0
     nvim -u "$HOME/.config/nvim/dein.vim" --headless "+call dein#install() | qall"
 }
 
@@ -234,7 +245,8 @@ cmd_jvm() {
     sdk install gradle
     sdk install kotlin
     sdk install maven
-    sdk install mvnd
+    # FIXME: not available for Linux arm64
+    [[ "$BS_UNAME_S-$BS_UNAME_M" != Linux-x86_64 ]] || sdk install mvnd
     sdk install sbt
     set -u
 
@@ -250,8 +262,8 @@ cmd_python() {
             brew install "${BREW_PIP_PKGS[@]}"
             ;;
         Linux)
-            curl -fsSL https://bootstrap.pypa.io/get-pip.py | python3
-            python3 -m pip install "${PIP_PKGS[@]}"
+            # Nothing to do here
+            sudo aptitude install -y "${APT_PIP_PKGS[@]}"
             ;;
     esac
 }
@@ -264,7 +276,10 @@ cmd_rust() {
 
     # shellcheck source=/dev/null
     source "$HOME/.cargo/env"
-    [[ "$BS_UNAME_S" == "Linux" ]] && cargo install -q "${LINUX_CRATES[@]}"
+    [[ "$BS_UNAME_S" != Linux ]] || cargo install -q "${LINUX_CRATES[@]}"
+    # FIXME: not available for Linux arm64
+    # https://github.com/extrawurst/gitui/issues/2283
+    [[ "$BS_UNAME_S-$BS_UNAME_M" != Linux-x86_64 ]] || cargo install -q gitui
 }
 
 cmd_code() {
@@ -293,7 +308,7 @@ cmd_code() {
 
 cmd_fonts() {
     [[ $GUI -eq 1 ]] || return 0
-    [[ "$BS_UNAME_S" == "Darwin" ]] || dpkg-query --show xorg &> /dev/null || return 0
+    [[ "$BS_UNAME_S" == Darwin ]] || dpkg-query --show xorg &> /dev/null || return 0
     case "$BS_UNAME_S" in
         Darwin) fonts_dir="$HOME/Library/Fonts" ;;
         Linux) fonts_dir="$HOME/.local/share/fonts" ;;
@@ -307,7 +322,7 @@ cmd_fonts() {
     wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
     mkdir -p "$fonts_dir"
     mv MesloLGS*.ttf "$fonts_dir"
-    [[ "$BS_UNAME_S" == "Linux" ]] && fc-cache -fv "$HOME/.local/share/fonts"
+    [[ "$BS_UNAME_S" == Linux ]] && fc-cache -fv "$HOME/.local/share/fonts"
 
     git clone https://github.com/powerline/fonts
     cd fonts
@@ -317,8 +332,8 @@ cmd_fonts() {
 }
 
 cmd_zsh() {
-    [[ "$SHELL" == "/bin/zsh" ]] || chsh -s /bin/zsh
-    [[ "$BS_UNAME_S" != "Linux" ]] && return 0
+    [[ "$SHELL" == /bin/zsh ]] || chsh -s /bin/zsh
+    [[ "$BS_UNAME_S" != Linux ]] && return 0
     [[ -d "$HOME/.local/share/zsh/site-functions" ]] && return 0
     bs_info_box "Setting up zsh"
 

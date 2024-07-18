@@ -214,8 +214,15 @@ cmd_neovim() {
 
     mkdir -p "$dir"
     git clone git@github.com:Shougo/dein.vim.git "$dir/dein.vim"
+
     # FIXME: not available for Linux arm64
-    [[ "$BS_UNAME_S-$BS_UNAME_M" == Linux-aarch64 ]] && return 0
+    if [[ "$BS_UNAME_S-$BS_UNAME_M" == Linux-aarch64 ]]; then
+        exec="$HOME/.dotfiles/libexec/cache/nvim"
+        curl -fsSL https://start.home.lyh.me/files/nvim-v0.10.0.appimage -o "$exec"
+        chmod +x "$exec"
+        # FIXME: AppImage requires FUSE
+        [[ ! -f /.dockerenv ]] || return 0
+    fi
     nvim -u "$HOME/.config/nvim/dein.vim" --headless "+call dein#install() | qall"
 }
 

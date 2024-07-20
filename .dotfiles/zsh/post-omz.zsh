@@ -45,6 +45,9 @@ alias view='nvim -R'
 alias vim='nvim'
 alias vimdiff='nvim -d'
 
+# K8S
+alias kx=kubectx
+
 # AWS
 alias sts-whoami='aws sts get-caller-identity'
 

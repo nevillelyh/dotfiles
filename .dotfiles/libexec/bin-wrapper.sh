@@ -755,6 +755,31 @@ run_trino() {
     "$exec" "$@"
 }
 
+run_yamlfmt() {
+    brew_run yamlfmt yamlfmt "$@"
+
+    get_latest() {
+        bs_gh_latest google/yamlfmt
+    }
+
+    get_current() {
+        "$exec" --version | grep '^yamlfmt\>' | sed 's/^yamlfmt \+\([^ ]\+\).*/\1/'
+    }
+
+    download() {
+        local version=$1
+        case "$arch" in
+            x86_64) ;;
+            aarch64) arch=arm64 ;;
+        esac
+        curl -fsSL "https://github.com/google/yamlfmt/releases/download/v$version/yamlfmt_${version}_${BS_UNAME_S}_$arch.tar.gz" | tar -C "$cache" -xz yamlfmt
+    }
+
+    exec="$cache/yamlfmt"
+    update
+    "$exec" "$@"
+}
+
 get_bins() {
     # Bash 3 on Mac missing readarray
     # shellcheck disable=SC2207

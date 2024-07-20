@@ -26,15 +26,12 @@ CASKS_OPT=(adobe-creative-cloud anki firefox google-chrome google-cloud-sdk guit
 MAS=(1440147259 1352778147 472772 441258766 1480068668 1477385213 803453959 425424353 1147396723)
 
 # Linux packages:
-# compton - for alacritty background opacity
-# wmctrl - for Slack & Spotify icon fixes
 # fonts-powerline - PowerlineSymbols only, no patched fonts
-# gnome-screensaver xautolock xcalib - for screen locking in awesome
 # libfuse2 - for AppImage, e.g. JetBrains Toolbox, NeoVim
 # unzip, zip - for SDKMAN
 # Not available or outdated in Ubuntu - bat, git-delta, zoxide
 DEB_PKGS=(build-essential colordiff fd-find fzf htop jq libfuse2 ninja-build python3-venv ripgrep shellcheck tmux unzip zip zsh)
-DEB_GUI_PKGS=(alacritty awesome compton fonts-powerline gnome-screensaver gnome-screenshot ubuntu-restricted-extras vlc wmctrl xautolock xcalib xprintidle)
+DEB_GUI_PKGS=(alacritty fonts-powerline ubuntu-restricted-extras vlc)
 LINUX_CRATES=(bat du-dust eza git-delta gitui zoxide)
 
 # PIP packages:
@@ -158,14 +155,6 @@ cmd_linux_extras() {
         ./gnome-terminal/install.sh
         rm -rf gnome-terminal
     fi
-
-    mkdir -p "$HOME/.local/share/backgrounds"
-    wget -nv https://raw.githubusercontent.com/dracula/wallpaper/master/awesome.png -P "$HOME/.local/share/backgrounds"
-    wget -nv https://raw.githubusercontent.com/dracula/wallpaper/master/pop.png -P "$HOME/.local/share/backgrounds"
-    uri="file://$HOME/.local/share/backgrounds/pop.png"
-    gsettings set org.gnome.desktop.background picture-uri "$uri"
-    gsettings set org.gnome.desktop.background picture-uri-dark "$uri"
-    gsettings set org.gnome.desktop.screensaver picture-uri "$uri"
 }
 
 cmd_git() {

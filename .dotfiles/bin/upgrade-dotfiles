@@ -45,13 +45,7 @@ cmd_git() {
     git submodule foreach git submodule update --init --recursive
     for path in $(git submodule status  | grep '^[^ ]' | awk '{print $2}'); do
         git add -f "$path"
-        local prefix
-        if [[ $path == .config/awesome/* ]]; then
-            prefix="[awesome]"
-        else
-            prefix="[zsh]"
-        fi
-        git commit --message "$prefix upgrade $(basename "$path")"
+        git commit --message "[zsh] upgrade $(basename "$path")"
     done
     git push
 

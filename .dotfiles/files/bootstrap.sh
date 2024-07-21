@@ -35,7 +35,7 @@ MAS=(1440147259 1352778147 472772 441258766 1480068668 1477385213 803453959 4254
 # Not available or outdated in Ubuntu - bat, git-delta, zoxide
 DEB_PKGS=(build-essential colordiff fd-find fzf htop jq libfuse2 ninja-build python3-venv ripgrep shellcheck tmux unzip zip zsh)
 DEB_GUI_PKGS=(alacritty awesome compton fonts-powerline gnome-screensaver gnome-screenshot ubuntu-restricted-extras vlc wmctrl xautolock xcalib xprintidle)
-LINUX_CRATES=(bat du-dust eza git-delta zoxide)
+LINUX_CRATES=(bat du-dust eza git-delta gitui zoxide)
 
 # PIP packages:
 APT_PIP_PKGS=(python3-flake8 python3-ipython python3-virtualenv python3-virtualenvwrapper)
@@ -283,10 +283,17 @@ cmd_rust() {
 
     # shellcheck source=/dev/null
     source "$HOME/.cargo/env"
-    [[ "$BS_UNAME_S" != Linux ]] || cargo install -q "${LINUX_CRATES[@]}"
-    # FIXME: not available for Linux arm64
-    # https://github.com/extrawurst/gitui/issues/2283
-    [[ "$BS_UNAME_S-$BS_UNAME_M" != Linux-x86_64 ]] || cargo install -q gitui
+    if [[ "$BS_UNAME_S" == Linux ]]; then
+        for c in "${LINUX_CRATES[@]}"; do
+            # FIXME: dependency issue on Linux arm64
+            # https://github.com/extrawurst/gitui/issues/2283#issuecomment-2241488375
+            if [[ "$c" == gitui ]] && [[ "$BS_UNAME_M" == aarch64 ]]; then
+                cargo install --quiet --locked "$c"
+            else
+                cargo install --quiet "$c"
+            fi
+        done
+    fi
 }
 
 cmd_code() {

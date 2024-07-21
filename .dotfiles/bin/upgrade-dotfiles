@@ -141,7 +141,13 @@ cmd_rust() {
     if [[ -s "$HOME/.cargo/.crates.toml" ]]; then
         # shellcheck disable=SC2207
         crates=($(grep '^"[^"]*" = \["[^"]*"\]$' "$HOME/.cargo/.crates.toml" | sed 's/^"\([^ ]*\) .*$/\1/'))
-        cargo install -q "${crates[@]}"
+        for c in "${crates[@]}"; do
+            if [[ "$c" == gitui ]] && [[ "$BS_UNAME_M" == aarch64 ]]; then
+                cargo install --quiet --locked "$c"
+            else
+                cargo install --quiet "$c"
+            fi
+        done
     fi
 }
 

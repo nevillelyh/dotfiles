@@ -402,6 +402,36 @@ run_kconf() {
     "$exec" "$@"
 }
 
+run_kind() {
+    brew_run kind kind "$@"
+
+    get_latest() {
+        local url="https://api.github.com/repos/kubernetes-sigs/kind/releases"
+        local header="Accept: application/vnd.github.v3+json"
+        curl -fsSL -H "$header" "$url" | jq --raw-output '.[].tag_name' | bs_head1 | sed 's/^v//'
+    }
+
+    get_current() {
+        "$exec" --version | sed 's/^kind version \(.\+\)/\1/'
+    }
+
+    download() {
+        local version=$1
+        case "$arch" in
+            x86_64) arch=amd64 ;;
+            aarch64) arch=arm64 ;;
+        esac
+        curl -fsSL "https://github.com/kubernetes-sigs/kind/releases/download/v$version/kind-$os-$arch" -o "$exec"
+        chmod +x "$exec"
+
+        mk_comp "$exec" completion zsh
+    }
+
+    exec="$cache/kind"
+    update
+    "$exec" "$@"
+}
+
 run_kubectl() {
     brew_run kubernetes-cli kubectl "$@"
 

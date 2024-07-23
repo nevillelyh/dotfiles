@@ -233,7 +233,7 @@ cmd_helm() {
     sudo snap install helm --classic
 }
 
-# https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
+# https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
 cmd_nvidia() {
     local url="https://nvidia.github.io/libnvidia-container/gpgkey"
     local repo
@@ -241,7 +241,7 @@ cmd_nvidia() {
     setup_gpg "$url" nvidia-container-toolkit-keyring.gpg
     setup_apt "$repo" nvidia-container-toolkit.list
     sudo apt-get update
-    sudo apt-get install -y nvidia-docker2
+    sudo apt-get install -y nvidia-container-toolkit
 }
 
 cmd_packer() {

@@ -230,7 +230,14 @@ cmd_go() {
 # https://helm.sh/
 cmd_helm() {
     brew_install helm || return 0
-    sudo snap install helm --classic
+
+    local url="https://baltocdn.com/helm/signing.asc"
+    local repo
+    repo="deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/trusted.gpg.d/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main"
+    setup_gpg "$url" helm.gpg
+    setup_apt "$repo" helm-stable-debian.list
+    sudo apt-get update
+    sudo apt-get install -y helm
 }
 
 # https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html

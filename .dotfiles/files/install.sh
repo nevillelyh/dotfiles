@@ -74,6 +74,19 @@ setup_hashicorp() {
     sudo apt-get update
 }
 
+# https://support.1password.com/install-linux/
+cmd_1password() {
+    brew_install 1password || return 0
+
+    local url="https://downloads.1password.com/linux/keys/1password.asc"
+    local repo
+    repo="deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/amd64 stable main"
+    setup_gpg "$url" 1password-archive-keyring.gpg
+    setup_apt "$repo" 1password.list
+    sudo apt-get update
+    sudo apt-get install -y 1password
+}
+
 # https://docs.ankiweb.net/platform/linux/installing.html
 cmd_anki() {
     brew_install_cask anki || return 0

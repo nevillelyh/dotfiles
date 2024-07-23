@@ -110,6 +110,17 @@ cmd_awscli() {
     rm -rf awscliv2.zip aws
 }
 
+cmd_btop() {
+    brew_install btop || return 0
+
+    git clone git@github.com:aristocratos/btop.git
+    cd btop
+    make
+    PREFIX=$HOME/.local make install
+    cd ..
+    rm -rf btop
+}
+
 # Chrome manages its own repository
 cmd_chrome() {
     brew_install_cask google-chrome || return 0

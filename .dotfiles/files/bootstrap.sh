@@ -274,9 +274,9 @@ cmd_rust() {
     source "$HOME/.cargo/env"
     if [[ "$BS_UNAME_S" == Linux ]]; then
         for c in "${LINUX_CRATES[@]}"; do
-            # FIXME: dependency issue on Linux arm64
+            # FIXME: dependency issue on Linux
             # https://github.com/extrawurst/gitui/issues/2283#issuecomment-2241488375
-            if [[ "$c" == gitui ]] && [[ "$BS_UNAME_M" == aarch64 ]]; then
+            if [[ "$c" == gitui ]]; then
                 cargo install --quiet --locked "$c"
             else
                 cargo install --quiet "$c"

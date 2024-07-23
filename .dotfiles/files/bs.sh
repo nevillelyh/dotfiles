@@ -221,6 +221,20 @@ bs_fatal() {
     exit 1
 }
 
+bs_head1() {
+    case "$BS_UNAME_S" in
+        Darwin) tail -r | tail -n 1 ;;
+        Linux) tac | tail -n 1 ;;
+    esac
+}
+
+bs_headn() {
+    case "$BS_UNAME_S" in
+        Darwin) tail -r | tail -n "$1" | tail -r ;;
+        Linux) tac | tail -n "$1" | tac ;;
+    esac
+}
+
 bs_sed_i() {
     case "$BS_UNAME_S" in
         Darwin) sed -i '' "$@" ;;
@@ -234,6 +248,15 @@ bs_timestamp() {
 
 _bs_test_exec() {
     _bs_test_stdout "pong" bs_df files/bs-test.sh ping
+
+    local file
+    file=$(bs_temp_file bs-test)
+    { echo "foo" ; echo "bar" ; echo "baz" ; } > "$file"
+    bs_head1 < "$file" > "$file.head"
+    _bs_test_stdout "foo" cat "$file.head"
+    bs_headn 2 < "$file" | tr '\n' ':' > "$file.head"
+    _bs_test_stdout "foo:bar:" cat "$file.head"
+    rm "$file" "$file.head"
 
     local file
     file=$(bs_temp_file bs-test)

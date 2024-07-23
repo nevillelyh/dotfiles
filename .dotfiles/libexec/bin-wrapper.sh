@@ -115,7 +115,7 @@ run_bw() {
     get_latest() {
         local url="https://api.github.com/repos/bitwarden/clients/releases"
         local header="Accept: application/vnd.github.v3+json"
-        curl -fsSL -H "$header" "$url" | jq --raw-output '.[].tag_name' | grep '^cli-v' | sed 's/^cli-v\(.*\)$/\1/' | tac | tail -n 1
+        curl -fsSL -H "$header" "$url" | jq --raw-output '.[].tag_name' | grep '^cli-v' | sed 's/^cli-v\(.*\)$/\1/' | bs_head1
     }
 
     get_current() {
@@ -203,7 +203,7 @@ run_cockroach() {
         bs_urls "https://www.cockroachlabs.com/docs/releases" | \
             grep -o '\<cockroach-v[0-9]\+\.[0-9]\+\.[0-9]\+\.linux-amd64.tgz$' | \
             sed 's/^cockroach-\(.\+\)\.linux-amd64.tgz$/\1/' | \
-            tac | tail -n 1
+            bs_head1
     }
 
     get_current() {
@@ -490,7 +490,7 @@ run_kustomize() {
     get_latest() {
         local url="https://api.github.com/repos/kubernetes-sigs/kustomize/releases"
         local header="Accept: application/vnd.github.v3+json"
-        curl -fsSL -H "$header" "$url" | jq --raw-output '.[].tag_name' | grep '^kustomize/v' | sed 's/^kustomize\/v\(.\+\)$/\1/' | tac | tail -n 1
+        curl -fsSL -H "$header" "$url" | jq --raw-output '.[].tag_name' | grep '^kustomize/v' | sed 's/^kustomize\/v\(.\+\)$/\1/' | bs_head1
     }
 
     get_current() {

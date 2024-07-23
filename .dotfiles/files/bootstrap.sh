@@ -149,12 +149,6 @@ cmd_linux_extras() {
     # FIXME: not available for Linux arm64
     [[ "$BS_UNAME_M" != x86_64 ]] || bs_df files/install.sh chrome discord dropbox
     bs_df files/install.sh code sublime
-
-    if type gnome-terminal &> /dev/null; then
-        git clone https://github.com/dracula/gnome-terminal
-        ./gnome-terminal/install.sh
-        rm -rf gnome-terminal
-    fi
 }
 
 cmd_git() {

@@ -138,7 +138,7 @@ cmd_linux_extras() {
     dpkg-query --show xorg &> /dev/null || return 0
 
     if type snap &> /dev/null; then
-        sudo snap install btop spotify xseticon
+        sudo snap install btop spotify
 
         # FIXME: Workaround for AppArmor on PopOS
         # https://forum.snapcraft.io/t/apparmor-blocking-the-opening-of-slack/29212

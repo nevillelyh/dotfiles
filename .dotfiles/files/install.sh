@@ -172,7 +172,7 @@ cmd_dbeaver() {
 cmd_discord() {
     brew_install_cask discord || return 0
 
-    local url="https://discordapp.com/api/download/canary?platform=linux&format=deb"
+    local url="https://discord.com/api/download?platform=linux&format=deb"
     curl -fsSL "$url" -o discord.deb
     sudo dpkg --install --force-all discord.deb
     sudo apt-get install -fy

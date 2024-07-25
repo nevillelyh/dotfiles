@@ -52,9 +52,10 @@ codename() {
 setup_gpg() {
     local url=$1
     local gpg=$2
+    local dst=${3:-/etc/apt/trusted.gpg.d}
     bs_info "Setting up GPG key $gpg"
     curl -fsSL "$url" | gpg --dearmor > "$gpg"
-    sudo install -o root -g root -m 644 "$gpg" /etc/apt/trusted.gpg.d/
+    sudo install -o root -g root -m 644 "$gpg" "$dst"
     rm "$gpg"
 }
 
@@ -304,11 +305,11 @@ cmd_steam() {
     brew_install_cask steam || return 0
 
     local url="https://repo.steampowered.com/steam/archive/stable/steam.gpg"
-    local line1="deb [arch=amd64,i386] http://repo.steampowered.com/steam/ stable steam"
-    local line2="deb-src [arch=amd64,i386] http://repo.steampowered.com/steam/ stable steam"
+    local line1="deb [arch=amd64,i386 signed-by=/usr/share/keyrings/steam.gpg] http://repo.steampowered.com/steam/ stable steam"
+    local line2="deb-src [arch=amd64,i386 signed-by=/usr/share/keyrings/steam.gpg] http://repo.steampowered.com/steam/ stable steam"
     local repo
     repo=$(echo -e "$line1\n$line2")
-    setup_gpg "$url" steam.gpg
+    setup_gpg "$url" steam.gpg /usr/share/keyrings
     setup_apt "$repo" steam.list
     sudo apt-get update
     sudo apt-get install -y steam-launcher

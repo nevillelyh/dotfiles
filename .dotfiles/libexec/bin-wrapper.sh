@@ -234,6 +234,9 @@ run_cockroach() {
 run_cog() {
     brew_run cog cog "$@"
 
+    # `replicate` forbids access via a personal access token (classic).
+    unset DOTFILES_GITHUB_API_TOKEN
+
     get_latest() {
         bs_gh_latest replicate/cog
     }

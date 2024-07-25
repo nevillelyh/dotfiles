@@ -223,7 +223,7 @@ cmd_gcloud() {
     setup_gpg "$url" cloud.google.gpg
     setup_apt "$repo" google-cloud-sdk.list
     sudo apt-get update
-    sudo apt-get install google-cloud-cli
+    sudo apt-get install google-cloud-cli google-cloud-sdk-gke-gcloud-auth-plugin
 }
 
 # https://go.dev/doc/install

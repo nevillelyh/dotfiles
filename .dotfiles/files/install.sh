@@ -126,7 +126,7 @@ cmd_chrome() {
     brew_install_cask google-chrome || return 0
 
     wget -nv https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    sudo dpkg -i google-chrome-stable_current_amd64.deb
+    sudo dpkg --install --force-all google-chrome-stable_current_amd64.deb
     sudo apt-get install -fy
     rm google-chrome-stable_current_amd64.deb
 }
@@ -174,7 +174,7 @@ cmd_discord() {
 
     local url="https://discordapp.com/api/download/canary?platform=linux&format=deb"
     curl -fsSL "$url" -o discord.deb
-    sudo dpkg -i discord.deb
+    sudo dpkg --install --force-all discord.deb
     sudo apt-get install -fy
     rm discord.deb
 }
@@ -208,7 +208,7 @@ cmd_dropbox() {
     local pkg
     pkg=$(curl -fsSL "$url" | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^dropbox_[\d\.]+_amd64.deb$' | grep '2020\.03\.04' | tail -n 1)
     wget -nv "$url/$pkg"
-    sudo dpkg -i dropbox_*_amd64.deb
+    sudo dpkg --install --force-all dropbox_*_amd64.deb
     sudo apt-get install -fy
     rm dropbox_*_amd64.deb
 }
@@ -365,7 +365,7 @@ cmd_teams() {
     local pkg
     pkg=$(curl -fsSL $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^teams_[\d\.]+_amd64.deb$' | tail -n 1)
     wget -nv "$url/$pkg"
-    sudo dpkg -i teams_*_amd64.deb
+    sudo dpkg --install --force-all teams_*_amd64.deb
     sudo apt-get install -fy
     rm teams_*_amd64.deb
 }

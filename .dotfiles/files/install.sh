@@ -310,7 +310,7 @@ cmd_steam() {
     local repo
     repo=$(echo -e "$line1\n$line2")
     setup_gpg "$url" steam.gpg /usr/share/keyrings
-    setup_apt "$repo" steam.list
+    setup_apt "$repo" steam-stable.list
     sudo apt-get update
     sudo apt-get install -y steam-launcher
 }

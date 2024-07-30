@@ -184,7 +184,7 @@ cmd_discord() {
 cmd_docker() {
     # Default is ctrl-p, ctrl-q
     mkdir -p "$HOME/.docker"
-    echo '{"detachKeys": "ctrl-z,z"}' | jq --indent 4 > "$HOME/.docker/config.json"
+    printf '{\n    "detachKeys": "ctrl-z,z"\n}\n' > "$HOME/.docker/config.json"
 
     brew_install_cask docker || return 0
 

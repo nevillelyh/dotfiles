@@ -383,6 +383,32 @@ run_gh() {
     "$exec" "$@"
 }
 
+run_jq() {
+    brew_run jq jq "$@"
+
+    get_latest() {
+        bs_gh "repos/jqlang/jq/releases/latest" | grep '"tag_name":' | sed 's/.*"tag_name": "\(.\+\)",.*$/\1/'
+    }
+
+    get_current() {
+        "$exec" --version
+    }
+
+    download() {
+        local version=$1
+        case "$arch" in
+            x86_64) arch=amd64 ;;
+            aarch64) arch=arm64 ;;
+        esac
+        url="https://github.com/jqlang/jq/releases/download/$version/jq-$os-$arch"
+        curl -fsSL "$url" -o "$exec"
+        chmod +x "$exec"
+    }
+
+    exec="$cache/jq"
+    update
+    "$exec" "$@"
+}
 run_k3d() {
     brew_run k3d k3d "$@"
 

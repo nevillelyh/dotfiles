@@ -585,7 +585,7 @@ run_kustomize() {
     }
 
     get_current() {
-        "$exec" version --short | sed 's/v\([^+]\+\).\+/\1/'
+        "$exec" version | sed 's/v\([^+]\+\).*/\1/'
     }
 
     download() {

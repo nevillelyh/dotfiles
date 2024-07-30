@@ -259,6 +259,38 @@ run_cog() {
     "$exec" "$@"
 }
 
+run_fd() {
+    brew_run fd fd "$@"
+
+    get_latest() {
+        bs_gh_latest sharkdp/fd
+    }
+
+    get_current() {
+        "$exec" --version | sed 's/^fd \(.\+\)$/\1/'
+    }
+
+    download() {
+        local version=$1
+        local prefix="https://github.com/sharkdp/fd/releases/download"
+        local build="fd-v$version-$arch-unknown-$os-gnu"
+        local tarball="$build.tar.gz"
+        local url="$prefix/v$version/$tarball"
+        curl -fsSL "$url" | tar -C "$cache" -xz --strip-components=1 \
+            "$build/fd" "$build/autocomplete/_fd"
+        local sfpath="$HOME/.local/share/zsh/site-functions"
+        [[ -d "$sfpath" ]] || mkdir -p "$sfpath"
+        mv "$cache/autocomplete/_fd" "$sfpath"
+        rmdir "$cache/autocomplete"
+        touch "$exec"
+
+    }
+
+    exec="$cache/fd"
+    update
+    "$exec" "$@"
+}
+
 run_flatc() {
     brew_run flatbuffers flatc "$@"
 

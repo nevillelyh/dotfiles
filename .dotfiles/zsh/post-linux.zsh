@@ -10,11 +10,3 @@ xc() {
         xclip -selection clipboard -in
     fi
 }
-
-FD_COMMAND=fd
-# fd is already used by package fdclone on Ubuntu 19.04 or later
-if type fdfind &> /dev/null; then
-    alias fd='fdfind'
-    FD_COMMAND=fdfind
-fi
-export FD_COMMAND

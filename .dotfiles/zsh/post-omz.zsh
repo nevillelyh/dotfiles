@@ -66,9 +66,8 @@ function zt() {
 }
 
 export EDITOR=nvim
-export FZF_DEFAULT_COMMAND="$FD_COMMAND --type f"
+export FZF_DEFAULT_COMMAND="fd --type f"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-unset FD_COMMAND
 export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,hl:#bd93f9 --color=fg+:#f8f8f2,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4'
 
 if type virtualenvwrapper.sh &> /dev/null; then

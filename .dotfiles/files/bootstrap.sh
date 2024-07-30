@@ -30,7 +30,7 @@ MAS=(1440147259 1352778147 472772 441258766 1480068668 1477385213 803453959 4254
 # libfuse2 - for AppImage, e.g. JetBrains Toolbox, NeoVim
 # unzip, zip - for SDKMAN
 # Not available or outdated in Ubuntu - bat, git-delta, zoxide
-DEB_PKGS=(build-essential colordiff htop jq libfuse2 lm-sensors ninja-build python3-venv ripgrep shellcheck smartmontools tmux unzip zip zsh)
+DEB_PKGS=(build-essential colordiff htop jq libfuse2 lm-sensors ninja-build python3-venv shellcheck smartmontools tmux unzip zip zsh)
 DEB_GUI_PKGS=(alacritty fonts-powerline ubuntu-restricted-extras vlc)
 LINUX_CRATES=(bat du-dust eza git-delta gitui zoxide)
 

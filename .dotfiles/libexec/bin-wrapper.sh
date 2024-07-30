@@ -772,6 +772,42 @@ run_protoc-gen-go-grpc() {
     "$exec" "$@"
 }
 
+run_rg() {
+    brew_run ripgrep rg "$@"
+
+    get_latest() {
+        bs_gh_latest BurntSushi/ripgrep
+    }
+
+    get_current() {
+        "$exec" --version | grep '^ripgrep ' | sed 's/^ripgrep \([^ ]\+\).*$/\1/'
+    }
+
+    download() {
+        local version=$1
+        case "$arch" in
+            x86_64) libc=musl ;;
+            aarch64) libc=gnu ;;
+        esac
+        local prefix="https://github.com/BurntSushi/ripgrep/releases/download"
+        local build="ripgrep-$version-$arch-unknown-$os-$libc"
+        local tarball="$build.tar.gz"
+        local url="$prefix/$version/$tarball"
+        curl -fsSL "$url" | tar -C "$cache" -xz --strip-components=1 \
+            "$build/rg" "$build/complete/_rg"
+        local sfpath="$HOME/.local/share/zsh/site-functions"
+        [[ -d "$sfpath" ]] || mkdir -p "$sfpath"
+        mv "$cache/complete/_rg" "$sfpath"
+        rmdir "$cache/complete"
+        touch "$exec"
+
+    }
+
+    exec="$cache/rg"
+    update
+    "$exec" "$@"
+}
+
 run_sops() {
     brew_run sops sops "$@"
 

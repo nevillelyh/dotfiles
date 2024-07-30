@@ -290,6 +290,33 @@ run_flatc() {
     "$exec" "$@"
 }
 
+run_fzf() {
+    brew_run fzf fzf "$@"
+
+    get_latest() {
+        bs_gh_latest junegunn/fzf
+    }
+
+    get_current() {
+        "$exec" --version | sed 's/^\(.\+\) \+(.\+)$/\1/'
+    }
+
+    download() {
+        local version=$1
+        case "$arch" in
+            x86_64) arch=amd64 ;;
+            aarch64) arch=arm64 ;;
+        esac
+        curl -fsSL "https://github.com/junegunn/fzf/releases/download/v$version/fzf-$version-${os}_$arch.tar.gz" | tar -C "$cache" -xz fzf
+
+        mk_comp "$exec" --zsh
+    }
+
+    exec="$cache/fzf"
+    update
+    "$exec" "$@"
+}
+
 run_gh() {
     brew_run gh gh "$@"
 

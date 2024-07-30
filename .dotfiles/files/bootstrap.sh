@@ -19,7 +19,7 @@ GUI=${GUI:-1}
 # python - leave macOS bundled python alone
 # pinentry-mac - for GPG
 # App Store - AdGuard for Safari, Instapaper, Kindle, Messenger, Slack, The Unarchiver, WhatsApp
-BREWS=(bat btop cmake colordiff dust eza fd fzf git git-delta gitui golang gpg htop jq mas neovim ninja pinentry-mac python ripgrep shellcheck tmux wget zoxide)
+BREWS=(bat btop cmake colordiff dust eza fd git git-delta gitui golang gpg htop jq mas neovim ninja pinentry-mac python ripgrep shellcheck tmux wget zoxide)
 CASKS=(alacritty alfred dbeaver-community discord docker dropbox expressvpn github iterm2 jetbrains-toolbox notion scroll-reverser sublime-text tailscale visual-studio-code vimr zotero)
 CASKS_OPT=(adobe-creative-cloud anki firefox google-chrome google-cloud-sdk guitar-pro hiarcs-chess-explorer macdive microsoft-edge retroarch signal shearwater-cloud spotify steam subsurface transmission vlc waves-central)
 # AdGuard Bitwarden Kindle Magnet Messenger Pocket Slack Unarchiver WhatsApp
@@ -30,7 +30,7 @@ MAS=(1440147259 1352778147 472772 441258766 1480068668 1477385213 803453959 4254
 # libfuse2 - for AppImage, e.g. JetBrains Toolbox, NeoVim
 # unzip, zip - for SDKMAN
 # Not available or outdated in Ubuntu - bat, git-delta, zoxide
-DEB_PKGS=(build-essential colordiff fd-find fzf htop jq libfuse2 lm-sensors ninja-build python3-venv ripgrep shellcheck smartmontools tmux unzip zip zsh)
+DEB_PKGS=(build-essential colordiff fd-find htop jq libfuse2 lm-sensors ninja-build python3-venv ripgrep shellcheck smartmontools tmux unzip zip zsh)
 DEB_GUI_PKGS=(alacritty fonts-powerline ubuntu-restricted-extras vlc)
 LINUX_CRATES=(bat du-dust eza git-delta gitui zoxide)
 

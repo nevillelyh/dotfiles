@@ -32,5 +32,5 @@
 	process = git-lfs filter-process
 	required = true
 
-[includeIf "gitdir:~/.gitconfig-ext"]
-       path = .gitconfig-ext
+[include]
+	path = ~/.gitconfig-ext

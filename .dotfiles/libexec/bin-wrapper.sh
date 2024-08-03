@@ -282,7 +282,6 @@ run_fd() {
         mv "$cache/autocomplete/_fd" "$sfpath"
         rmdir "$cache/autocomplete"
         touch "$exec"
-
     }
 
     exec="$cache/fd"

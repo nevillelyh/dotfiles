@@ -24,6 +24,13 @@ brew_run() {
     exit 0
 }
 
+not_supported() {
+    if [[ "$os" == "$1" ]] && [[ "$arch" == "$2" ]]; then
+        echo "Not supported on $os-$arch"
+        exit 1
+    fi
+}
+
 update() {
     local ttl
     (( ttl = 7 * 24 * 60 * 60 ))
@@ -68,6 +75,7 @@ mk_comp() {
 
 run_b2() {
     brew_run b2-tools b2 "$@"
+    not_supported linux aarch64
 
     get_latest() {
         bs_gh_latest Backblaze/B2_Command_Line_Tool
@@ -404,6 +412,7 @@ run_fd() {
 
 run_flatc() {
     brew_run flatbuffers flatc "$@"
+    not_supported linux aarch64
 
     get_latest() {
         bs_gh_latest google/flatbuffers

@@ -329,7 +329,7 @@ run_fzf() {
     }
 
     get_current() {
-        "$exec" --version | sed 's/^\(.\+\) \+(.\+)$/\1/'
+        "$exec" --version | sed 's/^\([^ ]\+\) \+(.\+)$/\1/'
     }
 
     download() {

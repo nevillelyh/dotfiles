@@ -29,10 +29,8 @@ MAS=(1440147259 1352778147 472772 441258766 1480068668 1477385213 803453959 4254
 # fonts-powerline - PowerlineSymbols only, no patched fonts
 # libfuse2 - for AppImage, e.g. JetBrains Toolbox, NeoVim
 # unzip, zip - for SDKMAN
-# Not available or outdated in Ubuntu - bat, git-delta, zoxide
 DEB_PKGS=(build-essential colordiff htop libfuse2 lm-sensors ninja-build python3-venv shellcheck smartmontools tmux unzip zip zsh)
 DEB_GUI_PKGS=(alacritty fonts-powerline ubuntu-restricted-extras vlc)
-LINUX_CRATES=(bat du-dust eza git-delta gitui zoxide)
 
 # PIP packages:
 APT_PIP_PKGS=(python3-flake8 python3-ipython python3-virtualenv python3-virtualenvwrapper)
@@ -265,17 +263,6 @@ cmd_rust() {
 
     # shellcheck source=/dev/null
     source "$HOME/.cargo/env"
-    if [[ "$BS_UNAME_S" == Linux ]]; then
-        for c in "${LINUX_CRATES[@]}"; do
-            # FIXME: dependency issue on Linux
-            # https://github.com/extrawurst/gitui/issues/2283#issuecomment-2241488375
-            if [[ "$c" == gitui ]]; then
-                cargo install --quiet --locked "$c"
-            else
-                cargo install --quiet "$c"
-            fi
-        done
-    fi
 }
 
 cmd_code() {
@@ -337,9 +324,6 @@ cmd_zsh() {
         Darwin) rm -rf "$HOME/.bash_profile" "$HOME/.bashrc" ;;
         Linux) cp /etc/skel/.[^.]* "$HOME" ;;
     esac
-
-    # Missing ZSH completions for some packages, e.g. those from Cargo
-    bs_df files/completions.sh
 }
 
 cmd_check() {

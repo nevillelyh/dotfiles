@@ -10,6 +10,7 @@ else
 fi
 
 cache="$HOME/.dotfiles/libexec/cache"
+sfpath="$HOME/.local/share/zsh/site-functions"
 os=$(echo "$BS_UNAME_S" | tr "[:upper:]" "[:lower:]")
 arch="$BS_UNAME_M"
 
@@ -61,7 +62,6 @@ download_gh_bin() {
 mk_comp() {
     local cmd=$1
     shift
-    local sfpath="$HOME/.local/share/zsh/site-functions"
     [[ -d "$sfpath" ]] || mkdir -p "$sfpath"
     "$cmd" "$@" > "$sfpath/_$(basename "$cmd")"
 }
@@ -83,6 +83,36 @@ run_b2() {
     }
 
     exec="$cache/b2"
+    update
+    "$exec" "$@"
+}
+
+run_bat() {
+    brew_run bat bat "$@"
+
+    get_latest() {
+        bs_gh_latest sharkdp/bat
+    }
+
+    get_current() {
+        "$exec" --version | sed 's/^bat \([^ ]\+\) \+(.\+)$/\1/'
+    }
+
+    download() {
+        local version=$1
+        local prefix="https://github.com/sharkdp/bat/releases/download"
+        local build="bat-v$version-$arch-unknown-$os-gnu"
+        local tarball="$build.tar.gz"
+        local url="$prefix/v$version/$tarball"
+        curl -fsSL "$url" | tar -C "$cache" -xz --strip-components=1 \
+            "$build/bat" "$build/autocomplete/bat.zsh"
+        [[ -d "$sfpath" ]] || mkdir -p "$sfpath"
+        mv "$cache/autocomplete/bat.zsh" "$sfpath/_bat"
+        rmdir "$cache/autocomplete"
+        touch "$exec"
+    }
+
+    exec="$cache/bat"
     update
     "$exec" "$@"
 }
@@ -259,6 +289,89 @@ run_cog() {
     "$exec" "$@"
 }
 
+run_delta() {
+    brew_run git-delta delta "$@"
+
+    get_latest() {
+        bs_gh_latest dandavison/delta
+    }
+
+    get_current() {
+        "$exec" --version | sed 's/^delta \(.\+\)$/\1/'
+    }
+
+    download() {
+        local version=$1
+        local prefix="https://github.com/dandavison/delta/releases/download"
+        local build="delta-$version-$arch-unknown-$os-gnu"
+        local tarball="$build.tar.gz"
+        local url="$prefix/$version/$tarball"
+        curl -fsSL "$url" | tar -C "$cache" -xz --strip-components=1 "$build/delta"
+        [[ -d "$sfpath" ]] || mkdir -p "$sfpath"
+        curl -fsSL "https://raw.githubusercontent.com/dandavison/delta/$version/etc/completion/completion.zsh" -o "$sfpath/_delta"
+        touch "$exec"
+    }
+
+    exec="$cache/delta"
+    update
+    "$exec" "$@"
+}
+
+run_dust() {
+    brew_run dust dust "$@"
+
+    get_latest() {
+        bs_gh_latest bootandy/dust
+    }
+
+    get_current() {
+        "$exec" --version | sed 's/^Dust \(.\+\)$/\1/'
+    }
+
+    download() {
+        local version=$1
+        local prefix="https://github.com/bootandy/dust/releases/download"
+        local build="dust-v$version-$arch-unknown-$os-gnu"
+        local tarball="$build.tar.gz"
+        local url="$prefix/v$version/$tarball"
+        curl -fsSL "$url" | tar -C "$cache" -xz --strip-components=1 "$build/dust"
+        [[ -d "$sfpath" ]] || mkdir -p "$sfpath"
+        curl -fsSL "https://raw.githubusercontent.com/bootandy/dust/v$version/completions/_dust" -o "$sfpath/_dust"
+        touch "$exec"
+    }
+
+    exec="$cache/dust"
+    update
+    "$exec" "$@"
+}
+
+run_eza() {
+    brew_run eza eza "$@"
+
+    get_latest() {
+        bs_gh_latest eza-community/eza
+    }
+
+    get_current() {
+        "$exec" --version | grep '^v' | sed 's/^v\(.\+\) \[.*\]$/\1/'
+    }
+
+    download() {
+        local version=$1
+        local prefix="https://github.com/eza-community/eza/releases/download"
+        local tarball="eza_$arch-unknown-$os-gnu.tar.gz"
+        local url="$prefix/v$version/$tarball"
+        curl -fsSL "$url" | tar -C "$cache" -xz ./eza
+        [[ -d "$sfpath" ]] || mkdir -p "$sfpath/"
+        curl -fsSL "https://raw.githubusercontent.com/eza-community/eza/v$version/completions/zsh/_eza" -o "$sfpath/_eza"
+        touch "$exec"
+    }
+
+    exec="$cache/eza"
+    update
+    "$exec" "$@"
+}
+
 run_fd() {
     brew_run fd fd "$@"
 
@@ -278,7 +391,6 @@ run_fd() {
         local url="$prefix/v$version/$tarball"
         curl -fsSL "$url" | tar -C "$cache" -xz --strip-components=1 \
             "$build/fd" "$build/autocomplete/_fd"
-        local sfpath="$HOME/.local/share/zsh/site-functions"
         [[ -d "$sfpath" ]] || mkdir -p "$sfpath"
         mv "$cache/autocomplete/_fd" "$sfpath"
         rmdir "$cache/autocomplete"
@@ -378,6 +490,31 @@ run_gh() {
     }
 
     exec="$cache/gh/bin/gh"
+    update
+    "$exec" "$@"
+}
+
+run_gitui() {
+    brew_run gitui gitui "$@"
+
+    get_latest() {
+        bs_gh_latest extrawurst/gitui
+    }
+
+    get_current() {
+        "$exec" --version | sed 's/^gitui \([^ ]\+\) .*$/\1/'
+    }
+
+    download() {
+        local version=$1
+        local prefix="https://github.com/extrawurst/gitui/releases/download"
+        local tarball="gitui-$os-$arch.tar.gz"
+        local url="$prefix/v$version/$tarball"
+        curl -fsSL "$url" | tar -C "$cache" -xz ./gitui
+        touch "$exec"
+    }
+
+    exec="$cache/gitui"
     update
     "$exec" "$@"
 }
@@ -618,8 +755,7 @@ run_lazydocker() {
             aarch64) arch=arm64 ;;
         esac
         local prefix="https://github.com/jesseduffield/lazydocker/releases/download"
-        local build="lazydocker_${version}_${BS_UNAME_S}_$arch"
-        local tarball="$build.tar.gz"
+        local tarball="lazydocker_${version}_${BS_UNAME_S}_$arch.tar.gz"
         local url="$prefix/v$version/$tarball"
         curl -fsSL "$url" | tar -C "$cache" -xz lazydocker
         touch "$exec"
@@ -795,7 +931,6 @@ run_rg() {
         local url="$prefix/$version/$tarball"
         curl -fsSL "$url" | tar -C "$cache" -xz --strip-components=1 \
             "$build/rg" "$build/complete/_rg"
-        local sfpath="$HOME/.local/share/zsh/site-functions"
         [[ -d "$sfpath" ]] || mkdir -p "$sfpath"
         mv "$cache/complete/_rg" "$sfpath"
         rmdir "$cache/complete"
@@ -877,6 +1012,35 @@ run_yamlfmt() {
     }
 
     exec="$cache/yamlfmt"
+    update
+    "$exec" "$@"
+}
+
+run_zoxide() {
+    brew_run zoxide zoxide "$@"
+
+    get_latest() {
+        bs_gh_latest ajeetdsouza/zoxide
+    }
+
+    get_current() {
+        "$exec" --version | sed 's/^zoxide \(.\+\)$/\1/'
+    }
+
+    download() {
+        local version=$1
+        local prefix="https://github.com/ajeetdsouza/zoxide/releases/download"
+        local tarball="zoxide-$version-$arch-unknown-$os-musl.tar.gz"
+        local url="$prefix/v$version/$tarball"
+        curl -fsSL "$url" | tar -C "$cache" -xz \
+            zoxide completions/_zoxide
+        [[ -d "$sfpath" ]] || mkdir -p "$sfpath"
+        mv "$cache/completions/_zoxide" "$sfpath/_zoxide"
+        rmdir "$cache/completions"
+        touch "$exec"
+    }
+
+    exec="$cache/zoxide"
     update
     "$exec" "$@"
 }

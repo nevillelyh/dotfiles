@@ -26,11 +26,9 @@ env() {
             COCKROACH_PORT) default=26257 ;;
             MARIADB_PORT) default=3306 ;;
             MYSQL_PORT) default=3306 ;;
-            KAFKA_PORT) default=9092 ;;
             POSTGRES_PORT) default=5432 ;;
             TRINO_PORT) default=8080 ;;
             UI_PORT) default=8080 ;;
-            ZK_PORT) default=2181 ;;
         esac
     fi
     local value=${!name:-$default}
@@ -100,39 +98,6 @@ cockroach_sql() {
     url="postgresql://$(env DB_USER):$(env DB_PASS)@localhost:$(env COCKROACH_PORT)/$(env DB)?sslmode=require"
     docker_cli cockroach-cli \
         cockroachdb/cockroach:latest sql --url "$url" "$@"
-}
-
-cmd_kafka() {
-    local host=127.0.0.1 # workaround for IPv6 issue
-    local port
-    port=$(env KAFKA_PORT)
-    docker_srv kafka \
-        --env KAFKA_BROKER_ID=1 \
-        --env KAFKA_ZOOKEEPER_CONNECT=zookeeper:"$(env ZK_PORT)" \
-        --env KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT \
-        --env KAFKA_ADVERTISED_LISTENERS="PLAINTEXT://$host:29092,PLAINTEXT_HOST://$host:$port" \
-        --env KAFKA_METRIC_REPORTERS=io.confluent.metrics.reporter.ConfluentMetricsReporter \
-        --env KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 \
-        --env KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR=1 \
-        --env KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR=1 \
-        --env KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1 \
-        --env CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS="$host:29092" \
-        --env CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS=1 \
-        --link zookeeper \
-        --publish "$port:$port" \
-        confluentinc/cp-server:latest "$@"
-}
-
-cmd_kcat() {
-    local host=127.0.0.1 # workaround for IPv6 issue
-    docker_cmd kcat \
-        nevillelyh/kcat:latest "$@"
-}
-
-cmd_kraft() {
-    docker_srv kraft \
-        --publish 9092:9092 \
-        nevillelyh/kraft:latest "$@"
 }
 
 cmd_mariadb_help="<server|cli>"
@@ -237,13 +202,6 @@ trino_server() {
 trino_cli() {
     docker_cli trino-cli \
         trinodb/trino:latest trino "$@"
-}
-
-cmd_zookeeper() {
-    docker_srv zookeeper \
-        --env ZOOKEEPER_CLIENT_PORT=2181 \
-        --publish "$(env ZK_PORT)":2181 \
-        confluentinc/cp-zookeeper:latest "$@"
 }
 
 bs_cmd_args "$@"

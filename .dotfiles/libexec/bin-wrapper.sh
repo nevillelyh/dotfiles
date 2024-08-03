@@ -28,7 +28,7 @@ update() {
     (( ttl = 7 * 24 * 60 * 60 ))
     local cache_ttl=${CACHE_TTL:-$ttl}
 
-    if [[ ! -x "$exec" ]]; then
+    if [[ ! -x "$exec" ]] || [[ "${REINSTALL:-0}" -eq 1 ]] ; then
         local latest
         latest=$(get_latest)
         ! [[ -t 1 ]] || bs_info "Installing $bin $latest"

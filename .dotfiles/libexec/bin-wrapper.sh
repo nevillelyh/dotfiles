@@ -15,7 +15,7 @@ os=$(echo "$BS_UNAME_S" | tr "[:upper:]" "[:lower:]")
 arch="$BS_UNAME_M"
 
 brew_run() {
-    [[ "$BS_UNAME_S" != Darwin ]] && return 0
+    [[ "$os" != darwin ]] && return 0
     local brew_pkg="$1"
     local brew_bin="/opt/homebrew/bin/$2"
     shift 2

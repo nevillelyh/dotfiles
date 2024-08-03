@@ -30,7 +30,7 @@ update() {
     if [[ ! -x "$exec" ]]; then
         local latest
         latest=$(get_latest)
-        bs_info "Installing $bin $latest"
+        ! [[ -t 1 ]] || bs_info "Installing $bin $latest"
         download "$latest"
     elif [[ $(bs_file_age "$exec") -ge $ttl ]]; then
         local current
@@ -38,10 +38,10 @@ update() {
         current=$(get_current)
         latest=$(get_latest)
         if [[ "$current" != "$latest" ]]; then
-            bs_info "Upgrading $bin from $current to $latest"
+            ! [[ -t 1 ]] || bs_info "Upgrading $bin from $current to $latest"
             download "$latest"
         else
-            bs_info "Up-to-date $bin: $current"
+            ! [[ -t 1 ]] || bs_info "Up-to-date $bin: $current"
             touch "$exec"
         fi
     fi
@@ -113,9 +113,8 @@ run_bazel() {
 
 run_bw() {
     get_latest() {
-        local url="https://api.github.com/repos/bitwarden/clients/releases"
-        local header="Accept: application/vnd.github.v3+json"
-        curl -fsSL -H "$header" "$url" | jq --raw-output '.[].tag_name' | grep '^cli-v' | sed 's/^cli-v\(.*\)$/\1/' | bs_head1
+        local path="repos/bitwarden/clients/releases"
+        bs_gh "$path" | jq --raw-output '.[].tag_name' | grep '^cli-v' | sed 's/^cli-v\(.*\)$/\1/' | bs_head1
     }
 
     get_current() {
@@ -202,12 +201,12 @@ run_cockroach() {
     get_latest() {
         bs_urls "https://www.cockroachlabs.com/docs/releases" | \
             grep -o '\<cockroach-v[0-9]\+\.[0-9]\+\.[0-9]\+\.linux-amd64.tgz$' | \
-            sed 's/^cockroach-\(.\+\)\.linux-amd64.tgz$/\1/' | \
+            sed 's/^cockroach-v\(.\+\)\.linux-amd64.tgz$/\1/' | \
             bs_head1
     }
 
     get_current() {
-        "$exec" version | grep '^Build Tag:' | sed 's/^Build Tag: *\(v.\+\)$/\1/'
+        "$exec" version | grep '^Build Tag:' | sed 's/^Build Tag: *\v(.\+\)$/\1/'
     }
 
     download() {
@@ -217,7 +216,7 @@ run_cockroach() {
             aarch64) arch=arm64 ;;
         esac
         local prefix="https://binaries.cockroachdb.com"
-        local build="cockroach-$version.$os-$arch"
+        local build="cockroach-v$version.$os-$arch"
         local tarball="$build.tgz"
         local url="$prefix/$tarball"
         curl -fsSL "$url" | tar -C "$cache" -xz
@@ -304,7 +303,7 @@ run_flatc() {
 
     download() {
         local version=$1
-        local zip="Linux.flatc.binary.g++-10.zip"
+        local zip="Linux.flatc.binary.g++-13.zip"
         local prefix="https://github.com/google/flatbuffers/releases/download"
         local url="$prefix/v$version/$zip"
         local tmp
@@ -357,7 +356,7 @@ run_gh() {
     }
 
     get_current() {
-        "$exec" --version 2> /dev/null | grep '^gh version\>' | sed 's/^gh version \(.\+\) (.\+)$/\1/'
+        "$exec" version 2> /dev/null | grep '^gh version\>' | sed 's/^gh version \([^ ]\+\) (.\+)$/\1/'
     }
 
     download() {
@@ -409,6 +408,7 @@ run_jq() {
     update
     "$exec" "$@"
 }
+
 run_k3d() {
     brew_run k3d k3d "$@"
 
@@ -417,7 +417,7 @@ run_k3d() {
     }
 
     get_current() {
-        "$exec" --version | grep '^k3d version\>' | sed 's/^k3d version v\(.\+\)/\1/'
+        "$exec" version | grep '^k3d version\>' | sed 's/^k3d version v\(.\+\)$/\1/'
     }
 
     download() {
@@ -444,7 +444,7 @@ run_k9s() {
     }
 
     get_current() {
-        "$exec" version --short | grep '^Version\>' | sed 's/^Version \+v\?\(.\+\)/\1/'
+        "$exec" version --short | grep '^Version\>' | sed 's/^Version \+v\?\(.\+\)$/\1/'
     }
 
     download() {
@@ -471,7 +471,7 @@ run_kconf() {
     }
 
     get_current() {
-        "$exec" version | sed 's/^v\+\(.\+\)/\1/'
+        "$exec" version | sed 's/^v\+\(.\+\)$/\1/'
     }
 
     download() {
@@ -494,13 +494,12 @@ run_kind() {
     brew_run kind kind "$@"
 
     get_latest() {
-        local url="https://api.github.com/repos/kubernetes-sigs/kind/releases"
-        local header="Accept: application/vnd.github.v3+json"
-        curl -fsSL -H "$header" "$url" | jq --raw-output '.[].tag_name' | bs_head1 | sed 's/^v//'
+        local path="repos/kubernetes-sigs/kind/releases"
+        bs_gh "$path" | jq --raw-output '.[].tag_name' | bs_head1 | sed 's/^v//'
     }
 
     get_current() {
-        "$exec" --version | sed 's/^kind version \(.\+\)/\1/'
+        "$exec" version | sed 's/^kind v\([^ ]\+\) .*$/\1/'
     }
 
     download() {
@@ -556,7 +555,7 @@ run_kubectx() {
     }
 
     get_current() {
-        cat "$vfile"
+        "$exec" --version
     }
 
     download() {
@@ -566,11 +565,9 @@ run_kubectx() {
             aarch64) arch=arm64 ;;
         esac
         curl -fsSL "https://github.com/ahmetb/kubectx/releases/download/v$version/kubectx_v${version}_${os}_$arch.tar.gz" | tar -C "$cache" -xz kubectx
-        echo "$version" > "$vfile"
     }
 
     exec="$cache/kubectx"
-    vfile="$cache/kubectx-version"
     update
     "$exec" "$@"
 }
@@ -579,13 +576,12 @@ run_kustomize() {
     brew_run kustomize kustomize "$@"
 
     get_latest() {
-        local url="https://api.github.com/repos/kubernetes-sigs/kustomize/releases"
-        local header="Accept: application/vnd.github.v3+json"
-        curl -fsSL -H "$header" "$url" | jq --raw-output '.[].tag_name' | grep '^kustomize/v' | sed 's/^kustomize\/v\(.\+\)$/\1/' | bs_head1
+        local path="repos/kubernetes-sigs/kustomize/releases"
+        bs_gh "$path" | jq --raw-output '.[].tag_name' | grep '^kustomize/v' | sed 's/^kustomize\/v\(.\+\)$/\1/' | bs_head1
     }
 
     get_current() {
-        "$exec" version | sed 's/v\([^+]\+\).*/\1/'
+        "$exec" version | sed 's/v\([^+]\+\).*$/\1/'
     }
 
     download() {
@@ -612,7 +608,7 @@ run_lazydocker() {
     }
 
     get_current() {
-        "$exec" --version | grep '^Version:' | sed 's/^Version: \(.\+\)$/\1/'
+        "$exec" version | grep '^Version:' | sed 's/^Version: \(.\+\)$/\1/'
     }
 
     download() {
@@ -710,28 +706,6 @@ run_nvim() {
     "$exec" "$@"
 }
 
-run_presto() {
-    get_latest() {
-        js_url="https://prestodb.io/static/js/version.js"
-        curl -fsSL "$js_url" | grep '\<presto_latest_presto_version\>' | sed "s/[^']*'\([^']*\)';$/\1/"
-    }
-
-    get_current() {
-        "$exec" --version | sed 's/^Presto CLI \([^-]\+\)-.\+$/\1/'
-    }
-
-    download() {
-        local version=$1
-        local url="https://repo1.maven.org/maven2/com/facebook/presto/presto-cli/$version/presto-cli-$version-executable.jar"
-        curl -fsSL "$url" -o "$exec"
-        chmod +x "$exec"
-    }
-
-    exec="$cache/presto"
-    update
-    "$exec" "$@"
-}
-
 run_protoc() {
     brew_run protobuf protoc "$@"
 
@@ -740,7 +714,7 @@ run_protoc() {
     }
 
     get_current() {
-        "$exec" --version | sed 's/^libprotoc [0-9]\+\.\(.\+\)$/\1/'
+        "$exec" --version | sed 's/^libprotoc \(.\+\)$/\1/'
     }
 
     download() {
@@ -842,7 +816,7 @@ run_sops() {
     }
 
     get_current() {
-        "$exec" --version | grep '^sops\>' | sed 's/^sops \([^ ]\+\).\+/\1/g'
+        "$exec" --version | grep '^sops\>' | sed 's/^sops \([^ ]\+\).*$/\1/g'
     }
 
     download() {

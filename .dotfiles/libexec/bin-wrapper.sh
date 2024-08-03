@@ -26,13 +26,14 @@ brew_run() {
 update() {
     local ttl
     (( ttl = 7 * 24 * 60 * 60 ))
+    local cache_ttl=${CACHE_TTL:-$ttl}
 
     if [[ ! -x "$exec" ]]; then
         local latest
         latest=$(get_latest)
         ! [[ -t 1 ]] || bs_info "Installing $bin $latest"
         download "$latest"
-    elif [[ $(bs_file_age "$exec") -ge $ttl ]]; then
+    elif [[ $(bs_file_age "$exec") -ge $cache_ttl ]]; then
         local current
         local latest
         current=$(get_current)

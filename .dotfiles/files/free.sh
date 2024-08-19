@@ -34,6 +34,7 @@ esac
 if type docker &> /dev/null; then
     bs_info_box "Cleaning up Docker images"
     docker images --quiet --filter dangling=true | xargs -r docker rmi
+    docker builder prune --all --force
     docker volume prune --force
 fi
 

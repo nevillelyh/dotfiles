@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Bitwarden
+Type=Application
+Categories=Office;
+Exec=/home/neville/.AppImages/Bitwarden.AppImage
+Icon=/home/neville/.local/share/icons/bitwarden.png
+Terminal=false
+MimeType=x-scheme-handler/bitwarden;text/html;

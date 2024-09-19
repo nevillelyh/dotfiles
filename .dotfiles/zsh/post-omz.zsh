@@ -70,61 +70,6 @@ export FZF_DEFAULT_COMMAND="fd --type f"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,hl:#bd93f9 --color=fg+:#f8f8f2,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4'
 
-if type virtualenvwrapper.sh &> /dev/null; then
-    case "$(uname -s)" in
-        Linux)
-            VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-            ;;
-        Darwin)
-            VIRTUALENVWRAPPER_PYTHON=/opt/homebrew/bin/python3
-            ;;
-    esac
-    export VIRTUALENVWRAPPER_PYTHON
-    export WORKON_HOME=$HOME/.virtualenvs
-    source $(which virtualenvwrapper.sh)
-
-    if [[ -n "$VIRTUAL_ENV" ]]; then
-        source "$VIRTUAL_ENV/bin/activate"
-    fi
-fi
-
-# $PWD/.venv for VS Code
-
-mkvenv() {
-    if [[ $# -ne 1 ]]; then
-        echo "Usage: $(basename $0) <DIR>"
-        return 1
-    fi
-    cd "$1"
-    if [[ -n "$VIRTUAL_ENV" ]]; then
-        echo 'Error: Already inside a virtual environment'
-        return 1
-    fi
-    python3 -m venv .venv
-    source .venv/bin/activate
-
-    if [[ -f "requirements.txt" ]]; then
-        read -q 'REPLY?pip install -r requirements.txt (y/N)? '
-        echo
-        [[ $REPLY =~ ^[Yy]$ ]] && pip install -r requirements.txt
-    fi
-}
-
-rmvenv() {
-    if [[ $# -ne 1 ]]; then
-        echo "Usage: $(basename $0) <DIR>"
-        return 1
-    fi
-    cd "$1"
-    if [[ -z "$VIRTUAL_ENV" ]]; then
-        echo 'Error: Not inside a virtual environment'
-        return 1
-    fi
-    dir="$VIRTUAL_ENV"
-    deactivate
-    rm -rf "$dir"
-}
-
 # Reuse a single SSH agent
 ssh_keys=("${(@f)$(find "$HOME/.ssh" \( -name id_dsa -or -name id_rsa -or -name id_ecdsa -or -name id_ed25519 \))}")
 if [[ -n "$ssh_keys" ]]; then

@@ -33,8 +33,8 @@ DEB_PKGS=(build-essential colordiff htop libfuse2 lm-sensors ninja-build python3
 DEB_GUI_PKGS=(alacritty fonts-powerline ubuntu-restricted-extras vlc)
 
 # PIP packages:
-APT_PIP_PKGS=(python3-flake8 python3-ipython python3-virtualenv python3-virtualenvwrapper)
-BREW_PIP_PKGS=(flake8 ipython virtualenv virtualenvwrapper)
+APT_PIP_PKGS=(python3-flake8 python3-ipython)
+BREW_PIP_PKGS=(flake8 ipython)
 
 cmd_ssh() {
     [[ -n "${SSH_CONNECTION-}" ]] && return 0 # remote host

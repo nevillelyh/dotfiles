@@ -1000,6 +1000,58 @@ run_trino() {
     "$exec" "$@"
 }
 
+run_uv() {
+    brew_run uv uv "$@"
+
+    get_latest() {
+        bs_gh_latest astral-sh/uv
+    }
+
+    get_current() {
+        "$exec" --version | sed 's/^uv \(.\+\)$/\1/'
+    }
+
+    download() {
+        local version=$1
+        local prefix="https://github.com/astral-sh/uv/releases/download"
+        local build="uv-$arch-unknown-$os-gnu"
+        local tarball="$build.tar.gz"
+        local url="$prefix/$version/$tarball"
+        curl -fsSL "$url" | tar -C "$cache" -xz --strip-components=1 "$build/uv" "$build/uvx"
+        touch "$exec"
+    }
+
+    exec="$cache/uv"
+    update
+    "$exec" "$@"
+}
+
+run_uvx() {
+    brew_run uv uvx "$@"
+
+    get_latest() {
+        bs_gh_latest astral-sh/uv
+    }
+
+    get_current() {
+        "$exec" --version | sed 's/^uv \(.\+\)$/\1/'
+    }
+
+    download() {
+        local version=$1
+        local prefix="https://github.com/astral-sh/uv/releases/download"
+        local build="uv-$arch-unknown-$os-gnu"
+        local tarball="$build.tar.gz"
+        local url="$prefix/$version/$tarball"
+        curl -fsSL "$url" | tar -C "$cache" -xz --strip-components=1 "$build/uv" "$build/uvx"
+        touch "$exec"
+    }
+
+    exec="$cache/uvx"
+    update
+    "$exec" "$@"
+}
+
 run_yamlfmt() {
     brew_run yamlfmt yamlfmt "$@"
 

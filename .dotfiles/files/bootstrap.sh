@@ -253,6 +253,10 @@ cmd_python() {
             sudo aptitude install -y "${APT_PIP_PKGS[@]}"
             ;;
     esac
+
+    uv venv --prompt '' "$HOME/.venv"
+    export VIRTUAL_ENV="$HOME/.venv"
+    uv pip install ipython
 }
 
 cmd_rust() {

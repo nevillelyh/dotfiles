@@ -28,3 +28,14 @@ function mkvenv() {
 
 add-zsh-hook chpwd auto_venv
 auto_venv
+
+alias pip='uv pip'
+alias pip3='uv pip'
+
+function python() {
+    if ! which -p python &> /dev/null; then
+        /usr/bin/env python3 "$@"
+    else
+        $(which -p python) "$@"
+    fi
+}

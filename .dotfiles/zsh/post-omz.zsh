@@ -54,6 +54,9 @@ alias view='nvim -R'
 alias vim='nvim'
 alias vimdiff='nvim -d'
 
+# uv
+export UV_CONFIG_FILE="$HOME/.config/uv/uv.toml"
+
 # Functions
 
 function rg() {

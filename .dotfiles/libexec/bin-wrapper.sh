@@ -1019,6 +1019,8 @@ run_uv() {
         local url="$prefix/$version/$tarball"
         curl -fsSL "$url" | tar -C "$cache" -xz --strip-components=1 "$build/uv" "$build/uvx"
         touch "$exec"
+
+        mk_comp "$cache/uv" generate-shell-completion zsh
     }
 
     exec="$cache/uv"
@@ -1045,6 +1047,8 @@ run_uvx() {
         local url="$prefix/$version/$tarball"
         curl -fsSL "$url" | tar -C "$cache" -xz --strip-components=1 "$build/uv" "$build/uvx"
         touch "$exec"
+
+        mk_comp "$cache/uv" generate-shell-completion zsh
     }
 
     exec="$cache/uvx"

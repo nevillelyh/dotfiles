@@ -9,9 +9,11 @@ case "$(uname -s)" in
         ;;
 esac
 
+# Command line utilities
 alias cat='bat'
 alias diff='colordiff'
 alias ghpr='gh pr create'
+alias kx=kubectx
 
 # Docker
 alias digc='docker images --quiet --filter dangling=true | xargs -r docker rmi'
@@ -29,6 +31,11 @@ alias lsa='eza -la' # 'ls -lah'
 alias lsg='eza -l --git'
 alias lst='eza -l -r -s modified'
 
+# FZF
+export FZF_DEFAULT_COMMAND="fd --type f"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,hl:#bd93f9 --color=fg+:#f8f8f2,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4'
+
 # gsutil
 alias gscat='gsutil cat'
 alias gscp='gsutil -m cp'
@@ -38,6 +45,7 @@ alias gsmv='gsutil -m mv'
 alias gsrm='gsutil -m rm'
 
 # NeoVim
+export EDITOR=nvim
 alias ex='nvim -e'
 alias rview='nvim -RZ'
 alias rvim='nvim -Z'
@@ -46,11 +54,7 @@ alias view='nvim -R'
 alias vim='nvim'
 alias vimdiff='nvim -d'
 
-# K8S
-alias kx=kubectx
-
-# AWS
-alias sts-whoami='aws sts get-caller-identity'
+# Functions
 
 function rg() {
     command rg --json "$@" | delta
@@ -64,11 +68,6 @@ function zt() {
         z "$1" && tmux new-session -s "$session"
     fi
 }
-
-export EDITOR=nvim
-export FZF_DEFAULT_COMMAND="fd --type f"
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,hl:#bd93f9 --color=fg+:#f8f8f2,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4'
 
 # Reuse a single SSH agent
 ssh_keys=("${(@f)$(find "$HOME/.ssh" \( -name id_dsa -or -name id_rsa -or -name id_ecdsa -or -name id_ed25519 \))}")
@@ -84,6 +83,7 @@ if [[ -n "$ssh_keys" ]]; then
 fi
 unset ssh_keys
 
+# Private environment
 if [[ -d $HOME/.dotfiles/private/profile.d ]]; then
     for f in $HOME/.dotfiles/private/profile.d/*.sh; do
         source $f

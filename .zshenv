@@ -15,6 +15,15 @@
 # - SSH: login & interactive
 
 if [[ -o interactive ]] || [[ -o login ]]; then
+    # Deactivate venv
+    if ! [ -z "${_OLD_VIRTUAL_PS1+_}" ]; then
+            PS1="$_OLD_VIRTUAL_PS1"
+            export PS1
+            unset _OLD_VIRTUAL_PS1
+    fi
+    unset VIRTUAL_ENV
+    unset VIRTUAL_ENV_PROMPT
+
     if [[ -o login ]] && [[ -x /usr/libexec/path_helper ]]; then
         unset PATH # Let path_helper regenerate
     else

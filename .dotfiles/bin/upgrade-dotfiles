@@ -118,16 +118,6 @@ cmd_jvm() {
     "$HOME/.dotfiles/files/sdkman.sh"
 }
 
-cmd_python() {
-    bs_info_box "Upgrading Python"
-    [[ "$BS_UNAME_S" == "Darwin" ]] && return 0
-    python3 -m pip install --upgrade pip
-    # Bash 3 on Mac missing readarray
-    # shellcheck disable=SC2207
-    pip_pkgs=($(grep '^PIP_PKGS=(' "$HOME/.dotfiles/files/bootstrap.sh" | sed 's/^PIP_PKGS=(\(.*\))$/\1/'))
-    python3 -m pip install --upgrade "${pip_pkgs[@]}"
-}
-
 cmd_rust() {
     bs_info_box "Upgrading Rust"
     rustup update
@@ -150,7 +140,6 @@ upgrade() {
     cmd_docker
     cmd_go
     cmd_jvm
-    cmd_python
     cmd_rust
     bs_success_box "Upgrade complete"
 }

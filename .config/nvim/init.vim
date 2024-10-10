@@ -29,6 +29,9 @@ function! ToggleKeymap()
 endfunction
 nmap <silent> <C-Space> :call ToggleKeymap()<CR>
 
-source $HOME/.config/nvim/dein.vim
 source $HOME/.config/nvim/keybindings.vim
-source $HOME/.config/nvim/plugins.vim
+source $HOME/.config/nvim/pre-lazy.vim
+lua require('config.lazy')
+source $HOME/.config/nvim/post-lazy.vim
+
+colorscheme dracula

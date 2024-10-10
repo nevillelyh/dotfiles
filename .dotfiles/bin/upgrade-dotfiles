@@ -61,13 +61,6 @@ cmd_omz() {
     zsh -i -c "omz update"
 }
 
-cmd_neovim() {
-    bs_info_box "Upgrading NeoVim"
-    nvim -u "$HOME/.config/nvim/dein.vim" --headless \
-        '+let g:dein#install_progress_type = "none" | call dein#update() | echo "\r\n" | qall'
-    [[ -z "${TMUX-}" ]] || nvim -u "$HOME/.config/nvim/dein.vim" --headless '+Tmuxline | qall'
-}
-
 cmd_docker() {
     type docker &> /dev/null || return 0
     bs_info_box "Upgrading Docker"
@@ -136,7 +129,6 @@ upgrade() {
     cmd_os
     cmd_git
     cmd_omz
-    cmd_neovim
     cmd_docker
     cmd_go
     cmd_jvm

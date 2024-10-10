@@ -184,12 +184,9 @@ cmd_gnupg() {
 }
 
 cmd_neovim() {
-    local dir=$HOME/.local/share/dein/repos/github.com/Shougo
-    [[ -d $dir ]] && return 0
+    local lock=$HOME/.config/nvim/lazy-lock.json
+    [[ -f $lock ]] && return 0
     bs_info_box "Setting up NeoVim"
-
-    mkdir -p "$dir"
-    git clone git@github.com:Shougo/dein.vim.git "$dir/dein.vim"
 
     # FIXME: not available for Linux arm64
     if [[ "$BS_UNAME_S-$BS_UNAME_M" == Linux-aarch64 ]]; then
@@ -199,7 +196,7 @@ cmd_neovim() {
         # FIXME: AppImage requires FUSE
         [[ ! -f /.dockerenv ]] || return 0
     fi
-    nvim -u "$HOME/.config/nvim/dein.vim" --headless "+call dein#install() | qall"
+    nvim --headless '+checkhealth | qall'
 }
 
 cmd_go() {

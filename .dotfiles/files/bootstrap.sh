@@ -19,7 +19,7 @@ GUI=${GUI:-1}
 # python - leave macOS bundled python alone
 # pinentry-mac - for GPG
 # App Store - AdGuard for Safari, Instapaper, Kindle, Messenger, Slack, The Unarchiver, WhatsApp
-BREWS=(bat btop cmake colordiff dust eza fd git git-delta gitui golang gpg htop jq mas neovim ninja pinentry-mac python ripgrep shellcheck tmux wget zoxide)
+BREWS=(bat btop cmake colordiff dust eza fd git git-delta gitui golang gpg htop jq mas neovim ninja pinentry-mac ripgrep shellcheck tmux wget zoxide)
 CASKS=(alacritty alfred dbeaver-community discord docker dropbox expressvpn github iterm2 jetbrains-toolbox notion scroll-reverser sublime-text tailscale visual-studio-code vimr zotero)
 CASKS_OPT=(adobe-creative-cloud anki firefox google-chrome google-cloud-sdk guitar-pro hiarcs-chess-explorer macdive microsoft-edge retroarch signal shearwater-cloud spotify steam subsurface transmission vlc waves-central)
 # AdGuard Bitwarden Kindle Magnet Messenger Pocket Slack Unarchiver WhatsApp
@@ -31,10 +31,6 @@ MAS=(1440147259 1352778147 472772 441258766 1480068668 1477385213 803453959 4254
 # unzip, zip - for SDKMAN
 DEB_PKGS=(build-essential colordiff htop libfuse2 lm-sensors ninja-build shellcheck smartmontools tmux unzip zip zsh)
 DEB_GUI_PKGS=(alacritty fonts-powerline ubuntu-restricted-extras vlc)
-
-# PIP packages:
-APT_PIP_PKGS=(python3-flake8)
-BREW_PIP_PKGS=(flake8)
 
 cmd_ssh() {
     [[ -n "${SSH_CONNECTION-}" ]] && return 0 # remote host
@@ -240,23 +236,11 @@ cmd_jvm() {
     bs_sed_i 's/sdkman_auto_answer=true/sdkman_auto_answer=false/g' "$HOME/.sdkman/etc/config"
 }
 
-cmd_python() {
-    type ipython &> /dev/null && return 0
-    bs_info_box "Setting up Python"
+cmd_venv() {
+    [[ -d $HOME/.venv ]] && return 0
+    bs_info_box "Setting up venv"
 
-    case "$BS_UNAME_S" in
-        Darwin)
-            brew install "${BREW_PIP_PKGS[@]}"
-            ;;
-        Linux)
-            # Nothing to do here
-            sudo aptitude install -y "${APT_PIP_PKGS[@]}"
-            ;;
-    esac
-
-    uv venv --prompt '' "$HOME/.venv"
-    export VIRTUAL_ENV="$HOME/.venv"
-    uv pip install ipython
+    bs_df files/install.sh venv
 }
 
 cmd_rust() {
@@ -345,7 +329,7 @@ cmd_check() {
     gopls version &> /dev/null
     sdk version &> /dev/null
     java -version &> /dev/null
-    pip3 --version &> /dev/null
+    ipython --version &> /dev/null
     flake8 --version &> /dev/null
     rustup --version &> /dev/null
     cargo --version &> /dev/null
@@ -387,7 +371,7 @@ bootstrap() {
     cmd_neovim
     cmd_go
     cmd_jvm
-    cmd_python
+    cmd_venv
     cmd_rust
     cmd_code
     cmd_fonts

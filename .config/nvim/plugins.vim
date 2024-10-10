@@ -27,17 +27,3 @@ let g:NERDTrimTrailingWhitespace = 1
 nmap <A-/> <leader>c<space><Down>
 vmap <A-/> <leader>c<space>
 vmap <A-?> <leader>cm
-
-" Syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_mode_map = {'mode': 'active', 'passive_filetypes': ['java', 'scala']}
-let g:syntastic_cpp_compiler_options = '-std=c++20'
-let g:syntastic_python_flake8_args = "--max-line-length=100"
-let g:syntastic_sh_shellcheck_args = "-x"

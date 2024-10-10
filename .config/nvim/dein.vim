@@ -26,12 +26,12 @@ if dein#load_state($HOME.'/.local/share/dein')
 
   " Coding & Editing
   call dein#add('airblade/vim-gitgutter', {'merged': 0}) " [c,]c => prev/next hunk
+  call dein#add('dense-analysis/ale', {'merged': 0})
   call dein#add('godlygeek/tabular', {'merged': 0})
   call dein#add('junegunn/fzf', {'merged': 0})
   call dein#add('kamykn/spelunker.vim', {'merged': 0})
   call dein#add('preservim/nerdcommenter', {'merged': 0})
   call dein#add('tpope/vim-fugitive', {'merged': 0})
-  call dein#add('vim-syntastic/syntastic', {'merged': 0})
 
   " Syntax
   call dein#add('hashivim/vim-terraform', {'merged': 0})

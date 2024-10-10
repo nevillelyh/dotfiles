@@ -22,8 +22,16 @@ function auto_venv() {
 }
 
 function mkvenv() {
-    uv venv "$@"
-    auto_venv
+    out=$(uv venv --color always --seed "$@" 2>&1)
+    echo "$out" >&2
+    activate="$(echo "$out" | grep -o 'source .*/bin/activate' | sed 's/^source //')"
+    source "$activate"
+    uv pip install ipython flake8
+    if [[ -f requirements.txt ]]; then
+        read -q "REPLY?Install packages in requirements.txt? (y/N) "
+        echo
+        [[ $REPLY == "y" ]] && uv pip install --requirement requirements.txt
+    fi
 }
 
 add-zsh-hook chpwd auto_venv

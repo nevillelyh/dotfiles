@@ -92,7 +92,7 @@ run_b2() {
 
     exec="$cache/b2"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_bat() {
@@ -122,7 +122,7 @@ run_bat() {
 
     exec="$cache/bat"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_bazel() {
@@ -147,7 +147,7 @@ run_bazel() {
 
     exec="$cache/bazelisk"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_bw() {
@@ -181,7 +181,7 @@ run_bw() {
     # Workaround for Linux arm64
     # $HOME/.dotfiles/builds/bitwarden/build.sh
     [[ "$os-$arch" != linux-aarch64 ]] && update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_cfssl() {
@@ -206,7 +206,7 @@ run_cfssl() {
 
     exec="$cache/cfssl"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_cfssljson() {
@@ -231,7 +231,7 @@ run_cfssljson() {
 
     exec="$cache/cfssljson"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_cockroach() {
@@ -266,7 +266,7 @@ run_cockroach() {
 
     exec="$cache/cockroach/cockroach"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_cog() {
@@ -294,7 +294,7 @@ run_cog() {
 
     exec="$cache/cog"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_delta() {
@@ -322,7 +322,7 @@ run_delta() {
 
     exec="$cache/delta"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_dust() {
@@ -350,7 +350,7 @@ run_dust() {
 
     exec="$cache/dust"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_eza() {
@@ -377,7 +377,7 @@ run_eza() {
 
     exec="$cache/eza"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_fd() {
@@ -407,7 +407,7 @@ run_fd() {
 
     exec="$cache/fd"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_flatc() {
@@ -439,7 +439,7 @@ run_flatc() {
 
     exec="$cache/flatc"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_fzf() {
@@ -466,7 +466,7 @@ run_fzf() {
 
     exec="$cache/fzf"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_gh() {
@@ -500,7 +500,7 @@ run_gh() {
 
     exec="$cache/gh/bin/gh"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_gitui() {
@@ -525,7 +525,7 @@ run_gitui() {
 
     exec="$cache/gitui"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_jq() {
@@ -552,7 +552,7 @@ run_jq() {
 
     exec="$cache/jq"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_k3d() {
@@ -579,7 +579,7 @@ run_k3d() {
 
     exec="$cache/k3d"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_k9s() {
@@ -606,7 +606,7 @@ run_k9s() {
 
     exec="$cache/k9s"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_kconf() {
@@ -633,7 +633,7 @@ run_kconf() {
 
     exec="$cache/kconf"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_kind() {
@@ -662,7 +662,7 @@ run_kind() {
 
     exec="$cache/kind"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_kubectl() {
@@ -690,7 +690,7 @@ run_kubectl() {
 
     exec="$cache/kubectl"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_kubectx() {
@@ -715,7 +715,7 @@ run_kubectx() {
 
     exec="$cache/kubectx"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_kustomize() {
@@ -743,7 +743,7 @@ run_kustomize() {
 
     exec="$cache/kustomize"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_lazydocker() {
@@ -772,7 +772,7 @@ run_lazydocker() {
 
     exec="$cache/lazydocker"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_minikube() {
@@ -799,7 +799,7 @@ run_minikube() {
 
     exec="$cache/minikube"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_nerdctl() {
@@ -825,7 +825,7 @@ run_nerdctl() {
 
     exec="$cache/nerdctl"
     update
-    sudo "$exec" "$@"
+    exec sudo "$exec" "$@"
 }
 
 run_nvim() {
@@ -848,7 +848,7 @@ run_nvim() {
     # Workaround for Linux arm64
     # https://github.com/matsuu/neovim-aarch64-appimage
     [[ "$os-$arch" != linux-aarch64 ]] && update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_protoc() {
@@ -884,7 +884,7 @@ run_protoc() {
 
     exec="$cache/protoc/bin/protoc"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_protoc-gen-go() {
@@ -899,7 +899,7 @@ run_protoc-gen-go() {
             [[ -f "$exec" ]] || go install "google.golang.org/protobuf/cmd/$bin@latest"
             ;;
     esac
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_protoc-gen-go-grpc() {
@@ -914,7 +914,7 @@ run_protoc-gen-go-grpc() {
             [[ -f "$exec" ]] || go install "google.golang.org/grpc/cmd/$bin@latest"
             ;;
     esac
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_rg() {
@@ -949,7 +949,7 @@ run_rg() {
 
     exec="$cache/rg"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_sops() {
@@ -974,7 +974,7 @@ run_sops() {
 
     exec="$cache/sops"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_trino() {
@@ -997,7 +997,7 @@ run_trino() {
 
     exec="$cache/trino"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_uv() {
@@ -1025,7 +1025,7 @@ run_uv() {
 
     exec="$cache/uv"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_uvx() {
@@ -1053,7 +1053,7 @@ run_uvx() {
 
     exec="$cache/uvx"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_yamlfmt() {
@@ -1078,7 +1078,7 @@ run_yamlfmt() {
 
     exec="$cache/yamlfmt"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 run_zoxide() {
@@ -1107,7 +1107,7 @@ run_zoxide() {
 
     exec="$cache/zoxide"
     update
-    "$exec" "$@"
+    exec "$exec" "$@"
 }
 
 get_bins() {

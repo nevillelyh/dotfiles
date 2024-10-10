@@ -389,7 +389,7 @@ cmd_vault() {
 
 cmd_venv() {
     rm -rf "$HOME/.venv"
-    uv venv --prompt '' "$HOME/.venv"
+    uv venv --seed --prompt '' "$HOME/.venv"
     export VIRTUAL_ENV="$HOME/.venv"
     uv pip install flake8 ipython
 }

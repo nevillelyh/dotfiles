@@ -3,6 +3,7 @@
 [[ -n ${VIRTUAL_ENV:-} ]] && return
 
 UV_VENV_NAME=.venv
+PIP_PKGS=(ipython flake8 mypy)
 
 function auto_venv() {
     # deactivate function exists and not inside $VIRTUAL_ENV/..
@@ -26,7 +27,7 @@ function mkvenv() {
     echo "$out" >&2
     activate="$(echo "$out" | grep -o 'source .*/bin/activate' | sed 's/^source //')"
     source "$activate"
-    uv pip install ipython flake8
+    uv pip install "${PIP_PKGS[@]}"
     if [[ -f requirements.txt ]]; then
         read -q "REPLY?Install packages in requirements.txt? (y/N) "
         echo

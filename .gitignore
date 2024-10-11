@@ -1,8 +1,27 @@
+# git ls-tree -r --name-only main
 /.*
-.*.swp
-
+!/.bazelrc
+!/.config/alacritty
+!/.config/bat
+!/.config/btop
+!/.config/gitui
+!/.config/k9s
+!/.config/nvim
+!/.config/uv
+!/.config/k9s
 !/.dotfiles
 /.dotfiles/private
+!/.git*
+!/.m2
+!/.p10k.zsh
+!/.profile
+!/.sbt/**.sbt
+!/.tmux.conf
+!/.zprofile
+!/.zshenv
+!/.zshrc
+
+.*.swp
 
 /Desktop
 /Documents
@@ -27,6 +46,3 @@
 /Calibre Library
 /examples.desktop
 /snap
-
-# Work
-/cert

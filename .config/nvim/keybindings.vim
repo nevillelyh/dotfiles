@@ -27,3 +27,7 @@ nmap <A-k> zm
 nmap <A-j> zr
 nmap <A-J> zR
 nmap <A-K> zM
+
+" Commenting
+nmap <A-/> gcc<Down>
+vmap <A-/> gc

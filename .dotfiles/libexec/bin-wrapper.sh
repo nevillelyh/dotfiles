@@ -20,8 +20,7 @@ brew_run() {
     local brew_bin="/opt/homebrew/bin/$2"
     shift 2
     [[ -L "$brew_bin" ]] || brew install "$brew_pkg"
-    "$brew_bin" "$@"
-    exit 0
+    exec "$brew_bin" "$@"
 }
 
 not_supported() {

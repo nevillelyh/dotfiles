@@ -391,7 +391,7 @@ cmd_venv() {
     rm -rf "$HOME/.venv"
     uv venv --seed --prompt '' "$HOME/.venv"
     export VIRTUAL_ENV="$HOME/.venv"
-    uv pip install flake8 ipython
+    uv pip install flake8 ipython mypy
 }
 
 # https://github.com/retorquere/zotero-deb/blob/master/install.sh

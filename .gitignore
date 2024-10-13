@@ -12,7 +12,7 @@
 !/.dotfiles
 /.dotfiles/private
 !/.git*
-!/.m2
+!/.m2/mvnd.properties
 !/.p10k.zsh
 !/.profile
 !/.sbt/**.sbt

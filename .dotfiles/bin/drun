@@ -55,13 +55,6 @@ docker_cli() {
     docker_run --name "$name-$(bs_timestamp)" -it --rm --network host "$@"
 }
 
-docker_cmd() {
-    local name=$1
-    shift
-    # no TTY for commands with stdin/stdout, e.g. kcat
-    docker_run --name "$name-$(bs_timestamp)" -i --rm --network host "$@"
-}
-
 cmd_killall() {
     docker ps --quiet --filter label=dotfiles.bin.drun=true | xargs -r docker kill
 }

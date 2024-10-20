@@ -8,7 +8,6 @@
 !/.config/k9s
 !/.config/nvim
 !/.config/uv
-!/.config/k9s
 !/.dotfiles
 /.dotfiles/private
 !/.git*

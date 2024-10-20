@@ -1,8 +1,8 @@
 {
-  "ale": { "branch": "master", "commit": "a7ef1817b7aa06d0f80952ad530be87ad3c8f6e2" },
-  "fzf": { "branch": "master", "commit": "c3505858a6764193e1948fd4423b92d7b379b255" },
-  "lazy.nvim": { "branch": "main", "commit": "077102c5bfc578693f12377846d427f49bc50076" },
-  "nvim-treesitter": { "branch": "master", "commit": "5a2ff8b7ca5470b1011ed82ef3fdd53139ffc467" },
+  "ale": { "branch": "master", "commit": "9854e19fa9f01e5d25a445893ea480f4ac172591" },
+  "fzf": { "branch": "master", "commit": "3c40b1bd51a895a907dbae5d30f6d9e99bdc1f90" },
+  "lazy.nvim": { "branch": "main", "commit": "1159bdccd8910a0fd0914b24d6c3d186689023d9" },
+  "nvim-treesitter": { "branch": "master", "commit": "d53df0c987d2f731001f73d176090efb73d8f60f" },
   "spelunker.vim": { "branch": "master", "commit": "a0bc530f62798bbe053905555a4aa9ed713485eb" },
   "tmuxline.vim": { "branch": "master", "commit": "4119c553923212cc67f4e135e6f946dc3ec0a4d6" },
   "vim": { "branch": "master", "commit": "65f4225e0526516a67d56c8ac09925a209138e53" },

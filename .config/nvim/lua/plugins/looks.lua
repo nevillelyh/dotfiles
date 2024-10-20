@@ -15,7 +15,6 @@ return {
       vim.g.tmuxline_preset = 'powerline'
     end,
   },
-  { 'ntpeters/vim-better-whitespace' },
   { 'tpope/vim-sleuth' },
   {
     'vim-airline/vim-airline',

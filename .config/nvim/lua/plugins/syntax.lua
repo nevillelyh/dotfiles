@@ -1,7 +1,4 @@
 return {
-  -- { 'hashivim/vim-terraform' },
-  -- { 'jjo/vim-cue' },
-  -- { 'zchee/vim-flatbuffers' },
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',

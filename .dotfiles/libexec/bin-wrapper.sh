@@ -296,6 +296,24 @@ run_cog() {
     exec "$exec" "$@"
 }
 
+run_cs() {
+    exec="$cache/cs"
+
+    if [ ! -f "$exec" ]; then
+        case "$arch" in
+            x86_64) prefix="https://github.com/coursier/launchers/raw/master" ;;
+            aarch64) prefix="https://github.com/VirtusLab/coursier-m1/releases/latest/download" ;;
+        esac
+        case "$os" in
+            darwin) file="cs-$arch-apple-darwin.gz" ;;
+            linux) file="cs-$arch-pc-linux.gz" ;;
+        esac
+        curl -fsSL "$prefix/$file" | gzip -d > "$exec"
+        chmod +x "$exec"
+    fi
+    exec "$exec" "$@"
+}
+
 run_delta() {
     brew_run git-delta delta "$@"
 

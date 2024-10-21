@@ -12,15 +12,32 @@ return {
       require("mason-lspconfig").setup({
         ensure_installed = {
           "basedpyright",
+          "clangd",
           "gopls",
           "lua_ls",
+          "metals",
           "ruff",
           "rust_analyzer",
           "terraformls",
         },
       })
 
-      require("lspconfig").lua_ls.setup({
+      local lspconfig = require("lspconfig")
+
+      --------------------
+
+      lspconfig.basedpyright.setup({
+        settings = {
+          basedpyright = {
+            analysis = {
+              typeCheckingMode = "standard",
+            },
+          },
+        },
+      })
+      lspconfig.clangd.setup({})
+      lspconfig.gopls.setup({})
+      lspconfig.lua_ls.setup({
         settings = {
           Lua = {
             diagnostics = {
@@ -29,6 +46,9 @@ return {
           }
         },
       })
+      lspconfig.metals.setup({})
+      lspconfig.ruff.setup({})
+      lspconfig.rust_analyzer.setup({})
     end,
   },
 }

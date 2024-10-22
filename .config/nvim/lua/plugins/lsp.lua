@@ -15,7 +15,6 @@ return {
           "clangd",
           "gopls",
           "lua_ls",
-          "metals",
           "ruff",
           "rust_analyzer",
           "terraformls",

@@ -27,11 +27,11 @@ help() {
 cmd_env() {
     [[ $# -ne 0 ]] && bs_fatal "Invalid argument: $*"
     [[ -d $HOME/.nvman ]] || exit 0
-    cuda=$HOME/.nvman/cuda-current
-    [[ -L $cuda ]] || bs_fatal "CUDA not installed"
-    cudnn=$HOME/.nvman/cudnn-current
-    [[ -L $cudnn ]] || bs_fatal "cuDNN not installed"
-    echo "export CUDA_PATH=$HOME/.nvman/cuda-current"
+    [[ -L $HOME/.nvman/cuda-current ]] || bs_fatal "CUDA not installed"
+    cuda="$(readlink -f "$HOME/.nvman/cuda-current")"
+    [[ -L $HOME/.nvman/cudnn-current ]] || bs_fatal "cuDNN not installed"
+    cudnn="$(readlink -f "$HOME/.nvman/cudnn-current")"
+    echo "export CUDA_PATH=$cuda"
     echo "export PATH=$cuda/bin${PATH:+:${PATH}}"
     echo "export LD_LIBRARY_PATH=$cuda/lib64:$cudnn/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
 }

@@ -301,8 +301,13 @@ run_cs() {
 
     if [ ! -f "$exec" ]; then
         case "$arch" in
-            x86_64) prefix="https://github.com/coursier/launchers/raw/master" ;;
-            aarch64) prefix="https://github.com/VirtusLab/coursier-m1/releases/latest/download" ;;
+            x86_64)
+                prefix="https://github.com/coursier/launchers/raw/master"
+                ;;
+            arm64|aarch64)
+                arch=aarch64
+                prefix="https://github.com/VirtusLab/coursier-m1/releases/latest/download"
+                ;;
         esac
         case "$os" in
             darwin) file="cs-$arch-apple-darwin.gz" ;;

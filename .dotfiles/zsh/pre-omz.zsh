@@ -1,18 +1,10 @@
 # Before oh-my-zsh
 
-case "$(uname -s)" in
-    Linux)
-        . "$HOME/.dotfiles/zsh/pre-linux.zsh"
-        ;;
-    Darwin)
-        . "$HOME/.dotfiles/zsh/pre-mac.zsh"
-        ;;
-esac
-
 # Reverse order
 bins=(
     # Mac
-    $HOME/Library/Application Support/JetBrains/Toolbox/scripts
+    "$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
+    "$HOME/Library/Application Support/Coursier/bin"
     /opt/homebrew/sbin
     /opt/homebrew/bin
 
@@ -42,3 +34,12 @@ export SDKMAN_DIR="$HOME/.sdkman"
 FPATH="$HOME/.local/share/zsh/site-functions:$FPATH"
 autoload -Uz compinit
 compinit
+
+case "$(uname -s)" in
+    Linux)
+        . "$HOME/.dotfiles/zsh/pre-linux.zsh"
+        ;;
+    Darwin)
+        . "$HOME/.dotfiles/zsh/pre-mac.zsh"
+        ;;
+esac

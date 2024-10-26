@@ -387,13 +387,6 @@ cmd_vault() {
     sudo apt-get install -y vault
 }
 
-cmd_venv() {
-    rm -rf "$HOME/.venv"
-    uv venv --seed --prompt '' "$HOME/.venv"
-    export VIRTUAL_ENV="$HOME/.venv"
-    uv pip install flake8 ipython mypy
-}
-
 # https://github.com/retorquere/zotero-deb/blob/master/install.sh
 cmd_zotero() {
     brew_install_cask zotero || return 0

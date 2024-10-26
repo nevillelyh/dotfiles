@@ -23,7 +23,9 @@ function auto_venv() {
 }
 
 function mkvenv() {
-    out=$(uv venv --color always --seed "$@" 2>&1)
+    args=()
+    [[ "$PWD" != "$HOME" ]] || args+=(--prompt '')
+    out=$(uv venv --color always --seed "${args[@]}" "$@" 2>&1)
     echo "$out" >&2
     activate="$(echo "$out" | grep -o 'source .*/bin/activate' | sed 's/^source //')"
     source "$activate"

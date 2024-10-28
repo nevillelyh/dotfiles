@@ -10,6 +10,7 @@
 !/.config/gh
 !/.config/gitui
 !/.config/k9s
+/.config/k9s/clusters
 !/.config/nvim
 !/.config/uv
 

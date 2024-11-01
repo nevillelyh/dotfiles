@@ -8,17 +8,22 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
-      require("mason").setup()
-      require("mason-lspconfig").setup({
-        ensure_installed = {
+      local lsps = {
           "basedpyright",
-          "clangd",
           "gopls",
           "lua_ls",
           "ruff",
           "rust_analyzer",
           "terraformls",
-        },
+      }
+      local uname = vim.loop.os_uname()
+      local platform = uname.sysname .. "-" .. uname.machine
+      if platform ~= "Linux-aarch64" then
+        table.insert(lsps, "clangd")
+      end
+      require("mason").setup()
+      require("mason-lspconfig").setup({
+        ensure_installed = lsps,
       })
 
       local lspconfig = require("lspconfig")

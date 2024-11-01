@@ -12,7 +12,7 @@ fi
 remote=origin
 [[ $# -eq 1 ]] && remote=$1
 
-git pull --prune "$remote"
+git pull "$remote"
 
 for branch in $(git remote prune "$remote" | grep '\[pruned\]' | awk '{print $3}' | sed -e "s@^$remote/@@g"); do
     if git branch --format="%(refname:short)" | grep -q "^$branch$"; then

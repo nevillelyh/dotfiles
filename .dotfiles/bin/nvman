@@ -50,7 +50,7 @@ install_cuda() {
 
 install_cudnn() {
     # shellcheck disable=SC2001
-    cudnn_version=$(echo "$1" | sed 's/cudnn-[^-]*-[^-]*-\([^-]*\)_cuda.*/\1/')
+    cudnn_version=$(echo "$1" | sed 's/cudnn-[^-]*-[^-]*-\([^-]*\)_cuda\([0-9]*\)-.*/\1-cuda\2/')
     dest=$HOME/.nvman/cudnn-$cudnn_version
     [[ -d $dest ]] && bs_fatal "cuDNN $cudnn_version already installed"
     bs_info "Installing CUDNN $cudnn_version in $dest"

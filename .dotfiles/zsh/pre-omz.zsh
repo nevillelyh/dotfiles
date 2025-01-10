@@ -16,6 +16,7 @@ bins=(
 
     # Common
     $HOME/.go/bin
+    $HOME/.krew/bin
     $HOME/.local/share/coursier/bin
     $HOME/.local/bin
     $HOME/.dotfiles/bin

@@ -83,7 +83,6 @@ cmd_docker() {
 }
 
 cmd_go() {
-    bs_info_box "Upgrading Go"
     if [[ -d /usr/local/go ]]; then
         os=$(echo "$BS_UNAME_S" | tr "[:upper:]" "[:lower:]")
         arch=$(dpkg --print-architecture)
@@ -91,12 +90,9 @@ cmd_go() {
         latest=$(echo "$tarball" | sed "s/^\/dl\/\(go.*\)\.$os-$arch\.tar\.gz$/\1/")
         current=$(go version | awk '{ print $3 }')
         if [[ "$latest" != "$current" ]]; then
-            read -n 1 -r -p "Upgrade from $current to $latest? (y/N) "
-            echo
-            if [[ $REPLY =~ ^[Yy]$ ]]; then
-                sudo rm -rf /usr/local/go
-                "$HOME/.dotfiles/files/install.sh" go
-            fi
+            bs_info_box "Upgrading Go from $current to $latest"
+            sudo rm -rf /usr/local/go
+            "$HOME/.dotfiles/files/install.sh" go
         fi
     fi
     if [[ -d "$HOME/.go/bin" ]]; then

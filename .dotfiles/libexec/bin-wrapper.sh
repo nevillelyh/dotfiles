@@ -863,13 +863,15 @@ run_nvim() {
 
     download() {
         local version=$1
-        download_gh_bin neovim/neovim "$version" nvim.appimage
+        case "$arch" in
+            x86_64) ;;
+            aarch64) arch=arm64 ;;
+        esac
+        download_gh_bin neovim/neovim "$version" "nvim-linux-$arch.appimage"
     }
 
     exec="$cache/nvim"
-    # Workaround for Linux arm64
-    # https://github.com/matsuu/neovim-aarch64-appimage
-    [[ "$os-$arch" != linux-aarch64 ]] && update
+    update
     exec "$exec" "$@"
 }
 

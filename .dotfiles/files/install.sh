@@ -107,7 +107,7 @@ cmd_awscli() {
 
     curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-$BS_UNAME_M.zip" -o awscliv2.zip
     unzip awscliv2.zip
-    ./aws/install --install-dir "$HOME/.aws" --bin-dir "$HOME/.local/bin"
+    ./aws/install --install-dir "$HOME/.aws" --bin-dir "$HOME/.local/bin" --update
     rm -rf awscliv2.zip aws
 }
 

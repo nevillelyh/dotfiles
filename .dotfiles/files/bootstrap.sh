@@ -107,7 +107,7 @@ cmd_apt() {
 
     # The following are GUI apps
     [[ $GUI -eq 1 ]] || return 0
-    dpkg-query --show xorg &> /dev/null || return 0
+    dpkg-query --show xserver-xorg &> /dev/null || return 0
 
     sudo aptitude install -y "${DEB_GUI_PKGS[@]}"
 }
@@ -128,7 +128,7 @@ cmd_linux_extras() {
 
     # The following are GUI apps
     [[ $GUI -eq 1 ]] || return 0
-    dpkg-query --show xorg &> /dev/null || return 0
+    dpkg-query --show xserver-xorg &> /dev/null || return 0
 
     if type snap &> /dev/null; then
         sudo snap install spotify
@@ -276,7 +276,7 @@ cmd_code() {
 
 cmd_fonts() {
     [[ $GUI -eq 1 ]] || return 0
-    [[ "$BS_UNAME_S" == Darwin ]] || dpkg-query --show xorg &> /dev/null || return 0
+    [[ "$BS_UNAME_S" == Darwin ]] || dpkg-query --show xserver-xorg &> /dev/null || return 0
     case "$BS_UNAME_S" in
         Darwin) fonts_dir="$HOME/Library/Fonts" ;;
         Linux) fonts_dir="$HOME/.local/share/fonts" ;;

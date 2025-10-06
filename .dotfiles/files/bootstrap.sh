@@ -183,6 +183,15 @@ cmd_gnupg() {
     esac
 }
 
+cmd_venv() {
+    [[ -d $HOME/.venv ]] && return 0
+    bs_info_box "Setting up venv"
+
+    uv venv --color always --seed --prompt '' "$HOME/.venv"
+    source "$HOME/.venv/bin/activate"
+    python3 --version
+}
+
 cmd_neovim() {
     local lock=$HOME/.config/nvim/lazy-lock.json
     [[ -f $lock ]] && return 0
@@ -225,13 +234,6 @@ cmd_jvm() {
     set -u
 
     bs_sed_i 's/sdkman_auto_answer=true/sdkman_auto_answer=false/g' "$HOME/.sdkman/etc/config"
-}
-
-cmd_venv() {
-    [[ -d $HOME/.venv ]] && return 0
-    bs_info_box "Setting up venv"
-
-    bs_df files/install.sh venv
 }
 
 cmd_rust() {
@@ -359,10 +361,10 @@ bootstrap() {
 
     cmd_git
     cmd_gnupg
+    cmd_venv  # NeoVim needs Python
     cmd_neovim
     cmd_go
     cmd_jvm
-    cmd_venv
     cmd_rust
     cmd_code
     cmd_fonts

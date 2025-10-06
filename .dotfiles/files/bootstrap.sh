@@ -186,16 +186,10 @@ cmd_gnupg() {
 cmd_neovim() {
     local lock=$HOME/.config/nvim/lazy-lock.json
     [[ -f $lock ]] && return 0
+    # FIXME: AppImage requires FUSE
+    [[ ! -f /.dockerenv ]] || return 0
     bs_info_box "Setting up NeoVim"
 
-    # FIXME: not available for Linux arm64
-    if [[ "$BS_UNAME_S-$BS_UNAME_M" == Linux-aarch64 ]]; then
-        exec="$HOME/.dotfiles/libexec/cache/nvim"
-        curl -fsSL https://start.home.lyh.me/files/nvim-v0.10.1.appimage -o "$exec"
-        chmod +x "$exec"
-        # FIXME: AppImage requires FUSE
-        [[ ! -f /.dockerenv ]] || return 0
-    fi
     nvim --headless '+checkhealth | qall'
 }
 

@@ -207,7 +207,7 @@ cmd_dropbox() {
     local url
     url="https://linux.dropbox.com/packages/$(distro)/"
     local pkg
-    pkg=$(curl -fsSL "$url" | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^dropbox_[\d\.]+_amd64.deb$' | grep '2020\.03\.04' | tail -n 1)
+    pkg=$(curl -fsSL "$url" | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^dropbox_[\d\.]+_amd64.deb$' | tail -n 1)
     wget -nv "$url/$pkg"
     sudo dpkg --install --force-all dropbox_*_amd64.deb
     sudo apt-get install -fy

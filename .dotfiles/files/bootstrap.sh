@@ -260,7 +260,7 @@ cmd_code() {
         ms-python.python
         ms-vscode.cpptools-extension-pack
         rust-lang.rust-analyzer
-        sswg.swift-lang
+        swiftlang.swift-vscode
         vadimcn.vscode-lldb
         zxh404.vscode-proto3
     )

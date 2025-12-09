@@ -42,7 +42,7 @@ install_cuda() {
     [[ -d $dest ]] && bs_fatal "CUDA $cuda_version already installed"
     bs_info "Installing CUDA $cuda_version in $dest"
     mkdir -p "$HOME/.nvman"
-    bash "$1" --silent --installpath="$dest" --toolkit --samples --no-opengl-libs --no-drm
+    bash "$1" --silent --installpath="$dest" --toolkit --samples --no-opengl-libs --no-drm --override
     link=$HOME/.nvman/cuda-current
     rm -f "$link"
     ln -rs "$dest" "$link"

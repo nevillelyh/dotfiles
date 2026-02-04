@@ -11,6 +11,7 @@ fi
 
 cache="$HOME/.dotfiles/libexec/cache"
 sfpath="$HOME/.local/share/zsh/site-functions"
+readonly cache sfpath
 os=$(echo "$BS_UNAME_S" | tr "[:upper:]" "[:lower:]")
 arch="$BS_UNAME_M"
 
@@ -65,10 +66,14 @@ download_gh_bin() {
     chmod +x "$exec"
 }
 
+ensure_sfpath() {
+    [[ -d "$sfpath" ]] || mkdir -p "$sfpath"
+}
+
 mk_comp() {
     local cmd=$1
     shift
-    [[ -d "$sfpath" ]] || mkdir -p "$sfpath"
+    ensure_sfpath
     "$cmd" "$@" > "$sfpath/_$(basename "$cmd")"
 }
 
@@ -113,7 +118,7 @@ run_bat() {
         local url="$prefix/v$version/$tarball"
         curl -fsSL "$url" | tar -C "$cache" -xz --strip-components=1 \
             "$build/bat" "$build/autocomplete/bat.zsh"
-        [[ -d "$sfpath" ]] || mkdir -p "$sfpath"
+        ensure_sfpath
         mv "$cache/autocomplete/bat.zsh" "$sfpath/_bat"
         rmdir "$cache/autocomplete"
         touch "$exec"
@@ -337,7 +342,7 @@ run_delta() {
         local tarball="$build.tar.gz"
         local url="$prefix/$version/$tarball"
         curl -fsSL "$url" | tar -C "$cache" -xz --strip-components=1 "$build/delta"
-        [[ -d "$sfpath" ]] || mkdir -p "$sfpath"
+        ensure_sfpath
         curl -fsSL "https://raw.githubusercontent.com/dandavison/delta/$version/etc/completion/completion.zsh" -o "$sfpath/_delta"
         touch "$exec"
     }
@@ -365,7 +370,7 @@ run_dust() {
         local tarball="$build.tar.gz"
         local url="$prefix/v$version/$tarball"
         curl -fsSL "$url" | tar -C "$cache" -xz --strip-components=1 "$build/dust"
-        [[ -d "$sfpath" ]] || mkdir -p "$sfpath"
+        ensure_sfpath
         curl -fsSL "https://raw.githubusercontent.com/bootandy/dust/v$version/completions/_dust" -o "$sfpath/_dust"
         touch "$exec"
     }
@@ -392,7 +397,7 @@ run_eza() {
         local tarball="eza_$arch-unknown-$os-gnu.tar.gz"
         local url="$prefix/v$version/$tarball"
         curl -fsSL "$url" | tar -C "$cache" -xz ./eza
-        [[ -d "$sfpath" ]] || mkdir -p "$sfpath/"
+        ensure_sfpath
         curl -fsSL "https://raw.githubusercontent.com/eza-community/eza/v$version/completions/zsh/_eza" -o "$sfpath/_eza"
         touch "$exec"
     }
@@ -421,7 +426,7 @@ run_fd() {
         local url="$prefix/v$version/$tarball"
         curl -fsSL "$url" | tar -C "$cache" -xz --strip-components=1 \
             "$build/fd" "$build/autocomplete/_fd"
-        [[ -d "$sfpath" ]] || mkdir -p "$sfpath"
+        ensure_sfpath
         mv "$cache/autocomplete/_fd" "$sfpath"
         rmdir "$cache/autocomplete"
         touch "$exec"
@@ -990,7 +995,7 @@ run_rg() {
         local url="$prefix/$version/$tarball"
         curl -fsSL "$url" | tar -C "$cache" -xz --strip-components=1 \
             "$build/rg" "$build/complete/_rg"
-        [[ -d "$sfpath" ]] || mkdir -p "$sfpath"
+        ensure_sfpath
         mv "$cache/complete/_rg" "$sfpath"
         rmdir "$cache/complete"
         touch "$exec"
@@ -1149,7 +1154,7 @@ run_zoxide() {
         local url="$prefix/v$version/$tarball"
         curl -fsSL "$url" | tar -C "$cache" -xz \
             zoxide completions/_zoxide
-        [[ -d "$sfpath" ]] || mkdir -p "$sfpath"
+        ensure_sfpath
         mv "$cache/completions/_zoxide" "$sfpath/_zoxide"
         rmdir "$cache/completions"
         touch "$exec"

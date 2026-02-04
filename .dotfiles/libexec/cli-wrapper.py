@@ -2,11 +2,16 @@
 
 import os
 import sys
-from collections import namedtuple
+from dataclasses import dataclass
 
 
-Command = namedtuple('Command', ['base', 'args'])
-commands = {
+@dataclass(frozen=True)
+class Command:
+    base: str
+    args: dict
+
+
+COMMANDS = {
     'b2ls': Command('b2 ls', {'j': 'json', 'l': 'long', 'r': 'recursive'}),
     's3cp': Command('aws s3 cp', {'q': 'quiet', 'r': 'recursive'}),
     's3ls': Command('aws s3 ls', {'h': 'human-readable', 'r': 'recursive', 's': 'summarize'}),
@@ -16,30 +21,29 @@ commands = {
 }
 
 
-def help(name, cmd):
-    lines = []
-    lines.append('CLI wrapper for: %s' % cmd.base)
-    lines.append('Usage: %s [OPTION]...' % name)
-    lines.append('    --help: show this help message')
-    for k, v in cmd.args.items():
-        lines.append('    -%s: --%s' % (k, v))
-    sep = '=' * max(map(len, lines))
+def show_help(name, cmd):
+    lines = [
+        f'CLI wrapper for: {cmd.base}',
+        f'Usage: {name} [OPTION]...',
+        '    --help: show this help message',
+    ]
+    lines.extend([f'    -{k}: --{v}' for k, v in cmd.args.items()])
+    sep = '=' * max(len(line) for line in lines)
     print(sep)
-    for line in lines:
-        print(line)
+    print('\n'.join(lines))
     print(sep)
 
 
 def main():
     name = os.path.basename(sys.argv[0])
-    if name not in commands:
-        print('Command not recognized: %s' % name)
+    if name not in COMMANDS:
+        print(f'Command not recognized: {name}')
         print('Supported commands:')
-        for k in commands:
-            print('    ' + k)
+        for k in COMMANDS:
+            print(f'    {k}')
         sys.exit(1)
 
-    cmd = commands[name]
+    cmd = COMMANDS[name]
     argv = cmd.base.split()
 
     show_help = False
@@ -56,7 +60,7 @@ def main():
             argv.append(arg)
 
     if show_help:
-        help(name, cmd)
+        show_help(name, cmd)
         print()
 
     os.execvp(argv[0], argv)

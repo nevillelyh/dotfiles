@@ -301,6 +301,31 @@ run_cog() {
     exec "$exec" "$@"
 }
 
+run_codex() {
+    brew_run codex codex "$@"
+
+    get_latest() {
+        bs_gh_latest openai/codex | sed 's/^rust-v//'
+    }
+
+    get_current() {
+        "$exec" --version | sed 's/^codex-cli \(.\+\)$/\1/'
+    }
+
+    download() {
+        local version=$1
+        local prefix="https://github.com/openai/codex/releases/download"
+        local base="codex-$arch-unknown-linux-gnu"
+        local url="$prefix/rust-v$version/$base.zst"
+        curl -fsSL "$url" | zstd --decompress --force --quiet -o "$exec"
+        chmod +x "$exec"
+    }
+
+    exec="$cache/codex"
+    update
+    exec "$exec" "$@"
+}
+
 run_cs() {
     exec="$cache/cs"
 

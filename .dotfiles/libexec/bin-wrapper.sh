@@ -273,34 +273,6 @@ run_cockroach() {
     exec "$exec" "$@"
 }
 
-run_cog() {
-    brew_run cog cog "$@"
-
-    # `replicate` forbids access via a personal access token (classic).
-    unset DOTFILES_GITHUB_API_TOKEN
-
-    get_latest() {
-        bs_gh_latest replicate/cog
-    }
-
-    get_current() {
-        "$exec" --version | sed 's/^cog version \([^ ]\+\).*$/\1/'
-    }
-
-    download() {
-        local version=$1
-        case "$arch" in
-            x86_64) ;;
-            aarch64) arch=arm64 ;;
-        esac
-        download_gh_bin replicate/cog "$version" "cog_${BS_UNAME_S}_${arch}"
-    }
-
-    exec="$cache/cog"
-    update
-    exec "$exec" "$@"
-}
-
 run_codex() {
     brew_run codex codex "$@"
 

@@ -13,11 +13,12 @@ fi
 
 find_delete() {
     local dir=$1
+    shift
     local size
-    size="$(find "$@" -print0 | xargs -0 -r du -hcs | tail -n 1 | awk '{print $1}')"
+    size="$(find "$dir" "$@" -print0 | xargs -0 -r du -hcs | tail -n 1 | awk '{print $1}')"
     [[ -z "$size" ]] && size="0B"
     printf "%s\t%s\n" "$size" "$dir"
-    find "$@" -delete
+    find "$dir" "$@" -delete
 }
 
 case "$BS_UNAME_S" in

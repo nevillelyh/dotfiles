@@ -12,7 +12,7 @@ else
 fi
 
 if [[ $# -eq 1 ]] && [[ "$1" == "ping" ]]; then
-    echo "pong"
+    printf "pong\n"
 elif [[ $# -gt 0 ]]; then
     "$@"
 else

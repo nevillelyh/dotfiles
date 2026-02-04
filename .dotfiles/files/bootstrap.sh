@@ -24,6 +24,7 @@ CASKS=(alacritty alfred dbeaver-community discord docker dropbox expressvpn gith
 CASKS_OPT=(adobe-creative-cloud anki firefox google-chrome google-cloud-sdk guitar-pro hiarcs-chess-explorer macdive microsoft-edge retroarch signal shearwater-cloud spotify steam subsurface transmission vlc waves-central)
 # AdGuard Bitwarden Kindle Magnet Messenger Pocket Slack Unarchiver WhatsApp
 MAS=(1440147259 1352778147 472772 441258766 1480068668 1477385213 803453959 425424353 310633997)
+readonly -a BREWS CASKS CASKS_OPT MAS
 
 # Linux packages:
 # fonts-powerline - PowerlineSymbols only, no patched fonts
@@ -31,10 +32,11 @@ MAS=(1440147259 1352778147 472772 441258766 1480068668 1477385213 803453959 4254
 # unzip, zip - for SDKMAN
 DEB_PKGS=(build-essential colordiff htop libfuse2 lm-sensors ninja-build shellcheck smartmontools tmux unzip zip zsh)
 DEB_GUI_PKGS=(alacritty fonts-powerline ubuntu-restricted-extras vlc)
+readonly -a DEB_PKGS DEB_GUI_PKGS
 
 cmd_ssh() {
     [[ -n "${SSH_CONNECTION-}" ]] && return 0 # remote host
-    local keys
+    local -a keys
     # Bash 3 on Mac missing readarray
     # shellcheck disable=SC2207
     keys=($(find "$HOME/.ssh" -name id_dsa -or -name id_rsa -or -name id_ecdsa -or -name id_ed25519))
@@ -97,7 +99,7 @@ cmd_linux() {
 
 cmd_apt() {
     [[ "$BS_UNAME_S" != Linux ]] && return 0
-    type shellcheck &> /dev/null && return 0
+    command -v shellcheck &> /dev/null && return 0
     bs_info_box "Setting up Aptitude"
 
     sudo apt-get install -y apt-transport-https aptitude
@@ -117,7 +119,7 @@ cmd_linux_extras() {
     [[ -d /usr/local/go ]] && return 0
     bs_info_box "Setting up Linux extras"
 
-    type nvidia-smi &> /dev/null && sudo aptitude install -y nvtop
+    command -v nvidia-smi &> /dev/null && sudo aptitude install -y nvtop
 
     # Third-party packages
     bs_df files/install.sh cmake go
@@ -130,7 +132,7 @@ cmd_linux_extras() {
     [[ $GUI -eq 1 ]] || return 0
     dpkg-query --show xserver-xorg &> /dev/null || return 0
 
-    if type snap &> /dev/null; then
+    if command -v snap &> /dev/null; then
         sudo snap install spotify
 
         # FIXME: Workaround for AppArmor on PopOS
@@ -145,7 +147,7 @@ cmd_linux_extras() {
 }
 
 cmd_git() {
-    [[ -d $HOME/.dotfiles/oh-my-zsh ]] && return 0
+    [[ -d "$HOME/.dotfiles/oh-my-zsh" ]] && return 0
     bs_info_box "Setting up Git"
 
     cd "$HOME"
@@ -160,7 +162,7 @@ cmd_git() {
 }
 
 cmd_gnupg() {
-    [[ -s $HOME/.gnupg/gpg-agent.conf ]] && return 0
+    [[ -s "$HOME/.gnupg/gpg-agent.conf" ]] && return 0
     bs_info_box "Setting up GnuPG"
 
     mkdir -p "$HOME/.gnupg"
@@ -184,7 +186,7 @@ cmd_gnupg() {
 }
 
 cmd_venv() {
-    [[ -d $HOME/.venv ]] && return 0
+    [[ -d "$HOME/.venv" ]] && return 0
     bs_info_box "Setting up venv"
 
     uv venv --color always --seed --prompt '' "$HOME/.venv"
@@ -193,7 +195,7 @@ cmd_venv() {
 }
 
 cmd_neovim() {
-    local lock=$HOME/.config/nvim/lazy-lock.json
+    local lock="$HOME/.config/nvim/lazy-lock.json"
     [[ -f $lock ]] && return 0
     # FIXME: AppImage requires FUSE
     [[ ! -f /.dockerenv ]] || return 0
@@ -203,16 +205,16 @@ cmd_neovim() {
 }
 
 cmd_go() {
-    [[ -d $HOME/.go ]] && return 0
+    [[ -d "$HOME/.go" ]] && return 0
     bs_info_box "Setting up Go"
-    export GOPATH=$HOME/.go
+    export GOPATH="$HOME/.go"
     go install -v golang.org/x/tools/gopls@latest
     go install -v github.com/go-delve/delve/cmd/dlv@latest
     go install -v cuelang.org/go/cmd/cue@latest
 }
 
 cmd_jvm() {
-    [[ -d $HOME/.sdkman ]] && return 0
+    [[ -d "$HOME/.sdkman" ]] && return 0
     bs_info_box "Setting up JVM"
 
     curl -fsSL "https://get.sdkman.io" | bash
@@ -237,7 +239,7 @@ cmd_jvm() {
 }
 
 cmd_rust() {
-    [[ -d $HOME/.cargo ]] && return 0
+    [[ -d "$HOME/.cargo" ]] && return 0
     bs_info_box "Setting up Rust"
 
     curl --proto "=https" --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
@@ -247,11 +249,11 @@ cmd_rust() {
 }
 
 cmd_code() {
-    type code &> /dev/null || return 0
+    command -v code &> /dev/null || return 0
     code --list-extensions | grep 'dracula-theme\.theme-dracula' &> /dev/null && return 0
     bs_info_box "Setting up Visual Studio Code"
 
-    extensions=(
+    local -a extensions=(
         dracula-theme.theme-dracula
         GitHub.vscode-pull-request-github
         golang.go
@@ -273,6 +275,7 @@ cmd_code() {
 cmd_fonts() {
     [[ $GUI -eq 1 ]] || return 0
     [[ "$BS_UNAME_S" == Darwin ]] || dpkg-query --show xserver-xorg &> /dev/null || return 0
+    local fonts_dir
     case "$BS_UNAME_S" in
         Darwin) fonts_dir="$HOME/Library/Fonts" ;;
         Linux) fonts_dir="$HOME/.local/share/fonts" ;;

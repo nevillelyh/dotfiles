@@ -7,7 +7,7 @@ set -euo pipefail
 url="https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/dpkg-diffs/dpkg-diffs-0.1.0.tar.gz"
 
 tmp="$(mktemp -d -t dpkg-diff.XXXXXXXXXX)"
-trap 'rm -rf $tmp' EXIT
+trap 'rm -rf "$tmp"' EXIT
 curl -fsSL "$url" | tar -C "$tmp" -xz
 diffs="$(find "$tmp" -type f -name dpkg-diffs | tail -n 1)"
 

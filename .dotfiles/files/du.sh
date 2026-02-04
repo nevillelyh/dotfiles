@@ -2,7 +2,9 @@
 
 # Check disk usage
 
-dirs=(
+set -euo pipefail
+
+readonly -a dirs=(
     .cache/bazel
     .cache/coursier
     .cache/pip

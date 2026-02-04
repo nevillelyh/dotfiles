@@ -10,8 +10,8 @@ set -euo pipefail
 
 BS_UNAME_S=$(uname -s)
 BS_UNAME_M=$(uname -m)
-export BS_UNAME_S
-export BS_UNAME_M
+export BS_UNAME_S BS_UNAME_M
+readonly BS_UNAME_S BS_UNAME_M
 
 ############################################################
 # ANSI Escape Code
@@ -21,22 +21,22 @@ export BS_UNAME_M
 
 bs_info() {
     # bold, magenta
-    echo -e "\033[1;35m$*\033[0m"
+    printf "\033[1;35m%s\033[0m\n" "$*"
 }
 
 bs_warn() {
     # bold, yellow
-    echo -e "\033[1;33m$*\033[0m"
+    printf "\033[1;33m%s\033[0m\n" "$*"
 }
 
 bs_error() {
     # bold, red
-    echo -e "\033[1;31m$*\033[0m"
+    printf "\033[1;31m%s\033[0m\n" "$*"
 }
 
 bs_success() {
     # bold, green
-    echo -e "\033[1;32m$*\033[0m"
+    printf "\033[1;32m%s\033[0m\n" "$*"
 }
 
 bs_info_box() {
@@ -90,7 +90,7 @@ bs_array_contains() {
 
 bs_array_to_string() {
     if [[ $# -eq 0 ]]; then
-        echo "[]"
+        printf "[]\n"
         return
     fi
     local res=""
@@ -102,7 +102,7 @@ bs_array_to_string() {
         fi
     done
     res="$res]"
-    echo "$res"
+    printf "%s\n" "$res"
 }
 
 _bs_test_array() {
@@ -122,7 +122,9 @@ _bs_cmds() {
 
     # Bash 3 on Mac missing readarray
     # shellcheck disable=SC2207
-    cmds=($(grep -o '^cmd_\(\w\|[_-]\)\+()' "$(readlink -f "$0")" | sed 's/^cmd_\(.*\)()$/\1/'))
+    local file
+    file="$(readlink -f "$0")"
+    cmds=($(grep -o '^cmd_\(\w\|[_-]\)\+()' "$file" | sed 's/^cmd_\(.*\)()$/\1/'))
 }
 
 bs_cmd_args() {
@@ -145,7 +147,7 @@ bs_cmd_args() {
         exit 1
     fi
 
-    cmd=$1
+    local cmd=$1
     shift
     if bs_array_contains "$cmd" "${cmds[@]}"; then
         "cmd_$cmd" "$@"
@@ -209,10 +211,11 @@ bs_df() {
     if [[ -f "$HOME/.dotfiles/$path" ]]; then
         bash "$HOME/.dotfiles/$path" "$@"
     else
+        local file
         file=$(bs_temp_file bs-df)
         curl -fsSL "https://raw.githubusercontent.com/nevillelyh/dotfiles/master/.dotfiles/$path" -o "$file"
         bash "$file" "$@"
-        rm "$file"
+        rm -f "$file"
     fi
 }
 

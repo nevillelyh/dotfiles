@@ -235,6 +235,7 @@ cmd_go() {
     os=$(echo "$BS_UNAME_S" | tr "[:upper:]" "[:lower:]")
     local arch
     arch=$(dpkg --print-architecture)
+    local tarball
     tarball=$(curl -fsSL "https://go.dev/dl" | grep -oP '(?<=href=")[^"]+(?=")' | grep "/dl/go.*\.$os-$arch\.tar\.gz" | tac | tail -n 1)
     curl -fsSL "https://go.dev/$tarball" | sudo tar -C /usr/local -xz
 }
@@ -275,7 +276,7 @@ cmd_proton() {
     local url="https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases/latest"
     local header="Accept: application/vnd.github.v3+json"
     local version
-    version=$(curl -fsSL -H "$header" $url | jq --raw-output ".tag_name")
+    version=$(curl -fsSL -H "$header" "$url" | jq --raw-output ".tag_name")
     local tarball
     tarball="https://github.com/GloriousEggroll/proton-ge-custom/releases/download/$version/$version.tar.gz"
     curl -fsSL "$tarball" | tar -C "$HOME/.steam/root/compatibilitytools.d" -xz
@@ -334,7 +335,7 @@ cmd_swift() {
     [[ "$BS_UNAME_M" == "aarch64" ]] && dist="$dist-aarch64"
     local url="https://www.swift.org/download/"
 
-    url=$(curl -fsSL --compressed $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P "$dist.tar.gz\$" | tac | tail -n 1)
+    url=$(curl -fsSL --compressed "$url" | grep -oP '(?<=href=")[^"]+(?=")' | grep -P "$dist.tar.gz\$" | tac | tail -n 1)
     local base
     base=$(basename --suffix .tar.gz "$url")
     curl -fsSL "$url" | tar -C "$HOME" -xz
@@ -364,7 +365,7 @@ cmd_teams() {
 
     local url="https://packages.microsoft.com/repos/ms-teams/pool/main/t/teams/"
     local pkg
-    pkg=$(curl -fsSL $url | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^teams_[\d\.]+_amd64.deb$' | tail -n 1)
+    pkg=$(curl -fsSL "$url" | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^teams_[\d\.]+_amd64.deb$' | tail -n 1)
     wget -nv "$url/$pkg"
     sudo dpkg --install --force-all teams_*_amd64.deb
     sudo apt-get install -fy

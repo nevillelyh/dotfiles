@@ -17,13 +17,10 @@ else
 fi
 
 conn=$1
-host=$conn
-if echo "$conn" | grep -q '@'; then
-    host=$(echo "$conn" | cut -d '@' -f 2)
-fi
+host=${conn#*@}
 
 bs_info "Sending public key to $host"
-key=$(grep signingKey "$HOME/.gitconfig" | grep -o '\<[0-9A-F]\+$')
+key=$(grep -E 'signingKey' "$HOME/.gitconfig" | grep -oE '[0-9A-F]+$')
 gpg --export "$key" | ssh "$conn" gpg --import
 echo "default-key $key" | ssh "$conn" tee .gnupg/gpg.conf
 

@@ -20,6 +20,8 @@ java_dist=${SDK_JAVA_DIST:-amzn}
 scala_versions=(2.13 3)
 scala_versions=( "${SDK_SCALA_VERSIONS[@]:-"${scala_versions[@]}"}" )
 scala_default=${SDK_SCALA_DEFAULT:-2.13}
+readonly -a java_versions scala_versions
+readonly java_default java_dist scala_default
 
 manage() {
     local candidate=$1

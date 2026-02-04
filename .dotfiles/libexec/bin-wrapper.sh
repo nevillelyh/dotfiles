@@ -266,6 +266,9 @@ run_cockroach() {
         rm -rf "$cache/cockroach"
         mv "$cache/$build" "$cache/cockroach"
         touch "$exec"
+
+        ensure_sfpath
+        "$exec" gen autocomplete zsh --out "$sfpath/_$(basename "$cmd")"
     }
 
     exec="$cache/cockroach/cockroach"

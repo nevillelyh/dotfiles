@@ -287,7 +287,7 @@ run_codex() {
     download() {
         local version=$1
         local prefix="https://github.com/openai/codex/releases/download"
-        local base="codex-$arch-unknown-linux-gnu"
+        local base="codex-$arch-unknown-linux-musl"
         local url="$prefix/rust-v$version/$base.zst"
         curl -fsSL "$url" | zstd --decompress --force --quiet -o "$exec"
         chmod +x "$exec"

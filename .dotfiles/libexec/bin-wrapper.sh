@@ -880,32 +880,6 @@ run_nvim() {
     exec "$exec" "$@"
 }
 
-run_pget() {
-    # `replicate` forbids access via a personal access token (classic).
-    unset DOTFILES_GITHUB_API_TOKEN
-
-    get_latest() {
-        bs_gh_latest replicate/pget
-    }
-
-    get_current() {
-        "$exec" version | sed 's/^pget Version \([0-9\.]\+\).*$/\1/'
-    }
-
-    download() {
-        local version=$1
-        case "$arch" in
-            x86_64) ;;
-            aarch64) arch=arm64 ;;
-        esac
-        download_gh_bin replicate/pget "$version" "pget_${BS_UNAME_S}_${arch}"
-    }
-
-    exec="$cache/pget"
-    update
-    exec "$exec" "$@"
-}
-
 run_protoc() {
     brew_run protobuf protoc "$@"
 

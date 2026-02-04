@@ -3,4 +3,4 @@ if [[ -d "$HOME/.swift" ]]; then
 fi
 
 # CUDA and cuDNN
-eval "$($HOME/.dotfiles/bin/nvman env)"
+eval "$("$HOME/.dotfiles/bin/nvman" env)"

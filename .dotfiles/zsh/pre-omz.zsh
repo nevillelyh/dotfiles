@@ -1,6 +1,8 @@
 # Before oh-my-zsh
 
-# Reverse order
+typeset -aU path
+
+# Reverse order (prepend when present)
 bins=(
     # Mac
     "$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
@@ -22,13 +24,13 @@ bins=(
     $HOME/.dotfiles/bin
 )
 
-for b in ${bins}; do
-    [[ -d "$b" ]] && export PATH=$b:$PATH
+for b in $bins; do
+    [[ -d $b ]] && path=($b $path)
 done
 
-[[ -s $HOME/.cargo/env ]] && source "$HOME/.cargo/env"
+[[ -s "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 
-export GOPATH=$HOME/.go
+export GOPATH="$HOME/.go"
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
@@ -38,9 +40,9 @@ compinit
 
 case "$(uname -s)" in
     Linux)
-        . "$HOME/.dotfiles/zsh/pre-linux.zsh"
+        source "$HOME/.dotfiles/zsh/pre-linux.zsh"
         ;;
     Darwin)
-        . "$HOME/.dotfiles/zsh/pre-mac.zsh"
+        source "$HOME/.dotfiles/zsh/pre-mac.zsh"
         ;;
 esac

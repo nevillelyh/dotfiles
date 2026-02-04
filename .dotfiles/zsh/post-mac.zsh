@@ -1,7 +1,8 @@
 alias gvim='vimr'
 
 pidof() {
-    ps axc 2> /dev/null | awk "{if (\$5==\"$1\") print \$1}"
+    local name=$1
+    ps axc 2> /dev/null | awk -v n="$name" '$5==n {print $1}'
 }
 
-export K9S_CONFIG_DIR=$HOME/.config/k9s
+export K9S_CONFIG_DIR="$HOME/.config/k9s"

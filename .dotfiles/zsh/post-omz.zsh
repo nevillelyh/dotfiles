@@ -2,10 +2,10 @@
 
 case "$(uname -s)" in
     Linux)
-        . "$HOME/.dotfiles/zsh/post-linux.zsh"
+        source "$HOME/.dotfiles/zsh/post-linux.zsh"
         ;;
     Darwin)
-        . "$HOME/.dotfiles/zsh/post-mac.zsh"
+        source "$HOME/.dotfiles/zsh/post-mac.zsh"
         ;;
 esac
 
@@ -67,22 +67,22 @@ function rg() {
 }
 
 function zt() {
-    session="$1"
+    local session=$1
     if tmux has-session -t "$session" &> /dev/null; then
         tmux attach -d -t "$session"
     else
-        z "$1" && tmux new-session -s "$session"
+        z "$session" && tmux new-session -s "$session"
     fi
 }
 
 # Reuse a single SSH agent
-ssh_keys=("${(@f)$(find "$HOME/.ssh" \( -name id_dsa -or -name id_rsa -or -name id_ecdsa -or -name id_ed25519 \))}")
-if [[ -n "$ssh_keys" ]]; then
-    agent=/tmp/ssh-agent-tmux-$USER
-    if [[ -z $(pidof ssh-agent) ]] || [[ ! -e "$agent" ]]; then
+ssh_keys=("$HOME/.ssh"/**/id_{dsa,rsa,ecdsa,ed25519}(N))
+if (( ${#ssh_keys[@]} )); then
+    agent="/tmp/ssh-agent-tmux-$USER"
+    if ! pidof ssh-agent &> /dev/null || [[ ! -e $agent ]]; then
         eval "$(ssh-agent)" &> /dev/null
-        ssh-add -q "${ssh_keys[@]}"
-        ln -fs "$SSH_AUTH_SOCK" "$agent"
+        ssh-add -q -- "${ssh_keys[@]}"
+        ln -fs -- "$SSH_AUTH_SOCK" "$agent"
     fi
     export SSH_AUTH_SOCK="$agent"
     unset agent
@@ -90,24 +90,24 @@ fi
 unset ssh_keys
 
 # Private environment
-if [[ -d $HOME/.dotfiles/private/profile.d ]]; then
-    for f in $HOME/.dotfiles/private/profile.d/*.sh; do
-        source $f
-    done
-fi
+for f in "$HOME"/.dotfiles/private/profile.d/*.sh(N); do
+    source "$f"
+done
 
 # BitWarden
 
 bw-unlock() {
-    case "$(bw status | jq --raw-output ".status")" in
+    local status
+    status="$(bw status | jq --raw-output ".status")"
+    case "$status" in
         unauthenticated)
             local email
             email="$(git config --get user.email)"
-            BW_SESSION=$(bw login "$email" --raw)
+            BW_SESSION="$(bw login "$email" --raw)"
             export BW_SESSION
             ;;
         locked)
-            BW_SESSION=$(bw unlock --raw)
+            BW_SESSION="$(bw unlock --raw)"
             export BW_SESSION
             ;;
         *) ;;
@@ -131,9 +131,6 @@ bwgi() {
 bwf() {
     bw-unlock && bw list items --search "$@" | jq
 }
-
-# Deduplicate $PATH
-typeset -aU path
 
 # For Docker
 # https://github.com/docker/compose/issues/2380

@@ -277,6 +277,15 @@ run_cockroach() {
 }
 
 run_codex() {
+    # Workaround for codex cask missing completion
+    local brew_bin=/opt/homebrew/bin/codex
+    local brew_comp=/opt/homebrew/share/zssh/site-functions/_codex
+    local local_comp="$sfpath/_codex"
+    if [[ -L "$brew_bin" && ! (-e "$brew_comp" || -e "$local_comp") ]]; then
+        ensure_sfpath
+        /opt/homebrew/bin/codex completion zsh > "$sfpath/_codex"
+    fi
+
     brew_run codex codex "$@"
 
     get_latest() {
@@ -294,6 +303,7 @@ run_codex() {
         local url="$prefix/rust-v$version/$base.zst"
         curl -fsSL "$url" | zstd --decompress --force --quiet -o "$exec"
         chmod +x "$exec"
+        mk_comp "$exec" completion zsh
     }
 
     exec="$cache/codex"

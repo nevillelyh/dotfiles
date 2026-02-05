@@ -94,7 +94,10 @@ cmd_mac_extras() {
 cmd_linux() {
     [[ "$BS_UNAME_S" != Linux ]] && return 0
     bs_info_box "Setting up Linux specifics"
-    # Nothing to do here
+
+    # Tools not available in apt, etc. but with auto-update
+    curl -fsSL https://claude.ai/install.sh | bash
+    curl -fsSL https://gh.io/copilot-install | bash
 }
 
 cmd_apt() {

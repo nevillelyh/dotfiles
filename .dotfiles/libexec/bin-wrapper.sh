@@ -505,6 +505,8 @@ run_fnm() {
         unzip -q "$zip" -d "$cache"
         rm -rf "$tmp"
         touch "$exec"
+
+        mk_comp "$exec" completions --shell zsh
     }
 
     exec="$cache/fnm"

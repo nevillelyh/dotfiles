@@ -60,6 +60,10 @@ alias vimdiff='nvim -d'
 # uv
 export UV_CONFIG_FILE="$HOME/.config/uv/uv.toml"
 
+# fnm
+[[ ! -d "$HOME/.local/share/fnm" ]] || eval "$(fnm env --use-on-cd --shell zsh)"
+
+
 # Functions
 
 function rg() {

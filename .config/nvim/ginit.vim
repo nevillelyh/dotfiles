@@ -1,4 +1,6 @@
-GuiFont! MesloLGS NF:h9
+if exists(':GuiFont')
+  GuiFont! MesloLGS NF:h9
+endif
 
 " https://github.com/equalsraf/neovim-qt/issues/219
 if exists('g:GuiLoaded')

@@ -22,5 +22,5 @@ if ! git branch --format="%(refname:short)" --remote | grep -q "^$remote/$branch
     echo "Remote branch does not exist: $branch"
 else
     git branch -D -r "$remote/$branch"
+    git push "$remote" --delete "$branch"
 fi
-git push "$remote" ":$branch"

@@ -14,7 +14,7 @@ remote=origin
 
 git pull "$remote"
 
-for branch in $(git remote prune "$remote" | grep '\[pruned\]' | awk '{print $3}' | sed -e "s@^$remote/@@g"); do
+git remote prune "$remote" | grep '\[pruned\]' | awk '{print $3}' | sed -e "s@^$remote/@@g" | while IFS= read -r branch; do
     if git branch --format="%(refname:short)" | grep -q "^$branch$"; then
         git branch -D "$branch"
     fi

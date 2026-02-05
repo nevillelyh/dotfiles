@@ -479,6 +479,39 @@ run_flatc() {
     exec "$exec" "$@"
 }
 
+run_fnm() {
+    brew_run fnm fnm "$@"
+
+    get_latest() {
+        bs_gh_latest Schniz/fnm
+    }
+
+    get_current() {
+        "$exec" --version | sed 's/^fnm \(.\+\)$/\1/'
+    }
+
+    download() {
+        local version=$1
+        case "$arch" in
+            x86_64) zip=fnm-linux.zip ;;
+            aarch64) zip=fnm-arm64.zip ;;
+        esac
+        local url="https://github.com/Schniz/fnm/releases/download/v$version/$zip"
+        local tmp
+        tmp=$(bs_temp_dir bin-wrapper-fnm)
+        zip="$tmp/$zip"
+        curl -fsSL "$url" -o "$zip"
+        rm -f "$exec"
+        unzip -q "$zip" -d "$cache"
+        rm -rf "$tmp"
+        touch "$exec"
+    }
+
+    exec="$cache/fnm"
+    update
+    exec "$exec" "$@"
+}
+
 run_fzf() {
     brew_run fzf fzf "$@"
 

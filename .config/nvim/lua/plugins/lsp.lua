@@ -26,11 +26,9 @@ return {
         ensure_installed = lsps,
       })
 
-      local lspconfig = require("lspconfig")
-
       --------------------
 
-      lspconfig.basedpyright.setup({
+      vim.lsp.config("basedpyright", {
         settings = {
           basedpyright = {
             analysis = {
@@ -39,9 +37,7 @@ return {
           },
         },
       })
-      lspconfig.clangd.setup({})
-      lspconfig.gopls.setup({})
-      lspconfig.lua_ls.setup({
+      vim.lsp.config("lua_ls", {
         settings = {
           Lua = {
             diagnostics = {
@@ -50,9 +46,17 @@ return {
           }
         },
       })
-      lspconfig.metals.setup({})
-      lspconfig.ruff.setup({})
-      lspconfig.rust_analyzer.setup({})
+
+
+      vim.lsp.enable({
+        "basedpyright",
+        "clangd",
+        "gopls",
+        "lua_ls",
+        "metals",
+        "ruff",
+        "ruff_analyzer",
+      })
     end,
   },
 }

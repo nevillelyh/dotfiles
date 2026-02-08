@@ -253,6 +253,21 @@ cmd_helm() {
     sudo apt-get install -y helm
 }
 
+cmd_jetbrains() {
+    brew_install_cask jetbrains-toolbox || return 0
+
+    url="https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release"
+    query=".TBA[0].downloads.linux"
+    [ $(dpkg --print-architecture) == amd64 ] || query="${query}ARM64"
+    query="$query.link"
+
+    url="$(curl -fsSL "$url" | jq --raw-output "$query")"
+    dir="$HOME/.local/share/JetBrains/jetbrains-toolbox"
+    mkdir -p "$dir"
+    curl -fsSL "$url" | tar -C "$dir" -xz --strip-component 1
+    "$dir/bin/jetbrains-toolbox" &
+}
+
 # https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
 cmd_nvidia() {
     local url="https://nvidia.github.io/libnvidia-container/gpgkey"

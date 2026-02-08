@@ -102,6 +102,17 @@ cmd_anki() {
     rm -rf "${HOME:?}/$dir"
 }
 
+cmd_antigravity() {
+    brew_install_cask antigravity || return 0
+
+    local url="https://us-central1-apt.pkg.dev/doc/repo-signing-key.gpg"
+    local repo="deb [signed-by=/etc/apt/trusted.gpg.d/antigravity.gpg] https://us-central1-apt.pkg.dev/projects/antigravity-auto-updater-dev/ antigravity-debian main"
+    setup_gpg "$url" antigravity.gpg
+    setup_apt "$repo" antigravity.list
+    sudo apt-get update
+    sudo apt-get install -y antigravity
+}
+
 cmd_awscli() {
     brew_install awscli || return 0
 

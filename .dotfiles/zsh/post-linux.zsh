@@ -4,9 +4,10 @@ alias dgrun='docker run --gpus all --privileged'
 # copy/paste
 xc() {
     if [[ -t 0 ]]; then
-        xclip -selection clipboard -out
+        # clipboard -> stdout
+        wl-paste
     else
-        # read from stdin
-        xclip -selection clipboard -in
+        # stdin -> clipboard
+        wl-copy
     fi
 }

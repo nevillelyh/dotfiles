@@ -30,7 +30,7 @@ readonly -a BREWS CASKS CASKS_OPT MAS
 # fonts-powerline - PowerlineSymbols only, no patched fonts
 # libfuse2 - for AppImage, e.g. JetBrains Toolbox, NeoVim
 # unzip, zip - for SDKMAN
-DEB_PKGS=(build-essential colordiff htop libfuse2 lm-sensors ninja-build shellcheck smartmontools tmux unzip zip zsh)
+DEB_PKGS=(build-essential colordiff htop libfuse2 lm-sensors ninja-build shellcheck smartmontools tmux unzip wl-clipboard zip zsh)
 DEB_GUI_PKGS=(alacritty fonts-powerline ubuntu-restricted-extras vlc)
 readonly -a DEB_PKGS DEB_GUI_PKGS
 

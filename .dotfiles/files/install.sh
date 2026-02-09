@@ -80,8 +80,7 @@ cmd_1password() {
     brew_install 1password 1password-cli || return 0
 
     local url="https://downloads.1password.com/linux/keys/1password.asc"
-    local repo
-    repo="deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/amd64 stable main"
+    local repo="deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/amd64 stable main"
     setup_gpg "$url" 1password-archive-keyring.gpg
     setup_apt "$repo" 1password.list
     sudo apt-get update
@@ -93,13 +92,14 @@ cmd_anki() {
     brew_install_cask anki || return 0
 
     local url="https://apps.ankiweb.net/"
-    url=$(bs_urls "$url" | grep -- "-linux-qt6.tar.zst$")
-    curl -fsSL "$url" | tar -C "$HOME" -x --zstd
-    local dir
-    dir="$(basename "$url" ".tar.zst")"
-    cd "$dir"
+    local tarball
+    tarball=$(bs_urls "$url" | grep -- "-linux.tar.zst$")
+    local dir="$HOME/Downloads/anki"
+    mkdir -p "$dir"
+    cd "$dir" # Anki installer requires relative path
+    curl -fsSL "$tarball" | tar -x --zstd --strip-component 1
     sudo ./install.sh
-    rm -rf "${HOME:?}/$dir"
+    rm -rf "$dir"
 }
 
 cmd_antigravity() {
@@ -116,15 +116,19 @@ cmd_antigravity() {
 cmd_awscli() {
     brew_install awscli || return 0
 
+    local dir="$HOME/Downloads/awscli"
+    mkdir -p "$dir"
+    cd "$dir"
     curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-$BS_UNAME_M.zip" -o awscliv2.zip
     unzip awscliv2.zip
     ./aws/install --install-dir "$HOME/.aws" --bin-dir "$HOME/.local/bin" --update
-    rm -rf awscliv2.zip aws
+    rm -rf "$dir"
 }
 
 cmd_btop() {
     brew_install btop || return 0
 
+    cd "$HOME/Downloads"
     git clone git@github.com:aristocratos/btop.git
     cd btop
     make
@@ -137,10 +141,11 @@ cmd_btop() {
 cmd_chrome() {
     brew_install_cask google-chrome || return 0
 
-    wget -nv https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    sudo dpkg --install --force-all google-chrome-stable_current_amd64.deb
+    cd "$HOME/Downloads"
+    curl -fsSL https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o chrome.deb
+    sudo dpkg --install --force-all chrome.deb
     sudo apt-get install -fy
-    rm google-chrome-stable_current_amd64.deb
+    rm chrome.deb
 }
 
 # https://apt.kitware.com/
@@ -174,17 +179,17 @@ cmd_dbeaver() {
 
     local url="https://dbeaver.io/debs/dbeaver.gpg.key"
     local repo="deb [signed-by=/etc/apt/trusted.gpg.d/dbeaver.gpg] https://dbeaver.io/debs/dbeaver-ce /"
-
     setup_gpg "$url" dbeaver.gpg
     setup_apt "$repo" dbeaver.list
     sudo apt-get update
-    sudo apt-get install dbeaver-ce
+    sudo apt-get install -y dbeaver-ce
 }
 
 cmd_discord() {
     brew_install_cask discord || return 0
 
     local url="https://discord.com/api/download?platform=linux&format=deb"
+    cd "$HOME/Downloads"
     curl -fsSL "$url" -o discord.deb
     sudo dpkg --install --force-all discord.deb
     sudo apt-get install -fy
@@ -207,7 +212,6 @@ cmd_docker() {
     setup_apt "$repo" docker.list
     sudo apt-get update
     sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
     sudo usermod -aG docker "$(whoami)"
 }
 
@@ -219,10 +223,11 @@ cmd_dropbox() {
     url="https://linux.dropbox.com/packages/$(distro)/"
     local pkg
     pkg=$(curl -fsSL "$url" | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^dropbox_[\d\.]+_amd64.deb$' | tail -n 1)
-    wget -nv "$url/$pkg"
-    sudo dpkg --install --force-all dropbox_*_amd64.deb
-    sudo apt-get install -fy
-    rm dropbox_*_amd64.deb
+    cd "$HOME/Downloads"
+    curl -fsSL "$url/$pkg" -o dropbox.deb
+    sudo dpkg --install --force-all dropbox.deb
+    sudo apt-get install -f
+    rm dropbox.deb
 }
 
 # https://cloud.google.com/sdk/docs/install#deb
@@ -231,11 +236,10 @@ cmd_gcloud() {
 
     local url="https://packages.cloud.google.com/apt/doc/apt-key.gpg"
     local repo="deb [signed-by=/etc/apt/trusted.gpg.d/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main"
-
     setup_gpg "$url" cloud.google.gpg
     setup_apt "$repo" google-cloud-sdk.list
     sudo apt-get update
-    sudo apt-get install google-cloud-cli google-cloud-sdk-gke-gcloud-auth-plugin
+    sudo apt-get install -y google-cloud-cli google-cloud-sdk-gke-gcloud-auth-plugin
 }
 
 # https://go.dev/doc/install
@@ -269,9 +273,8 @@ cmd_jetbrains() {
 
     url="https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release"
     query=".TBA[0].downloads.linux"
-    [ $(dpkg --print-architecture) == amd64 ] || query="${query}ARM64"
+    [ "$(dpkg --print-architecture)" == amd64 ] || query="${query}ARM64"
     query="$query.link"
-
     url="$(curl -fsSL "$url" | jq --raw-output "$query")"
     dir="$HOME/.local/share/JetBrains/jetbrains-toolbox"
     mkdir -p "$dir"
@@ -312,9 +315,10 @@ cmd_reaper() {
     brew_install_cask reaper || return 0
 
     local url="https://www.reaper.fm/download.php"
-    local part="$(curl -fsSL "$url" | grep -oP '(?<=href=")[^"]+(?=")' | grep "linux_${BS_UNAME_M}.tar.xz" | head -n 1)"
+    local part
+    part="$(curl -fsSL "$url" | grep -oP '(?<=href=")[^"]+(?=")' | grep "linux_${BS_UNAME_M}.tar.xz" | head -n 1)"
     tarball="https://www.reaper.fm/$part"
-    dir="$HOME/reaper"
+    dir="$HOME/Downloads/reaper"
     mkdir -p "$dir"
     curl -fsSL "$tarball" | tar -C "$dir" -xJ --strip-component 1
     sudo "$dir/install-reaper.sh" --install /opt --quiet --integrate-desktop --usr-local-bin-symlink
@@ -325,6 +329,7 @@ cmd_reaper() {
 # https://www.retroarch.com/index.php?page=linux-instructions
 cmd_retroarch() {
     brew_install_cask retroarch || return 0
+
     sudo add-apt-repository ppa:libretro/stable
     sudo apt-get update
     sudo apt-get install retroarch
@@ -368,19 +373,13 @@ cmd_sublime() {
     sudo apt-get install -y sublime-text
 }
 
-# https://www.swift.org/download/
+# https://www.swift.org/install/linux/
 cmd_swift() {
-    local dist
-    dist="$(distro_version)"
-    [[ "$BS_UNAME_M" == "aarch64" ]] && dist="$dist-aarch64"
-    local url="https://www.swift.org/download/"
-
-    url=$(curl -fsSL --compressed "$url" | grep -oP '(?<=href=")[^"]+(?=")' | grep -P "$dist.tar.gz\$" | tac | tail -n 1)
-    local base
-    base=$(basename --suffix .tar.gz "$url")
-    curl -fsSL "$url" | tar -C "$HOME" -xz
-    rm -rf "$HOME/.swift"
-    mv "$HOME/$base" "$HOME/.swift"
+    local dir="$HOME/Downloads/swift"
+    mkdir -p "$dir"
+    curl -fsSL "https://download.swift.org/swiftly/linux/swiftly-$(uname -m).tar.gz" | tar -C "$dir" -xz
+    "$dir/swiftly" init --platform ubuntu24.04 --assume-yes
+    rm -rf "$dir"
 }
 
 # https://tailscale.com/download/linux/ubuntu-2204
@@ -395,7 +394,6 @@ cmd_tailscale() {
     setup_apt "$repo" tailscale.list
     sudo apt-get update
     sudo apt-get install -y tailscale
-
     sudo tailscale up
 }
 
@@ -406,10 +404,11 @@ cmd_teams() {
     local url="https://packages.microsoft.com/repos/ms-teams/pool/main/t/teams/"
     local pkg
     pkg=$(curl -fsSL "$url" | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^teams_[\d\.]+_amd64.deb$' | tail -n 1)
-    wget -nv "$url/$pkg"
-    sudo dpkg --install --force-all teams_*_amd64.deb
+    cd "$HOME/Downloads"
+    curl -fsSL "$url" -O teams.deb
+    sudo dpkg --install --force-all teams.deb
     sudo apt-get install -fy
-    rm teams_*_amd64.deb
+    rm teams.deb
 }
 
 # https://learn.hashicorp.com/tutorials/terraform/install-cli

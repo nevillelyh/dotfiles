@@ -308,6 +308,20 @@ cmd_proton() {
     curl -fsSL "$tarball" | tar -C "$HOME/.steam/root/compatibilitytools.d" -xz
 }
 
+cmd_reaper() {
+    brew_install_cask reaper || return 0
+
+    local url="https://www.reaper.fm/download.php"
+    local part="$(curl -fsSL "$url" | grep -oP '(?<=href=")[^"]+(?=")' | grep "linux_${BS_UNAME_M}.tar.xz" | head -n 1)"
+    tarball="https://www.reaper.fm/$part"
+    dir="$HOME/reaper"
+    mkdir -p "$dir"
+    curl -fsSL "$tarball" | tar -C "$dir" -xJ --strip-component 1
+    sudo "$dir/install-reaper.sh" --install /opt --quiet --integrate-desktop --usr-local-bin-symlink
+    rm -rf "$dir"
+    sudo sed -i 's/^Exec=/Exec=pw-jack -p128 /' /usr/share/applications/cockos-reaper.desktop
+}
+
 # https://www.retroarch.com/index.php?page=linux-instructions
 cmd_retroarch() {
     brew_install_cask retroarch || return 0

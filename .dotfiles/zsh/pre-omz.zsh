@@ -29,11 +29,18 @@ for b in $bins; do
     [[ -d $b ]] && path=($b $path)
 done
 
-[[ -s "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+envs=(
+    $HOME/.cargo/env
+    $HOME/.local/share/swiftly/env.sh
+    $HOME/.sdkman/bin/sdkman-init.sh
+)
+
+for e in $envs; do
+    [[ -s $e ]] && source $e
+done
 
 export GOPATH="$HOME/.go"
 export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 FPATH="$HOME/.local/share/zsh/site-functions:$FPATH"
 autoload -Uz compinit

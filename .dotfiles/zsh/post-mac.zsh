@@ -6,3 +6,14 @@ pidof() {
 }
 
 export K9S_CONFIG_DIR="$HOME/.config/k9s"
+
+# copy/paste
+xc() {
+    if [[ -t 0 ]]; then
+        # clipboard -> stdout
+        pbpaste
+    else
+        # stdin -> clipboard
+        pbcopy
+    fi
+}

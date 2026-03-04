@@ -120,6 +120,19 @@ cmd_rust() {
     fi
 }
 
+cmd_uv() {
+    bs_info_box "Upgrading UV"
+    uv python upgrade
+    out="$(uv python list --only-installed --output-format json)"
+    for v in $(echo "$out" | jq --raw-output '.[] | "\(.version_parts.major).\(.version_parts.minor)"' | uniq); do
+        major=$(echo "$v" | cut -d . -f 1)
+        minor=$(echo "$v" | cut -d . -f 2)
+        for k in $(echo "$out" | jq --raw-output ".[] | select(.version_parts.major==$major and .version_parts.minor==$minor) | .key" | tail -n +2); do
+            uv python uninstall "$k"
+        done
+    done
+}
+
 upgrade() {
     cd "$HOME"
     cmd_os
@@ -129,6 +142,7 @@ upgrade() {
     cmd_go
     cmd_jvm
     cmd_rust
+    cmd_uv
     bs_success_box "Upgrade complete"
 }
 

@@ -279,7 +279,7 @@ run_cockroach() {
 run_codex() {
     # Workaround for codex cask missing completion
     local brew_bin=/opt/homebrew/bin/codex
-    local brew_comp=/opt/homebrew/share/zssh/site-functions/_codex
+    local brew_comp=/opt/homebrew/share/zsh/site-functions/_codex
     local local_comp="$sfpath/_codex"
     if [[ -L "$brew_bin" && ! (-e "$brew_comp" || -e "$local_comp") ]]; then
         ensure_sfpath

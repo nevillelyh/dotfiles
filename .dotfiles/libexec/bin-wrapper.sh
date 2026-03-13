@@ -926,6 +926,15 @@ run_nvim() {
 }
 
 run_opencode() {
+    # Workaround for opencode missing completion
+    local brew_bin=/opt/homebrew/bin/opencode
+    local brew_comp=/opt/homebrew/share/zsh/site-functions/_opencode
+    local local_comp="$sfpath/_opencode"
+    if [[ -L "$brew_bin" && ! (-e "$brew_comp" || -e "$local_comp") ]]; then
+        ensure_sfpath
+        /opt/homebrew/bin/opencode completion > "$sfpath/_opencode"
+    fi
+
     brew_run opencode opencode "$@"
 
     get_latest() {

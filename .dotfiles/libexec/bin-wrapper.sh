@@ -925,6 +925,32 @@ run_nvim() {
     exec "$exec" "$@"
 }
 
+run_opencode() {
+    brew_run opencode opencode "$@"
+
+    get_latest() {
+        bs_gh_latest anomalyco/opencode
+    }
+
+    get_current() {
+        "$exec" --version
+    }
+
+    download() {
+        local version=$1
+        case "$arch" in
+            x86_64) arch=x64 ;;
+            aarch64) arch=arm64 ;;
+        esac
+        local url="https://github.com/anomalyco/opencode/releases/download/v$version/opencode-linux-$arch.tar.gz"
+        curl -fsSL "$url" | tar -C "$cache" -xz opencode
+    }
+
+    exec="$cache/opencode"
+    update
+    exec "$exec" "$@"
+}
+
 run_protoc() {
     brew_run protobuf protoc "$@"
 

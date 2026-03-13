@@ -953,6 +953,7 @@ run_opencode() {
         esac
         local url="https://github.com/anomalyco/opencode/releases/download/v$version/opencode-linux-$arch.tar.gz"
         curl -fsSL "$url" | tar -C "$cache" -xz opencode
+        mk_comp "$exec" completion
     }
 
     exec="$cache/opencode"

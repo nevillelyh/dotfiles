@@ -286,7 +286,7 @@ cmd_jetbrains() {
 cmd_nvidia() {
     local url="https://nvidia.github.io/libnvidia-container/gpgkey"
     local repo
-    repo=$(curl -fsSL "https://nvidia.github.io/libnvidia-container/$(distro_version)/libnvidia-container.list" | sed 's@deb https://@deb [signed-by=/etc/apt/trusted.gpg.d/nvidia-container-toolkit-keyring.gpg] https://@g')
+    repo=$(curl -fsSL "https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list" | sed 's@deb https://@deb [signed-by=/etc/apt/trusted.gpg.d/nvidia-container-toolkit-keyring.gpg] https://@g')
     setup_gpg "$url" nvidia-container-toolkit-keyring.gpg
     setup_apt "$repo" nvidia-container-toolkit.list
     sudo apt-get update

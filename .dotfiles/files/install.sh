@@ -128,10 +128,11 @@ cmd_awscli() {
 cmd_btop() {
     brew_install btop || return 0
 
+    sudo aptitude install g++-14
     cd "$HOME/Downloads"
     git clone git@github.com:aristocratos/btop.git
     cd btop
-    make
+    CC=gcc-14 CXX=g++-14 make
     PREFIX=$HOME/.local make install
     cd ..
     rm -rf btop

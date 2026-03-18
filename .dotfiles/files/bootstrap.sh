@@ -326,6 +326,15 @@ cmd_neovim() {
     touch "$HOME/.bootstrap-neovim"
 }
 
+cmd_fnm() {
+    [[ -f "$HOME/.bootstrap-fnm" ]] && return 0
+    bs_info_box "Setting up FNM"
+
+    fnm install --lts
+
+    touch "$HOME/.bootstrap-fnm"
+}
+
 cmd_go() {
     [[ -f "$HOME/.bootstrap-go" ]] && return 0
     bs_info_box "Setting up Go"
@@ -457,6 +466,7 @@ bootstrap() {
     cmd_gnupg
     cmd_venv  # NeoVim needs Python
     cmd_neovim
+    cmd_fnm
     cmd_go
     cmd_jvm
     cmd_code

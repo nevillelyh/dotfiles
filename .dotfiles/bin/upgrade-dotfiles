@@ -79,6 +79,19 @@ cmd_docker() {
     docker images --quiet --filter dangling=true | xargs -r docker rmi
 }
 
+cmd_fnm() {
+    bs_info_box "Upgrading fnm"
+    fnm install --lts
+    latest="$(fnm list | grep lts-latest | tail -n 1 | awk '{print $2}')"
+    fnm default "$latest"
+    fnm list | grep -v '\* system' | while IFS= read -r line; do
+        v="$(echo "$line" | awk '{print $2}')"
+        if [[ "$v" != "$latest" ]]; then
+            fnm uninstall "$v"
+        fi
+    done
+}
+
 cmd_go() {
     bs_info_box "Upgrading Go"
     if [[ -d "$HOME/.go/bin" ]]; then
@@ -125,6 +138,7 @@ upgrade() {
     cmd_git
     cmd_omz
     cmd_docker
+    cmd_fnm
     cmd_go
     cmd_jvm
     cmd_rust

@@ -125,7 +125,7 @@ cmd_linux_extras() {
     command -v nvidia-smi &> /dev/null && sudo aptitude install -y nvtop
 
     # Third-party packages
-    bs_df files/install.sh cmake go
+    bs_df files/install.sh cmake eza go
 
     if [[ ! -f /.dockerenv ]]; then
         sudo aptitude install -y snapd

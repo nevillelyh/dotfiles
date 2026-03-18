@@ -232,6 +232,19 @@ cmd_dropbox() {
     rm dropbox.deb
 }
 
+# https://github.com/eza-community/eza/blob/main/INSTALL.md
+cmd_eza() {
+    brew_install eza || return 0
+
+    local url="https://raw.githubusercontent.com/eza-community/eza/main/deb.asc"
+    local repo
+    repo="deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/trusted.gpg.d/gierens.gpg] http://deb.gierens.de stable main"
+    setup_gpg "$url" gierens.gpg
+    setup_apt "$repo" gierens.list
+    sudo apt-get update
+    sudo apt-get install -y eza
+}
+
 # https://cloud.google.com/sdk/docs/install#deb
 cmd_gcloud() {
     brew_install_cask google-cloud-sdk || return 0

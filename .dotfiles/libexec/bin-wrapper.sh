@@ -390,33 +390,6 @@ run_dust() {
     exec "$exec" "$@"
 }
 
-run_eza() {
-    brew_run eza eza "$@"
-
-    get_latest() {
-        bs_gh_latest eza-community/eza
-    }
-
-    get_current() {
-        "$exec" --version | grep '^v' | sed 's/^v\(.\+\) \[.*\]$/\1/'
-    }
-
-    download() {
-        local version=$1
-        local prefix="https://github.com/eza-community/eza/releases/download"
-        local tarball="eza_$arch-unknown-$os-gnu.tar.gz"
-        local url="$prefix/v$version/$tarball"
-        curl -fsSL "$url" | tar -C "$cache" -xz ./eza
-        ensure_sfpath
-        curl -fsSL "https://raw.githubusercontent.com/eza-community/eza/v$version/completions/zsh/_eza" -o "$sfpath/_eza"
-        touch "$exec"
-    }
-
-    exec="$cache/eza"
-    update
-    exec "$exec" "$@"
-}
-
 run_fd() {
     brew_run fd fd "$@"
 

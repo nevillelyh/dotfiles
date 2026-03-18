@@ -1,62 +1,29 @@
 return {
   {
-    "williamboman/mason.nvim",
+    'mason-org/mason.nvim',
+    opts = {},
   },
   {
-    "williamboman/mason-lspconfig.nvim",
+    'mason-org/mason-lspconfig.nvim',
+    dependencies = {
+      { "mason-org/mason.nvim", opts = {} },
+    },
+    opts = {
+      ensure_installed = {
+        'basedpyright',
+        'gopls',
+        'lua_ls',
+        'ruff',
+        'ts_ls',
+      },
+    },
   },
   {
-    "neovim/nvim-lspconfig",
-    config = function()
-      local lsps = {
-          "basedpyright",
-          "gopls",
-          "lua_ls",
-          "ruff",
-          "rust_analyzer",
-          "terraformls",
-      }
-      local uname = vim.loop.os_uname()
-      local platform = uname.sysname .. "-" .. uname.machine
-      if platform ~= "Linux-aarch64" then
-        table.insert(lsps, "clangd")
-      end
-      require("mason").setup()
-      require("mason-lspconfig").setup({
-        ensure_installed = lsps,
-      })
-
-      --------------------
-
-      vim.lsp.config("basedpyright", {
-        settings = {
-          basedpyright = {
-            analysis = {
-              typeCheckingMode = "standard",
-            },
-          },
-        },
-      })
-      vim.lsp.config("lua_ls", {
-        settings = {
-          Lua = {
-            diagnostics = {
-              globals = {"vim"},
-            },
-          }
-        },
-      })
-
-
-      vim.lsp.enable({
-        "basedpyright",
-        "clangd",
-        "gopls",
-        "lua_ls",
-        "metals",
-        "ruff",
-        "ruff_analyzer",
-      })
-    end,
+    'saghen/blink.cmp',
+    version = '1.*',
+    opts = {
+      keymap = { preset = 'enter' },
+      completion = { documentation = { auto_show = true } },
+    },
   },
 }

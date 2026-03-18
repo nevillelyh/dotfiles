@@ -32,4 +32,7 @@ nmap <silent> <C-Space> :call ToggleKeymap()<CR>
 source $HOME/.config/nvim/keybindings.vim
 lua require('config.lazy')
 
+" Not enabled by mason-lspconfig
+lua vim.lsp.enable('metals')
+
 colorscheme dracula

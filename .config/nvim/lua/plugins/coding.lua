@@ -4,8 +4,10 @@ return {
     'dense-analysis/ale',
     init = function()
       vim.g.ale_python_flake8_options = '--max-line-length=120'
+      vim.g.ale_disable_lsp = 1
     end,
   },
+  -- { 'github/copilot.vim' },
   {
     'junegunn/fzf',
     init = function()

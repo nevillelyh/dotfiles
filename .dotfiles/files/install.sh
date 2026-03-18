@@ -75,18 +75,6 @@ setup_hashicorp() {
     sudo apt-get update
 }
 
-# https://support.1password.com/install-linux/
-cmd_1password() {
-    brew_install 1password 1password-cli || return 0
-
-    local url="https://downloads.1password.com/linux/keys/1password.asc"
-    local repo="deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/amd64 stable main"
-    setup_gpg "$url" 1password-archive-keyring.gpg
-    setup_apt "$repo" 1password.list
-    sudo apt-get update
-    sudo apt-get install -y 1password 1password-cli
-}
-
 # https://docs.ankiweb.net/platform/linux/installing.html
 cmd_anki() {
     brew_install_cask anki || return 0
@@ -114,31 +102,6 @@ cmd_antigravity() {
     sudo apt-get install -y antigravity
 }
 
-cmd_awscli() {
-    brew_install awscli || return 0
-
-    local dir="$HOME/Downloads/awscli"
-    mkdir -p "$dir"
-    cd "$dir"
-    curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-$BS_UNAME_M.zip" -o awscliv2.zip
-    unzip awscliv2.zip
-    ./aws/install --install-dir "$HOME/.aws" --bin-dir "$HOME/.local/bin" --update
-    rm -rf "$dir"
-}
-
-cmd_btop() {
-    brew_install btop || return 0
-
-    sudo aptitude install g++-14
-    cd "$HOME/Downloads"
-    git clone git@github.com:aristocratos/btop.git
-    cd btop
-    CC=gcc-14 CXX=g++-14 make
-    PREFIX=$HOME/.local make install
-    cd ..
-    rm -rf btop
-}
-
 # Chrome manages its own repository
 cmd_chrome() {
     brew_install_cask google-chrome || return 0
@@ -148,19 +111,6 @@ cmd_chrome() {
     sudo dpkg --install --force-all chrome.deb
     sudo apt-get install -fy
     rm chrome.deb
-}
-
-# https://apt.kitware.com/
-cmd_cmake() {
-    brew_install cmake || return 0
-
-    local url="https://apt.kitware.com/keys/kitware-archive-latest.asc"
-    local repo
-    repo="deb [signed-by=/etc/apt/trusted.gpg.d/kitware-archive-keyring.gpg] https://apt.kitware.com/$(distro)/ $(codename) main"
-    setup_gpg "$url" kitware-archive-keyring.gpg
-    setup_apt "$repo" kitware.list
-    sudo apt-get update
-    sudo apt-get install -y cmake kitware-archive-keyring
 }
 
 # https://code.visualstudio.com/docs/setup/linux
@@ -185,17 +135,6 @@ cmd_dbeaver() {
     setup_apt "$repo" dbeaver.list
     sudo apt-get update
     sudo apt-get install -y dbeaver-ce
-}
-
-cmd_discord() {
-    brew_install_cask discord || return 0
-
-    local url="https://discord.com/api/download?platform=linux&format=deb"
-    cd "$HOME/Downloads"
-    curl -fsSL "$url" -o discord.deb
-    sudo dpkg --install --force-all discord.deb
-    sudo apt-get install -fy
-    rm discord.deb
 }
 
 # https://docs.docker.com/engine/install/ubuntu/
@@ -230,57 +169,6 @@ cmd_dropbox() {
     sudo dpkg --install --force-all dropbox.deb
     sudo apt-get install -f
     rm dropbox.deb
-}
-
-# https://github.com/eza-community/eza/blob/main/INSTALL.md
-cmd_eza() {
-    brew_install eza || return 0
-
-    local url="https://raw.githubusercontent.com/eza-community/eza/main/deb.asc"
-    local repo
-    repo="deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/trusted.gpg.d/gierens.gpg] http://deb.gierens.de stable main"
-    setup_gpg "$url" gierens.gpg
-    setup_apt "$repo" gierens.list
-    sudo apt-get update
-    sudo apt-get install -y eza
-}
-
-# https://cloud.google.com/sdk/docs/install#deb
-cmd_gcloud() {
-    brew_install_cask google-cloud-sdk || return 0
-
-    local url="https://packages.cloud.google.com/apt/doc/apt-key.gpg"
-    local repo="deb [signed-by=/etc/apt/trusted.gpg.d/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main"
-    setup_gpg "$url" cloud.google.gpg
-    setup_apt "$repo" google-cloud-sdk.list
-    sudo apt-get update
-    sudo apt-get install -y google-cloud-cli google-cloud-sdk-gke-gcloud-auth-plugin
-}
-
-# https://go.dev/doc/install
-cmd_go() {
-    brew_install go || return 0
-
-    local os
-    os=$(echo "$BS_UNAME_S" | tr "[:upper:]" "[:lower:]")
-    local arch
-    arch=$(dpkg --print-architecture)
-    local tarball
-    tarball=$(curl -fsSL "https://go.dev/dl" | grep -oP '(?<=href=")[^"]+(?=")' | grep "/dl/go.*\.$os-$arch\.tar\.gz" | tac | tail -n 1)
-    curl -fsSL "https://go.dev/$tarball" | sudo tar -C /usr/local -xz
-}
-
-# https://helm.sh/
-cmd_helm() {
-    brew_install helm || return 0
-
-    local url="https://baltocdn.com/helm/signing.asc"
-    local repo
-    repo="deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/trusted.gpg.d/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main"
-    setup_gpg "$url" helm.gpg
-    setup_apt "$repo" helm-stable-debian.list
-    sudo apt-get update
-    sudo apt-get install -y helm
 }
 
 cmd_jetbrains() {
@@ -341,15 +229,6 @@ cmd_reaper() {
     sudo sed -i 's/^Exec=/Exec=pw-jack -p128 /' /usr/share/applications/cockos-reaper.desktop
 }
 
-# https://www.retroarch.com/index.php?page=linux-instructions
-cmd_retroarch() {
-    brew_install_cask retroarch || return 0
-
-    sudo add-apt-repository ppa:libretro/stable
-    sudo apt-get update
-    sudo apt-get install retroarch
-}
-
 # https://signal.org/download/
 cmd_signal() {
     brew_install_cask signal || return 0
@@ -386,15 +265,6 @@ cmd_sublime() {
     setup_apt "$repo" sublime-text.list
     sudo apt-get update
     sudo apt-get install -y sublime-text
-}
-
-# https://www.swift.org/install/linux/
-cmd_swift() {
-    local dir="$HOME/Downloads/swift"
-    mkdir -p "$dir"
-    curl -fsSL "https://download.swift.org/swiftly/linux/swiftly-$(uname -m).tar.gz" | tar -C "$dir" -xz
-    "$dir/swiftly" init --platform ubuntu24.04 --assume-yes
-    rm -rf "$dir"
 }
 
 # https://tailscale.com/download/linux/ubuntu-2204

@@ -6,21 +6,15 @@ typeset -aU path
 bins=(
     # Mac
     "$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
-    "$HOME/Library/Application Support/Coursier/bin"
-    /opt/homebrew/sbin
-    /opt/homebrew/bin
 
     # Linux
     $HOME/.local/share/JetBrains/Toolbox/scripts
-    $HOME/.swift/usr/bin
-    /usr/local/go/bin
     /snap/bin
 
     # Common
     $HOME/.go/bin
     $HOME/.krew/bin
     $HOME/.antigravity/antigravity/bin
-    $HOME/.local/share/coursier/bin
     $HOME/.local/bin
     $HOME/.dotfiles/bin
 )
@@ -29,9 +23,17 @@ for b in $bins; do
     [[ -d $b ]] && path=($b $path)
 done
 
+brew_bins=(
+    /home/linuxbrew/.linuxbrew/bin/brew
+    /opt/homebrew/bin/brew
+)
+for b in $brew_bins; do
+    [[ -f $b ]] && eval "$($b shellenv zsh)"
+done
+
+path=("$(brew --prefix rustup)/bin" $path)
+
 envs=(
-    $HOME/.cargo/env
-    $HOME/.local/share/swiftly/env.sh
     $HOME/.sdkman/bin/sdkman-init.sh
 )
 
@@ -42,15 +44,15 @@ done
 export GOPATH="$HOME/.go"
 export SDKMAN_DIR="$HOME/.sdkman"
 
-FPATH="$HOME/.local/share/zsh/site-functions:$FPATH"
-autoload -Uz compinit
-compinit
-
 case "$(uname -s)" in
     Linux)
-        source "$HOME/.dotfiles/zsh/pre-linux.zsh"
+        # CUDA and cuDNN
+        eval "$("$HOME/.dotfiles/bin/nvman" env)"
         ;;
     Darwin)
-        source "$HOME/.dotfiles/zsh/pre-mac.zsh"
+        export TERMINFO_DIRS="${TERMINFO_DIRS:+$TERMINFO_DIRS:}$HOME/.local/share/terminfo"
         ;;
 esac
+
+autoload -Uz compinit
+compinit

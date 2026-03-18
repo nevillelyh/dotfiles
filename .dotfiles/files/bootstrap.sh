@@ -13,29 +13,129 @@ else
     eval "$(curl -fsSL bit.ly/bs-dot-sh)"
 fi
 
-GUI=${GUI:-1}
+BREWS=(
+    awscli
+    b2-tools
+    bat
+    bazelisk
+    bitwarden-cli
+    btop
+    cfssl
+    cmake
+    colordiff
+    curl
+    dust
+    eza
+    fd
+    flatbuffers
+    fnm
+    fzf
+    gh
+    git
+    git-delta
+    gitui
+    golang
+    gpg
+    htop
+    jq
+    k3d
+    k9s
+    kconf
+    kind
+    kubectl
+    kubectx
+    kustomize
+    lazydocker
+    minikube
+    neovim
+    ninja
+    protobuf
+    protoc-gen-go
+    protoc-gen-go-grpc
+    ripgrep
+    rustup
+    shellcheck
+    sops
+    tmux
+    uv
+    wget
+    yamlfmt
+    zoxide
+)
+CASKS=(
+    claude-code
+    codex
+    copilot-cli
+    gcloud-cli
+    gemini-cli
+    opencode
+)
+FLATPAKS=(com.bitwarden.desktop)
+FLATPAKS_OPT=(
+    com.discordapp.Discord
+    org.libretro.RetroArch
+)
+readonly -a BREWS CASKS FLATPAKS
 
-# Mac packages:
-# python - leave macOS bundled python alone
-# pinentry-mac - for GPG
-# App Store - AdGuard for Safari, Instapaper, Kindle, Messenger, Slack, The Unarchiver, WhatsApp
-BREWS=(bat btop cmake colordiff dust eza fd git git-delta gitui golang gpg htop jq mas neovim ninja pinentry-mac ripgrep shellcheck tmux wget zoxide)
-CASKS=(alacritty alfred claude claude-code codex codex-app copilot-cli dbeaver-community discord docker dropbox expressvpn github iterm2 jetbrains-toolbox notion scroll-reverser sublime-text tailscale visual-studio-code vimr zotero)
-CASKS_OPT=(adobe-creative-cloud anki firefox google-chrome google-cloud-sdk guitar-pro hiarcs-chess-explorer macdive microsoft-edge retroarch signal shearwater-cloud spotify steam subsurface transmission vlc waves-central)
-# AdGuard Bitwarden Kindle Magnet Messenger Pocket Slack Unarchiver WhatsApp
-MAS=(1440147259 1352778147 472772 441258766 1480068668 1477385213 803453959 425424353 310633997)
-readonly -a BREWS CASKS CASKS_OPT MAS
+MAC_BREWS=(mas pinentry-mac)
+MAC_CASKS=(
+    alacritty
+    alfred
+    antigravity
+    claude
+    codex-app
+    dbeaver-community
+    discord
+    docker
+    dropbox
+    github
+    iterm2
+    jetbrains-toolbox
+    notion
+    scroll-reverser
+    sublime-text
+    tailscale
+    vimr
+    visual-studio-code
+    zotero
+)
+MAC_CASKS_OPT=(
+    adobe-creative-cloud
+    anki
+    firefox
+    google-chrome
+    guitar-pro
+    hiarcs-chess-explorer
+    macdive
+    microsoft-edge
+    retroarch
+    shearwater-cloud
+    signal
+    spotify
+    steam
+    subsurface
+    transmission
+    vlc
+    waves-central
+)
+MAS=(
+    1440147259 # AdGuard
+    1352778147 # Bitwarden
+    302584613  # Kindle
+    441258766  # Magnet
+    803453959  # Slack
+    425424353  # Unarchiver
+    310633997  # WhatsApp
+)
+readonly -a MAC_BREWS MAC_CASKS MAC_CASKS_OPT MAS
 
-# Linux packages:
-# fonts-powerline - PowerlineSymbols only, no patched fonts
-# libfuse2 - for AppImage, e.g. JetBrains Toolbox, NeoVim
-# unzip, zip - for SDKMAN
-DEB_PKGS=(build-essential colordiff htop libfuse2 lm-sensors ninja-build shellcheck smartmontools tmux unzip wl-clipboard zip zsh)
+LINUX_BREWS=(nerdctl swift)
+DEB_PKGS=(build-essential libfuse2 lm-sensors smartmontools wl-clipboard zsh)
 DEB_GUI_PKGS=(alacritty fonts-powerline ubuntu-restricted-extras vlc)
-readonly -a DEB_PKGS DEB_GUI_PKGS
+readonly -a LINUX_BREWS DEB_PKGS DEB_GUI_PKGS
 
 cmd_ssh() {
-    [[ -n "${SSH_CONNECTION-}" ]] && return 0 # remote host
+    [[ -f "$HOME/.bootstrap-ssh" ]] && return 0
     local -a keys
     # Bash 3 on Mac missing readarray
     # shellcheck disable=SC2207
@@ -44,40 +144,50 @@ cmd_ssh() {
     killall -q ssh-agent || true
     eval "$(ssh-agent)"
     ssh-add "${keys[@]}"
+    touch "$HOME/.bootstrap-ssh"
+}
+
+cmd_homebrew() {
+    [[ -f "$HOME/.bootstrap-homebrew" ]] && return 0
+    bs_info_box "Setting up Homebrew"
+
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    brew install "${BREWS[@]}"
+    brew install "${CASKS[@]}"
+    case "$BS_UNAME_S" in
+        Darwin)
+            brew install "${MAC_BREWS[@]}"
+            brew install --cask "${MAC_CASKS[@]}"
+            read -n 1 -r -p "Install optional casks? (y/N) "
+            echo
+            [[ $REPLY =~ ^[Yy]$ ]] && brew install --cask "${MAC_CASKS_OPT[@]}"
+            ;;
+        Linux)
+            brew install "${LINUX_BREWS[@]}"
+            ;;
+    esac
+
+    touch "$HOME/.bootstrap-homebrew"
 }
 
 cmd_mac() {
-    [[ "$BS_UNAME_S" != Darwin ]] && return 0
+    [[ -f "$HOME/.bootstrap-mac" ]] && return 0
     bs_info_box "Setting up Mac specifics"
 
     read -r -p "Enter hostname: "
-    [[ "$(scutil --get ComputerName)" == "$REPLY" ]] && return 0
     sudo scutil --set ComputerName "$REPLY"
     sudo scutil --set HostName "$REPLY"
     sudo scutil --set LocalHostName "$REPLY"
     dscacheutil -flushcache
 
+    touch "$HOME/.bootstrap-mac"
+
     bs_warn_box "Restarting"
     sudo shutdown -r
 }
 
-cmd_homebrew() {
-    [[ "$BS_UNAME_S" != Darwin ]] && return 0
-    [[ -L /opt/homebrew/bin/zoxide ]] && return 0
-    bs_info_box "Setting up Homebrew"
-
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    brew install "${BREWS[@]}"
-    brew install --cask "${CASKS[@]}"
-
-    read -n 1 -r -p "Install optional casks? (y/N) "
-    echo
-    [[ $REPLY =~ ^[Yy]$ ]] && brew install --cask "${CASKS_OPT[@]}"
-}
-
 cmd_mac_extras() {
-    [[ "$BS_UNAME_S" != Darwin ]] && return 0
-    [[ -d "$HOME/.local/share/terminfo" ]] && return 0
+    [[ -f "$HOME/.bootstrap-mac-extras" ]] && return 0
     bs_info_box "Setting up Mac extras"
 
     # https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
@@ -89,20 +199,21 @@ cmd_mac_extras() {
     rm "$HOME/tmux-256color"
 
     mas install "${MAS[@]}"
+
+    touch "$HOME/.bootstrap-mac-extras"
 }
 
 cmd_linux() {
-    [[ "$BS_UNAME_S" != Linux ]] && return 0
+    [[ -f "$HOME/.bootstrap-linux" ]] && return 0
     bs_info_box "Setting up Linux specifics"
 
-    # Tools not available in apt, etc. but with auto-update
-    curl -fsSL https://claude.ai/install.sh | bash
-    curl -fsSL https://gh.io/copilot-install | bash
+    # Nothing to do here
+
+    touch "$HOME/.bootstrap-linux"
 }
 
 cmd_apt() {
-    [[ "$BS_UNAME_S" != Linux ]] && return 0
-    command -v shellcheck &> /dev/null && return 0
+    [[ -f "$HOME/.bootstrap-apt" ]] && return 0
     bs_info_box "Setting up Aptitude"
 
     sudo apt-get install -y apt-transport-https aptitude
@@ -111,46 +222,49 @@ cmd_apt() {
     sudo aptitude install -y "${DEB_PKGS[@]}"
 
     # The following are GUI apps
-    [[ $GUI -eq 1 ]] || return 0
-    dpkg-query --show xserver-xorg &> /dev/null || return 0
+    if dpkg-query --show xserver-xorg &> /dev/null; then
+        sudo aptitude install -y "${DEB_GUI_PKGS[@]}"
+    fi
 
-    sudo aptitude install -y "${DEB_GUI_PKGS[@]}"
+    touch "$HOME/.bootstrap-apt"
 }
 
 cmd_linux_extras() {
-    [[ "$BS_UNAME_S" != Linux ]] && return 0
-    [[ -d /usr/local/go ]] && return 0
+    [[ -f "$HOME/.bootstrap-linux-extras" ]] && return 0
     bs_info_box "Setting up Linux extras"
 
-    command -v nvidia-smi &> /dev/null && sudo aptitude install -y nvtop
-
-    # Third-party packages
-    bs_df files/install.sh cmake eza go
+    command -v nvidia-smi &> /dev/null && brew install nvtop
 
     if [[ ! -f /.dockerenv ]]; then
         sudo aptitude install -y snapd
     fi
 
     # The following are GUI apps
-    [[ $GUI -eq 1 ]] || return 0
-    dpkg-query --show xserver-xorg &> /dev/null || return 0
+    if dpkg-query --show xserver-xorg &> /dev/null; then
+        flatpak install --assumeyes "${FLATPAKS[@]}"
+        read -n 1 -r -p "Install optional flatpaks? (y/N) "
+        echo
+        [[ $REPLY =~ ^[Yy]$ ]] && flatpak install --assumeyes "${FLATPAKS_OPT[@]}"
 
-    if command -v snap &> /dev/null; then
-        sudo snap install spotify
+        if command -v snap &> /dev/null; then
+            sudo snap install spotify
 
-        # FIXME: Workaround for AppArmor on PopOS
-        # https://forum.snapcraft.io/t/apparmor-blocking-the-opening-of-slack/29212
-        sudo snap install --devmode slack
+            # FIXME: Workaround for AppArmor on PopOS
+            # https://forum.snapcraft.io/t/apparmor-blocking-the-opening-of-slack/29212
+            sudo snap install --devmode slack
+        fi
+
+        # Custom repositories
+        bs_df files/install.sh code sublime
+        # FIXME: not available for Linux arm64
+        [[ "$BS_UNAME_M" != x86_64 ]] || bs_df files/install.sh chrome dropbox
     fi
 
-    # Custom repositories
-    # FIXME: not available for Linux arm64
-    [[ "$BS_UNAME_M" != x86_64 ]] || bs_df files/install.sh chrome discord dropbox
-    bs_df files/install.sh code sublime
+    touch "$HOME/.bootstrap-linux-extras"
 }
 
 cmd_git() {
-    [[ -d "$HOME/.dotfiles/oh-my-zsh" ]] && return 0
+    [[ -f "$HOME/.bootstrap-git" ]] && return 0
     bs_info_box "Setting up Git"
 
     cd "$HOME"
@@ -162,10 +276,12 @@ cmd_git() {
     git submodule update --init --recursive
     git branch --set-upstream-to=origin/main
     git remote set-head origin --auto
+
+    touch "$HOME/.bootstrap-git"
 }
 
 cmd_gnupg() {
-    [[ -s "$HOME/.gnupg/gpg-agent.conf" ]] && return 0
+    [[ -f "$HOME/.bootstrap-gnupg" ]] && return 0
     bs_info_box "Setting up GnuPG"
 
     mkdir -p "$HOME/.gnupg"
@@ -186,38 +302,44 @@ cmd_gnupg() {
             echo "no-allow-external-cache" >> "$HOME/.gnupg/gpg-agent.conf"
             ;;
     esac
+
+    touch "$HOME/.bootstrap-gnupg"
 }
 
 cmd_venv() {
-    [[ -d "$HOME/.venv" ]] && return 0
+    [[ -f "$HOME/.bootstrap-venv" ]] && return 0
     bs_info_box "Setting up venv"
 
     uv venv --color always --seed --prompt '' "$HOME/.venv"
     source "$HOME/.venv/bin/activate"
     python3 --version
+
+    touch "$HOME/.bootstrap-venv"
 }
 
 cmd_neovim() {
-    local lock="$HOME/.config/nvim/lazy-lock.json"
-    [[ -f $lock ]] && return 0
-    # FIXME: AppImage requires FUSE
-    [[ ! -f /.dockerenv ]] || return 0
+    [[ -f "$HOME/.bootstrap-neovim" ]] && return 0
     bs_info_box "Setting up NeoVim"
 
     nvim --headless '+checkhealth | qall'
+
+    touch "$HOME/.bootstrap-neovim"
 }
 
 cmd_go() {
-    [[ -d "$HOME/.go" ]] && return 0
+    [[ -f "$HOME/.bootstrap-go" ]] && return 0
     bs_info_box "Setting up Go"
+
     export GOPATH="$HOME/.go"
     go install -v golang.org/x/tools/gopls@latest
     go install -v github.com/go-delve/delve/cmd/dlv@latest
     go install -v cuelang.org/go/cmd/cue@latest
+
+    touch "$HOME/.bootstrap-go"
 }
 
 cmd_jvm() {
-    [[ -d "$HOME/.sdkman" ]] && return 0
+    [[ -f "$HOME/.bootstrap-jvm" ]] && return 0
     bs_info_box "Setting up JVM"
 
     curl -fsSL "https://get.sdkman.io" | bash
@@ -239,99 +361,64 @@ cmd_jvm() {
     set -u
 
     bs_sed_i 's/sdkman_auto_answer=true/sdkman_auto_answer=false/g' "$HOME/.sdkman/etc/config"
-}
 
-cmd_rust() {
-    [[ -d "$HOME/.cargo" ]] && return 0
-    bs_info_box "Setting up Rust"
-
-    curl --proto "=https" --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-
-    # shellcheck source=/dev/null
-    source "$HOME/.cargo/env"
+    touch "$HOME/.bootstrap-jvm"
 }
 
 cmd_code() {
-    command -v code &> /dev/null || return 0
-    code --list-extensions | grep 'dracula-theme\.theme-dracula' &> /dev/null && return 0
+    [[ -f "$HOME/.bootstrap-code" ]] && return 0
     bs_info_box "Setting up Visual Studio Code"
 
-    local -a extensions=(
-        dracula-theme.theme-dracula
-        GitHub.vscode-pull-request-github
-        golang.go
-        ms-azuretools.vscode-docker
-        ms-kubernetes-tools.vscode-kubernetes-tools
-        ms-python.python
-        ms-vscode.cpptools-extension-pack
-        rust-lang.rust-analyzer
-        swiftlang.swift-vscode
-        vadimcn.vscode-lldb
-        zxh404.vscode-proto3
-    )
-    for ext in "${extensions[@]}"; do
-        code --install-extension "$ext"
-    done
-    [[ "$BS_UNAME_S" != "Darwin" ]] || defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+    if [[ "$BS_UNAME_S" != "Darwin" ]]; then
+        defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+    fi
+
+    touch "$HOME/.bootstrap-code"
 }
 
 cmd_fonts() {
-    [[ $GUI -eq 1 ]] || return 0
-    [[ "$BS_UNAME_S" == Darwin ]] || dpkg-query --show xserver-xorg &> /dev/null || return 0
-    local fonts_dir
-    case "$BS_UNAME_S" in
-        Darwin) fonts_dir="$HOME/Library/Fonts" ;;
-        Linux) fonts_dir="$HOME/.local/share/fonts" ;;
-    esac
-    [[ -f "$fonts_dir/Hack-Regular.ttf" ]] && return 0
+    [[ -f "$HOME/.bootstrap-fonts" ]] && return 0
     bs_info_box "Setting up fonts"
 
-    wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
-    wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
-    wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
-    wget -nv https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
-    mkdir -p "$fonts_dir"
-    mv MesloLGS*.ttf "$fonts_dir"
-    [[ "$BS_UNAME_S" == Linux ]] && fc-cache -fv "$HOME/.local/share/fonts"
+    if [[ "$BS_UNAME_S" == Darwin ]] || dpkg-query --show xserver-xorg &> /dev/null; then
+        local fonts_dir
+        case "$BS_UNAME_S" in
+            Darwin) fonts_dir="$HOME/Library/Fonts" ;;
+            Linux) fonts_dir="$HOME/.local/share/fonts" ;;
+        esac
 
-    git clone https://github.com/powerline/fonts
-    cd fonts
-    ./install.sh
-    cd ..
-    rm -rf fonts
+        local prefix="https://github.com/romkatv/powerlevel10k-media/raw/master"
+        wget -nv "$prefix/MesloLGS%20NF%20Regular.ttf"
+        wget -nv "$prefix/MesloLGS%20NF%20Bold.ttf"
+        wget -nv "$prefix/MesloLGS%20NF%20Italic.ttf"
+        wget -nv "$prefix/MesloLGS%20NF%20Bold%20Italic.ttf"
+        mkdir -p "$fonts_dir"
+        mv MesloLGS*.ttf "$fonts_dir"
+        [[ "$BS_UNAME_S" == Linux ]] && fc-cache -fv "$HOME/.local/share/fonts"
+
+        git clone https://github.com/powerline/fonts
+        cd fonts
+        ./install.sh
+        cd ..
+        rm -rf fonts
+    fi
+
+    touch "$HOME/.bootstrap-fonts"
 }
 
 cmd_zsh() {
+    [[ -f "$HOME/.bootstrap-zsh" ]] && return 0
+
     [[ "$SHELL" == /bin/zsh ]] || chsh -s /bin/zsh
     [[ "$BS_UNAME_S" != Linux ]] && return 0
-    [[ -d "$HOME/.local/share/zsh/site-functions" ]] && return 0
     bs_info_box "Setting up zsh"
 
     case "$BS_UNAME_S" in
         Darwin) rm -rf "$HOME/.bash_profile" "$HOME/.bashrc" ;;
         Linux) cp /etc/skel/.[^.]* "$HOME" ;;
     esac
-}
 
-cmd_check() {
-    bs_info_box "Checking bootstrap"
-
-    ssh git@github.com 2>&1 | grep -q nevillelyh
-    case "$BS_UNAME_S" in
-        Darwin) brew --version &> /dev/null ;;
-        Linux) aptitude --version &> /dev/null ;;
-    esac
-    git --version &> /dev/null
-    gpg --output - --sign "$HOME/.dotfiles/files/bootstrap.sh" /dev/null
-    nvim --headless "+version | qall" &> /dev/null
-    go version &> /dev/null
-    gopls version &> /dev/null
-    sdk version &> /dev/null
-    java -version &> /dev/null
-    ipython --version &> /dev/null
-    flake8 --version &> /dev/null
-    rustup --version &> /dev/null
-    cargo --version &> /dev/null
+    touch "$HOME/.bootstrap-zsh"
 }
 
 ########################################
@@ -344,7 +431,7 @@ case "$BS_UNAME_S" in
         export PATH=$HOME/.local/bin:$PATH
         ;;
     Linux)
-        export PATH=/usr/local/go/bin:$PATH
+        export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
         ;;
 esac
 export PATH=$HOME/.dotfiles/bin:$PATH
@@ -361,6 +448,7 @@ bootstrap() {
         Linux)
             cmd_linux
             cmd_apt
+            cmd_homebrew
             cmd_linux_extras
             ;;
     esac
@@ -371,7 +459,6 @@ bootstrap() {
     cmd_neovim
     cmd_go
     cmd_jvm
-    cmd_rust
     cmd_code
     cmd_fonts
     cmd_zsh
@@ -379,6 +466,7 @@ bootstrap() {
     # In case install scripts e.g. SDKMAN modify anything by accident
     git reset --hard
 
+    rm -rf "$HOME"/.bootstrap-*
     bs_info_box "Bootstrap complete"
 }
 

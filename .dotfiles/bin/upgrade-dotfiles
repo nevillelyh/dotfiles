@@ -13,31 +13,28 @@ fi
 
 cmd_os() {
     bs_info_box "Upgrading system packages"
-    case "$BS_UNAME_S" in
-        Darwin)
-            brew update
-            brew upgrade
-            brew cleanup
-            brew autoremove
-            ;;
-        Linux)
-            sudo aptitude -y update
-            sudo aptitude -y upgrade -o APT::Get::Fix-Missing=true
-            sudo aptitude -y autoclean
-            sudo apt-get -y autoremove
-            dpkg-query -l | grep '^rc' | awk '{print $2}' | xargs -r sudo aptitude -y purge || true
-            if type snap &> /dev/null; then
-                sudo snap refresh
-            fi
-            if [[ "$(lsb_release --id --short)" == Pop ]]; then
-                pop-upgrade recovery upgrade from-release
-            fi
-            ;;
-    esac
+    if [ "$BS_UNAME_S" == Linux ]; then
+        sudo aptitude -y update
+        sudo aptitude -y upgrade -o APT::Get::Fix-Missing=true
+        sudo aptitude -y autoclean
+        sudo apt-get -y autoremove
+        dpkg-query -l | grep '^rc' | awk '{print $2}' | xargs -r sudo aptitude -y purge || true
+        if type snap &> /dev/null; then
+            sudo snap refresh
+        fi
+        if [[ "$(lsb_release --id --short)" == Pop ]]; then
+            pop-upgrade recovery upgrade from-release
+        fi
+    fi
+
+    brew update
+    brew upgrade
+    brew cleanup
+    brew autoremove
 }
 
 cmd_git() {
-    bs_info_box "Upgrading Git Repository"
+    bs_info_box "Upgrading Git repository"
     git pull --rebase --autostash
     # Update direct (non-recursive) submodules to remote HEAD
     git submodule update --init --remote
@@ -63,7 +60,7 @@ cmd_omz() {
 
 cmd_docker() {
     type docker &> /dev/null || return 0
-    bs_info_box "Upgrading Docker"
+    bs_info_box "Upgrading Docker images"
     if [[ "$BS_UNAME_S" == "Darwin" ]] && ! docker ps &> /dev/null; then
         open -a Docker
         bs_info "Waiting for Docker daemon"
@@ -83,18 +80,7 @@ cmd_docker() {
 }
 
 cmd_go() {
-    if [[ -d /usr/local/go ]]; then
-        os=$(echo "$BS_UNAME_S" | tr "[:upper:]" "[:lower:]")
-        arch=$(dpkg --print-architecture)
-        tarball=$(curl -fsSL "https://go.dev/dl" | grep -oP '(?<=href=")[^"]+(?=")' | grep "/dl/go.*\.$os-$arch\.tar\.gz" | tac | tail -n 1)
-        latest=$(echo "$tarball" | sed "s/^\/dl\/\(go.*\)\.$os-$arch\.tar\.gz$/\1/")
-        current=$(go version | awk '{ print $3 }')
-        if [[ "$latest" != "$current" ]]; then
-            bs_info_box "Upgrading Go from $current to $latest"
-            sudo rm -rf /usr/local/go
-            "$HOME/.dotfiles/files/install.sh" go
-        fi
-    fi
+    bs_info_box "Upgrading Go"
     if [[ -d "$HOME/.go/bin" ]]; then
         for mod in $(go version -m "$HOME/.go/bin" | grep '^\s\+path\s\+' | awk '{print $2}'); do
             go install "$mod@latest"

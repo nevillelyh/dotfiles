@@ -6,15 +6,17 @@ typeset -aU path
 bins=(
     # Mac
     "$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
+    "$HOME/Library/Application Support/Coursier/bin"
 
     # Linux
     $HOME/.local/share/JetBrains/Toolbox/scripts
+    $HOME/.local/share/coursier/bin
     /snap/bin
 
     # Common
+    $HOME/.antigravity/antigravity/bin
     $HOME/.go/bin
     $HOME/.krew/bin
-    $HOME/.antigravity/antigravity/bin
     $HOME/.local/bin
     $HOME/.dotfiles/bin
 )

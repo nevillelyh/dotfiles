@@ -23,6 +23,7 @@ BREWS=(
     cfssl
     cmake
     colordiff
+    coursier
     curl
     dust
     eza
@@ -370,6 +371,9 @@ cmd_jvm() {
     set -u
 
     bs_sed_i 's/sdkman_auto_answer=true/sdkman_auto_answer=false/g' "$HOME/.sdkman/etc/config"
+
+    brew install coursier
+    coursier install metals
 
     touch "$HOME/.bootstrap-jvm"
 }

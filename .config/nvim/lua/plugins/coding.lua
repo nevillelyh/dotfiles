@@ -7,7 +7,7 @@ return {
       vim.g.ale_disable_lsp = 1
     end,
   },
-  -- { 'github/copilot.vim' },
+  { 'github/copilot.vim' },
   {
     'junegunn/fzf',
     init = function()

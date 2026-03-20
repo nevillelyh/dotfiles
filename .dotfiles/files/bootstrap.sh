@@ -92,6 +92,7 @@ MAC_CASKS=(
     github
     iterm2
     jetbrains-toolbox
+    markedit
     notion
     scroll-reverser
     sublime-text
@@ -198,6 +199,11 @@ cmd_mac_extras() {
     mkdir -p "$HOME/.local/share/terminfo"
     /usr/bin/tic -x -o "$HOME/.local/share/terminfo" "$HOME/tmux-256color"
     rm "$HOME/tmux-256color"
+
+    # https://github.com/MarkEdit-app/MarkEdit-preview
+    dir=Library/Containers/app.cyan.markedit/Data/Documents/scripts
+    mkdir -p "$dir"
+    wget -nv https://raw.githubusercontent.com/MarkEdit-app/MarkEdit-preview/refs/heads/main/dist/markedit-preview.js -O "$dir/markedit-preview.js"
 
     mas install "${MAS[@]}"
 

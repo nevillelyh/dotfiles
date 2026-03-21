@@ -328,7 +328,7 @@ cmd_neovim() {
     [[ -f "$HOME/.bootstrap-neovim" ]] && return 0
     bs_info_box "Setting up NeoVim"
 
-    nvim --headless '+checkhealth | qall'
+    nvim --headless '+Lazy update | Lazy clean | qall'
 
     touch "$HOME/.bootstrap-neovim"
 }

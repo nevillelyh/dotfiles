@@ -101,6 +101,11 @@ cmd_go() {
     fi
 }
 
+cmd_neovim() {
+    bs_info_box "Upgrading NeoVim"
+    nvim --headless '+Lazy update | Lazy clean | qall'
+}
+
 cmd_jvm() {
     bs_info_box "Upgrading JVM"
     "$HOME/.dotfiles/files/sdkman.sh"
@@ -145,6 +150,7 @@ upgrade() {
     cmd_fnm
     cmd_go
     cmd_jvm
+    cmd_neovim
     cmd_rust
     cmd_uv
     bs_success_box "Upgrade complete"

@@ -71,9 +71,12 @@ CASKS=(
     gemini-cli
     opencode
 )
-FLATPAKS=(com.bitwarden.desktop)
+FLATPAKS=(
+    com.bitwarden.desktop
+)
 FLATPAKS_OPT=(
     com.discordapp.Discord
+    com.plexamp.Plexamp
     org.libretro.RetroArch
 )
 readonly -a BREWS CASKS FLATPAKS
@@ -110,6 +113,7 @@ MAC_CASKS_OPT=(
     hiarcs-chess-explorer
     macdive
     microsoft-edge
+    plexamp
     retroarch
     shearwater-cloud
     signal

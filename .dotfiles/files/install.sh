@@ -240,6 +240,17 @@ cmd_signal() {
     sudo apt-get install -y signal-desktop
 }
 
+# https://www.spotify.com/us/download/linux/
+cmd_spotify() {
+    brew_install_cask spotify || return 0
+    local url="https://download.spotify.com/debian/pubkey_5384CE82BA52C83A.asc"
+    local repo="deb [signed-by=/etc/apt/trusted.gpg.d/spotify.gpg] https://repository.spotify.com stable non-free"
+    setup_gpg "$url" spotify.gpg
+    setup_apt "$repo" spotify.list
+    sudo apt-get update
+    sudo apt-get install -y spotify-client
+}
+
 # https://repo.steampowered.com/steam/
 cmd_steam() {
     brew_install_cask steam || return 0

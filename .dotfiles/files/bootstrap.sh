@@ -254,8 +254,6 @@ cmd_linux_extras() {
         [[ $REPLY =~ ^[Yy]$ ]] && flatpak install --assumeyes "${FLATPAKS_OPT[@]}"
 
         if command -v snap &> /dev/null; then
-            sudo snap install spotify
-
             # FIXME: Workaround for AppArmor on PopOS
             # https://forum.snapcraft.io/t/apparmor-blocking-the-opening-of-slack/29212
             sudo snap install --devmode slack

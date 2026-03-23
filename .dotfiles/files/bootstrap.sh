@@ -114,6 +114,7 @@ MAC_CASKS_OPT=(
     macdive
     microsoft-edge
     plexamp
+    protonvpn
     retroarch
     shearwater-cloud
     signal

@@ -57,6 +57,7 @@ BREWS=(
     rustup
     shellcheck
     sops
+    talosctl
     tmux
     uv
     wget

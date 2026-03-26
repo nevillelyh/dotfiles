@@ -103,7 +103,12 @@ cmd_go() {
 
 cmd_neovim() {
     bs_info_box "Upgrading NeoVim"
-    nvim --headless '+Lazy update | Lazy clean | qall'
+    nvim --headless '+Lazy! sync | qa'
+    lock="$HOME/.config/nvim/lazy-lock.json"
+    if ! git diff --quiet --exit-code "$lock"; then
+        git add -f "$lock"
+        git commit --message '[vim] upgrade plugins'
+    fi
 }
 
 cmd_jvm() {

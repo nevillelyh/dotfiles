@@ -46,7 +46,7 @@ cmd_git() {
     done
     git push
 
-    if [[ -d "$HOME/.dotfiles/private" ]] && curl -fsSL --connect-timeout 1 --output /dev/null gitlab.home.lyh.me &> /dev/null; then
+    if [[ -d "$HOME/.dotfiles/private" ]] && ssh -T git@git.home.lyh.me &> /dev/null; then
         cd "$HOME/.dotfiles/private"
         git pull --rebase --autostash
         git push

@@ -248,22 +248,12 @@ cmd_linux_extras() {
 
     command -v nvidia-smi &> /dev/null && brew install nvtop
 
-    if [[ ! -f /.dockerenv ]]; then
-        sudo aptitude install -y snapd
-    fi
-
     # The following are GUI apps
     if dpkg-query --show xserver-xorg &> /dev/null; then
         flatpak install --assumeyes "${FLATPAKS[@]}"
         read -n 1 -r -p "Install optional flatpaks? (y/N) "
         echo
         [[ $REPLY =~ ^[Yy]$ ]] && flatpak install --assumeyes "${FLATPAKS_OPT[@]}"
-
-        if command -v snap &> /dev/null; then
-            # FIXME: Workaround for AppArmor on PopOS
-            # https://forum.snapcraft.io/t/apparmor-blocking-the-opening-of-slack/29212
-            sudo snap install --devmode slack
-        fi
 
         # Custom repositories
         bs_df files/install.sh code sublime

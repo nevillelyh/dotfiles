@@ -34,6 +34,7 @@ BREWS=(
     gh
     git
     git-delta
+    gitea
     gitui
     golang
     gpg

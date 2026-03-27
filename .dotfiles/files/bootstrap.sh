@@ -147,7 +147,7 @@ cmd_ssh() {
     local -a keys
     # Bash 3 on Mac missing readarray
     # shellcheck disable=SC2207
-    keys=($(find "$HOME/.ssh" -name id_dsa -or -name id_rsa -or -name id_ecdsa -or -name id_ed25519))
+    keys=($(find "$HOME/.ssh" -type f -name 'id_*' ! -name '*.pub'))
     [[ "${#keys[@]}" -eq 0 ]] && bs_fatal "SSH private key not found"
     killall -q ssh-agent || true
     eval "$(ssh-agent)"

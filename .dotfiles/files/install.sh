@@ -226,7 +226,7 @@ cmd_reaper() {
     curl -fsSL "$tarball" | tar -C "$dir" -xJ --strip-component 1
     sudo "$dir/install-reaper.sh" --install /opt --quiet --integrate-desktop --usr-local-bin-symlink
     rm -rf "$dir"
-    sudo sed -i 's/^Exec=/Exec=pw-jack -p128 /' /usr/share/applications/cockos-reaper.desktop
+    sudo sed -i 's/^Exec="/Exec=pw-jack -p128 "/' /usr/local/share/applications/cockos-reaper.desktop
 }
 
 # https://signal.org/download/

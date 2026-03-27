@@ -69,16 +69,6 @@ size = 12.0
 [font.normal]
 family = "MesloLGS NF"
 
-[[keyboard.bindings]]
-action = "ReceiveChar"
-key = "W"
-mods = "Command"
-
-[[keyboard.bindings]]
-action = "CreateNewWindow"
-key = "N"
-mods = "Command"
-
 [window]
 opacity = 0.9
 option_as_alt = "OnlyLeft"

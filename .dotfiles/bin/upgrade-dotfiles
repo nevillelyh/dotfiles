@@ -50,6 +50,7 @@ cmd_git() {
         cd "$HOME/.dotfiles/private"
         git pull --rebase --autostash
         git push
+        cd "$HOME"
     fi
 }
 

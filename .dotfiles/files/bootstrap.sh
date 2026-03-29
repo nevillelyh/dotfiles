@@ -88,6 +88,7 @@ MAC_CASKS=(
     alacritty
     alfred
     antigravity
+    chatgpt
     claude
     codex-app
     dbeaver-community

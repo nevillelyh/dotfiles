@@ -14,6 +14,7 @@ else
 fi
 
 BREWS=(
+    age
     awscli
     b2-tools
     bat

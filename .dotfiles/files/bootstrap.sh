@@ -15,6 +15,7 @@ fi
 
 BREWS=(
     age
+    argocd
     awscli
     b2-tools
     bat

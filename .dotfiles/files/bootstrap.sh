@@ -53,6 +53,7 @@ BREWS=(
     minikube
     neovim
     ninja
+    oven-sh/bun/bun
     protobuf
     protoc-gen-go
     protoc-gen-go-grpc

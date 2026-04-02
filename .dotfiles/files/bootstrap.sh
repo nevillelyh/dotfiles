@@ -15,6 +15,7 @@ fi
 
 BREWS=(
     age
+    anomalyco/tap/opencode
     argocd
     awscli
     b2-tools
@@ -74,7 +75,6 @@ CASKS=(
     copilot-cli
     gcloud-cli
     gemini-cli
-    opencode
 )
 FLATPAKS=(
     com.bitwarden.desktop

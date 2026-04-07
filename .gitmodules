@@ -4,3 +4,9 @@
 [submodule ".dotfiles/zsh/custom/themes/powerlevel10k"]
 	path = .dotfiles/zsh/custom/themes/powerlevel10k
 	url = https://github.com/romkatv/powerlevel10k.git
+[submodule ".dotfiles/agents/skills/anthropics-skills"]
+	path = .dotfiles/agents/skills/anthropics-skills
+	url = https://github.com/anthropics/skills.git
+[submodule ".dotfiles/agents/skills/openai-skills"]
+	path = .dotfiles/agents/skills/openai-skills
+	url = https://github.com/openai/skills.git

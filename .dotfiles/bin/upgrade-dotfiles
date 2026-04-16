@@ -104,7 +104,7 @@ cmd_go() {
 
 cmd_neovim() {
     bs_info_box "Upgrading NeoVim"
-    nvim --headless '+Lazy! sync | qa'
+    nvim --headless '+Lazy! sync' +qa
     lock="$HOME/.config/nvim/lazy-lock.json"
     if ! git diff --quiet --exit-code "$lock"; then
         git add -f "$lock"

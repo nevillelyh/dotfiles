@@ -64,6 +64,7 @@ BREWS=(
     sops
     talosctl
     tmux
+    tree-sitter-cli
     uv
     wget
     yamlfmt
@@ -327,7 +328,8 @@ cmd_neovim() {
     [[ -f "$HOME/.bootstrap-neovim" ]] && return 0
     bs_info_box "Setting up NeoVim"
 
-    nvim --headless '+Lazy update | Lazy clean | qall'
+    nvim --headless '+Lazy! update' '+Lazy! clean' +qa
+    nvim --headless '+lua TSInstallParsers():wait(300000)' +qa
 
     touch "$HOME/.bootstrap-neovim"
 }

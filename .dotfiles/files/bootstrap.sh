@@ -41,6 +41,7 @@ BREWS=(
     gitui
     golang
     gpg
+    helm
     htop
     jq
     k3d

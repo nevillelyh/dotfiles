@@ -19,8 +19,8 @@ cmd_os() {
         sudo aptitude -y autoclean
         sudo apt-get -y autoremove
         dpkg-query -l | grep '^rc' | awk '{print $2}' | xargs -r sudo aptitude -y purge || true
-        if type snap &> /dev/null; then
-            sudo snap refresh
+        if type flatpak &> /dev/null; then
+            sudo flatpak update -y
         fi
         if [[ "$(lsb_release --id --short)" == Pop ]]; then
             pop-upgrade recovery upgrade from-release

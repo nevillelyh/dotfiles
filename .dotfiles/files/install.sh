@@ -125,6 +125,18 @@ cmd_code() {
     sudo apt-get install -y code
 }
 
+cmd_cursor() {
+    brew_install_cask cursor || return 0
+
+    local url="https://downloads.cursor.com/keys/anysphere.asc"
+    local repo
+    repo="deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/trusted.gpg.d/cursor.gpg] https://downloads.cursor.com/aptrepo stable main"
+    setup_gpg "$url" cursor.gpg
+    setup_apt "$repo" cursor.list
+    sudo apt-get update
+    sudo apt-get install -y cursor
+}
+
 # https://dbeaver.io/download/
 cmd_dbeaver() {
     brew_install_cask dbeaver-community || return 0

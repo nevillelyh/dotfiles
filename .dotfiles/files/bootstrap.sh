@@ -96,6 +96,7 @@ MAC_CASKS=(
     chatgpt
     claude
     codex-app
+    cursor
     dbeaver-community
     discord
     docker

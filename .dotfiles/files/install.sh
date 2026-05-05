@@ -327,6 +327,18 @@ cmd_terraform() {
     sudo apt-get install -y terraform
 }
 
+# https://support.typora.io/Typora-on-Linux/
+cmd_typora() {
+    brew_install_cask typora || return 0
+
+    local url="https://downloads.typora.io/typora.gpg"
+    local repo="deb [signed-by=/etc/apt/trusted.gpg.d/typora.gpg] https://downloads.typora.io/linux ./"
+    setup_gpg "$url" typora.gpg
+    setup_apt "$repo" typora.list
+    sudo apt-get update
+    sudo apt-get install -y typora
+}
+
 # https://www.vaultproject.io/downloads
 cmd_vault() {
     brew_install_hashicorp vault || return 0

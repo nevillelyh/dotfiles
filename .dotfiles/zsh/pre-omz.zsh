@@ -15,6 +15,7 @@ bins=(
 
     # Common
     $HOME/.antigravity/antigravity/bin
+    $HOME/.cargo/bin
     $HOME/.go/bin
     $HOME/.krew/bin
     $HOME/.local/bin

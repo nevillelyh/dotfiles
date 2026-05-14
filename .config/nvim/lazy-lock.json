@@ -1,5 +1,5 @@
 {
-  "ale": { "branch": "master", "commit": "78122497f57d17257c77301a08ddb7562f625f7e" },
+  "ale": { "branch": "master", "commit": "916c8764ce9d395f788eae9adf207a4bfe8a038e" },
   "blink.cmp": { "branch": "main", "commit": "78336bc89ee5365633bcf754d93df01678b5c08f" },
   "copilot.vim": { "branch": "release", "commit": "a12fd5672110c8aa7e3c8419e28c96943ca179be" },
   "fzf": { "branch": "master", "commit": "e0d081906fd7a31b656b1d022042abcd1dcc0927" },

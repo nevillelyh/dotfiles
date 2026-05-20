@@ -90,18 +90,6 @@ cmd_anki() {
     rm -rf "$dir"
 }
 
-cmd_antigravity() {
-    brew_install_cask antigravity || return 0
-
-    local url="https://us-central1-apt.pkg.dev/doc/repo-signing-key.gpg"
-    local repo
-    repo="deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/trusted.gpg.d/antigravity.gpg] https://us-central1-apt.pkg.dev/projects/antigravity-auto-updater-dev/ antigravity-debian main"
-    setup_gpg "$url" antigravity.gpg
-    setup_apt "$repo" antigravity.list
-    sudo apt-get update
-    sudo apt-get install -y antigravity
-}
-
 # Chrome manages its own repository
 cmd_chrome() {
     brew_install_cask google-chrome || return 0

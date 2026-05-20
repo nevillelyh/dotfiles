@@ -92,7 +92,6 @@ MAC_BREWS=(mas pinentry-mac)
 MAC_CASKS=(
     alacritty
     alfred
-    antigravity
     chatgpt
     claude
     codex-app

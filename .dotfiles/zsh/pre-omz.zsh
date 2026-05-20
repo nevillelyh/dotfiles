@@ -14,7 +14,7 @@ bins=(
     /snap/bin
 
     # Common
-    $HOME/.antigravity/antigravity/bin
+    $HOME/.antigravity-ide/antigravity-ide/bin
     $HOME/.cargo/bin
     $HOME/.go/bin
     $HOME/.krew/bin

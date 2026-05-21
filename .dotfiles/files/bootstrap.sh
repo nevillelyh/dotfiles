@@ -72,6 +72,8 @@ BREWS=(
     zoxide
 )
 CASKS=(
+    antigravity
+    antigravity-cli
     claude-code
     codex
     copilot-cli

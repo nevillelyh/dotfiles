@@ -118,7 +118,6 @@ MAC_CASKS_OPT=(
     anki
     firefox
     google-chrome
-    guitar-pro
     hiarcs-chess-explorer
     macdive
     microsoft-edge

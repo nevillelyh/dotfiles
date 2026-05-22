@@ -74,6 +74,7 @@ BREWS=(
 CASKS=(
     antigravity
     antigravity-cli
+    antigravity-ide
     claude-code
     codex
     copilot-cli

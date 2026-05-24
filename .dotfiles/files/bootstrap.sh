@@ -79,7 +79,6 @@ CASKS=(
     codex
     copilot-cli
     gcloud-cli
-    gemini-cli
 )
 FLATPAKS=(
     com.bitwarden.desktop

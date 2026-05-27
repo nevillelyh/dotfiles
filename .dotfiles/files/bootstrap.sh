@@ -135,7 +135,6 @@ MAC_CASKS_OPT=(
     waves-central
 )
 MAS=(
-    1440147259 # AdGuard
     1352778147 # Bitwarden
     302584613  # Kindle
     441258766  # Magnet

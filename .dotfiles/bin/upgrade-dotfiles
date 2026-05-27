@@ -33,6 +33,23 @@ cmd_os() {
     brew autoremove
 }
 
+cmd_comp() {
+    bs_info_box "Upgrading Zsh completions"
+
+    dir="$HOME/.local/share/zsh/site-functions"
+    opencode completion > "$dir/_opencode"
+    kubectl cnpg completion zsh > "$dir/_kubectl-cnpg"
+    kubectl stern completion zsh > "$dir/_kubectl-stern"
+    kubectl tree completion zsh > "$dir/_kubectl-tree"
+
+    for k in cert-manager cnpg stern tree; do
+        f="$HOME/.krew/bin/kubectl_complete-${k//-/_}"
+        echo '#!/usr/bin/env sh' > "$f"
+        echo "kubectl $k __complete \"\$@\"" >> "$f"
+        chmod +x "$f"
+    done
+}
+
 cmd_git() {
     bs_info_box "Upgrading Git repository"
     git pull --rebase --autostash
@@ -150,6 +167,7 @@ cmd_uv() {
 upgrade() {
     cd "$HOME"
     cmd_os
+    cmd_comp
     cmd_git
     cmd_omz
     cmd_docker

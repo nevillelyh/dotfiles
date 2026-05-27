@@ -35,6 +35,7 @@ for b in $brew_bins; do
 done
 
 path=("$(brew --prefix rustup)/bin" $path)
+fpath=("$HOME/.local/share/zsh/site-functions" $fpath)
 
 envs=(
     $HOME/.sdkman/bin/sdkman-init.sh

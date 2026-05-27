@@ -382,15 +382,6 @@ cmd_jvm() {
     touch "$HOME/.bootstrap-jvm"
 }
 
-cmd_kubectl() {
-    [[ -f "$HOME/.bootstrap-kubectl" ]] && return 0
-    bs_info_box "Setting up kubectl"
-
-    kubectl krew install cert-manager cnpg tree stern
-
-    touch "$HOME/.bootstrap-kubectl"
-}
-
 cmd_code() {
     [[ -f "$HOME/.bootstrap-code" ]] && return 0
     bs_info_box "Setting up Visual Studio Code"
@@ -486,7 +477,6 @@ bootstrap() {
     cmd_fnm
     cmd_go
     cmd_jvm
-    cmd_kubectl
     cmd_code
     cmd_fonts
     cmd_zsh

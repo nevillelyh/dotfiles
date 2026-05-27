@@ -42,7 +42,9 @@ cmd_comp() {
     kubectl stern completion zsh > "$dir/_kubectl-stern"
     kubectl tree completion zsh > "$dir/_kubectl-tree"
 
-    for k in cert-manager cnpg stern tree; do
+    krews=(cert-manager cnpg stern tree)
+    kubectl krew install "${krews[@]}"
+    for k in "${krews[@]}"; do
         f="$HOME/.krew/bin/kubectl_complete-${k//-/_}"
         echo '#!/usr/bin/env sh' > "$f"
         echo "kubectl $k __complete \"\$@\"" >> "$f"

@@ -37,6 +37,7 @@ cmd_comp() {
     bs_info_box "Upgrading Zsh completions"
 
     dir="$HOME/.local/share/zsh/site-functions"
+    mkdir -p "$dir"
     opencode completion > "$dir/_opencode"
     kubectl cnpg completion zsh > "$dir/_kubectl-cnpg"
     kubectl stern completion zsh > "$dir/_kubectl-stern"

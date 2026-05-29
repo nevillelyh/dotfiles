@@ -28,6 +28,7 @@ BREWS=(
     colordiff
     coursier
     curl
+    direnv
     dust
     eza
     fd

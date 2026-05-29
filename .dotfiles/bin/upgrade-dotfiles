@@ -39,12 +39,13 @@ cmd_comp() {
     dir="$HOME/.local/share/zsh/site-functions"
     mkdir -p "$dir"
     opencode completion > "$dir/_opencode"
+
+    krews=(cert-manager cnpg stern tree)
+    kubectl krew install "${krews[@]}"
     kubectl cnpg completion zsh > "$dir/_kubectl-cnpg"
     kubectl stern completion zsh > "$dir/_kubectl-stern"
     kubectl tree completion zsh > "$dir/_kubectl-tree"
 
-    krews=(cert-manager cnpg stern tree)
-    kubectl krew install "${krews[@]}"
     for k in "${krews[@]}"; do
         f="$HOME/.krew/bin/kubectl_complete-${k//-/_}"
         echo '#!/usr/bin/env sh' > "$f"

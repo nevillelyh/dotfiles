@@ -199,7 +199,7 @@ cmd_mac() {
     touch "$HOME/.bootstrap-mac"
 
     bs_warn_box "Restarting"
-    sudo shutdown -r
+    sudo shutdown -r now
 }
 
 cmd_mac_extras() {

@@ -104,9 +104,11 @@ MAC_CASKS=(
     docker
     dropbox
     github
+    google-chrome
     jetbrains-toolbox
     notion
     scroll-reverser
+    spotify
     sublime-text
     tailscale
     vimr
@@ -117,7 +119,6 @@ MAC_CASKS_OPT=(
     adobe-creative-cloud
     anki
     firefox
-    google-chrome
     hiarcs-chess-explorer
     macdive
     microsoft-edge
@@ -126,7 +127,6 @@ MAC_CASKS_OPT=(
     retroarch
     shearwater-cloud
     signal
-    spotify
     steam
     subsurface
     transmission

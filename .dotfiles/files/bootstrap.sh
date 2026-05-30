@@ -94,7 +94,6 @@ readonly -a BREWS CASKS FLATPAKS
 
 MAC_BREWS=(mas pinentry-mac)
 MAC_CASKS=(
-    alacritty
     alfred
     chatgpt
     claude
@@ -105,7 +104,6 @@ MAC_CASKS=(
     docker
     dropbox
     github
-    iterm2
     jetbrains-toolbox
     notion
     scroll-reverser

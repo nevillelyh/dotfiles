@@ -38,6 +38,7 @@ BREWS=(
     gh
     git
     git-delta
+    git-lfs
     gitea
     gitui
     golang
@@ -279,6 +280,7 @@ cmd_git() {
     git submodule update --init --recursive
     git branch --set-upstream-to=origin/main
     git remote set-head origin --auto
+    git lfs install
 
     touch "$HOME/.bootstrap-git"
 }

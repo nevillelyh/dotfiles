@@ -55,6 +55,7 @@ BREWS=(
     kustomize
     lazydocker
     minikube
+    mise
     neovim
     ninja
     oven-sh/bun/bun

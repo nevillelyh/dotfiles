@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Run Git in an agent-friendly mode without changing the user's normal config.
+export GIT_EDITOR="${GIT_EDITOR:-true}"
+export GIT_SEQUENCE_EDITOR="${GIT_SEQUENCE_EDITOR:-true}"
+
+exec git \
+    -c core.editor=true \
+    -c sequence.editor=true \
+    -c commit.gpgSign=false \
+    -c tag.gpgSign=false \
+    "$@"

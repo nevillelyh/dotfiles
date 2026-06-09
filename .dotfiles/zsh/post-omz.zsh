@@ -16,11 +16,11 @@ alias ghpr='gh pr create'
 alias kx=kubectx
 
 # Docker
-alias digc='docker images --quiet --filter dangling=true | xargs -r docker rmi'
-alias dcgc='docker ps --all --filter "status=exited" --quiet | xargs -r docker rm'
-alias dka='docker ps --quiet | xargs -r docker kill'
-alias drma='docker ps --all --quiet | xargs -r docker rm'
-alias darch='docker images --quiet | xargs -r docker inspect | jq -r ".[]|.Architecture+\"\t\"+(.RepoTags|join(\",\"))"'
+alias digc='docker images --quiet --filter dangling=true | while IFS= read -r image; do docker rmi "$image"; done'
+alias dcgc='docker ps --all --filter "status=exited" --quiet | while IFS= read -r container; do docker rm "$container"; done'
+alias dka='docker ps --quiet | while IFS= read -r container; do docker kill "$container"; done'
+alias drma='docker ps --all --quiet | while IFS= read -r container; do docker rm "$container"; done'
+alias darch="docker images --quiet | while IFS= read -r image; do docker inspect \"\$image\"; done | jq -r '.[]|.Architecture+\"\\t\"+(.RepoTags|join(\",\"))'"
 
 # eza
 alias l='eza -la' # 'ls -lah'

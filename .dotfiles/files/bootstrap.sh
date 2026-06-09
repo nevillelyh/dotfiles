@@ -316,6 +316,7 @@ cmd_venv() {
     bs_info_box "Setting up venv"
 
     uv venv --color always --seed --prompt '' "$HOME/.venv"
+    # shellcheck source=/dev/null
     source "$HOME/.venv/bin/activate"
     python3 --version
 

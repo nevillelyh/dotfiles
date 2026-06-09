@@ -163,7 +163,7 @@ cmd_dropbox() {
     local url
     url="https://linux.dropbox.com/packages/$(distro)/"
     local pkg
-    pkg=$(curl -fsSL "$url" | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^dropbox_[\d\.]+_amd64.deb$' | tail -n 1)
+    pkg=$(bs_urls "$url" | grep -E '^dropbox_[0-9.]+_amd64\.deb$' | tail -n 1)
     cd "$HOME/Downloads"
     curl -fsSL "$url/$pkg" -o dropbox.deb
     sudo dpkg --install --force-all dropbox.deb
@@ -219,7 +219,7 @@ cmd_reaper() {
 
     local url="https://www.reaper.fm/download.php"
     local part
-    part="$(curl -fsSL "$url" | grep -oP '(?<=href=")[^"]+(?=")' | grep "linux_${BS_UNAME_M}.tar.xz" | head -n 1)"
+    part="$(bs_urls "$url" | grep "linux_${BS_UNAME_M}\.tar\.xz" | head -n 1)"
     tarball="https://www.reaper.fm/$part"
     dir="$HOME/Downloads/reaper"
     mkdir -p "$dir"
@@ -299,7 +299,7 @@ cmd_teams() {
 
     local url="https://packages.microsoft.com/repos/ms-teams/pool/main/t/teams/"
     local pkg
-    pkg=$(curl -fsSL "$url" | grep -oP '(?<=href=")[^"]+(?=")' | grep -P '^teams_[\d\.]+_amd64.deb$' | tail -n 1)
+    pkg=$(bs_urls "$url" | grep -E '^teams_[0-9.]+_amd64\.deb$' | tail -n 1)
     cd "$HOME/Downloads"
     curl -fsSL "$url" -O teams.deb
     sudo dpkg --install --force-all teams.deb

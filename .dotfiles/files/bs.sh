@@ -121,9 +121,9 @@ _bs_cmds() {
     [[ "$0" == bash ]] && return
 
     # Bash 3 on Mac missing readarray
-    # shellcheck disable=SC2207
     local file
     file="$(readlink -f "$0")"
+    # shellcheck disable=SC2207
     cmds=($(grep -o '^cmd_\(\w\|[_-]\)\+()' "$file" | sed 's/^cmd_\(.*\)()$/\1/'))
 }
 

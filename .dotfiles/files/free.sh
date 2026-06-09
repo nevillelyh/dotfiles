@@ -15,7 +15,7 @@ find_delete() {
     local dir=$1
     shift
     local size
-    size="$(find "$dir" "$@" -print0 | xargs -0 -r du -hcs | tail -n 1 | awk '{print $1}')"
+    size="$(find "$dir" "$@" -exec du -hcs {} + | tail -n 1 | awk '{print $1}')"
     [[ -z "$size" ]] && size="0B"
     printf "%s\t%s\n" "$size" "$dir"
     find "$dir" "$@" -delete
@@ -34,7 +34,9 @@ esac
 
 if type docker &> /dev/null; then
     bs_info_box "Cleaning up Docker images"
-    docker images --quiet --filter dangling=true | xargs -r docker rmi
+    while IFS= read -r image; do
+        docker rmi "$image"
+    done < <(docker images --quiet --filter dangling=true)
     docker builder prune --all --force
     docker volume prune --force
 fi

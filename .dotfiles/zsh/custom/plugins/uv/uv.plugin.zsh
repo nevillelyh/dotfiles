@@ -44,9 +44,11 @@ alias pip='uv pip'
 alias pip3='uv pip'
 
 function python() {
-    if ! which -p python &> /dev/null; then
+    local python_path
+    python_path="$(whence -p python || true)"
+    if [[ -z "$python_path" ]]; then
         /usr/bin/env python3 "$@"
     else
-        $(which -p python) "$@"
+        "$python_path" "$@"
     fi
 }

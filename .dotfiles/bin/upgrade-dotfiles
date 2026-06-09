@@ -18,7 +18,9 @@ cmd_os() {
         sudo aptitude -y upgrade -o APT::Get::Fix-Missing=true
         sudo aptitude -y autoclean
         sudo apt-get -y autoremove
-        dpkg-query -l | grep '^rc' | awk '{print $2}' | xargs -r sudo aptitude -y purge || true
+        dpkg-query -l | grep '^rc' | awk '{print $2}' | while IFS= read -r pkg; do
+            sudo aptitude -y purge "$pkg"
+        done || true
         if type flatpak &> /dev/null; then
             sudo flatpak update -y
         fi
@@ -98,7 +100,9 @@ cmd_docker() {
     for file in $(docker compose ls --format json | jq --raw-output '.[].ConfigFiles'); do
         docker compose --file "$file" up --detach
     done
-    docker images --quiet --filter dangling=true | xargs -r docker rmi
+    while IFS= read -r image; do
+        docker rmi "$image"
+    done < <(docker images --quiet --filter dangling=true)
 }
 
 cmd_fnm() {

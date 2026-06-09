@@ -56,7 +56,9 @@ docker_cli() {
 }
 
 cmd_killall() {
-    docker ps --quiet --filter label=dotfiles.bin.drun=true | xargs -r docker kill
+    while IFS= read -r container; do
+        docker kill "$container"
+    done < <(docker ps --quiet --filter label=dotfiles.bin.drun=true)
 }
 
 cmd_ps() {

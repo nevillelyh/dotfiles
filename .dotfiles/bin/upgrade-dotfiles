@@ -123,6 +123,13 @@ cmd_go() {
     fi
 }
 
+cmd_gcloud() {
+    bs_info_box "Upgrading GCloud"
+    if type gcloud &> /dev/null; then
+        gcloud components update --quiet
+    fi
+}
+
 cmd_neovim() {
     bs_info_box "Upgrading NeoVim"
     nvim --headless '+Lazy! sync' +qa
@@ -177,6 +184,7 @@ upgrade() {
     cmd_docker
     cmd_fnm
     cmd_go
+    cmd_gcloud
     cmd_jvm
     cmd_neovim
     cmd_rust

@@ -43,6 +43,7 @@ BREWS=(
     gitui
     golang
     gpg
+    grpcurl
     helm
     htop
     jq

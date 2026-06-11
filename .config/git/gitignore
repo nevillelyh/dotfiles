@@ -3,3 +3,5 @@
 .codex/
 .idea/
 .vscode/
+
+/.worktrees/

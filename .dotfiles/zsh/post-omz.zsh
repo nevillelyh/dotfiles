@@ -81,6 +81,11 @@ function zt() {
     fi
 }
 
+# Jump to main git directory
+function zgm() {
+    cd -- "$(git rev-parse --path-format=absolute --git-common-dir | sed 's#/.git$##')"
+}
+
 # Jump to a git worktree
 function zg() {
     local q="${1:-}"
@@ -95,8 +100,9 @@ function zg() {
     done < <(git worktree list)
 
     if (( ${#rows[@]} == 0 )); then
-        echo "zg: no matching worktrees" >&2
-        return 1
+        local d="$(git rev-parse --path-format=absolute --git-common-dir | sed 's#/.git$##')"
+        git worktree add "$d/.worktrees/$q" ${2:+"$2"}
+        selected="$d/.worktrees/$q"
     elif (( ${#rows[@]} == 1 )); then
         selected="${rows[1]}"
     else
@@ -106,7 +112,7 @@ function zg() {
     target="${selected%% *}"
     target="${target/#\~/$HOME}"
 
-    cd -- "$target"
+    cd -- "$target" || return
 }
 
 # Reuse a single SSH agent

@@ -71,6 +71,7 @@ function rg() {
     command rg --json "$@" | delta
 }
 
+# Jump to a directory and start or attach a tmux session
 function zt() {
     local session=$1
     if tmux has-session -t "$session" &> /dev/null; then
@@ -78,6 +79,34 @@ function zt() {
     else
         z "$session" && tmux new-session -s "$session"
     fi
+}
+
+# Jump to a git worktree
+function zg() {
+    local q="${1:-}"
+    local wt hash branch shown line selected target
+    local -a rows
+
+    while read -r wt hash branch; do
+        shown="${wt/#$HOME/~}"
+        line="$shown $hash $branch"
+
+        [[ -z "$q" || "$line" == *"$q"* ]] && rows+=("$line")
+    done < <(git worktree list)
+
+    if (( ${#rows[@]} == 0 )); then
+        echo "zg: no matching worktrees" >&2
+        return 1
+    elif (( ${#rows[@]} == 1 )); then
+        selected="${rows[1]}"
+    else
+        selected="$(printf '%s\n' "${rows[@]}" | fzf --query="$q")" || return
+    fi
+
+    target="${selected%% *}"
+    target="${target/#\~/$HOME}"
+
+    cd -- "$target"
 }
 
 # Reuse a single SSH agent

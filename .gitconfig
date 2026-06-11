@@ -33,4 +33,4 @@
 	required = true
 
 [include]
-	path = ~/.gitconfig-ext
+	path = ~/.config/git/gitconfig

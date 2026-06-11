@@ -1,3 +1,5 @@
+[core]
+	excludesFile = ~/.config/git/gitignore
 [user]
 	name = Neville Li
 	email = neville.lyh@gmail.com

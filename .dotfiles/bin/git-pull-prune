@@ -15,7 +15,11 @@ remote=origin
 git pull "$remote"
 
 git remote prune "$remote" | grep '\[pruned\]' | awk '{print $3}' | sed -e "s@^$remote/@@g" | while IFS= read -r branch; do
-    if git branch --format="%(refname:short)" | grep -q "^$branch$"; then
+    if git branch --format="%(refname:short)" | grep -Fxq "$branch"; then
+        while IFS= read -r worktree; do
+            git worktree remove "$worktree"
+        done < <(git worktree list | grep -F "[$branch]" | cut -d ' ' -f1 || true)
+
         git branch -D "$branch"
     fi
 done

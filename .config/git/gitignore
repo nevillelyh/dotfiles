@@ -2,6 +2,7 @@
 .claude/
 .codex/
 .idea/
+.junie/
 .vscode/
 
 /.worktrees/

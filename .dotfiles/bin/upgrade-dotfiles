@@ -42,7 +42,7 @@ cmd_comp() {
     mkdir -p "$dir"
     opencode completion > "$dir/_opencode"
 
-    krews=(cert-manager cnpg stern tree)
+    krews=(cert-manager cnpg stern tmux-exec tree)
     kubectl krew install "${krews[@]}"
     kubectl cnpg completion zsh > "$dir/_kubectl-cnpg"
     kubectl stern completion zsh > "$dir/_kubectl-stern"

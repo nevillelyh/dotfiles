@@ -74,6 +74,7 @@ BREWS=(
     uv
     wget
     yamlfmt
+    yq
     zoxide
 )
 CASKS=(

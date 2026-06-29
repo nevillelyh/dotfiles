@@ -101,7 +101,11 @@ function zg() {
 
     if (( ${#rows[@]} == 0 )); then
         local d="$(git rev-parse --path-format=absolute --git-common-dir | sed 's#/.git$##')"
-        git worktree add "$d/.worktrees/$q" ${2:+"$2"}
+        if [[ -n "$2" ]] && ! git rev-parse --verify --quiet "$2^{commit}" >/dev/null; then
+            git worktree add -b "$2" "$d/.worktrees/$q"
+        else
+            git worktree add "$d/.worktrees/$q" ${2:+"$2"}
+        fi
         selected="$d/.worktrees/$q"
     elif (( ${#rows[@]} == 1 )); then
         selected="${rows[1]}"

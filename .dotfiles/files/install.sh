@@ -156,21 +156,6 @@ cmd_docker() {
     sudo usermod -aG docker "$(whoami)"
 }
 
-# Dropbox manages its own repository
-cmd_dropbox() {
-    brew_install_cask dropbox || return 0
-
-    local url
-    url="https://linux.dropbox.com/packages/$(distro)/"
-    local pkg
-    pkg=$(bs_urls "$url" | grep -E '^dropbox_[0-9.]+_amd64\.deb$' | tail -n 1)
-    cd "$HOME/Downloads"
-    curl -fsSL "$url/$pkg" -o dropbox.deb
-    sudo dpkg --install --force-all dropbox.deb
-    sudo apt-get install -f
-    rm dropbox.deb
-}
-
 cmd_jetbrains() {
     brew_install_cask jetbrains-toolbox || return 0
 

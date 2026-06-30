@@ -106,7 +106,6 @@ MAC_CASKS=(
     dbeaver-community
     discord
     docker
-    dropbox
     github
     google-chrome
     jetbrains-toolbox
@@ -263,7 +262,7 @@ cmd_linux_extras() {
         # Custom repositories
         bs_df files/install.sh code sublime
         # FIXME: not available for Linux arm64
-        [[ "$BS_UNAME_M" != x86_64 ]] || bs_df files/install.sh chrome dropbox
+        [[ "$BS_UNAME_M" != x86_64 ]] || bs_df files/install.sh chrome
     fi
 
     touch "$HOME/.bootstrap-linux-extras"

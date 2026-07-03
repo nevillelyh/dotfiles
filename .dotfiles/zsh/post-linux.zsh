@@ -1,4 +1,6 @@
-alias open='xdg-open'
+open() {
+    xdg-open "$@" </dev/null >/dev/null 2>&1 &!
+}
 alias dgrun='docker run --gpus all --privileged'
 
 # Linux Homebrew installs these commands without setuid, override them

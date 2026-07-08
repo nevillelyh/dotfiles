@@ -103,8 +103,10 @@ function zg() {
         local d="$(git rev-parse --path-format=absolute --git-common-dir | sed 's#/.git$##')"
         if [[ -n "$2" ]] && ! git rev-parse --verify --quiet "$2^{commit}" >/dev/null; then
             git worktree add -b "$2" "$d/.worktrees/$q"
+        elif [[ -n "$2" ]]; then
+            git worktree add "$d/.worktrees/$q" "$2"
         else
-            git worktree add "$d/.worktrees/$q" ${2:+"$2"}
+            git worktree add -b "$(whoami)/$q" "$d/.worktrees/$q"
         fi
         selected="$d/.worktrees/$q"
     elif (( ${#rows[@]} == 1 )); then

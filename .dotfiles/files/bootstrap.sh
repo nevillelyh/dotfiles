@@ -84,6 +84,12 @@ CASKS=(
     claude-code
     codex
     copilot-cli
+    font-jetbrains-mono-lg-nerd-font
+    font-meslo-lg-nerd-font
+    font-ubuntu-mono-nerd-font
+    font-ubuntu-nerd-font
+    font-ubuntu-sans-nerd-font
+    font-zed-mono-nerd-font
     gcloud-cli
 )
 FLATPAKS=(
@@ -396,36 +402,6 @@ cmd_code() {
     touch "$HOME/.bootstrap-code"
 }
 
-cmd_fonts() {
-    [[ -f "$HOME/.bootstrap-fonts" ]] && return 0
-    bs_info_box "Setting up fonts"
-
-    if [[ "$BS_UNAME_S" == Darwin ]] || dpkg-query --show xserver-xorg &> /dev/null; then
-        local fonts_dir
-        case "$BS_UNAME_S" in
-            Darwin) fonts_dir="$HOME/Library/Fonts" ;;
-            Linux) fonts_dir="$HOME/.local/share/fonts" ;;
-        esac
-
-        local prefix="https://github.com/romkatv/powerlevel10k-media/raw/master"
-        wget -nv "$prefix/MesloLGS%20NF%20Regular.ttf"
-        wget -nv "$prefix/MesloLGS%20NF%20Bold.ttf"
-        wget -nv "$prefix/MesloLGS%20NF%20Italic.ttf"
-        wget -nv "$prefix/MesloLGS%20NF%20Bold%20Italic.ttf"
-        mkdir -p "$fonts_dir"
-        mv MesloLGS*.ttf "$fonts_dir"
-        [[ "$BS_UNAME_S" == Linux ]] && fc-cache -fv "$HOME/.local/share/fonts"
-
-        git clone https://github.com/powerline/fonts
-        cd fonts
-        ./install.sh
-        cd ..
-        rm -rf fonts
-    fi
-
-    touch "$HOME/.bootstrap-fonts"
-}
-
 cmd_zsh() {
     [[ -f "$HOME/.bootstrap-zsh" ]] && return 0
 
@@ -481,7 +457,6 @@ bootstrap() {
     cmd_go
     cmd_jvm
     cmd_code
-    cmd_fonts
     cmd_zsh
 
     # In case install scripts e.g. SDKMAN modify anything by accident

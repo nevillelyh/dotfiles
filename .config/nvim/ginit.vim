@@ -1,5 +1,5 @@
 if exists(':GuiFont')
-  GuiFont! MesloLGS NF:h9
+  GuiFont! MesloLGS Nerd Font:h9
 endif
 
 " https://github.com/equalsraf/neovim-qt/issues/219

@@ -67,7 +67,7 @@ WINIT_X11_SCALE_FACTOR = "0.90"
 size = 12.0
 
 [font.normal]
-family = "MesloLGS NF"
+family = "MesloLGS Nerd Font"
 
 [window]
 opacity = 0.9

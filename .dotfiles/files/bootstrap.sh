@@ -84,7 +84,7 @@ CASKS=(
     claude-code
     codex
     copilot-cli
-    font-jetbrains-mono-lg-nerd-font
+    font-jetbrains-mono-nerd-font
     font-meslo-lg-nerd-font
     font-ubuntu-mono-nerd-font
     font-ubuntu-nerd-font

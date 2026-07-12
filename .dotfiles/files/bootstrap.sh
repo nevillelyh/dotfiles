@@ -14,6 +14,7 @@ else
 fi
 
 BREWS=(
+    actionlint
     age
     anomalyco/tap/opencode
     argocd

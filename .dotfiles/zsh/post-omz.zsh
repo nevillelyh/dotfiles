@@ -62,7 +62,7 @@ alias vimdiff='nvim -d'
 export UV_CONFIG_FILE="$HOME/.config/uv/uv.toml"
 
 # fnm
-[[ ! -d "$HOME/.local/share/fnm" ]] || eval "$(fnm env --use-on-cd --shell zsh)"
+[[ ! -d "$HOME/.local/share/fnm" ]] || eval "$(fnm env --use-on-cd --resolve-engines=false --shell zsh)"
 
 
 # Functions

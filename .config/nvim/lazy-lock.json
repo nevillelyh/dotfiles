@@ -13,6 +13,6 @@
   "vim": { "branch": "master", "commit": "4f068752154e70ef8e03d6a70992033fff20a165" },
   "vim-airline": { "branch": "master", "commit": "9e0beefd6e28c92d876559f07d8595f454c08cb7" },
   "vim-fugitive": { "branch": "master", "commit": "3b753cf8c6a4dcde6edee8827d464ba9b8c4a6f0" },
-  "vim-gitgutter": { "branch": "main", "commit": "21c977e8597c468c7dc76001389b0b430d46a4b0" },
+  "vim-gitgutter": { "branch": "main", "commit": "90b75207bd9b55d8ac4af15f72b4e935462014d0" },
   "vim-sleuth": { "branch": "master", "commit": "be69bff86754b1aa5adcbb527d7fcd1635a84080" }
 }

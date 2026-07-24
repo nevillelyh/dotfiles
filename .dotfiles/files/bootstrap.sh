@@ -65,6 +65,7 @@ BREWS=(
     protobuf
     protoc-gen-go
     protoc-gen-go-grpc
+    rclone
     ripgrep
     rustup
     shellcheck

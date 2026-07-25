@@ -138,6 +138,7 @@ cmd_neovim() {
     if ! git diff --quiet --exit-code "$lock"; then
         git add -f "$lock"
         git commit --message '[vim] upgrade plugins'
+        git push
     fi
 }
 

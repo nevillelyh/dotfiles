@@ -155,7 +155,7 @@ readonly -a MAC_BREWS MAC_CASKS MAC_CASKS_OPT MAS
 
 LINUX_BREWS=(nerdctl swift)
 DEB_PKGS=(build-essential clang dnsutils libfuse2 lm-sensors nvme-cli smartmontools wl-clipboard zsh)
-DEB_GUI_PKGS=(alacritty fonts-powerline ubuntu-restricted-extras vlc)
+DEB_GUI_PKGS=(ubuntu-restricted-extras vlc)
 readonly -a LINUX_BREWS DEB_PKGS DEB_GUI_PKGS
 
 cmd_ssh() {

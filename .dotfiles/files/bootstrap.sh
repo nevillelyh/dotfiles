@@ -113,6 +113,7 @@ MAC_CASKS=(
     dbeaver-community
     discord
     docker
+    ghostty
     github
     google-chrome
     jetbrains-toolbox

@@ -82,12 +82,12 @@ function zt() {
 }
 
 # Jump to main git directory
-function zgm() {
+function wtm() {
     cd -- "$(git rev-parse --path-format=absolute --git-common-dir | sed 's#/.git$##')"
 }
 
 # Jump to a git worktree
-function zg() {
+function wt() {
     local q="${1:-}"
     local wt hash branch shown line selected target
     local -a rows

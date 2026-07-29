@@ -1,0 +1,15 @@
+[theme]
+name = "dracula"
+
+[keys] # Match tmux
+prefix = "backtick"
+detach = "prefix+d"
+settings = "prefix+comma" # Free up prefix-s
+split_horizontal = "prefix+s"
+split_vertical = "prefix+v"
+
+[ui]
+prompt_new_tab_name = false
+prompt_new_workspace_name = true
+pane_gaps = false
+show_agent_labels_on_pane_borders = true

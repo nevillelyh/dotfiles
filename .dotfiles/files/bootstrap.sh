@@ -46,6 +46,7 @@ BREWS=(
     gpg
     grpcurl
     helm
+    herdr
     htop
     jq
     k3d

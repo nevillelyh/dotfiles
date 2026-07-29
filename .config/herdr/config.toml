@@ -13,3 +13,9 @@ prompt_new_tab_name = false
 prompt_new_workspace_name = true
 pane_gaps = false
 show_agent_labels_on_pane_borders = true
+
+[ui.toast]
+delivery = "herdr"
+
+[ui.sound]
+enabled = false

@@ -76,6 +76,7 @@ BREWS=(
     tree-sitter-cli
     uv
     wget
+    worktrunk
     yamlfmt
     yq
     zoxide

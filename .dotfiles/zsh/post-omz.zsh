@@ -61,6 +61,11 @@ alias vimdiff='nvim -d'
 # uv
 export UV_CONFIG_FILE="$HOME/.config/uv/uv.toml"
 
+# Worktrunk
+alias wtl='wt list'
+alias wtrm='wt remove'
+alias wts='wt switch'
+
 # Functions
 
 function rg() {
@@ -75,45 +80,6 @@ function zt() {
     else
         z "$session" && tmux new-session -s "$session"
     fi
-}
-
-# Jump to main git directory
-function wtm() {
-    cd -- "$(git rev-parse --path-format=absolute --git-common-dir | sed 's#/.git$##')"
-}
-
-# Jump to a git worktree
-function wt() {
-    local q="${1:-}"
-    local wt hash branch shown line selected target
-    local -a rows
-
-    while read -r wt hash branch; do
-        shown="${wt/#$HOME/~}"
-        line="$shown $hash $branch"
-
-        [[ -z "$q" || "$line" == *"$q"* ]] && rows+=("$line")
-    done < <(git worktree list)
-
-    if (( ${#rows[@]} == 0 )); then
-        local d="$(git rev-parse --path-format=absolute --git-common-dir | sed 's#/.git$##')"
-        local branch="${2:-$(whoami)/$q}"
-        if git rev-parse --verify --quiet "$branch^{commit}" >/dev/null; then
-            git worktree add "$d/.worktrees/$q" "$branch" || return
-        else
-            git worktree add -b "$branch" "$d/.worktrees/$q" || return
-        fi
-        selected="$d/.worktrees/$q"
-    elif (( ${#rows[@]} == 1 )); then
-        selected="${rows[1]}"
-    else
-        selected="$(printf '%s\n' "${rows[@]}" | fzf --query="$q")" || return
-    fi
-
-    target="${selected%% *}"
-    target="${target/#\~/$HOME}"
-
-    cd -- "$target" || return
 }
 
 # Reuse a single SSH agent

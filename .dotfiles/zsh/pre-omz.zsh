@@ -51,6 +51,11 @@ done
 # fnm
 [[ ! -d "$HOME/.local/share/fnm" ]] || eval "$(fnm env --use-on-cd --resolve-engines=false --shell zsh)"
 
+# Worktrunk
+if command -v wt >/dev/null 2>&1; then
+    eval "$(command wt config shell init zsh)";
+fi
+
 case "$(uname -s)" in
     Linux)
         # CUDA and cuDNN

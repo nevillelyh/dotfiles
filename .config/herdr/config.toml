@@ -7,10 +7,11 @@ detach = "prefix+d"
 settings = "prefix+comma" # Free up prefix-s
 split_horizontal = "prefix+s" # Default
 split_vertical = "prefix+v"
+# Same direction on Keyboardio, {} vs fn + jk
 previous_workspace = "prefix+{"
 next_workspace = "prefix+}"
-previous_agent = "prefix+["
-next_agent = "prefix+]"
+previous_agent = "prefix+down"
+next_agent = "prefix+up"
 previous_tab = "prefix+p" # Default
 next_tab = "prefix+n" # Default
 

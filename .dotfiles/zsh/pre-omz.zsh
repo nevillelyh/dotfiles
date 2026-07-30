@@ -26,6 +26,9 @@ for b in $bins; do
     [[ -d $b ]] && path=($b $path)
 done
 
+export GOPATH="$HOME/.go"
+export SDKMAN_DIR="$HOME/.sdkman"
+
 brew_bins=(
     /home/linuxbrew/.linuxbrew/bin/brew
     /opt/homebrew/bin/brew
@@ -45,8 +48,8 @@ for e in $envs; do
     [[ -s $e ]] && source $e
 done
 
-export GOPATH="$HOME/.go"
-export SDKMAN_DIR="$HOME/.sdkman"
+# fnm
+[[ ! -d "$HOME/.local/share/fnm" ]] || eval "$(fnm env --use-on-cd --resolve-engines=false --shell zsh)"
 
 case "$(uname -s)" in
     Linux)

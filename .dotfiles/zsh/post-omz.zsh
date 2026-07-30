@@ -13,6 +13,7 @@ esac
 alias cat='bat'
 alias diff='colordiff'
 alias ghpr='gh pr create'
+alias h='herdr'
 alias kx=kubectx
 
 # Docker
@@ -70,16 +71,6 @@ alias wts='wt switch'
 
 function rg() {
     command rg --json "$@" | delta
-}
-
-# Jump to a directory and start or attach a tmux session
-function zt() {
-    local session=$1
-    if tmux has-session -t "$session" &> /dev/null; then
-        tmux attach -d -t "$session"
-    else
-        z "$session" && tmux new-session -s "$session"
-    fi
 }
 
 # Reuse a single SSH agent

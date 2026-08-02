@@ -15,6 +15,7 @@ alias diff='colordiff'
 alias ghpr='gh pr create'
 alias h='herdr'
 alias kx=kubectx
+alias ldk='lazydocker'
 alias lg='lazygit'
 
 # Docker

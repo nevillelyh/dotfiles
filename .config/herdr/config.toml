@@ -16,6 +16,26 @@ next_agent = "prefix+down"
 previous_tab = "prefix+p" # Default
 next_tab = "prefix+n" # Default
 
+[[keys.command]]
+key = "prefix+shift+h"
+type = "shell"
+command = "herdr pane swap --current --direction left"
+
+[[keys.command]]
+key = "prefix+shift+j"
+type = "shell"
+command = "herdr pane swap --current --direction down"
+
+[[keys.command]]
+key = "prefix+shift+k"
+type = "shell"
+command = "herdr pane swap --current --direction up"
+
+[[keys.command]]
+key = "prefix+shift+l"
+type = "shell"
+command = "herdr pane swap --current --direction right"
+
 [ui]
 prompt_new_tab_name = false
 prompt_new_workspace_name = true

@@ -41,7 +41,6 @@ BREWS=(
     git-delta
     git-lfs
     gitea
-    gitui
     golang
     gpg
     grpcurl
@@ -58,6 +57,7 @@ BREWS=(
     kubectx
     kustomize
     lazydocker
+    lazygit
     minikube
     mise
     neovim

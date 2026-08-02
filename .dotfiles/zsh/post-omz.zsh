@@ -15,6 +15,7 @@ alias diff='colordiff'
 alias ghpr='gh pr create'
 alias h='herdr'
 alias kx=kubectx
+alias lg='lazygit'
 
 # Docker
 alias digc='docker images --quiet --filter dangling=true | while IFS= read -r image; do docker rmi "$image"; done'

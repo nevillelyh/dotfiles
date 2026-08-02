@@ -339,8 +339,7 @@ cmd_neovim() {
     [[ -f "$HOME/.bootstrap-neovim" ]] && return 0
     bs_info_box "Setting up NeoVim"
 
-    nvim --headless '+Lazy! update' '+Lazy! clean' +qa
-    nvim --headless '+lua TSInstallParsers():wait(300000)' +qa
+    nvim --headless '+Lazy! sync' +qa
 
     touch "$HOME/.bootstrap-neovim"
 }

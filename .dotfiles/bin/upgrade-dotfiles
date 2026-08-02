@@ -134,9 +134,12 @@ cmd_gcloud() {
 cmd_neovim() {
     bs_info_box "Upgrading NeoVim"
     nvim --headless '+Lazy! sync' +qa
-    lock="$HOME/.config/nvim/lazy-lock.json"
-    if ! git diff --quiet --exit-code "$lock"; then
-        git add -f "$lock"
+    files=(
+        "$HOME/.config/nvim/lazy-lock.json"
+        "$HOME/.config/nvim/lazyvim.json"
+    )
+    if ! git diff --quiet --exit-code -- "${files[@]}"; then
+        git add -f "${files[@]}"
         git commit --message '[vim] upgrade plugins'
         git push
     fi

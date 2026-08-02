@@ -12,6 +12,7 @@
 !/.config/k9s
 /.config/k9s/clusters
 !/.config/nvim
+!/.config/nvim-lazyvim
 !/.config/uv
 
 !/.dotfiles

@@ -21,7 +21,7 @@ cmd_os() {
         dpkg-query -l | grep '^rc' | awk '{print $2}' | while IFS= read -r pkg; do
             sudo aptitude -y purge "$pkg"
         done || true
-        if type flatpak &> /dev/null; then
+        if type flatpak &>/dev/null; then
             sudo flatpak update -y
         fi
         if [[ "$(lsb_release --id --short)" == Pop ]]; then
@@ -40,18 +40,18 @@ cmd_comp() {
 
     dir="$HOME/.local/share/zsh/site-functions"
     mkdir -p "$dir"
-    opencode completion > "$dir/_opencode"
+    opencode completion >"$dir/_opencode"
 
     krews=(cert-manager cnpg stern tmux-exec tree)
     kubectl krew install "${krews[@]}"
-    kubectl cnpg completion zsh > "$dir/_kubectl-cnpg"
-    kubectl stern completion zsh > "$dir/_kubectl-stern"
-    kubectl tree completion zsh > "$dir/_kubectl-tree"
+    kubectl cnpg completion zsh >"$dir/_kubectl-cnpg"
+    kubectl stern completion zsh >"$dir/_kubectl-stern"
+    kubectl tree completion zsh >"$dir/_kubectl-tree"
 
     for k in "${krews[@]}"; do
         f="$HOME/.krew/bin/kubectl_complete-${k//-/_}"
-        echo '#!/usr/bin/env sh' > "$f"
-        echo "kubectl $k __complete \"\$@\"" >> "$f"
+        echo '#!/usr/bin/env sh' >"$f"
+        echo "kubectl $k __complete \"\$@\"" >>"$f"
         chmod +x "$f"
     done
 }
@@ -63,13 +63,13 @@ cmd_git() {
     git submodule update --init --remote
     # Update recursive submodules to their parents' recorded SHA-1
     git submodule foreach git submodule update --init --recursive
-    for path in $(git submodule status  | grep '^[^ ]' | awk '{print $2}'); do
+    for path in $(git submodule status | grep '^[^ ]' | awk '{print $2}'); do
         git add -f "$path"
         git commit --message "[zsh] upgrade $(basename "$path")"
     done
     git push
 
-    if [[ -d "$HOME/.dotfiles/private" ]] && ssh -T git@git.home.lyh.me &> /dev/null; then
+    if [[ -d "$HOME/.dotfiles/private" ]] && ssh -T git@git.home.lyh.me &>/dev/null; then
         cd "$HOME/.dotfiles/private"
         git pull --rebase --autostash
         git push
@@ -83,12 +83,12 @@ cmd_omz() {
 }
 
 cmd_docker() {
-    type docker &> /dev/null || return 0
+    type docker &>/dev/null || return 0
     bs_info_box "Upgrading Docker images"
-    if [[ "$BS_UNAME_S" == "Darwin" ]] && ! docker ps &> /dev/null; then
+    if [[ "$BS_UNAME_S" == "Darwin" ]] && ! docker ps &>/dev/null; then
         open -a Docker
         bs_info "Waiting for Docker daemon"
-        while ! docker ps &> /dev/null; do
+        while ! docker ps &>/dev/null; do
             sleep 1
         done
     fi
@@ -126,7 +126,7 @@ cmd_go() {
 
 cmd_gcloud() {
     bs_info_box "Upgrading GCloud"
-    if type gcloud &> /dev/null; then
+    if type gcloud &>/dev/null; then
         gcloud components update --quiet
     fi
 }

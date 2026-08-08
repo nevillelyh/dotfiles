@@ -9,6 +9,9 @@
 !/.config/btop
 !/.config/gh
 !/.config/gitui
+!/.config/herdr
+/.config/herdr/*
+!/.config/herdr/config.toml
 !/.config/k9s
 /.config/k9s/clusters
 !/.config/nvim

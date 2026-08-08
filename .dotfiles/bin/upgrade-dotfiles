@@ -131,6 +131,11 @@ cmd_gcloud() {
     fi
 }
 
+cmd_herdr() {
+    bs_info_box "Upgrading herdr"
+    herdr plugin link "$HOME/.dotfiles/herdr/plugins/ntfy" --enabled
+}
+
 cmd_neovim() {
     bs_info_box "Upgrading NeoVim"
     nvim --headless '+Lazy! sync' +qa
@@ -190,6 +195,7 @@ upgrade() {
     cmd_fnm
     cmd_go
     cmd_gcloud
+    cmd_herdr
     cmd_jvm
     cmd_neovim
     cmd_rust

@@ -1,0 +1,15 @@
+id = "neville.herdr-ntfy"
+name = "Herdr ntfy"
+version = "0.1.0"
+min_herdr_version = "0.7.0"
+description = "Send ntfy notifications when Herdr agents need attention."
+platforms = ["linux", "macos"]
+
+[[actions]]
+id = "test"
+title = "Send a test ntfy notification"
+command = ["sh", "notify.sh", "test"]
+
+[[events]]
+on = "pane.agent_status_changed"
+command = ["sh", "notify.sh"]

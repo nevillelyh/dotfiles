@@ -102,6 +102,7 @@ FLATPAKS=(
 FLATPAKS_OPT=(
     com.discordapp.Discord
     com.plexamp.Plexamp
+    flathub md.obsidian.Obsidian
     org.libretro.RetroArch
 )
 readonly -a BREWS CASKS FLATPAKS
@@ -121,6 +122,7 @@ MAC_CASKS=(
     google-chrome
     jetbrains-toolbox
     notion
+    obsidian
     scroll-reverser
     spotify
     sublime-text

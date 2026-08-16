@@ -185,16 +185,16 @@ cmd_homebrew() {
     brew install "${BREWS[@]}"
     brew install "${CASKS[@]}"
     case "$BS_UNAME_S" in
-        Darwin)
-            brew install "${MAC_BREWS[@]}"
-            brew install --cask "${MAC_CASKS[@]}"
-            read -n 1 -r -p "Install optional casks? (y/N) "
-            echo
-            [[ $REPLY =~ ^[Yy]$ ]] && brew install --cask "${MAC_CASKS_OPT[@]}"
-            ;;
-        Linux)
-            brew install "${LINUX_BREWS[@]}"
-            ;;
+    Darwin)
+        brew install "${MAC_BREWS[@]}"
+        brew install --cask "${MAC_CASKS[@]}"
+        read -n 1 -r -p "Install optional casks? (y/N) "
+        echo
+        [[ $REPLY =~ ^[Yy]$ ]] && brew install --cask "${MAC_CASKS_OPT[@]}"
+        ;;
+    Linux)
+        brew install "${LINUX_BREWS[@]}"
+        ;;
     esac
 
     touch "$HOME/.bootstrap-homebrew"
@@ -252,7 +252,7 @@ cmd_apt() {
     sudo aptitude install -y "${DEB_PKGS[@]}"
 
     # The following are GUI apps
-    if dpkg-query --show xserver-xorg &> /dev/null; then
+    if dpkg-query --show xserver-xorg &>/dev/null; then
         sudo aptitude install -y "${DEB_GUI_PKGS[@]}"
     fi
 
@@ -263,10 +263,10 @@ cmd_linux_extras() {
     [[ -f "$HOME/.bootstrap-linux-extras" ]] && return 0
     bs_info_box "Setting up Linux extras"
 
-    command -v nvidia-smi &> /dev/null && brew install nvtop
+    command -v nvidia-smi &>/dev/null && brew install nvtop
 
     # The following are GUI apps
-    if dpkg-query --show xserver-xorg &> /dev/null; then
+    if dpkg-query --show xserver-xorg &>/dev/null; then
         flatpak install --assumeyes "${FLATPAKS[@]}"
         read -n 1 -r -p "Install optional flatpaks? (y/N) "
         echo
@@ -306,20 +306,20 @@ cmd_gnupg() {
     mkdir -p "$HOME/.gnupg"
     chmod 700 "$HOME/.gnupg"
 
-    echo "default-cache-ttl 7200" >> "$HOME/.gnupg/gpg-agent.conf"
-    echo "max-cache-ttl 86400" >> "$HOME/.gnupg/gpg-agent.conf"
+    echo "default-cache-ttl 7200" >>"$HOME/.gnupg/gpg-agent.conf"
+    echo "max-cache-ttl 86400" >>"$HOME/.gnupg/gpg-agent.conf"
 
     case "$BS_UNAME_S" in
-        Darwin)
-            echo "pinentry-program /opt/homebrew/bin/pinentry-mac" >> "$HOME/.gnupg/gpg-agent.conf"
-            # Disable Pinentry "Save in Keychain"
-            # https://gpgtools.tenderapp.com/kb/gpg-mail-faq/gpg-mail-hidden-settings#disable-option-to-store-password-in-macos-keychain
-            defaults write org.gpgtools.common DisableKeychain -bool yes
-            ;;
-        Linux)
-            # Disable Pinentry "Save in password manager"
-            echo "no-allow-external-cache" >> "$HOME/.gnupg/gpg-agent.conf"
-            ;;
+    Darwin)
+        echo "pinentry-program /opt/homebrew/bin/pinentry-mac" >>"$HOME/.gnupg/gpg-agent.conf"
+        # Disable Pinentry "Save in Keychain"
+        # https://gpgtools.tenderapp.com/kb/gpg-mail-faq/gpg-mail-hidden-settings#disable-option-to-store-password-in-macos-keychain
+        defaults write org.gpgtools.common DisableKeychain -bool yes
+        ;;
+    Linux)
+        # Disable Pinentry "Save in password manager"
+        echo "no-allow-external-cache" >>"$HOME/.gnupg/gpg-agent.conf"
+        ;;
     esac
 
     touch "$HOME/.bootstrap-gnupg"
@@ -416,8 +416,8 @@ cmd_zsh() {
     bs_info_box "Setting up zsh"
 
     case "$BS_UNAME_S" in
-        Darwin) rm -rf "$HOME/.bash_profile" "$HOME/.bashrc" ;;
-        Linux) cp /etc/skel/.[^.]* "$HOME" ;;
+    Darwin) rm -rf "$HOME/.bash_profile" "$HOME/.bashrc" ;;
+    Linux) cp /etc/skel/.[^.]* "$HOME" ;;
     esac
 
     touch "$HOME/.bootstrap-zsh"
@@ -428,13 +428,13 @@ cmd_zsh() {
 ########################################
 
 case "$BS_UNAME_S" in
-    Darwin)
-        export PATH=/opt/homebrew/bin:$PATH
-        export PATH=$HOME/.local/bin:$PATH
-        ;;
-    Linux)
-        export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
-        ;;
+Darwin)
+    export PATH=/opt/homebrew/bin:$PATH
+    export PATH=$HOME/.local/bin:$PATH
+    ;;
+Linux)
+    export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
+    ;;
 esac
 export PATH=$HOME/.dotfiles/bin:$PATH
 
@@ -442,22 +442,22 @@ bootstrap() {
     cmd_ssh
 
     case "$BS_UNAME_S" in
-        Darwin)
-            cmd_mac
-            cmd_homebrew
-            cmd_mac_extras
-            ;;
-        Linux)
-            cmd_linux
-            cmd_apt
-            cmd_homebrew
-            cmd_linux_extras
-            ;;
+    Darwin)
+        cmd_mac
+        cmd_homebrew
+        cmd_mac_extras
+        ;;
+    Linux)
+        cmd_linux
+        cmd_apt
+        cmd_homebrew
+        cmd_linux_extras
+        ;;
     esac
 
     cmd_git
     cmd_gnupg
-    cmd_venv  # NeoVim needs Python
+    cmd_venv # NeoVim needs Python
     cmd_neovim
     cmd_fnm
     cmd_go

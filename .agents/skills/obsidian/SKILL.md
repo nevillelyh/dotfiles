@@ -13,7 +13,7 @@ For note content edits:
 2. Check the vault Git status. If clean, pull with rebase before editing; preserve and account for existing user changes if dirty.
 3. Edit Markdown files directly with `apply_patch`; do not use `obsidian eval` for prose replacement.
 4. Review the diff and run relevant validation.
-5. Commit and push directly with Git. Use `git-agent` for commits or rebases when needed to avoid editor and signing prompts. Do not use the Obsidian Git plugin for agent-driven edits.
+5. Commit and push directly with Git. Use `git-agent` for commits or rebases when needed to avoid editor and signing prompts. Do not use the Obsidian Git plugin for agent-driven edits. Ignore `.obsidian` directory in the repo.
 
 For note metadata:
 

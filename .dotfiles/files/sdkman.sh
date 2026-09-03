@@ -14,11 +14,11 @@ fi
 # shellcheck disable=SC1091
 [[ -f "$HOME/.sdkman.conf" ]] && source "$HOME/.sdkman.conf"
 java_versions=(17 21 25)
-java_versions=( "${SDK_JAVA_VERSIONS[@]:-"${java_versions[@]}"}" )
+java_versions=("${SDK_JAVA_VERSIONS[@]:-"${java_versions[@]}"}")
 java_default=${SDK_JAVA_DEFAULT:-25}
 java_dist=${SDK_JAVA_DIST:-amzn}
 scala_versions=(2.13 3)
-scala_versions=( "${SDK_SCALA_VERSIONS[@]:-"${scala_versions[@]}"}" )
+scala_versions=("${SDK_SCALA_VERSIONS[@]:-"${scala_versions[@]}"}")
 scala_default=${SDK_SCALA_DEFAULT:-2.13}
 readonly -a java_versions scala_versions
 readonly java_default java_dist scala_default

@@ -89,6 +89,7 @@ set +u
 # shellcheck source=/dev/null
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 
+sdk selfupdate
 sdk update
 manage_java
 manage_scala

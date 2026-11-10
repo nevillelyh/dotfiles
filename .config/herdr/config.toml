@@ -2,6 +2,7 @@ onboarding = false
 
 [theme]
 name = "dracula"
+auto_switch = false
 
 [keys] # Match tmux
 prefix = "backtick"

@@ -161,7 +161,7 @@ cmd_rust() {
     # Bash 3 on Mac missing readarray
     if [[ -s "$HOME/.cargo/.crates.toml" ]]; then
         # shellcheck disable=SC2207
-        crates=($(grep '^"[^"]*" = \["[^"]*"\]$' "$HOME/.cargo/.crates.toml" | sed 's/^"\([^ ]*\) .*$/\1/'))
+        crates=($(sed -n 's/^"\([^ ]*\) .*" = \[.*\]$/\1/p' "$HOME/.cargo/.crates.toml"))
         for c in "${crates[@]}"; do
             cargo install --quiet "$c"
         done

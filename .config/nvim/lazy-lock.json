@@ -1,6 +1,6 @@
 {
   "LazyVim": { "branch": "main", "commit": "0fa4a847929fc6beae40a3063615a58115678c34" },
-  "SchemaStore.nvim": { "branch": "main", "commit": "024511f9960150bc172e82201d2ce5eb64adc588" },
+  "SchemaStore.nvim": { "branch": "main", "commit": "6ea42941864e28f59368480e071a84b16ae95bb4" },
   "blink.cmp": { "branch": "main", "commit": "78336bc89ee5365633bcf754d93df01678b5c08f" },
   "bufferline.nvim": { "branch": "main", "commit": "655133c3b4c3e5e05ec549b9f8cc2894ac6f51b3" },
   "catppuccin": { "branch": "main", "commit": "edefef779ab08ce1a4a404713e3012b0d202bd35" },
@@ -12,7 +12,7 @@
   "dracula": { "branch": "master", "commit": "c689958744a93851b870e17ede7e9cbd28bc7cf8" },
   "flash.nvim": { "branch": "main", "commit": "5f0f270fdc7c5b0c21d903ee85b9cb06f2ac636a" },
   "friendly-snippets": { "branch": "main", "commit": "7a1c9f7897a4eb078b157a04c7af81e5869215b1" },
-  "gitsigns.nvim": { "branch": "main", "commit": "c0862d382a35b7b45757d8d151a6a634c09bf3ce" },
+  "gitsigns.nvim": { "branch": "main", "commit": "d47d12e0f198c817324ef17345b5a65c03816dd8" },
   "grug-far.nvim": { "branch": "main", "commit": "91b7e58b6ffc6ddad5acb7a7c1df21257724449e" },
   "guess-indent.nvim": { "branch": "main", "commit": "84a4987ff36798c2fc1169cbaff67960aed9776f" },
   "inc-rename.nvim": { "branch": "main", "commit": "ddff8bd3eccedf043bd73f5bf89cf90d2d6d8105" },
